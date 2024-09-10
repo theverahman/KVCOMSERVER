@@ -9,19 +9,20 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using LIBKVPROTOCOL;
 
-namespace WindowsFormsApp1
+namespace KVCOMSERVER
 {
     
     public partial class Form1 : Form 
     { 
-        public ConnectPLC connPLC;
+        public KVPROTOCOL connPLC;
 
         public string settingIpv4;
         public int settingPortIp;
         public string msgToBeSent;
         
-        public Form1(ConnectPLC connEst)
+        public Form1(KVPROTOCOL connEst)
         {
             this.connPLC = connEst;
             InitializeComponent();
@@ -119,6 +120,11 @@ namespace WindowsFormsApp1
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }
