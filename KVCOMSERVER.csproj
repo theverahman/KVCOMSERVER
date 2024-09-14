@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
+    <LangVersion>11.0</LangVersion>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
@@ -13,10 +14,15 @@
     <StartupObject>KVCOMSERVER.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.3" />
+    <PackageReference Include="IronXL.Excel" Version="2024.9.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EEIP.NET-master\EEIP.NET\EEIP.csproj" />
+    <ProjectReference Include="..\EXCEL_MANIPULATOR\EXCEL_MANIPULATOR.csproj" />
+    <ProjectReference Include="..\FUNCTION_TESTER.DB\FUNCTION_TESTER.DB.csproj" />
     <ProjectReference Include="..\KVPROTOCOL\KVPROTOCOL.csproj" />
     <ProjectReference Include="..\LIBSETTEI\LIBSETTEI.csproj" />
   </ItemGroup>
