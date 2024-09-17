@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <LangVersion>11.0</LangVersion>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -23,7 +23,5 @@
     <ProjectReference Include="..\EEIP.NET-master\EEIP.NET\EEIP.csproj" />
     <ProjectReference Include="..\EXCEL_MANIPULATOR\EXCEL_MANIPULATOR.csproj" />
     <ProjectReference Include="..\FUNCTION_TESTER.DB\FUNCTION_TESTER.DB.csproj" />
-    <ProjectReference Include="..\KVPROTOCOL\KVPROTOCOL.csproj" />
-    <ProjectReference Include="..\LIBSETTEI\LIBSETTEI.csproj" />
   </ItemGroup>
 </Project>

@@ -28,252 +28,291 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tabControl1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.SuspendLayout();
+            button1 = new System.Windows.Forms.Button();
+            textBox1 = new System.Windows.Forms.TextBox();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            textBox2 = new System.Windows.Forms.TextBox();
+            button2 = new System.Windows.Forms.Button();
+            label3 = new System.Windows.Forms.Label();
+            richTextBox1 = new System.Windows.Forms.RichTextBox();
+            richTextBox2 = new System.Windows.Forms.RichTextBox();
+            label4 = new System.Windows.Forms.Label();
+            button3 = new System.Windows.Forms.Button();
+            button4 = new System.Windows.Forms.Button();
+            tabControl1 = new System.Windows.Forms.TabControl();
+            tabPage1 = new System.Windows.Forms.TabPage();
+            tabPage2 = new System.Windows.Forms.TabPage();
+            panel2 = new System.Windows.Forms.Panel();
+            label5 = new System.Windows.Forms.Label();
+            panel1 = new System.Windows.Forms.Panel();
+            tabPage4 = new System.Windows.Forms.TabPage();
+            label6 = new System.Windows.Forms.Label();
+            button5 = new System.Windows.Forms.Button();
+            button6 = new System.Windows.Forms.Button();
+            tabControl1.SuspendLayout();
+            tabPage2.SuspendLayout();
+            panel2.SuspendLayout();
+            panel1.SuspendLayout();
+            tabPage4.SuspendLayout();
+            SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(715, 17);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(168, 54);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Connect";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            button1.Location = new System.Drawing.Point(556, 13);
+            button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(131, 40);
+            button1.TabIndex = 0;
+            button1.Text = "Connect";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(206, 15);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(246, 26);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            textBox1.Location = new System.Drawing.Point(160, 11);
+            textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new System.Drawing.Size(192, 23);
+            textBox1.TabIndex = 1;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 15);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(158, 20);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "IPv4 Address Setting";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(4, 11);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(114, 15);
+            label1.TabIndex = 2;
+            label1.Text = "IPv4 Address Setting";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 62);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 20);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "IPv4 Port Setting";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(5, 46);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(94, 15);
+            label2.TabIndex = 3;
+            label2.Text = "IPv4 Port Setting";
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(206, 56);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(246, 26);
-            this.textBox2.TabIndex = 4;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            textBox2.Location = new System.Drawing.Point(160, 42);
+            textBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new System.Drawing.Size(192, 23);
+            textBox2.TabIndex = 4;
+            textBox2.TextChanged += textBox2_TextChanged;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(715, 81);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(168, 51);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Close";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            button2.Location = new System.Drawing.Point(556, 61);
+            button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(131, 38);
+            button2.TabIndex = 5;
+            button2.Text = "Close";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 62);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 20);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Request";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(8, 46);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(49, 15);
+            label3.TabIndex = 6;
+            label3.Text = "Request";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(10, 86);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(583, 93);
-            this.richTextBox1.TabIndex = 7;
-            this.richTextBox1.Text = "";
+            richTextBox1.Location = new System.Drawing.Point(8, 64);
+            richTextBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new System.Drawing.Size(454, 71);
+            richTextBox1.TabIndex = 7;
+            richTextBox1.Text = "";
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(10, 211);
-            this.richTextBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(583, 129);
-            this.richTextBox2.TabIndex = 9;
-            this.richTextBox2.Text = "";
-            this.richTextBox2.TextChanged += new System.EventHandler(this.richTextBox2_TextChanged);
+            richTextBox2.Location = new System.Drawing.Point(8, 158);
+            richTextBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            richTextBox2.Name = "richTextBox2";
+            richTextBox2.ReadOnly = true;
+            richTextBox2.Size = new System.Drawing.Size(454, 98);
+            richTextBox2.TabIndex = 9;
+            richTextBox2.Text = "";
+            richTextBox2.TextChanged += richTextBox2_TextChanged;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 186);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 20);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Respond";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(8, 140);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(53, 15);
+            label4.TabIndex = 8;
+            label4.Text = "Respond";
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(715, 86);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(160, 93);
-            this.button3.TabIndex = 10;
-            this.button3.Text = "Execute";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            button3.Location = new System.Drawing.Point(556, 64);
+            button3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button3.Name = "button3";
+            button3.Size = new System.Drawing.Size(124, 70);
+            button3.TabIndex = 10;
+            button3.Text = "Execute";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(511, 17);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(168, 70);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "SAVE SETTING";
-            this.button4.UseVisualStyleBackColor = true;
+            button4.Location = new System.Drawing.Point(397, 13);
+            button4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button4.Name = "button4";
+            button4.Size = new System.Drawing.Size(131, 52);
+            button4.TabIndex = 11;
+            button4.Text = "SAVE SETTING";
+            button4.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(923, 582);
-            this.tabControl1.TabIndex = 12;
+            tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage4);
+            tabControl1.Location = new System.Drawing.Point(9, 9);
+            tabControl1.Margin = new System.Windows.Forms.Padding(2);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new System.Drawing.Size(718, 436);
+            tabControl1.TabIndex = 12;
             // 
             // tabPage1
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(915, 549);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "DATA MNG";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            tabPage1.Location = new System.Drawing.Point(4, 24);
+            tabPage1.Margin = new System.Windows.Forms.Padding(2);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new System.Windows.Forms.Padding(2);
+            tabPage1.Size = new System.Drawing.Size(710, 408);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "DATA MNG";
+            tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.panel2);
-            this.tabPage2.Controls.Add(this.panel1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(915, 549);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "SETTING";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(915, 549);
-            this.tabPage4.TabIndex = 2;
-            this.tabPage4.Text = "INFORMATION";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.button4);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Controls.Add(this.textBox2);
-            this.panel1.Location = new System.Drawing.Point(6, 6);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(900, 154);
-            this.panel1.TabIndex = 12;
+            tabPage2.Controls.Add(panel2);
+            tabPage2.Controls.Add(panel1);
+            tabPage2.Location = new System.Drawing.Point(4, 24);
+            tabPage2.Margin = new System.Windows.Forms.Padding(2);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            tabPage2.Size = new System.Drawing.Size(710, 408);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "SETTING";
+            tabPage2.UseVisualStyleBackColor = true;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.label5);
-            this.panel2.Controls.Add(this.richTextBox2);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Controls.Add(this.richTextBox1);
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Location = new System.Drawing.Point(6, 198);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(900, 345);
-            this.panel2.TabIndex = 13;
+            panel2.Controls.Add(label5);
+            panel2.Controls.Add(richTextBox2);
+            panel2.Controls.Add(button3);
+            panel2.Controls.Add(label3);
+            panel2.Controls.Add(richTextBox1);
+            panel2.Controls.Add(label4);
+            panel2.Location = new System.Drawing.Point(5, 148);
+            panel2.Margin = new System.Windows.Forms.Padding(2);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(700, 259);
+            panel2.TabIndex = 13;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 13);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(291, 29);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "COMMUNICATION TEST";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
+            label5.AutoSize = true;
+            label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label5.Location = new System.Drawing.Point(9, 10);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(189, 20);
+            label5.TabIndex = 11;
+            label5.Text = "COMMUNICATION TEST";
+            label5.Click += label5_Click;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(button1);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(button4);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(button2);
+            panel1.Controls.Add(textBox1);
+            panel1.Controls.Add(textBox2);
+            panel1.Location = new System.Drawing.Point(5, 4);
+            panel1.Margin = new System.Windows.Forms.Padding(2);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(700, 116);
+            panel1.TabIndex = 12;
+            // 
+            // tabPage4
+            // 
+            tabPage4.Controls.Add(button6);
+            tabPage4.Controls.Add(label6);
+            tabPage4.Controls.Add(button5);
+            tabPage4.Location = new System.Drawing.Point(4, 24);
+            tabPage4.Margin = new System.Windows.Forms.Padding(2);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new System.Windows.Forms.Padding(2);
+            tabPage4.Size = new System.Drawing.Size(710, 408);
+            tabPage4.TabIndex = 2;
+            tabPage4.Text = "INFORMATION";
+            tabPage4.UseVisualStyleBackColor = true;
+            tabPage4.Click += tabPage4_Click;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new System.Drawing.Point(5, 12);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(104, 15);
+            label6.TabIndex = 14;
+            label6.Text = "Connection Status";
+            // 
+            // button5
+            // 
+            button5.Enabled = false;
+            button5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            button5.Location = new System.Drawing.Point(115, 5);
+            button5.Name = "button5";
+            button5.Size = new System.Drawing.Size(162, 28);
+            button5.TabIndex = 13;
+            button5.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            button6.Enabled = false;
+            button6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            button6.Location = new System.Drawing.Point(543, 5);
+            button6.Name = "button6";
+            button6.Size = new System.Drawing.Size(162, 28);
+            button6.TabIndex = 15;
+            button6.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(952, 607);
-            this.Controls.Add(this.tabControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(740, 455);
+            Controls.Add(tabControl1);
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            Name = "Form1";
+            Text = "Form1";
+            Load += Form1_Load;
+            tabControl1.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            tabPage4.ResumeLayout(false);
+            tabPage4.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -297,6 +336,9 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
     }
 }
 
