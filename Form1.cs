@@ -10,31 +10,47 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using LIBKVPROTOCOL;
+using WORKFLOW;
+
 
 namespace KVCOMSERVER
 {
     
     public partial class Form1 : Form 
-    { 
+    {
+        private WORKFLOWHANDLER _WorkflowHandler;
         public KVPROTOCOL connPLC;
-
         public string settingIpv4;
         public int settingPortIp;
         public string msgToBeSent;
-        
-        public Form1(KVPROTOCOL connEst)
-        {
-            this.connPLC = connEst;
-            InitializeComponent();
-            Thread backgroundThread = new Thread(BackgroundWork);
-            backgroundThread.Start();
 
+        //public Form1(KVPROTOCOL connEst)
+        public Form1()
+        {
+            InitializeComponent();
+            _WorkflowHandler = new WORKFLOWHANDLER(this);
+            textBox1.Text = settingIpv4;
+            textBox2.Text = settingPortIp.ToString();
+
+            Thread backgroundThread_1 = new Thread(_WorkflowHandler.BackgroundWork_1);
+            backgroundThread_1.Start();
+
+        }
+
+        public void setTextBox2(string text)
+        {
+            richTextBox2.Text = text;
+        }
+
+        public string getTextBox2()
+        {
+            return richTextBox2.Text;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             //Connect
-            connPLC.SetConnection(settingIpv4, settingPortIp);
+            _WorkflowHandler.SetConnection();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -51,17 +67,14 @@ namespace KVCOMSERVER
         private void button2_Click(object sender, EventArgs e)
         {
             //Close
-            connPLC.CloseConnection();
+            _WorkflowHandler.CloseConnection();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             msgToBeSent = richTextBox1.Text + "\r";
             //Execute
-            connPLC.connSend
-                (
-                    Encoding.ASCII.GetBytes(msgToBeSent)
-                );
+            _WorkflowHandler.SendMessage(msgToBeSent);
 
             Thread.Sleep(1);
 
@@ -75,41 +88,6 @@ namespace KVCOMSERVER
             //                connPLC.getMsgRecv(), 0, connPLC.getByteRecv()
             //            );
             //    }
-            
-        }
-
-        private void BackgroundWork()
-        {
-            int counter = 0;
-            while (counter < 5)
-            {
-                counter++;
-                Thread.Sleep(50);
-            }
-            DoWorkOnUI();
-        }
-
-        private void DoWorkOnUI()
-        {
-            while (true)
-            {
-                MethodInvoker methodInvokerDelegate = delegate ()
-                {
-                    if (connPLC.getState())
-                    {
-                        if (connPLC.getAvail() > 0)
-                        {
-                            connPLC.connRecv();
-                            richTextBox2.Text = Encoding.ASCII.GetString
-                                (
-                                    connPLC.getMsgRecv(), 0, connPLC.getByteRecv()
-                                );
-                        }
-                    }
-                };
-                //This will be true if Current thread is not UI thread.
-                this.Invoke(methodInvokerDelegate);
-            }
             
         }
 
