@@ -26,7 +26,8 @@ using ClosedXML.Excel;
 using MoreLinq;
 using DocumentFormat.OpenXml.Spreadsheet;
 using MoreLinq.Extensions;
-
+using DocumentFormat.OpenXml.Drawing.Charts;
+using System.Reflection;
 
 namespace KVCOMSERVER
 {
@@ -140,7 +141,7 @@ namespace WORKFLOW
 
         public int GetConnState()
         {
-            return _kvconnObject.GetConnState();
+            return ((int)_eeipObject.SessionStatus());
         }
 
         public void SendMessage(string msgs)
@@ -169,7 +170,7 @@ namespace WORKFLOW
                 _eeipTriggerReadParameter(STAT_INPUT);
                 //Thread.Sleep(10);
             }
-            
+
         }
 
         void _eeipEventHandler_3()
@@ -180,23 +181,31 @@ namespace WORKFLOW
                 _eeipTriggerReadRealtime(STAT_INPUT);
                 //Thread.Sleep(10);
             }
-            
+
         }
 
         void _eeipBeacon(byte[] STAT_INPUT)
-        {            
+        {
             if ((byte)(STAT_INPUT[0] & 0x01) == 0x01)
             {
                 _uiObject._beaconn = 1;
+                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 _kvconnObject.writeDataCommand("W0A0", "", "1");
+                //_kvconnObject.CloseConnection();
+                
             }
             if ((byte)(STAT_INPUT[0] & 0x01) == 0x00)
             {
                 _uiObject._beaconn = 0;
+                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 _kvconnObject.writeDataCommand("W0A0", "", "0");
+                //_kvconnObject.CloseConnection();
+                
             }
-            
+
         }
+
+        
 
 
         void _eeipTriggerReadParameter(byte[] STAT_INPUT)
@@ -213,16 +222,19 @@ namespace WORKFLOW
                     _eeipreadActiveModelData();
                     _eeipreadStep1Param();
                     _eeipreadStep2345Param();
-                    
+
                     _excelStoreParameterData();
                 }
 
                 if (_parameterReadFlag)
                 {
+                    //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                     _kvconnObject.writeDataCommand("W0C1", "", "0");
-                    Thread.Sleep(50);
+                    //_kvconnObject.CloseConnection();
+                    
+                    Thread.Sleep(10);
                 }
-                
+
             }
             if ((byte)(STAT_INPUT[2] & 0x01) == 0x00)
             {
@@ -250,16 +262,19 @@ namespace WORKFLOW
                     _eeipreadJudgement(ref _Rdata.Judgement, 0xA5);
                     _eeipreadJudgement(ref _Ldata.Judgement, 0xA6);
                     _kvreadRealtime(ref _Rdata.RealtimeStep2, "ZF110000", "ZF110400", "ZF110800", "ZF111200", "ZF110000", "ZF510000", 400);
-                    _kvreadRealtime(ref _Rdata.RealtimeStep3, "ZF111604", "ZF112004", "ZF112404", "ZF113208", "ZF111604", "ZF510000", 400);
+                    //_kvreadRealtime(ref _Rdata.RealtimeStep3, "ZF111604", "ZF112004", "ZF112404", "ZF113208", "ZF111604", "ZF510000", 400);
                     _kvreadRealtime(ref _Ldata.RealtimeStep2, "ZF210000", "ZF210400", "ZF210800", "ZF211200", "ZF210000", "ZF510500", 400);
-                    _kvreadRealtime(ref _Ldata.RealtimeStep3, "ZF211604", "ZF212004", "ZF212404", "ZF213208", "ZF211604", "ZF510500", 400);
-
+                    //_kvreadRealtime(ref _Ldata.RealtimeStep3, "ZF211604", "ZF212004", "ZF212404", "ZF213208", "ZF211604", "ZF510500", 400);
+                    
                     _excelStoreRealtimeData();
                 }
                 if (_realtimeReadFlag)
                 {
+                    //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                     _kvconnObject.writeDataCommand("W0C2", "", "0");
-                    Thread.Sleep(50);
+                    //_kvconnObject.CloseConnection();
+                    
+                    Thread.Sleep(10);
                 }
             }
             if ((byte)(STAT_INPUT[4] & 0x01) == 0x00)
@@ -295,14 +310,14 @@ namespace WORKFLOW
             RealtimeFileR1.setRealtimeStep2(_Rdata.RealtimeStep2);
             RealtimeFileL1.setRealtimeStep2(_Ldata.RealtimeStep2);
 
-            RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
-            RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
+            //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
+            //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
 
 
-            string _filenameR1 = ("/RealtimeData_RH_20{_data._activeYear}-{_data._activeMonth}-{_data._activeDay}_{_data._activeHour}-{_data._activeMinute}-{_data._activeSecond}.xlsx");
+            string _filenameR1 = ($"LOG/RealtimeData_RH_20{_data.DTM[0]}-{_data.DTM[1]}-{_data.DTM[2]}_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
             RealtimeFileR1.FilePrint(_filenameR1);
 
-            string _filenameL1 = ("/RealtimeData_LH_20{_data._activeYear}-{_data._activeMonth}-{_data._activeDay}_{_data._activeHour}-{_data._activeMinute}-{_data._activeSecond}.xlsx");
+            string _filenameL1 = ($"LOG/RealtimeData_LH_20{_data.DTM[0]}-{_data.DTM[1]}-{_data.DTM[2]}_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
             RealtimeFileL1.FilePrint(_filenameL1);
 
             _realtimeReadFlag = false;
@@ -335,7 +350,7 @@ namespace WORKFLOW
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA1);
                 char[] _charINPUT;
                 _charINPUT = System.Text.Encoding.ASCII.GetString(_INPUT).ToCharArray();
-                Thread.Sleep(50);
+                Thread.Sleep(10);
 
                 char[] _charModelBuff = new char[20];
                 char[] _charNumBuff = new char[20];
@@ -380,12 +395,12 @@ namespace WORKFLOW
                     }
                 }
 
-                _data._activeModelName = string.Join("",_charModelBuff);
-                Debug.Write(_data._activeModelName);
-                Debug.Write((char)'\n');
+                _data._activeModelName = string.Join("", _charModelBuff);
+                //Debug.Write(_data._activeModelName);
+                //Debug.Write((char)'\n');
                 _data._activeKayabaNumber = string.Join("", _charNumBuff);
-                Debug.Write(_data._activeKayabaNumber);
-                Debug.Write((char)'\n');
+                //Debug.Write(_data._activeKayabaNumber);
+                //Debug.Write((char)'\n');
             }
             //catch { }
         }
@@ -397,16 +412,16 @@ namespace WORKFLOW
                 byte[] _INPUT;
                 List<int> _buffDTM = new List<int>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA2);
-                Thread.Sleep(50);
+                Thread.Sleep(10);
 
-                Debug.Write("DateTime");
-                Debug.Write((char)'\n');
+                //Debug.Write("DateTime");
+                //Debug.Write((char)'\n');
 
                 byte[] buff = new byte[2];
                 int iv = 0;
 
-                for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
-                Debug.Write((char)'\n');
+                //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
+                //Debug.Write((char)'\n');
 
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
@@ -430,13 +445,13 @@ namespace WORKFLOW
                 //Debug.Write(_buffDTM.Count().ToString());
                 //Debug.Write((char)'\n');
 
-                for (int i = 0; i < _data.DTM.Count() ; i++)
+                for (int i = 0; i < _data.DTM.Count(); i++)
                 {
                     _data.DTM[i] = _buffDTM[i].ToString();
-                    Debug.Write(_data.DTM[i].ToString());
+                    //Debug.Write(_data.DTM[i].ToString());
 
                 }
-                Debug.Write((char)'\n');
+                //Debug.Write((char)'\n');
             }
             //catch { }
         }
@@ -448,18 +463,18 @@ namespace WORKFLOW
                 byte[] _INPUT;
                 List<byte[]> _buffPARAM1 = new List<byte[]>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA3);
-                Thread.Sleep(50);
+                Thread.Sleep(10);
 
-                Debug.Write("Step1Parameter");
-                Debug.Write((char)'\n');
+                //Debug.Write("Step1Parameter");
+                //Debug.Write((char)'\n');
 
                 byte[] buff = new byte[4];
                 int iv = 0;
                 //Debug.Write(_INPUT.Length);
                 //Debug.Write((char)'\n');
 
-                for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
-                Debug.Write((char)'\n');
+                //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
+                //Debug.Write((char)'\n');
 
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
@@ -468,7 +483,7 @@ namespace WORKFLOW
                         buff[iv] = _INPUT[i];
                         iv++;
                     }
-                    else if(i == _INPUT.Length - 1)
+                    else if (i == _INPUT.Length - 1)
                     {
                         buff[iv] = _INPUT[i];
                         byte[] sbuff = new byte[] { };
@@ -497,7 +512,7 @@ namespace WORKFLOW
                             iv++;
                         }
                     }
-                    
+
                 }
                 //Debug.Write((char)'\n');
                 //Debug.Write(_buffPARAM1.Count().ToString());
@@ -517,10 +532,10 @@ namespace WORKFLOW
                         _data.Step1Param[i] = BitConverter.ToSingle(_buffPARAM1[i], 0).ToString();
                     }
 
-                    for (int it = 0; it < _buffPARAM1[i].Length; it++) { Debug.Write(_buffPARAM1[i][it]); Debug.Write(", "); }
-                    Debug.Write(" : ");
-                    Debug.Write(_data.Step1Param[i]);
-                    Debug.Write((char)'\n');
+                    //for (int it = 0; it < _buffPARAM1[i].Length; it++) { Debug.Write(_buffPARAM1[i][it]); Debug.Write(", "); }
+                    //Debug.Write(" : ");
+                    //Debug.Write(_data.Step1Param[i]);
+                    //Debug.Write((char)'\n');
                 }
             }
             //catch { }
@@ -533,16 +548,16 @@ namespace WORKFLOW
                 byte[] _INPUT;
                 List<byte[]> _buffPARAM2345 = new List<byte[]>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA4);
-                Thread.Sleep(50);
+                Thread.Sleep(10);
 
-                Debug.Write("Step2345Parameter");
-                Debug.Write((char)'\n');
+                //Debug.Write("Step2345Parameter");
+                //Debug.Write((char)'\n');
 
                 byte[] buff = new byte[4];
                 int iv = 0;
 
-                for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
-                Debug.Write((char)'\n');
+                //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
+                //Debug.Write((char)'\n');
 
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
@@ -597,10 +612,10 @@ namespace WORKFLOW
                     {
                         _data.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0).ToString();
                     }
-                    for (int it = 0; it < _buffPARAM2345[i].Length; it++) { Debug.Write(_buffPARAM2345[i][it]); Debug.Write(", "); }
-                    Debug.Write(" : ");
-                    Debug.Write(_data.Step2345Param[i]);
-                    Debug.Write((char)'\n');
+                    //for (int it = 0; it < _buffPARAM2345[i].Length; it++) { Debug.Write(_buffPARAM2345[i][it]); Debug.Write(", "); }
+                    //Debug.Write(" : ");
+                    //Debug.Write(_data.Step2345Param[i]);
+                    //Debug.Write((char)'\n');
                 }
             }
             //catch { }
@@ -610,65 +625,68 @@ namespace WORKFLOW
         {
             //try
             {
-                byte[] _INPUT;
-                List<byte[]> _buffJudgement = new List<byte[]>();
-                _INPUT = _eeipObject.AssemblyObject.getInstance(addr);
-                Thread.Sleep(50);
+                byte[] _INPUT = _eeipObject.AssemblyObject.getInstance(addr);
+                Thread.Sleep(10);
+                //Debug.Write("Judgement");
+                //Debug.Write((char)'\n');
+                //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
+                //Debug.Write((char)'\n');
 
-                Debug.Write("Judgement");
-                Debug.Write((char)'\n');
 
+                double[] _buffJudgement = new double[] { };
                 byte[] buff = new byte[4];
                 int iv = 0;
+                int iz = 0;
+                int iend = _INPUT.Length - 1;
 
-                for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
-                Debug.Write((char)'\n');
-
-                for (int i = 0; i < _INPUT.Length; i++)
+                for (int i = 0; i < iend; i++)
                 {
                     if (i < 1)
                     {
                         buff[iv] = _INPUT[i];
                         iv++;
                     }
-                    else if (i == _INPUT.Length - 1)
+                    else if (i == iend)
                     {
                         buff[iv] = _INPUT[i];
-                        byte[] sbuff = new byte[] { };
-                        Array.Resize(ref sbuff, buff.Length);
-                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
-                        _buffJudgement.Add(sbuff);
-                        
+
+                        iz++;
+                        Array.Resize(ref _buffJudgement, iz);
+                        _buffJudgement[iz - 1] = Convert.ToDouble(BitConverter.ToSingle(buff, 0));
+                        judgementresult[iz - 1] = _buffJudgement[iz - 1].ToString();
+                        iv = 0;
+                        Array.Clear(buff);
                     }
                     else
                     {
-                        if (i % 4 == 0)
+                        if (i % 4 != 0)
                         {
                             buff[iv] = _INPUT[i];
                             iv++;
                         }
-                        else if (i % 4 != 0)
+                        else if (i % 4 == 0)
                         {
-                            buff[iv] = _INPUT[i];
-                            byte[] sbuff = new byte[] { };
-                            Array.Resize(ref sbuff, buff.Length);
-                            Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
-                            _buffJudgement.Add(sbuff);
+                            iz++;
+                            Array.Resize(ref _buffJudgement, iz);
+                            _buffJudgement[iz - 1] = Convert.ToDouble(BitConverter.ToSingle(buff, 0));
+                            judgementresult[iz - 1] = _buffJudgement[iz - 1].ToString();
                             iv = 0;
+                            Array.Clear(buff);
+
+                            buff[iv] = _INPUT[i];
+                            iv++;
                         }
                     }
-                    
+
                 }
 
-                for (int i = 0; i < judgementresult.Count(); i++)
-                {
-                    judgementresult[i] = BitConverter.ToSingle(_buffJudgement[i], 0).ToString();
-
-                    for (int it = 0; it < _buffJudgement[i].Length; it++) { Debug.Write(_buffJudgement[i][it]); Debug.Write(", "); }
-                    Debug.Write(" : ");
-                    Debug.Write(judgementresult[i]);
-                    Debug.Write((char)'\n');
-                }
+                //for (int it = 0; it < judgementresult.Count() - 1; it++)
+                //{
+                //  Debug.Write(_buffJudgement[it].ToString());
+                //  Debug.Write(" : ");
+                //  Debug.Write(judgementresult[i]);
+                //  Debug.Write((char)'\n');
+                //}
             }
             //catch { }
         }
@@ -688,34 +706,53 @@ namespace WORKFLOW
             {
                 realtimeresult.Clear();
 
-                Debug.Write("RealTimeData");
-                Debug.Write((char)'\n');
+                //Debug.Write("RealTimeData");
+                //Debug.Write((char)'\n');
 
-                List<byte[]> comp_stroke  = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr1, ".H", count));
-                Thread.Sleep(50);
-                List<byte[]> comp_load    = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr2, ".H", count));
-                Thread.Sleep(50);
-                List<byte[]> extn_stroke  = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr3, ".H", count));
-                Thread.Sleep(50);
-                List<byte[]> extn_load    = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr4, ".H", count));
-                Thread.Sleep(50);
-                List<byte[]> diff_stroke  = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr5, ".H", count));
-                Thread.Sleep(50);
-                List<byte[]> diff_load    = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr6, ".H", count));
-                Thread.Sleep(50);
+                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
 
-                for (int i = 0; i < comp_stroke.Count(); i++)
-                {
-                    Debug.Write((char)'\n');
-                    Debug.Write(System.Text.Encoding.UTF8.GetString(comp_stroke[i], 0, comp_stroke[i].Length));
-                }
+                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr1, count));
+                //Thread.Sleep(20);
+                //_kvconnObject.CloseConnection();
+                //Thread.Sleep(20);
 
-                List<float> float_comp_stroke   = new List<float>(hex16tofloat(comp_stroke));
-                List<float> float_comp_load     = new List<float>(hex16tofloat(comp_load));
-                List<float> float_extn_stroke   = new List<float>(hex16tofloat(extn_stroke));
-                List<float> float_extn_load     = new List<float>(hex16tofloat(extn_load));
-                List<float> float_diff_stroke   = new List<float>(hex16tofloat(diff_stroke));
-                List<float> float_diff_load     = new List<float>(hex16tofloat(diff_load));
+                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
+                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr2, count));
+                //Thread.Sleep(20);
+                //_kvconnObject.CloseConnection();
+                //Thread.Sleep(20);
+
+                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
+                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr3, count));
+                //Thread.Sleep(20);
+                //_kvconnObject.CloseConnection();
+                //Thread.Sleep(20);
+
+                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
+                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr4, count));
+                //Thread.Sleep(20);
+                //_kvconnObject.CloseConnection();
+                //Thread.Sleep(20);
+
+                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
+                List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr5, count));
+                //Thread.Sleep(20);
+                //_kvconnObject.CloseConnection();
+                //Thread.Sleep(20);
+
+                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
+                List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr6, count));
+                //Thread.Sleep(20);
+                
+                //_kvconnObject.CloseConnection();
+                //Thread.Sleep(20);
+
+                List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
+                List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
+                List<float> float_extn_stroke = new List<float>(hex16tofloat32(extn_stroke));
+                List<float> float_extn_load = new List<float>(hex16tofloat32(extn_load));
+                List<float> float_diff_stroke = new List<float>(hex16tofloat32(diff_stroke));
+                List<float> float_diff_load = new List<float>(hex16tofloat32(diff_load));
 
                 List<string> string_comp_stroke = float_comp_stroke.ConvertAll(new Converter<float, string>(floattostring));
                 List<string> string_comp_load = float_comp_load.ConvertAll(new Converter<float, string>(floattostring));
@@ -739,25 +776,99 @@ namespace WORKFLOW
             return new string(pf.ToString());
         }
 
-        List<float> hex16tofloat(List<byte[]> hexdata)
+        List<float> hex16tofloat32(List<byte[]> hexdata)
         {
             List<float> floatdata = new List<float>();
             List<byte[]> buffs = new List<byte[]>();
-            for (int i = 0; i < hexdata.Count; i++)
+            byte[] qbytebuff = new byte[4];
+            int iend = hexdata.Count - 1;
+            int iv = 0;
+
+            for (int i = 0; i < iend; i++)
             {
                 if (i % 2 == 0)
                 {
-                    buffs.Add(hexdata[i]);
+                    for (int ivy = 0; ivy < hexdata[i].Length; ivy++)
+                    {
+                        qbytebuff[iv] = hexdata[i][ivy];
+                        iv++;
+                    }
                 }
                 else if (i % 2 != 0)
                 {
-                    buffs.Add(hexdata[i]);
-                    byte[] obj = buffs.SelectMany(a => a).ToArray();
-                    floatdata.Add(BitConverter.ToSingle(obj, 0));
-                    buffs.Clear();
+                    for (int ivy = 0; ivy < hexdata[i].Length; ivy++)
+                    {
+                        qbytebuff[iv] = hexdata[i][ivy];
+                        iv++;
+                    }
+                    floatdata.Add(BitConverter.ToSingle(qbytebuff, 0));
+                    iv = 0;
+                    Array.Clear(qbytebuff);
                 }
             }
             return floatdata;
+        }
+
+        double[] _bytearrayToDouble(byte[] bytearraystream)
+        {
+            byte[] streaminput = new byte[bytearraystream.Length];
+            Array.Copy(bytearraystream, streaminput, bytearraystream.Length);
+            List<byte[]> _buffList = new List<byte[]>();
+            double[] _buffResult = new double[] { };
+
+            //try
+            {
+                byte[] buff = new byte[4];
+                int iv = 0;
+                int iz = 0;
+                int iend = streaminput.Length - 1;
+
+                for (int i = 0; i < iend; i++)
+                {
+                    if (i < 1)
+                    {
+                        buff[iv] = streaminput[i];
+                        iv++;
+                    }
+                    else if (i == iend)
+                    {
+                        buff[iv] = streaminput[i];
+
+                        iz++;
+                        Array.Resize(ref _buffResult, iz);
+                        _buffResult[iz - 1] = Convert.ToDouble(BitConverter.ToSingle(buff, 0));
+                        iv = 0;
+                        Array.Clear(buff);
+
+                        Debug.Write(_buffResult[iz - 1]);
+                        Debug.Write((char)'\n');
+                    }
+                    else
+                    {
+                        if (i % 4 != 0)
+                        {
+                            buff[iv] = streaminput[i];
+                            iv++;
+                        }
+                        else if (i % 4 == 0)
+                        {
+                            iz++;
+                            Array.Resize(ref _buffResult, iz);
+                            _buffResult[iz - 1] = Convert.ToDouble(BitConverter.ToSingle(buff, 0));
+                            iv = 0;
+                            Array.Clear(buff);
+
+                            buff[iv] = streaminput[i];
+                            iv++;
+
+                            Debug.Write(_buffResult[iz - 1]);
+                            Debug.Write((char)'\n');
+                        }
+                    }
+                }
+            }
+            //catch { }
+            return _buffResult;
         }
 
         private async Task InvokeAsync(Action action, CancellationToken cancellationToken)
@@ -820,7 +931,7 @@ namespace WORKFLOW
 
         async void DoWorkAsync(CancellationToken cancellationToken)
         {
-           
+
             await Task.Run(() => _uibeaconnUpdateAsync(cancellationToken), cancellationToken);
             await Task.Run(() => _eeipEventHandler_1Async(cancellationToken), cancellationToken);
             await Task.Run(() => _eeipEventHandler_2Async(cancellationToken), cancellationToken);
@@ -852,7 +963,17 @@ namespace WORKFLOW
             await InvokeAsync(() => _backgroundMessageRecv(), cancellationToken);
         }
 
-        
+        private async Task _uiPlot1UpdateAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _uiPlot1Update(), cancellationToken);
+        }
+
+        private async Task _backgroundDataPlot1ReadAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _backgroundDataPlot1Read(), cancellationToken);
+        }
+
+
 
         private void _uibeaconnUpdate()
         {
@@ -883,13 +1004,63 @@ namespace WORKFLOW
                 if (_uiObject.InvokeRequired)
                 {
                     _uiObject.BeginInvoke(new MethodInvoker(_uiObject.beaconnStatLampOff));
-                    
                 }
             }
 
             Thread.Sleep(1000);
         }
 
+        double[] _dXD1;
+        public double[] dXD1
+        {
+            get { return _dXD1; }
+            set { _dXD1 = value; }
+        }
+
+        double[] _dYD1;
+        public double[] dYD1
+        {
+            get { return _dYD1; }
+            set { _dYD1 = value; }
+        }
+
+
+
+
+        private void _uiPlot1Update()
+        {
+            double[] xd = new double[dXD1.Length];
+            Array.Copy(dXD1, xd, dXD1.Length);
+
+            double[] yd = new double[dYD1.Length];
+            Array.Copy(dYD1, yd, dYD1.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot1Update(xd, yd)));
+            }
+            else
+            {
+                _uiObject.Plot1Update(xd, yd);
+            }
+        }
+
+        private void _backgroundDataPlot1Read()
+        {
+            if (this.GetConnState() == 1)
+            {
+                byte[] RH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB4);
+                Thread.Sleep(10);
+                dXD1 = _bytearrayToDouble(RH_COMP_STROKE_REALTIME);
+
+                byte[] RH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB5);
+                Thread.Sleep(10);
+                dYD1 = _bytearrayToDouble(RH_COMP_STROKE_REALTIME);
+
+            }
+        }
+
+        
     }
 
     public class DATAMODEL

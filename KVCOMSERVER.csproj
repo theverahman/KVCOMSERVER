@@ -17,6 +17,8 @@
     <PackageReference Include="ClosedXML" Version="0.102.3" />
     <PackageReference Include="IronXL.Excel" Version="2024.9.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="ScottPlot" Version="5.0.39" />
+    <PackageReference Include="ScottPlot.WinForms" Version="5.0.39" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>

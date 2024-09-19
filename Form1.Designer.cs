@@ -42,15 +42,18 @@
             button4 = new System.Windows.Forms.Button();
             tabControl1 = new System.Windows.Forms.TabControl();
             tabPage1 = new System.Windows.Forms.TabPage();
+            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
             tabPage2 = new System.Windows.Forms.TabPage();
             panel2 = new System.Windows.Forms.Panel();
             label5 = new System.Windows.Forms.Label();
             panel1 = new System.Windows.Forms.Panel();
             tabPage4 = new System.Windows.Forms.TabPage();
+            button7 = new System.Windows.Forms.Button();
+            button6 = new System.Windows.Forms.Button();
             label6 = new System.Windows.Forms.Label();
             button5 = new System.Windows.Forms.Button();
-            button6 = new System.Windows.Forms.Button();
             tabControl1.SuspendLayout();
+            tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
@@ -188,6 +191,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(formsPlot1);
             tabPage1.Location = new System.Drawing.Point(4, 24);
             tabPage1.Margin = new System.Windows.Forms.Padding(2);
             tabPage1.Name = "tabPage1";
@@ -196,6 +200,15 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "DATA MNG";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // formsPlot1
+            // 
+            formsPlot1.DisplayScale = 1F;
+            formsPlot1.Location = new System.Drawing.Point(18, 14);
+            formsPlot1.Name = "formsPlot1";
+            formsPlot1.Size = new System.Drawing.Size(605, 273);
+            formsPlot1.TabIndex = 0;
+            formsPlot1.Load += formsPlot1_Load;
             // 
             // tabPage2
             // 
@@ -252,6 +265,7 @@
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(button7);
             tabPage4.Controls.Add(button6);
             tabPage4.Controls.Add(label6);
             tabPage4.Controls.Add(button5);
@@ -264,6 +278,27 @@
             tabPage4.Text = "INFORMATION";
             tabPage4.UseVisualStyleBackColor = true;
             tabPage4.Click += tabPage4_Click;
+            // 
+            // button7
+            // 
+            button7.Location = new System.Drawing.Point(564, 40);
+            button7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button7.Name = "button7";
+            button7.Size = new System.Drawing.Size(124, 27);
+            button7.TabIndex = 16;
+            button7.Text = "Read Data";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
+            // 
+            // button6
+            // 
+            button6.Enabled = false;
+            button6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            button6.Location = new System.Drawing.Point(543, 5);
+            button6.Name = "button6";
+            button6.Size = new System.Drawing.Size(162, 28);
+            button6.TabIndex = 15;
+            button6.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -284,16 +319,6 @@
             button5.TabIndex = 13;
             button5.UseVisualStyleBackColor = true;
             // 
-            // button6
-            // 
-            button6.Enabled = false;
-            button6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            button6.Location = new System.Drawing.Point(543, 5);
-            button6.Name = "button6";
-            button6.Size = new System.Drawing.Size(162, 28);
-            button6.TabIndex = 15;
-            button6.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -305,6 +330,7 @@
             Text = "Form1";
             Load += Form1_Load;
             tabControl1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -339,6 +365,8 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private ScottPlot.WinForms.FormsPlot formsPlot1;
     }
 }
 

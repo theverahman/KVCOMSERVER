@@ -77,22 +77,56 @@ namespace LIBKVPROTOCOL
         }
 
         //int byteSent = connPLC.ConnObj().Send(messageSent);
+        void SendCallback(IAsyncResult ar)
+        {
+            // get the Socket object from the IAsyncResult
+            Socket socket = (Socket)ar.AsyncState;
+
+            // get the number of bytes sent
+            int bytesSent = socket.EndSend(ar);
+
+            this._recentByteSent = bytesSent;
+
+            // handle the completion of the send operation
+            Debug.WriteLine($"Sent {bytesSent} bytes");
+        }
+
         public void connSend(byte[] contentMsg)
         {
             if (_connState)
             {
-                this._recentByteSent = _objConnect.Send(contentMsg);
+                _objConnect.BeginSend(contentMsg, 0, contentMsg.Length, SocketFlags.None, SendCallback, _objConnect);
+                //this._recentByteSent = _objConnect.Send(contentMsg);
+
                 //Debug.Write(contentMsg);
                 //Debug.Write(this._recentByteSent);
             }
+        }
+
+        void RecvCallback(IAsyncResult ar)
+        {
+            // get the Socket object from the IAsyncResult
+            Socket socket = (Socket)ar.AsyncState;
+
+            // get the number of bytes sent
+            int bytesRecv = socket.EndSend(ar);
+
+            this._recentByteRecv = bytesRecv;
+
+            // handle the completion of the send operation
+            Debug.WriteLine($"Sent {bytesRecv} bytes");
         }
 
         public void connRecv()
         {
             if (_connState)
             {
-                this._recentMsgRecv = new byte[1024];
-                this._recentByteRecv = _objConnect.Receive(this._recentMsgRecv);
+                
+                this._recentMsgRecv = new byte[4096];
+
+                _objConnect.BeginReceive(_recentMsgRecv, 0, _recentMsgRecv.Length, SocketFlags.None, RecvCallback, _objConnect);
+                //this._recentByteRecv = _objConnect.Receive(this._recentMsgRecv);
+
                 //Debug.Write(this._recentMsgRecv);
                 //Debug.Write(this._recentByteRecv);
             }
@@ -360,6 +394,119 @@ namespace LIBKVPROTOCOL
                 else return null;
             }
             else return null;
+        }
+
+        public List<byte[]> batchreadDataCommandInHex(string cmdaddress, int count)
+        {
+            List<byte[]> cmdByte = new List<byte[]>();
+            List<byte[]> recvBytes = new List<byte[]>();
+            byte[] cmdaddrbyte = this.toBytes(cmdaddress);
+            byte[] cmdformbyte = this.toBytes(".H");
+
+            cmdByte.Add(batchreadCMD);
+            cmdByte.Add(cmdaddrbyte);
+            cmdByte.Add(cmdformbyte);
+            byte[] spacebyte = new byte[] { 0x20 };
+            cmdByte.Add(spacebyte);
+            cmdByte.Add(this.toBytes(count.ToString()));
+            byte[] endbyte = new byte[] { 0x0D };
+            cmdByte.Add(endbyte);
+
+            this.connSend(cmdByte.SelectMany(a => a).ToArray());
+            Thread.Sleep(10);
+
+            if (this.getState())
+            {
+                if (this.getAvail() > 0)
+                {
+                    this.connRecv();
+                    byte[] recvData = this.getMsgRecv();
+
+                    int iv = 0;
+                    int iy = 0;
+                    int iz = 0;
+
+                    byte[] parseByte = { };
+                    string parseChar = "";
+                    List<byte[]> recvByte = new List<byte[]>();
+
+                    for (int ix = 0; ix < recvData.Length; ix++)
+                    {
+                        if (recvData[ix] == (byte)0x0D)
+                        {
+                            break;
+                        }
+                        else if (ix < recvData.Length)
+                        {
+                            if (recvData[ix] == (byte)0x20)
+                            {
+                                byte[] sbuff = new byte[] { };
+                                Array.Resize(ref sbuff, parseByte.Length);
+                                sbuff = parseByte.Reverse().ToArray();
+                                recvByte.Add(sbuff);
+
+                                Array.Clear(parseByte, 0, parseByte.Length);
+                                Array.Resize(ref parseByte, 0);
+                                iz = 0;
+                                iy++;
+                            }
+                            else
+                            {
+                                if (iv == 0)
+                                {
+                                    parseChar += System.Text.Encoding.ASCII.GetString(new[] { recvData[ix] });
+                                    iv++;
+                                }
+                                else if (iv == 1)
+                                {
+                                    parseChar += System.Text.Encoding.ASCII.GetString(new[] { recvData[ix] });
+                                    Array.Resize(ref parseByte, parseByte.Length + 1);
+                                    int intbuff = Int16.Parse(parseChar, System.Globalization.NumberStyles.HexNumber);
+                                    parseByte[iz] = (byte)intbuff;
+                                    iz++;
+
+                                    iv = 0;
+                                    parseChar = "";
+                                }
+                            }
+                        }
+                        else if (ix == recvData.Length)
+                        {
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, parseByte.Length);
+                            sbuff = parseByte.Reverse().ToArray();
+                            recvByte.Add(sbuff);
+
+                            Array.Clear(parseByte, 0, parseByte.Length);
+                            Array.Resize(ref parseByte, 0);
+                            iz = 0;
+                            iy++;
+                        }
+                        else
+                        {
+                            if (iv == 0)
+                            {
+                                parseChar += System.Text.Encoding.ASCII.GetString(new[] { recvData[ix] });
+                                iv++;
+                            }
+                            else if (iv == 1)
+                            {
+                                parseChar += System.Text.Encoding.ASCII.GetString(new[] { recvData[ix] });
+                                Array.Resize(ref parseByte, parseByte.Length + 1);
+                                int intbuff = Int16.Parse(parseChar, System.Globalization.NumberStyles.HexNumber);
+                                parseByte[iz] = (byte)intbuff;
+                                iz++;
+
+                                iv = 0;
+                                parseChar = "";
+                            }
+                        }
+                    }
+                    return recvByte;
+                }
+                else return batchreadDataCommandInHex(cmdaddress, count);
+            }
+            else return batchreadDataCommandInHex(cmdaddress, count);
         }
 
         public int writeDataCommand(string cmdaddress, string cmdformat, string cmdvalue)

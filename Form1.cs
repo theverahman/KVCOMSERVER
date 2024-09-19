@@ -36,6 +36,9 @@ namespace KVCOMSERVER
         Thread uibackgroundThread_0;
 
         //public Form1(KVPROTOCOL connEst)
+
+
+
         public Form1()
         {
             InitializeComponent();
@@ -54,7 +57,6 @@ namespace KVCOMSERVER
             //Debug.Write((char)'\n');
 
             _cts = new CancellationTokenSource();
-
 
         }
 
@@ -94,7 +96,7 @@ namespace KVCOMSERVER
             _WorkflowHandler.CloseConnection();
             _connStat = _WorkflowHandler.GetConnState();
             Thread.Sleep(100);
-            if (_connStat==0)
+            if (_connStat == 0)
             {
                 _WorkflowHandler.abortTasks();
             }
@@ -151,10 +153,26 @@ namespace KVCOMSERVER
             button6.BackColor = Color.BlueViolet;
         }
 
+        public void Plot1Update(double[] xd, double[] yd)
+        {
+            formsPlot1.Plot.Add.Scatter(xd, yd);
+            formsPlot1.Refresh();
+        }
+
 
 
 
         private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void formsPlot1_Load(object sender, EventArgs e)
         {
 
         }
