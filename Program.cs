@@ -836,12 +836,12 @@ namespace WORKFLOW
 
                         iz++;
                         Array.Resize(ref _buffResult, iz);
-                        _buffResult[iz - 1] = Convert.ToDouble(BitConverter.ToSingle(buff, 0));
+                        _buffResult[iz - 1] = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
                         iv = 0;
                         Array.Clear(buff);
 
-                        Debug.Write(_buffResult[iz - 1]);
-                        Debug.Write((char)'\n');
+                        //Debug.Write(_buffResult[iz - 1]);
+                        //Debug.Write((char)'\n');
                     }
                     else
                     {
@@ -854,15 +854,15 @@ namespace WORKFLOW
                         {
                             iz++;
                             Array.Resize(ref _buffResult, iz);
-                            _buffResult[iz - 1] = Convert.ToDouble(BitConverter.ToSingle(buff, 0));
+                            _buffResult[iz - 1] = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
                             iv = 0;
                             Array.Clear(buff);
 
                             buff[iv] = streaminput[i];
                             iv++;
 
-                            Debug.Write(_buffResult[iz - 1]);
-                            Debug.Write((char)'\n');
+                            //Debug.Write(_buffResult[iz - 1]);
+                            //Debug.Write((char)'\n');
                         }
                     }
                 }
@@ -906,6 +906,9 @@ namespace WORKFLOW
                     await _eeipEventHandler_1Async(_cts.Token);
                     await _eeipEventHandler_2Async(_cts.Token);
                     await _eeipEventHandler_3Async(_cts.Token);
+
+                    await _uiPlot1UpdateAsync(_cts.Token);
+                    await _backgroundDataPlot1ReadAsync(_cts.Token);
                 }
 
                 //await BackgroundWorkAsync(_cts.Token);
@@ -1010,38 +1013,41 @@ namespace WORKFLOW
             Thread.Sleep(1000);
         }
 
-        double[] _dXD1;
-        public double[] dXD1
-        {
-            get { return _dXD1; }
-            set { _dXD1 = value; }
-        }
+        //double[] _dXD1;
+        public double[] dXD1;
 
-        double[] _dYD1;
-        public double[] dYD1
-        {
-            get { return _dYD1; }
-            set { _dYD1 = value; }
-        }
+
+        //double[] _dYD1;
+        public double[] dYD1;
+        
+
+        bool _uiPlot1UpdateFlag;
 
 
 
 
         private void _uiPlot1Update()
         {
-            double[] xd = new double[dXD1.Length];
-            Array.Copy(dXD1, xd, dXD1.Length);
-
-            double[] yd = new double[dYD1.Length];
-            Array.Copy(dYD1, yd, dYD1.Length);
-
-            if (_uiObject.InvokeRequired)
+            if (_uiPlot1UpdateFlag)
             {
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot1Update(xd, yd)));
-            }
-            else
-            {
-                _uiObject.Plot1Update(xd, yd);
+                double[] xd = new double[dXD1.Length];
+                Array.Copy(dXD1, xd, dXD1.Length);
+
+                double[] yd = new double[dYD1.Length];
+                Array.Copy(dYD1, yd, dYD1.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot1Update(xd, yd)));
+                }
+                else
+                {
+                    _uiObject.Plot1Update(xd, yd);
+                }
+
+                _uiPlot1UpdateFlag = false;
+
+                //Thread.Sleep(10);
             }
         }
 
@@ -1050,13 +1056,14 @@ namespace WORKFLOW
             if (this.GetConnState() == 1)
             {
                 byte[] RH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB4);
-                Thread.Sleep(10);
+                //Thread.Sleep(10);
                 dXD1 = _bytearrayToDouble(RH_COMP_STROKE_REALTIME);
 
                 byte[] RH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB5);
-                Thread.Sleep(10);
-                dYD1 = _bytearrayToDouble(RH_COMP_STROKE_REALTIME);
+                //Thread.Sleep(10);
+                dYD1 = _bytearrayToDouble(RH_COMP_LOAD_REALTIME);
 
+                _uiPlot1UpdateFlag = true;
             }
         }
 

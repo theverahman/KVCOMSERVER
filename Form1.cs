@@ -155,6 +155,7 @@ namespace KVCOMSERVER
 
         public void Plot1Update(double[] xd, double[] yd)
         {
+            formsPlot1.Reset();
             formsPlot1.Plot.Add.Scatter(xd, yd);
             formsPlot1.Refresh();
         }
