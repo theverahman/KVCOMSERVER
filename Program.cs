@@ -58,6 +58,9 @@ namespace WORKFLOW
     public class WORKFLOWHANDLER
     {
         private KVCOMSERVER.Form1 _uiObject;
+        private CancellationTokenSource _cts;
+        Thread backgroundThread;
+
         SETTEI _settingObject;
         KVPROTOCOL _kvconnObject;
         EEIPClient _eeipObject;
@@ -103,20 +106,9 @@ namespace WORKFLOW
             _Ldata = new DATAMODEL_L();
             _Rdata = new DATAMODEL_R();
 
-            
+            backgroundThread = new Thread(BackgroundWork);
+            backgroundThread.Start();
 
-        }
-
-        private async Task InvokeAsync(Action action)
-        {
-            if (_uiObject.InvokeRequired)
-            {
-                await InvokeAsync(action);
-            }
-            else
-            {
-                action();
-            }
         }
 
         public bool Get_backgroundProcessOngoing()
@@ -161,23 +153,34 @@ namespace WORKFLOW
 
         void _eeipEventHandler_1()
         {
-            byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
-
-            _eeipBeacon(STAT_INPUT);
+            if (this.GetConnState() == 1)
+            {
+                byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
+                _eeipBeacon(STAT_INPUT);
+                //Thread.Sleep(100);
+            }
         }
 
         void _eeipEventHandler_2()
         {
-            byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
-
-            _eeipTriggerReadParameter(STAT_INPUT);
+            if (this.GetConnState() == 1)
+            {
+                byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
+                _eeipTriggerReadParameter(STAT_INPUT);
+                //Thread.Sleep(10);
+            }
+            
         }
 
         void _eeipEventHandler_3()
         {
-            byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
-
-            _eeipTriggerReadRealtime(STAT_INPUT);
+            if (this.GetConnState() == 1)
+            {
+                byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
+                _eeipTriggerReadRealtime(STAT_INPUT);
+                //Thread.Sleep(10);
+            }
+            
         }
 
         void _eeipBeacon(byte[] STAT_INPUT)
@@ -192,7 +195,7 @@ namespace WORKFLOW
                 _uiObject._beaconn = 0;
                 _kvconnObject.writeDataCommand("W0A0", "", "0");
             }
-            Thread.Sleep(1000);
+            
         }
 
 
@@ -316,8 +319,8 @@ namespace WORKFLOW
                     if (_kvconnObject.getAvail() > 0)
                     {
                         _kvconnObject.connRecv();
-                        //_uiObject.setTextBox2(Encoding.ASCII.GetString(_kvconnObject.getMsgRecv(), 0, _kvconnObject.getByteRecv()));
-                        _kvMsgRecv = Encoding.ASCII.GetString(_kvconnObject.getMsgRecv(), 0, _kvconnObject.getByteRecv());
+                        _kvMsgRecv = new string(Encoding.ASCII.GetString(_kvconnObject.getMsgRecv(), 0, _kvconnObject.getByteRecv()));
+                        _uiObject.setTextBox2(_kvMsgRecv);
                     }
                 }
             }
@@ -757,7 +760,24 @@ namespace WORKFLOW
             return floatdata;
         }
 
-        public void BackgroundWork_1()
+        private async Task InvokeAsync(Action action, CancellationToken cancellationToken)
+        {
+            await Task.Run(() => action(), cancellationToken);
+        }
+
+        public async Task BackgroundWorkAsync(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await _eeipEventHandler_1Async(cancellationToken);
+                await _eeipEventHandler_2Async(cancellationToken);
+                await _eeipEventHandler_3Async(cancellationToken);
+                await _uibeaconnUpdateAsync(cancellationToken);
+                await Task.Delay(10, cancellationToken);
+            }
+        }
+
+        public async void BackgroundWork()
         {
             int counter = 0;
             while (counter < 1)
@@ -765,88 +785,110 @@ namespace WORKFLOW
                 counter++;
                 Thread.Sleep(10);
             }
-            DoWorkOnUI_1();
-        }
-
-        private void DoWorkOnUI_1()
-        {
             while (true)
             {
-                _eeipEventHandler_1();
+                _cts = new CancellationTokenSource();
 
-                //MethodInvoker methodInvokerDelegate = delegate ()
-                //{
+                while (!_cts.Token.IsCancellationRequested)
+                {
+                    await _uibeaconnUpdateAsync(_cts.Token);
+                    await _eeipEventHandler_1Async(_cts.Token);
+                    await _eeipEventHandler_2Async(_cts.Token);
+                    await _eeipEventHandler_3Async(_cts.Token);
+                }
 
-                //};
-                //This will be true if Current thread is not UI thread.
-                //_uiObject.Invoke(methodInvokerDelegate);
-            }
-        }
+                //await BackgroundWorkAsync(_cts.Token);
 
-        public void BackgroundWork_2()
-        {
-            int counter = 0;
-            while (counter < 1)
-            {
-                counter++;
+                //await _taskFactory.StartNew(async () => { await Task.Run(() => _uibeaconnUpdateAsync(_cts.Token), _cts.Token); });
+                //await _taskFactory.StartNew(async () => {await Task.Run(() => _eeipEventHandler_1Async(_cts.Token), _cts.Token); });
+                //await _taskFactory.StartNew(async () => {await Task.Run(() => _eeipEventHandler_2Async(_cts.Token), _cts.Token); });
+                //await _taskFactory.StartNew(async () => {await Task.Run(() => _eeipEventHandler_3Async(_cts.Token), _cts.Token); });
+                //await Task.Run(() => _uibeaconnUpdateAsync(_cts.Token), _cts.Token);
+                //await Task.Run(() => _eeipEventHandler_1Async(_cts.Token), _cts.Token);
+                //await Task.Run(() => _eeipEventHandler_2Async(_cts.Token), _cts.Token);
+                //await Task.Run(() => _eeipEventHandler_3Async(_cts.Token), _cts.Token);
+
+                //DoWorkAsync(_cts.Token);
                 Thread.Sleep(10);
             }
-            DoWorkOnUI_2();
         }
 
-        private void DoWorkOnUI_2()
+        public void abortTasks()
         {
-            while (true)
-            {
-                _eeipEventHandler_2();
-            }
+            _cts.Cancel();
         }
 
-        public void BackgroundWork_3()
+        async void DoWorkAsync(CancellationToken cancellationToken)
         {
-            int counter = 0;
-            while (counter < 1)
-            {
-                counter++;
-                Thread.Sleep(10);
-            }
-            DoWorkOnUI_3();
+           
+            await Task.Run(() => _uibeaconnUpdateAsync(cancellationToken), cancellationToken);
+            await Task.Run(() => _eeipEventHandler_1Async(cancellationToken), cancellationToken);
+            await Task.Run(() => _eeipEventHandler_2Async(cancellationToken), cancellationToken);
+            await Task.Run(() => _eeipEventHandler_3Async(cancellationToken), cancellationToken);
         }
 
-        private void DoWorkOnUI_3()
+        private async Task _eeipEventHandler_1Async(CancellationToken cancellationToken)
         {
-            while (true)
-            {
-                _eeipEventHandler_3();
-            }
+            await InvokeAsync(() => _eeipEventHandler_1(), cancellationToken);
         }
 
-        private async void _uibeaconnUpdateASync()
+        private async Task _eeipEventHandler_2Async(CancellationToken cancellationToken)
         {
-            await InvokeAsync(() => _uibeaconnUpdate());
+            await InvokeAsync(() => _eeipEventHandler_2(), cancellationToken);
         }
+
+        private async Task _eeipEventHandler_3Async(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _eeipEventHandler_3(), cancellationToken);
+        }
+
+        private async Task _uibeaconnUpdateAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _uibeaconnUpdate(), cancellationToken);
+        }
+
+        private async Task _backgroundMessageRecvAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _backgroundMessageRecv(), cancellationToken);
+        }
+
+        
 
         private void _uibeaconnUpdate()
         {
             if (this.GetConnState() == 1)
             {
-                _uiObject.connStatLampOn();
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(_uiObject.connStatLampOn));
+                }
             }
             else
             {
-                _uiObject.connStatLampOff();
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(_uiObject.connStatLampOff));
+                }
             }
 
             if (_uiObject._beaconn == 1)
             {
-                _uiObject.beaconnStatLampOn();
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(_uiObject.beaconnStatLampOn));
+                }
             }
-            else
+            else if (_uiObject._beaconn == 0)
             {
-                _uiObject.beaconnStatLampOff();
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(_uiObject.beaconnStatLampOff));
+                    
+                }
             }
-        }
 
+            Thread.Sleep(1000);
+        }
 
     }
 
