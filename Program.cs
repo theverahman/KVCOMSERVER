@@ -22,6 +22,11 @@ using Sres.Net.EEIP;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
+using ClosedXML.Excel;
+using MoreLinq;
+using DocumentFormat.OpenXml.Spreadsheet;
+using MoreLinq.Extensions;
+
 
 namespace KVCOMSERVER
 {
@@ -66,8 +71,14 @@ namespace WORKFLOW
         DATAMODEL_L _Ldata;
         DATAMODEL_R _Rdata;
 
+        bool _parameterRead;
         bool _parameterReadFlag;
+        bool _parameterReadFlagComplete;
+        bool _realtimeRead;
         bool _realtimeReadFlag;
+        bool _realtimeReadFlagComplete;
+
+        bool _backgroundProcessOngoing { get; set; }
 
         string _kvMsgRecv;
 
@@ -94,6 +105,33 @@ namespace WORKFLOW
 
             
 
+        }
+
+        private async Task InvokeAsync(Action action)
+        {
+            if (_uiObject.InvokeRequired)
+            {
+                await InvokeAsync(action);
+            }
+            else
+            {
+                action();
+            }
+        }
+
+        public bool Get_backgroundProcessOngoing()
+        {
+            return _backgroundProcessOngoing;
+        }
+
+        public void Set_backgroundProcessOngoing()
+        {
+            _backgroundProcessOngoing = true;
+        }
+
+        public void Res_backgroundProcessOngoing()
+        {
+            _backgroundProcessOngoing = false;
         }
 
         public void SetConnection()
@@ -125,7 +163,7 @@ namespace WORKFLOW
         {
             byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
 
-                _eeipBeacon(STAT_INPUT);
+            _eeipBeacon(STAT_INPUT);
         }
 
         void _eeipEventHandler_2()
@@ -154,17 +192,43 @@ namespace WORKFLOW
                 _uiObject._beaconn = 0;
                 _kvconnObject.writeDataCommand("W0A0", "", "0");
             }
+            Thread.Sleep(1000);
         }
+
 
         void _eeipTriggerReadParameter(byte[] STAT_INPUT)
         {
             if ((byte)(STAT_INPUT[2] & 0x01) == 0x01)
             {
-                _eeipreadActiveModelData();
-                _eeipreadStep1Param();
-                _eeipreadStep2345Param();
+                if (!_parameterReadFlag)
+                {
+                    Debug.Write("Parameter Read On");
+                    Debug.Write((char)'\n');
 
-                _parameterReadFlag = true;
+                    _parameterReadFlag = true;
+
+                    _eeipreadActiveModelData();
+                    _eeipreadStep1Param();
+                    _eeipreadStep2345Param();
+                    
+                    _excelStoreParameterData();
+                }
+
+                if (_parameterReadFlag)
+                {
+                    _kvconnObject.writeDataCommand("W0C1", "", "0");
+                    Thread.Sleep(50);
+                }
+                
+            }
+            if ((byte)(STAT_INPUT[2] & 0x01) == 0x00)
+            {
+                if (_parameterReadFlag)
+                {
+                    Debug.Write("Parameter Read Off");
+                    Debug.Write((char)'\n');
+                    _parameterReadFlag = false;
+                }
             }
         }
 
@@ -172,15 +236,37 @@ namespace WORKFLOW
         {
             if ((byte)(STAT_INPUT[4] & 0x01) == 0x01)
             {
-                _eeipreadDateTime();
-                _eeipreadJudgement(ref _Rdata.Judgement, 0xA5);
-                _eeipreadJudgement(ref _Ldata.Judgement, 0xA6);
-                _kvreadRealtime(ref _Rdata.RealtimeStep2, "", "", "", "", "", "", 400);
-                _kvreadRealtime(ref _Rdata.RealtimeStep3, "", "", "", "", "", "", 400);
-                _kvreadRealtime(ref _Ldata.RealtimeStep2, "", "", "", "", "", "", 400);
-                _kvreadRealtime(ref _Ldata.RealtimeStep3, "", "", "", "", "", "", 400);
+                if (!_realtimeReadFlag)
+                {
+                    Debug.Write("RL Read On");
+                    Debug.Write((char)'\n');
 
-                _realtimeReadFlag = true;
+                    _realtimeReadFlag = true;
+
+                    _eeipreadDateTime();
+                    _eeipreadJudgement(ref _Rdata.Judgement, 0xA5);
+                    _eeipreadJudgement(ref _Ldata.Judgement, 0xA6);
+                    _kvreadRealtime(ref _Rdata.RealtimeStep2, "ZF110000", "ZF110400", "ZF110800", "ZF111200", "ZF110000", "ZF510000", 400);
+                    _kvreadRealtime(ref _Rdata.RealtimeStep3, "ZF111604", "ZF112004", "ZF112404", "ZF113208", "ZF111604", "ZF510000", 400);
+                    _kvreadRealtime(ref _Ldata.RealtimeStep2, "ZF210000", "ZF210400", "ZF210800", "ZF211200", "ZF210000", "ZF510500", 400);
+                    _kvreadRealtime(ref _Ldata.RealtimeStep3, "ZF211604", "ZF212004", "ZF212404", "ZF213208", "ZF211604", "ZF510500", 400);
+
+                    _excelStoreRealtimeData();
+                }
+                if (_realtimeReadFlag)
+                {
+                    _kvconnObject.writeDataCommand("W0C2", "", "0");
+                    Thread.Sleep(50);
+                }
+            }
+            if ((byte)(STAT_INPUT[4] & 0x01) == 0x00)
+            {
+                if (_realtimeReadFlag)
+                {
+                    Debug.Write("RL Read Off");
+                    Debug.Write((char)'\n');
+                    _realtimeReadFlag = false;
+                }
             }
         }
 
@@ -193,9 +279,6 @@ namespace WORKFLOW
             RealtimeFileL1.setModelName(_data._activeModelName);
             RealtimeFileL1.setParameterStep1(_data.Step1Param);
             RealtimeFileL1.setParameterStep2345(_data.Step2345Param);
-
-            _parameterReadFlag = false;
-            _kvconnObject.resetbitCommand("W0C1");
         }
 
         void _excelStoreRealtimeData()
@@ -220,7 +303,7 @@ namespace WORKFLOW
             RealtimeFileL1.FilePrint(_filenameL1);
 
             _realtimeReadFlag = false;
-            _kvconnObject.resetbitCommand("W0C2");
+            _kvconnObject.writeDataCommand("W0C2", "", "0");
         }
 
 
@@ -243,12 +326,13 @@ namespace WORKFLOW
 
         void _eeipreadActiveModelData()
         {
-            try
+            //try
             {
                 byte[] _INPUT;
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA1);
                 char[] _charINPUT;
                 _charINPUT = System.Text.Encoding.ASCII.GetString(_INPUT).ToCharArray();
+                Thread.Sleep(50);
 
                 char[] _charModelBuff = new char[20];
                 char[] _charNumBuff = new char[20];
@@ -294,20 +378,33 @@ namespace WORKFLOW
                 }
 
                 _data._activeModelName = string.Join("",_charModelBuff);
+                Debug.Write(_data._activeModelName);
+                Debug.Write((char)'\n');
                 _data._activeKayabaNumber = string.Join("", _charNumBuff);
+                Debug.Write(_data._activeKayabaNumber);
+                Debug.Write((char)'\n');
             }
-            catch { }
+            //catch { }
         }
 
         void _eeipreadDateTime()
         {
-            try
+            //try
             {
                 byte[] _INPUT;
                 List<int> _buffDTM = new List<int>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA2);
+                Thread.Sleep(50);
+
+                Debug.Write("DateTime");
+                Debug.Write((char)'\n');
 
                 byte[] buff = new byte[2];
+                int iv = 0;
+
+                for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
+                Debug.Write((char)'\n');
+
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
                     if (i % 2 == 0)
@@ -317,44 +414,96 @@ namespace WORKFLOW
                     else if (i % 2 == 1)
                     {
                         buff[1] = _INPUT[i];
-                        _buffDTM.Add(BitConverter.ToInt16(buff, 0));
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+
+                        _buffDTM.Add(BitConverter.ToInt16(sbuff, 0));
+                        //Debug.Write(BitConverter.ToInt16(sbuff, 0));
+                        //Debug.Write(", ");
                     }
                 }
+                //Debug.Write((char)'\n');
+                //Debug.Write(_buffDTM.Count().ToString());
+                //Debug.Write((char)'\n');
 
-                for (int i = 0; i < _buffDTM.Count() ; i++)
+                for (int i = 0; i < _data.DTM.Count() ; i++)
                 {
                     _data.DTM[i] = _buffDTM[i].ToString();
+                    Debug.Write(_data.DTM[i].ToString());
+
                 }
+                Debug.Write((char)'\n');
             }
-            catch { }
+            //catch { }
         }
 
         void _eeipreadStep1Param()
         {
-            try
+            //try
             {
                 byte[] _INPUT;
                 List<byte[]> _buffPARAM1 = new List<byte[]>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA3);
+                Thread.Sleep(50);
+
+                Debug.Write("Step1Parameter");
+                Debug.Write((char)'\n');
 
                 byte[] buff = new byte[4];
                 int iv = 0;
+                //Debug.Write(_INPUT.Length);
+                //Debug.Write((char)'\n');
+
+                for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
+                Debug.Write((char)'\n');
+
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
-                    if (i % 4 == 0)
+                    if (i < 1)
                     {
                         buff[iv] = _INPUT[i];
                         iv++;
                     }
-                    else if (i % 4 != 0)
+                    else if(i == _INPUT.Length - 1)
                     {
                         buff[iv] = _INPUT[i];
-                        _buffPARAM1.Add(buff);
-                        iv = 0;
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffPARAM1.Add(sbuff);
                     }
-                }
+                    else
+                    {
+                        if (i % 4 != 0)
+                        {
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                        else if (i % 4 == 0)
+                        {
 
-                for (int i = 0; i < _buffPARAM1.Count(); i++)
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, buff.Length);
+                            Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+
+                            _buffPARAM1.Add(sbuff);
+                            iv = 0;
+
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                    }
+                    
+                }
+                //Debug.Write((char)'\n');
+                //Debug.Write(_buffPARAM1.Count().ToString());
+                //Debug.Write((char)'\n');
+
+                //Debug.Write(_data.Step1Param.Count().ToString());
+                //Debug.Write((char)'\n');
+
+                for (int i = 0; i < _data.Step1Param.Count(); i++)
                 {
                     if (i == 0 || i == 4)
                     {
@@ -364,82 +513,161 @@ namespace WORKFLOW
                     {
                         _data.Step1Param[i] = BitConverter.ToSingle(_buffPARAM1[i], 0).ToString();
                     }
+
+                    for (int it = 0; it < _buffPARAM1[i].Length; it++) { Debug.Write(_buffPARAM1[i][it]); Debug.Write(", "); }
+                    Debug.Write(" : ");
+                    Debug.Write(_data.Step1Param[i]);
+                    Debug.Write((char)'\n');
                 }
             }
-            catch { }
+            //catch { }
         }
 
         void _eeipreadStep2345Param()
         {
-            try
+            //try
             {
                 byte[] _INPUT;
                 List<byte[]> _buffPARAM2345 = new List<byte[]>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA4);
+                Thread.Sleep(50);
+
+                Debug.Write("Step2345Parameter");
+                Debug.Write((char)'\n');
 
                 byte[] buff = new byte[4];
                 int iv = 0;
+
+                for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
+                Debug.Write((char)'\n');
+
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
-                    if (i % 4 == 0)
+                    if (i < 1)
                     {
                         buff[iv] = _INPUT[i];
                         iv++;
                     }
-                    else if (i % 4 != 0)
+                    else if (i == _INPUT.Length - 1)
                     {
                         buff[iv] = _INPUT[i];
-                        _buffPARAM2345.Add(buff);
-                        iv = 0;
-                    }
-                }
-
-                for (int i = 0; i < _buffPARAM2345.Count(); i++)
-                {
-                    if (i == 0 || i == 9 || i == 10 || i == 19)
-                    {
-                        _data.Step1Param[i] = BitConverter.ToInt32(_buffPARAM2345[i], 0).ToString();
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffPARAM2345.Add(sbuff);
                     }
                     else
                     {
-                        _data.Step1Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0).ToString();
+                        if (i % 4 != 0)
+                        {
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                        else if (i % 4 == 0)
+                        {
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, buff.Length);
+                            Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+
+                            _buffPARAM2345.Add(sbuff);
+                            iv = 0;
+
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
                     }
                 }
+                ////Debug.Write((char)'\n');
+                ////Debug.Write(_buffPARAM2345.Count().ToString());
+                ////Debug.Write((char)'\n');
+
+                ////Debug.Write(_data.Step2345Param.Count().ToString());
+                ////Debug.Write((char)'\n');
+
+                for (int i = 0; i < _data.Step2345Param.Count(); i++)
+                {
+                    if (i == 0 || i == 9 || i == 10 || i == 19)
+                    {
+                        _data.Step2345Param[i] = BitConverter.ToInt16(_buffPARAM2345[i], 0).ToString();
+                    }
+                    else
+                    {
+                        _data.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0).ToString();
+                    }
+                    for (int it = 0; it < _buffPARAM2345[i].Length; it++) { Debug.Write(_buffPARAM2345[i][it]); Debug.Write(", "); }
+                    Debug.Write(" : ");
+                    Debug.Write(_data.Step2345Param[i]);
+                    Debug.Write((char)'\n');
+                }
             }
-            catch { }
+            //catch { }
         }
 
         void _eeipreadJudgement(ref List<string> judgementresult, Int16 addr)
         {
-            try
+            //try
             {
                 byte[] _INPUT;
                 List<byte[]> _buffJudgement = new List<byte[]>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(addr);
+                Thread.Sleep(50);
+
+                Debug.Write("Judgement");
+                Debug.Write((char)'\n');
 
                 byte[] buff = new byte[4];
                 int iv = 0;
+
+                for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
+                Debug.Write((char)'\n');
+
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
-                    if (i % 4 == 0)
+                    if (i < 1)
                     {
                         buff[iv] = _INPUT[i];
                         iv++;
                     }
-                    else if (i % 4 != 0)
+                    else if (i == _INPUT.Length - 1)
                     {
                         buff[iv] = _INPUT[i];
-                        _buffJudgement.Add(buff);
-                        iv = 0;
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffJudgement.Add(sbuff);
+                        
                     }
+                    else
+                    {
+                        if (i % 4 == 0)
+                        {
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                        else if (i % 4 != 0)
+                        {
+                            buff[iv] = _INPUT[i];
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, buff.Length);
+                            Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                            _buffJudgement.Add(sbuff);
+                            iv = 0;
+                        }
+                    }
+                    
                 }
 
-                for (int i = 0; i < _buffJudgement.Count(); i++)
+                for (int i = 0; i < judgementresult.Count(); i++)
                 {
                     judgementresult[i] = BitConverter.ToSingle(_buffJudgement[i], 0).ToString();
+
+                    for (int it = 0; it < _buffJudgement[i].Length; it++) { Debug.Write(_buffJudgement[i][it]); Debug.Write(", "); }
+                    Debug.Write(" : ");
+                    Debug.Write(judgementresult[i]);
+                    Debug.Write((char)'\n');
                 }
             }
-            catch { }
+            //catch { }
         }
 
         void _eeipreadRealtime(ref List<List<string>> realtimeresult, Int16 addr)
@@ -453,37 +681,38 @@ namespace WORKFLOW
 
         void _kvreadRealtime(ref List<List<string>> realtimeresult, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, int count)
         {
-            try
+            //try
             {
                 realtimeresult.Clear();
 
-                List<byte[]> comp_stroke  = new List<byte[]>();
-                List<byte[]> comp_load    = new List<byte[]>();
-                List<byte[]> extn_stroke  = new List<byte[]>();
-                List<byte[]> extn_load    = new List<byte[]>();
-                List<byte[]> diff_stroke  = new List<byte[]>();
-                List<byte[]> diff_load    = new List<byte[]>();
+                Debug.Write("RealTimeData");
+                Debug.Write((char)'\n');
 
-                List<float> float_comp_stroke   = new List<float>();
-                List<float> float_comp_load     = new List<float>();
-                List<float> float_extn_stroke   = new List<float>();
-                List<float> float_extn_load     = new List<float>();
-                List<float> float_diff_stroke   = new List<float>();
-                List<float> float_diff_load     = new List<float>();
+                List<byte[]> comp_stroke  = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr1, ".H", count));
+                Thread.Sleep(50);
+                List<byte[]> comp_load    = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr2, ".H", count));
+                Thread.Sleep(50);
+                List<byte[]> extn_stroke  = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr3, ".H", count));
+                Thread.Sleep(50);
+                List<byte[]> extn_load    = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr4, ".H", count));
+                Thread.Sleep(50);
+                List<byte[]> diff_stroke  = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr5, ".H", count));
+                Thread.Sleep(50);
+                List<byte[]> diff_load    = new List<byte[]>(_kvconnObject.batchreadDataCommand(addr6, ".H", count));
+                Thread.Sleep(50);
 
-                comp_stroke = _kvconnObject.batchreadDataCommand(addr1, ".H", count);
-                comp_load   = _kvconnObject.batchreadDataCommand(addr2, ".H", count);
-                extn_stroke = _kvconnObject.batchreadDataCommand(addr3, ".H", count);
-                extn_load   = _kvconnObject.batchreadDataCommand(addr4, ".H", count);
-                diff_stroke = _kvconnObject.batchreadDataCommand(addr5, ".H", count);
-                diff_load   = _kvconnObject.batchreadDataCommand(addr6, ".H", count);
+                for (int i = 0; i < comp_stroke.Count(); i++)
+                {
+                    Debug.Write((char)'\n');
+                    Debug.Write(System.Text.Encoding.UTF8.GetString(comp_stroke[i], 0, comp_stroke[i].Length));
+                }
 
-                float_comp_stroke = hex16tofloat(comp_stroke);
-                float_comp_load = hex16tofloat(comp_load);
-                float_extn_stroke = hex16tofloat(extn_stroke);
-                float_extn_load = hex16tofloat(extn_load);
-                float_diff_stroke = hex16tofloat(diff_stroke);
-                float_diff_load = hex16tofloat(diff_load);
+                List<float> float_comp_stroke   = new List<float>(hex16tofloat(comp_stroke));
+                List<float> float_comp_load     = new List<float>(hex16tofloat(comp_load));
+                List<float> float_extn_stroke   = new List<float>(hex16tofloat(extn_stroke));
+                List<float> float_extn_load     = new List<float>(hex16tofloat(extn_load));
+                List<float> float_diff_stroke   = new List<float>(hex16tofloat(diff_stroke));
+                List<float> float_diff_load     = new List<float>(hex16tofloat(diff_load));
 
                 List<string> string_comp_stroke = float_comp_stroke.ConvertAll(new Converter<float, string>(floattostring));
                 List<string> string_comp_load = float_comp_load.ConvertAll(new Converter<float, string>(floattostring));
@@ -499,7 +728,7 @@ namespace WORKFLOW
                 realtimeresult.Add(string_diff_stroke);
                 realtimeresult.Add(string_diff_load);
             }
-            catch { }
+            //catch { }
         }
 
         public static string floattostring(float pf)
@@ -534,7 +763,7 @@ namespace WORKFLOW
             while (counter < 1)
             {
                 counter++;
-                Thread.Sleep(100);
+                Thread.Sleep(10);
             }
             DoWorkOnUI_1();
         }
@@ -543,8 +772,6 @@ namespace WORKFLOW
         {
             while (true)
             {
-
-                _backgroundMessageRecv();
                 _eeipEventHandler_1();
 
                 //MethodInvoker methodInvokerDelegate = delegate ()
@@ -562,7 +789,7 @@ namespace WORKFLOW
             while (counter < 1)
             {
                 counter++;
-                Thread.Sleep(200);
+                Thread.Sleep(10);
             }
             DoWorkOnUI_2();
         }
@@ -581,7 +808,7 @@ namespace WORKFLOW
             while (counter < 1)
             {
                 counter++;
-                Thread.Sleep(200);
+                Thread.Sleep(10);
             }
             DoWorkOnUI_3();
         }
@@ -594,30 +821,29 @@ namespace WORKFLOW
             }
         }
 
-        public void BackgroundWork1_0()
+        private async void _uibeaconnUpdateASync()
         {
-            int counter = 0;
-            while (counter < 1)
-            {
-                counter++;
-                Thread.Sleep(200);
-            }
-            DoWork1_0();
+            await InvokeAsync(() => _uibeaconnUpdate());
         }
 
-        private void DoWork1_0()
+        private void _uibeaconnUpdate()
         {
-            while (true)
+            if (this.GetConnState() == 1)
             {
-                if (_parameterReadFlag)
-                {
-                    _excelStoreParameterData();
-                }
+                _uiObject.connStatLampOn();
+            }
+            else
+            {
+                _uiObject.connStatLampOff();
+            }
 
-                if (_realtimeReadFlag)
-                {
-                    _excelStoreRealtimeData();
-                }
+            if (_uiObject._beaconn == 1)
+            {
+                _uiObject.beaconnStatLampOn();
+            }
+            else
+            {
+                _uiObject.beaconnStatLampOff();
             }
         }
 
@@ -725,9 +951,114 @@ namespace WORKFLOW
         public List<List<string>> MasteringStep2;
         public List<List<string>> MasteringStep3;
 
+        public string _MaxLoad;
+        public string _Step2CompLoadRef;
+        public string _Step2ExtnLoadRef;
+        public string _Step3CompLoadRef;
+        public string _Step3ExtnLoadRef;
+
+        List<string> _RealtimeStep2CompStroke;
+        List<string> _RealtimeStep2CompLoad;
+        List<string> _RealtimeStep2ExtnStroke;
+        List<string> _RealtimeStep2ExtnLoad;
+        List<string> _RealtimeStep2DiffStroke;
+        List<string> _RealtimeStep2DiffLoad;
+
+        List<string> _RealtimeStep3CompStroke;
+        List<string> _RealtimeStep3CompLoad;
+        List<string> _RealtimeStep3ExtnStroke;
+        List<string> _RealtimeStep3ExtnLoad;
+        List<string> _RealtimeStep3DiffStroke;
+        List<string> _RealtimeStep3DiffLoad;
+
+        List<string> _MasterStep2CompStroke;
+        List<string> _MasterStep2CompLoad;
+        List<string> _MasterStep2CompLoadLower;
+        List<string> _MasterStep2CompLoadUpper;
+        List<string> _MasterStep2ExtnStroke;
+        List<string> _MasterStep2ExtnLoad;
+        List<string> _MasterStep2ExtnLoadLower;
+        List<string> _MasterStep2ExtnLoadUpper;
+        List<string> _MasterStep2DiffStroke;
+        List<string> _MasterStep2DiffLoad;
+        List<string> _MasterStep2DiffLoadLower;
+        List<string> _MasterStep2DiffLoadUpper;
+
+        List<string> _MasterStep3CompStroke;
+        List<string> _MasterStep3CompLoad;
+        List<string> _MasterStep3CompLoadLower;
+        List<string> _MasterStep3CompLoadUpper;
+        List<string> _MasterStep3ExtnStroke;
+        List<string> _MasterStep3ExtnLoad;
+        List<string> _MasterStep3ExtnLoadLower;
+        List<string> _MasterStep3ExtnLoadUpper;
+        List<string> _MasterStep3DiffStroke;
+        List<string> _MasterStep3DiffLoad;
+        List<string> _MasterStep3DiffLoadLower;
+        List<string> _MasterStep3DiffLoadUpper;
+
         public DATAMODEL_R()
         {
+            Judgement = new List<string>() 
+            {
+                _MaxLoad,
+                _Step2CompLoadRef,
+                _Step2ExtnLoadRef,
+                _Step3CompLoadRef,
+                _Step3ExtnLoadRef
+            };
 
+            RealtimeStep2 = new List<List<string>>()
+            {
+                _RealtimeStep2CompStroke,
+                _RealtimeStep2CompLoad,
+                _RealtimeStep2ExtnStroke,
+                _RealtimeStep2ExtnLoad,
+                _RealtimeStep2DiffStroke,
+                _RealtimeStep2DiffLoad
+            };
+
+            RealtimeStep3 = new List<List<string>>()
+            {
+                _RealtimeStep3CompStroke,
+                _RealtimeStep3CompLoad,
+                _RealtimeStep3ExtnStroke,
+                _RealtimeStep3ExtnLoad,
+                _RealtimeStep3DiffStroke,
+                _RealtimeStep3DiffLoad
+            };
+
+            MasteringStep2 = new List<List<string>>()
+            {
+                _MasterStep2CompStroke,
+                _MasterStep2CompLoad,
+                _MasterStep2CompLoadLower,
+                _MasterStep2CompLoadUpper,
+                _MasterStep2ExtnStroke,
+                _MasterStep2ExtnLoad,
+                _MasterStep2ExtnLoadLower,
+                _MasterStep2ExtnLoadUpper,
+                _MasterStep2DiffStroke,
+                _MasterStep2DiffLoad,
+                _MasterStep2DiffLoadLower,
+                _MasterStep2DiffLoadUpper
+            };
+
+            MasteringStep3 = new List<List<string>>()
+            {
+                _MasterStep3CompStroke,
+                _MasterStep3CompLoad,
+                _MasterStep3CompLoadLower,
+                _MasterStep3CompLoadUpper,
+                _MasterStep3ExtnStroke,
+                _MasterStep3ExtnLoad,
+                _MasterStep3ExtnLoadLower,
+                _MasterStep3ExtnLoadUpper,
+                _MasterStep3DiffStroke,
+                _MasterStep3DiffLoad,
+                _MasterStep3DiffLoadLower,
+                _MasterStep3DiffLoadUpper
+            };
         }
     }
 
@@ -739,9 +1070,114 @@ namespace WORKFLOW
         public List<List<string>> MasteringStep2;
         public List<List<string>> MasteringStep3;
 
+        public string _MaxLoad;
+        public string _Step2CompLoadRef;
+        public string _Step2ExtnLoadRef;
+        public string _Step3CompLoadRef;
+        public string _Step3ExtnLoadRef;
+
+        List<string> _RealtimeStep2CompStroke;
+        List<string> _RealtimeStep2CompLoad;
+        List<string> _RealtimeStep2ExtnStroke;
+        List<string> _RealtimeStep2ExtnLoad;
+        List<string> _RealtimeStep2DiffStroke;
+        List<string> _RealtimeStep2DiffLoad;
+
+        List<string> _RealtimeStep3CompStroke;
+        List<string> _RealtimeStep3CompLoad;
+        List<string> _RealtimeStep3ExtnStroke;
+        List<string> _RealtimeStep3ExtnLoad;
+        List<string> _RealtimeStep3DiffStroke;
+        List<string> _RealtimeStep3DiffLoad;
+
+        List<string> _MasterStep2CompStroke;
+        List<string> _MasterStep2CompLoad;
+        List<string> _MasterStep2CompLoadLower;
+        List<string> _MasterStep2CompLoadUpper;
+        List<string> _MasterStep2ExtnStroke;
+        List<string> _MasterStep2ExtnLoad;
+        List<string> _MasterStep2ExtnLoadLower;
+        List<string> _MasterStep2ExtnLoadUpper;
+        List<string> _MasterStep2DiffStroke;
+        List<string> _MasterStep2DiffLoad;
+        List<string> _MasterStep2DiffLoadLower;
+        List<string> _MasterStep2DiffLoadUpper;
+
+        List<string> _MasterStep3CompStroke;
+        List<string> _MasterStep3CompLoad;
+        List<string> _MasterStep3CompLoadLower;
+        List<string> _MasterStep3CompLoadUpper;
+        List<string> _MasterStep3ExtnStroke;
+        List<string> _MasterStep3ExtnLoad;
+        List<string> _MasterStep3ExtnLoadLower;
+        List<string> _MasterStep3ExtnLoadUpper;
+        List<string> _MasterStep3DiffStroke;
+        List<string> _MasterStep3DiffLoad;
+        List<string> _MasterStep3DiffLoadLower;
+        List<string> _MasterStep3DiffLoadUpper;
+
         public DATAMODEL_L()
         {
+            Judgement = new List<string>()
+            {
+                _MaxLoad,
+                _Step2CompLoadRef,
+                _Step2ExtnLoadRef,
+                _Step3CompLoadRef,
+                _Step3ExtnLoadRef
+            };
 
+            RealtimeStep2 = new List<List<string>>()
+            {
+                _RealtimeStep2CompStroke,
+                _RealtimeStep2CompLoad,
+                _RealtimeStep2ExtnStroke,
+                _RealtimeStep2ExtnLoad,
+                _RealtimeStep2DiffStroke,
+                _RealtimeStep2DiffLoad
+            };
+
+            RealtimeStep3 = new List<List<string>>()
+            {
+                _RealtimeStep3CompStroke,
+                _RealtimeStep3CompLoad,
+                _RealtimeStep3ExtnStroke,
+                _RealtimeStep3ExtnLoad,
+                _RealtimeStep3DiffStroke,
+                _RealtimeStep3DiffLoad
+            };
+
+            MasteringStep2 = new List<List<string>>()
+            {
+                _MasterStep2CompStroke,
+                _MasterStep2CompLoad,
+                _MasterStep2CompLoadLower,
+                _MasterStep2CompLoadUpper,
+                _MasterStep2ExtnStroke,
+                _MasterStep2ExtnLoad,
+                _MasterStep2ExtnLoadLower,
+                _MasterStep2ExtnLoadUpper,
+                _MasterStep2DiffStroke,
+                _MasterStep2DiffLoad,
+                _MasterStep2DiffLoadLower,
+                _MasterStep2DiffLoadUpper
+            };
+
+            MasteringStep3 = new List<List<string>>()
+            {
+                _MasterStep3CompStroke,
+                _MasterStep3CompLoad,
+                _MasterStep3CompLoadLower,
+                _MasterStep3CompLoadUpper,
+                _MasterStep3ExtnStroke,
+                _MasterStep3ExtnLoad,
+                _MasterStep3ExtnLoadLower,
+                _MasterStep3ExtnLoadUpper,
+                _MasterStep3DiffStroke,
+                _MasterStep3DiffLoad,
+                _MasterStep3DiffLoadLower,
+                _MasterStep3DiffLoadUpper
+            };
         }
     }
 }

@@ -56,7 +56,7 @@ namespace LIBKVPROTOCOL
                 IPAddress ipAddr = IPAddress.Parse(_ipv4Addr);
                 IPEndPoint localEndPoint = new IPEndPoint(ipAddr, _ipv4Socket);
                 Socket sender = new Socket(ipAddr.AddressFamily,
-                           SocketType.Stream, ProtocolType.Tcp);
+                SocketType.Stream, ProtocolType.Tcp);
 
                 //sender.Bind(localEndPoint);
                 sender.Connect(localEndPoint);
@@ -82,8 +82,8 @@ namespace LIBKVPROTOCOL
             if (_connState)
             {
                 this._recentByteSent = _objConnect.Send(contentMsg);
-                Debug.Write(contentMsg);
-                Debug.Write(this._recentByteSent);
+                //Debug.Write(contentMsg);
+                //Debug.Write(this._recentByteSent);
             }
         }
 
@@ -93,8 +93,8 @@ namespace LIBKVPROTOCOL
             {
                 this._recentMsgRecv = new byte[1024];
                 this._recentByteRecv = _objConnect.Receive(this._recentMsgRecv);
-                Debug.Write(this._recentMsgRecv);
-                Debug.Write(this._recentByteRecv);
+                //Debug.Write(this._recentMsgRecv);
+                //Debug.Write(this._recentByteRecv);
             }
         }
 
@@ -284,7 +284,7 @@ namespace LIBKVPROTOCOL
         public List<byte[]> batchreadDataCommand(string cmdaddress, string cmdformat, int count)
         {
             List<byte[]> cmdByte = new List<byte[]>();
-            List<byte[]> recvByte = new List<byte[]>();
+            List<byte[]> recvBytes = new List<byte[]>();
             byte[] cmdaddrbyte = this.toBytes(cmdaddress);
             byte[] cmdformbyte = this.toBytes(cmdformat);
 
@@ -305,23 +305,55 @@ namespace LIBKVPROTOCOL
                 if (this.getAvail() > 0)
                 {
                     this.connRecv();
-                    byte[] parseByte = { };
                     byte[] recvData = this.getMsgRecv();
 
+                    int iy = 0;
                     int iz = 0;
+
+                    byte[] parseByte = { };
+                    List<byte[]> recvByte = new List<byte[]>();
+
                     for (int ix = 0; ix < recvData.Length; ix++)
                     {
-                        if (recvData[ix] == 0x20)
+                        if (ix < recvData.Length)
                         {
-                            recvByte.Add(parseByte);
+                            if (recvData[ix] == (byte)0x20)
+                            {
+                                byte[] sbuff = new byte[] { };
+                                Array.Resize(ref sbuff, parseByte.Length);
+                                Buffer.BlockCopy(parseByte, 0, sbuff, 0, sbuff.Length);
+                                recvByte.Add(sbuff);
+
+                                Array.Clear(parseByte, 0, parseByte.Length);
+                                Array.Resize(ref parseByte, 0);
+                                iz = 0;
+                                iy++;
+                            }
+                            else
+                            {
+                                Array.Resize(ref parseByte, parseByte.Length + 1);
+                                parseByte[iz] = (recvData[ix]);
+                                iz++;
+                            }
+                        }
+                        else if (ix == recvData.Length)
+                        {
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, parseByte.Length);
+                            Buffer.BlockCopy(parseByte, 0, sbuff, 0, sbuff.Length);
+                            recvByte.Add(sbuff);
+
                             Array.Clear(parseByte, 0, parseByte.Length);
+                            Array.Resize(ref parseByte, 0);
                             iz = 0;
+                            iy++;
                         }
-                        else if (recvData[ix] != 0x0D && recvData[ix] != 0x0A)
+                        else
                         {
-                            parseByte.Append(recvData[ix]);
+                            Array.Resize(ref parseByte, parseByte.Length + 1);
+                            parseByte[iz] = (recvData[ix]);
+                            iz++;
                         }
-                        iz++;
                     }
                     return recvByte;
                 }
