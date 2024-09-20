@@ -52,6 +52,9 @@
             button6 = new System.Windows.Forms.Button();
             label6 = new System.Windows.Forms.Label();
             button5 = new System.Windows.Forms.Button();
+            formsPlot2 = new ScottPlot.WinForms.FormsPlot();
+            formsPlot3 = new ScottPlot.WinForms.FormsPlot();
+            formsPlot4 = new ScottPlot.WinForms.FormsPlot();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -186,27 +189,31 @@
             tabControl1.Margin = new System.Windows.Forms.Padding(2);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(718, 436);
+            tabControl1.Size = new System.Drawing.Size(1032, 601);
             tabControl1.TabIndex = 12;
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(formsPlot4);
+            tabPage1.Controls.Add(formsPlot3);
+            tabPage1.Controls.Add(formsPlot2);
             tabPage1.Controls.Add(formsPlot1);
             tabPage1.Location = new System.Drawing.Point(4, 24);
             tabPage1.Margin = new System.Windows.Forms.Padding(2);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new System.Windows.Forms.Padding(2);
-            tabPage1.Size = new System.Drawing.Size(710, 408);
+            tabPage1.Size = new System.Drawing.Size(1024, 573);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "DATA MNG";
             tabPage1.UseVisualStyleBackColor = true;
+            tabPage1.Click += tabPage1_Click;
             // 
             // formsPlot1
             // 
             formsPlot1.DisplayScale = 1F;
             formsPlot1.Location = new System.Drawing.Point(18, 14);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new System.Drawing.Size(605, 273);
+            formsPlot1.Size = new System.Drawing.Size(479, 267);
             formsPlot1.TabIndex = 0;
             formsPlot1.Load += formsPlot1_Load;
             // 
@@ -319,11 +326,35 @@
             button5.TabIndex = 13;
             button5.UseVisualStyleBackColor = true;
             // 
+            // formsPlot2
+            // 
+            formsPlot2.DisplayScale = 1F;
+            formsPlot2.Location = new System.Drawing.Point(23, 301);
+            formsPlot2.Name = "formsPlot2";
+            formsPlot2.Size = new System.Drawing.Size(474, 267);
+            formsPlot2.TabIndex = 1;
+            // 
+            // formsPlot3
+            // 
+            formsPlot3.DisplayScale = 1F;
+            formsPlot3.Location = new System.Drawing.Point(527, 14);
+            formsPlot3.Name = "formsPlot3";
+            formsPlot3.Size = new System.Drawing.Size(474, 267);
+            formsPlot3.TabIndex = 2;
+            // 
+            // formsPlot4
+            // 
+            formsPlot4.DisplayScale = 1F;
+            formsPlot4.Location = new System.Drawing.Point(527, 301);
+            formsPlot4.Name = "formsPlot4";
+            formsPlot4.Size = new System.Drawing.Size(474, 267);
+            formsPlot4.TabIndex = 3;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(740, 455);
+            ClientSize = new System.Drawing.Size(1052, 621);
             Controls.Add(tabControl1);
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "Form1";
@@ -367,6 +398,9 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private ScottPlot.WinForms.FormsPlot formsPlot1;
+        private ScottPlot.WinForms.FormsPlot formsPlot4;
+        private ScottPlot.WinForms.FormsPlot formsPlot3;
+        private ScottPlot.WinForms.FormsPlot formsPlot2;
     }
 }
 

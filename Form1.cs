@@ -160,8 +160,26 @@ namespace KVCOMSERVER
             formsPlot1.Refresh();
         }
 
+        public void Plot2Update(double[] xd, double[] yd)
+        {
+            formsPlot2.Reset();
+            formsPlot2.Plot.Add.Scatter(xd, yd);
+            formsPlot2.Refresh();
+        }
 
+        public void Plot3Update(double[] xd, double[] yd)
+        {
+            formsPlot3.Reset();
+            formsPlot3.Plot.Add.Scatter(xd, yd);
+            formsPlot3.Refresh();
+        }
 
+        public void Plot4Update(double[] xd, double[] yd)
+        {
+            formsPlot4.Reset();
+            formsPlot4.Plot.Add.Scatter(xd, yd);
+            formsPlot4.Refresh();
+        }
 
         private void tabPage4_Click(object sender, EventArgs e)
         {
@@ -174,6 +192,11 @@ namespace KVCOMSERVER
         }
 
         private void formsPlot1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
         {
 
         }

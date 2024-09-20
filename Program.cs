@@ -314,10 +314,10 @@ namespace WORKFLOW
             //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
 
 
-            string _filenameR1 = ($"LOG/RealtimeData_RH_20{_data.DTM[0]}-{_data.DTM[1]}-{_data.DTM[2]}_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
+            string _filenameR1 = ($"LOG/YEAR_20{_data.DTM[0]}/MONTH_{_data.DTM[1]}/DAY_{_data.DTM[2]}/RealtimeData_RH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
             RealtimeFileR1.FilePrint(_filenameR1);
 
-            string _filenameL1 = ($"LOG/RealtimeData_LH_20{_data.DTM[0]}-{_data.DTM[1]}-{_data.DTM[2]}_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
+            string _filenameL1 = ($"LOG/YEAR_20{_data.DTM[0]}/MONTH_{_data.DTM[1]}/DAY_{_data.DTM[2]}/RealtimeData_LH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
             RealtimeFileL1.FilePrint(_filenameL1);
 
             _realtimeReadFlag = false;
@@ -909,6 +909,15 @@ namespace WORKFLOW
 
                     await _uiPlot1UpdateAsync(_cts.Token);
                     await _backgroundDataPlot1ReadAsync(_cts.Token);
+
+                    await _uiPlot2UpdateAsync(_cts.Token);
+                    await _backgroundDataPlot2ReadAsync(_cts.Token);
+
+                    await _uiPlot3UpdateAsync(_cts.Token);
+                    await _backgroundDataPlot3ReadAsync(_cts.Token);
+
+                    await _uiPlot4UpdateAsync(_cts.Token);
+                    await _backgroundDataPlot4ReadAsync(_cts.Token);
                 }
 
                 //await BackgroundWorkAsync(_cts.Token);
@@ -976,6 +985,36 @@ namespace WORKFLOW
             await InvokeAsync(() => _backgroundDataPlot1Read(), cancellationToken);
         }
 
+        private async Task _uiPlot2UpdateAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _uiPlot2Update(), cancellationToken);
+        }
+
+        private async Task _backgroundDataPlot2ReadAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _backgroundDataPlot2Read(), cancellationToken);
+        }
+
+        private async Task _uiPlot3UpdateAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _uiPlot3Update(), cancellationToken);
+        }
+
+        private async Task _backgroundDataPlot3ReadAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _backgroundDataPlot3Read(), cancellationToken);
+        }
+
+        private async Task _uiPlot4UpdateAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _uiPlot4Update(), cancellationToken);
+        }
+
+        private async Task _backgroundDataPlot4ReadAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _backgroundDataPlot4Read(), cancellationToken);
+        }
+
 
 
         private void _uibeaconnUpdate()
@@ -1015,13 +1054,22 @@ namespace WORKFLOW
 
         //double[] _dXD1;
         public double[] dXD1;
+        public double[] dXD2;
+        public double[] dXD3;
+        public double[] dXD4;
 
 
         //double[] _dYD1;
         public double[] dYD1;
-        
+        public double[] dYD2;
+        public double[] dYD3;
+        public double[] dYD4;
+
 
         bool _uiPlot1UpdateFlag;
+        bool _uiPlot2UpdateFlag;
+        bool _uiPlot3UpdateFlag;
+        bool _uiPlot4UpdateFlag;
 
 
 
@@ -1051,6 +1099,81 @@ namespace WORKFLOW
             }
         }
 
+        private void _uiPlot2Update()
+        {
+            if (_uiPlot2UpdateFlag)
+            {
+                double[] xd = new double[dXD2.Length];
+                Array.Copy(dXD2, xd, dXD2.Length);
+
+                double[] yd = new double[dYD2.Length];
+                Array.Copy(dYD2, yd, dYD2.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot2Update(xd, yd)));
+                }
+                else
+                {
+                    _uiObject.Plot2Update(xd, yd);
+                }
+
+                _uiPlot2UpdateFlag = false;
+
+                //Thread.Sleep(10);
+            }
+        }
+
+        private void _uiPlot3Update()
+        {
+            if (_uiPlot3UpdateFlag)
+            {
+                double[] xd = new double[dXD3.Length];
+                Array.Copy(dXD3, xd, dXD3.Length);
+
+                double[] yd = new double[dYD3.Length];
+                Array.Copy(dYD3, yd, dYD3.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot3Update(xd, yd)));
+                }
+                else
+                {
+                    _uiObject.Plot3Update(xd, yd);
+                }
+
+                _uiPlot3UpdateFlag = false;
+
+                //Thread.Sleep(10);
+            }
+        }
+
+        private void _uiPlot4Update()
+        {
+            if (_uiPlot4UpdateFlag)
+            {
+                double[] xd = new double[dXD4.Length];
+                Array.Copy(dXD4, xd, dXD4.Length);
+
+                double[] yd = new double[dYD4.Length];
+                Array.Copy(dYD4, yd, dYD4.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot4Update(xd, yd)));
+                }
+                else
+                {
+                    _uiObject.Plot4Update(xd, yd);
+                }
+
+                _uiPlot4UpdateFlag = false;
+
+                //Thread.Sleep(10);
+            }
+        }
+
         private void _backgroundDataPlot1Read()
         {
             if (this.GetConnState() == 1)
@@ -1067,7 +1190,55 @@ namespace WORKFLOW
             }
         }
 
-        
+        private void _backgroundDataPlot2Read()
+        {
+            if (this.GetConnState() == 1)
+            {
+                byte[] RH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB6);
+                //Thread.Sleep(10);
+                dXD2 = _bytearrayToDouble(RH_EXTN_STROKE_REALTIME);
+
+                byte[] RH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB7);
+                //Thread.Sleep(10);
+                dYD2 = _bytearrayToDouble(RH_EXTN_LOAD_REALTIME);
+
+                _uiPlot2UpdateFlag = true;
+            }
+        }
+
+        private void _backgroundDataPlot3Read()
+        {
+            if (this.GetConnState() == 1)
+            {
+                byte[] LH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB8);
+                //Thread.Sleep(10);
+                dXD3 = _bytearrayToDouble(LH_COMP_STROKE_REALTIME);
+
+                byte[] LH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB9);
+                //Thread.Sleep(10);
+                dYD3 = _bytearrayToDouble(LH_COMP_LOAD_REALTIME);
+
+                _uiPlot3UpdateFlag = true;
+            }
+        }
+
+        private void _backgroundDataPlot4Read()
+        {
+            if (this.GetConnState() == 1)
+            {
+                byte[] LH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBA);
+                //Thread.Sleep(10);
+                dXD4 = _bytearrayToDouble(LH_EXTN_STROKE_REALTIME);
+
+                byte[] LH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBB);
+                //Thread.Sleep(10);
+                dYD4 = _bytearrayToDouble(LH_EXTN_LOAD_REALTIME);
+
+                _uiPlot4UpdateFlag = true;
+            }
+        }
+
+
     }
 
     public class DATAMODEL
