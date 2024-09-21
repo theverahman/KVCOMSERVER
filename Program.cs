@@ -809,7 +809,7 @@ namespace WORKFLOW
             return floatdata;
         }
 
-        double[] _bytearrayToDouble(byte[] bytearraystream)
+        double[] _bytearrayToDoubleXAxis(byte[] bytearraystream)
         {
             byte[] streaminput = new byte[bytearraystream.Length];
             Array.Copy(bytearraystream, streaminput, bytearraystream.Length);
@@ -835,8 +835,8 @@ namespace WORKFLOW
                         buff[iv] = streaminput[i];
 
                         iz++;
-                        Array.Resize(ref _buffResult, iz);
-                        _buffResult[iz - 1] = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
+                        double dbuff = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
+                        if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
                         iv = 0;
                         Array.Clear(buff);
 
@@ -853,8 +853,70 @@ namespace WORKFLOW
                         else if (i % 4 == 0)
                         {
                             iz++;
-                            Array.Resize(ref _buffResult, iz);
-                            _buffResult[iz - 1] = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
+                            double dbuff = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
+                            if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
+                            iv = 0;
+                            Array.Clear(buff);
+
+                            buff[iv] = streaminput[i];
+                            iv++;
+
+                            //Debug.Write(_buffResult[iz - 1]);
+                            //Debug.Write((char)'\n');
+                        }
+                    }
+                }
+            }
+            //catch { }
+            return _buffResult;
+        }
+
+        double[] _bytearrayToDoubleYAxis(byte[] bytearraystream)
+        {
+            byte[] streaminput = new byte[bytearraystream.Length];
+            Array.Copy(bytearraystream, streaminput, bytearraystream.Length);
+            List<byte[]> _buffList = new List<byte[]>();
+            double[] _buffResult = new double[] { };
+
+            //try
+            {
+                byte[] buff = new byte[4];
+                int iv = 0;
+                int iz = 0;
+                int iend = streaminput.Length - 1;
+
+                for (int i = 0; i < iend; i++)
+                {
+                    if (i < 1)
+                    {
+                        buff[iv] = streaminput[i];
+                        iv++;
+                    }
+                    else if (i == iend)
+                    {
+                        buff[iv] = streaminput[i];
+
+                        iz++;
+                        double dbuff = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
+                        if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
+                        iv = 0;
+                        Array.Clear(buff);
+
+                        //Debug.Write(_buffResult[iz - 1]);
+                        //Debug.Write((char)'\n');
+                    }
+                    else
+                    {
+                        if (i % 4 != 0)
+                        {
+                            buff[iv] = streaminput[i];
+                            iv++;
+                        }
+                        else if (i % 4 == 0)
+                        {
+                            iz++;
+                            double dbuff = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
+                            if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
                             iv = 0;
                             Array.Clear(buff);
 
@@ -1180,11 +1242,11 @@ namespace WORKFLOW
             {
                 byte[] RH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB4);
                 //Thread.Sleep(10);
-                dXD1 = _bytearrayToDouble(RH_COMP_STROKE_REALTIME);
+                dXD1 = _bytearrayToDoubleXAxis(RH_COMP_STROKE_REALTIME);
 
                 byte[] RH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB5);
                 //Thread.Sleep(10);
-                dYD1 = _bytearrayToDouble(RH_COMP_LOAD_REALTIME);
+                dYD1 = _bytearrayToDoubleYAxis(RH_COMP_LOAD_REALTIME);
 
                 _uiPlot1UpdateFlag = true;
             }
@@ -1196,11 +1258,11 @@ namespace WORKFLOW
             {
                 byte[] RH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB6);
                 //Thread.Sleep(10);
-                dXD2 = _bytearrayToDouble(RH_EXTN_STROKE_REALTIME);
+                dXD2 = _bytearrayToDoubleXAxis(RH_EXTN_STROKE_REALTIME);
 
                 byte[] RH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB7);
                 //Thread.Sleep(10);
-                dYD2 = _bytearrayToDouble(RH_EXTN_LOAD_REALTIME);
+                dYD2 = _bytearrayToDoubleYAxis(RH_EXTN_LOAD_REALTIME);
 
                 _uiPlot2UpdateFlag = true;
             }
@@ -1212,11 +1274,11 @@ namespace WORKFLOW
             {
                 byte[] LH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB8);
                 //Thread.Sleep(10);
-                dXD3 = _bytearrayToDouble(LH_COMP_STROKE_REALTIME);
+                dXD3 = _bytearrayToDoubleXAxis(LH_COMP_STROKE_REALTIME);
 
                 byte[] LH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB9);
                 //Thread.Sleep(10);
-                dYD3 = _bytearrayToDouble(LH_COMP_LOAD_REALTIME);
+                dYD3 = _bytearrayToDoubleYAxis(LH_COMP_LOAD_REALTIME);
 
                 _uiPlot3UpdateFlag = true;
             }
@@ -1228,11 +1290,11 @@ namespace WORKFLOW
             {
                 byte[] LH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBA);
                 //Thread.Sleep(10);
-                dXD4 = _bytearrayToDouble(LH_EXTN_STROKE_REALTIME);
+                dXD4 = _bytearrayToDoubleXAxis(LH_EXTN_STROKE_REALTIME);
 
                 byte[] LH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBB);
                 //Thread.Sleep(10);
-                dYD4 = _bytearrayToDouble(LH_EXTN_LOAD_REALTIME);
+                dYD4 = _bytearrayToDoubleYAxis(LH_EXTN_LOAD_REALTIME);
 
                 _uiPlot4UpdateFlag = true;
             }
