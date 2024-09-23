@@ -112,6 +112,8 @@ namespace WORKFLOW
 
         }
 
+        void CheckFolderPath(string pathblazer) { if (!Directory.Exists(pathblazer)) { Directory.CreateDirectory(pathblazer); } }
+
         public bool Get_backgroundProcessOngoing()
         {
             return _backgroundProcessOngoing;
@@ -204,7 +206,6 @@ namespace WORKFLOW
             }
 
         }
-
         
 
 
@@ -312,12 +313,13 @@ namespace WORKFLOW
 
             //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
             //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
+            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_20{_data.DTM[0]}\\MONTH_{_data.DTM[1]}\\DAY_{_data.DTM[2]}";
+            CheckFolderPath(DirRealtime);
 
-
-            string _filenameR1 = ($"LOG/YEAR_20{_data.DTM[0]}/MONTH_{_data.DTM[1]}/DAY_{_data.DTM[2]}/RealtimeData_RH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
+            string _filenameR1 = ($"{DirRealtime}\\RealtimeData_RH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
             RealtimeFileR1.FilePrint(_filenameR1);
 
-            string _filenameL1 = ($"LOG/YEAR_20{_data.DTM[0]}/MONTH_{_data.DTM[1]}/DAY_{_data.DTM[2]}/RealtimeData_LH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
+            string _filenameL1 = ($"{DirRealtime}\\RealtimeData_LH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
             RealtimeFileL1.FilePrint(_filenameL1);
 
             _realtimeReadFlag = false;
@@ -823,7 +825,7 @@ namespace WORKFLOW
                 int iz = 0;
                 int iend = streaminput.Length - 1;
 
-                for (int i = 0; i < iend; i++)
+                for (int i = 0; i < streaminput.Length; i++)
                 {
                     if (i < 1)
                     {
@@ -836,7 +838,8 @@ namespace WORKFLOW
 
                         iz++;
                         double dbuff = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
-                        if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
+                        Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff;
+                        //if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
                         iv = 0;
                         Array.Clear(buff);
 
@@ -854,7 +857,8 @@ namespace WORKFLOW
                         {
                             iz++;
                             double dbuff = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
-                            if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
+                            Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff;
+                            //if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
                             iv = 0;
                             Array.Clear(buff);
 
@@ -885,7 +889,7 @@ namespace WORKFLOW
                 int iz = 0;
                 int iend = streaminput.Length - 1;
 
-                for (int i = 0; i < iend; i++)
+                for (int i = 0; i < streaminput.Length; i++)
                 {
                     if (i < 1)
                     {
@@ -898,7 +902,8 @@ namespace WORKFLOW
 
                         iz++;
                         double dbuff = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
-                        if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
+                        Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff;
+                        //if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
                         iv = 0;
                         Array.Clear(buff);
 
@@ -916,7 +921,8 @@ namespace WORKFLOW
                         {
                             iz++;
                             double dbuff = Convert.ToDouble(BitConverter.ToInt32(buff, 0));
-                            if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
+                            Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff;
+                            //if (dbuff != 0) { Array.Resize(ref _buffResult, iz); _buffResult[iz - 1] = dbuff; }
                             iv = 0;
                             Array.Clear(buff);
 
@@ -981,19 +987,6 @@ namespace WORKFLOW
                     await _uiPlot4UpdateAsync(_cts.Token);
                     await _backgroundDataPlot4ReadAsync(_cts.Token);
                 }
-
-                //await BackgroundWorkAsync(_cts.Token);
-
-                //await _taskFactory.StartNew(async () => { await Task.Run(() => _uibeaconnUpdateAsync(_cts.Token), _cts.Token); });
-                //await _taskFactory.StartNew(async () => {await Task.Run(() => _eeipEventHandler_1Async(_cts.Token), _cts.Token); });
-                //await _taskFactory.StartNew(async () => {await Task.Run(() => _eeipEventHandler_2Async(_cts.Token), _cts.Token); });
-                //await _taskFactory.StartNew(async () => {await Task.Run(() => _eeipEventHandler_3Async(_cts.Token), _cts.Token); });
-                //await Task.Run(() => _uibeaconnUpdateAsync(_cts.Token), _cts.Token);
-                //await Task.Run(() => _eeipEventHandler_1Async(_cts.Token), _cts.Token);
-                //await Task.Run(() => _eeipEventHandler_2Async(_cts.Token), _cts.Token);
-                //await Task.Run(() => _eeipEventHandler_3Async(_cts.Token), _cts.Token);
-
-                //DoWorkAsync(_cts.Token);
                 Thread.Sleep(10);
             }
         }
@@ -1001,15 +994,6 @@ namespace WORKFLOW
         public void abortTasks()
         {
             _cts.Cancel();
-        }
-
-        async void DoWorkAsync(CancellationToken cancellationToken)
-        {
-
-            await Task.Run(() => _uibeaconnUpdateAsync(cancellationToken), cancellationToken);
-            await Task.Run(() => _eeipEventHandler_1Async(cancellationToken), cancellationToken);
-            await Task.Run(() => _eeipEventHandler_2Async(cancellationToken), cancellationToken);
-            await Task.Run(() => _eeipEventHandler_3Async(cancellationToken), cancellationToken);
         }
 
         private async Task _eeipEventHandler_1Async(CancellationToken cancellationToken)
@@ -1111,7 +1095,7 @@ namespace WORKFLOW
                 }
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(10);
         }
 
         //double[] _dXD1;
@@ -1119,7 +1103,6 @@ namespace WORKFLOW
         public double[] dXD2;
         public double[] dXD3;
         public double[] dXD4;
-
 
         //double[] _dYD1;
         public double[] dYD1;
@@ -1133,6 +1116,10 @@ namespace WORKFLOW
         bool _uiPlot3UpdateFlag;
         bool _uiPlot4UpdateFlag;
 
+        bool _uiPlot1ResetFlag;
+        bool _uiPlot2ResetFlag;
+        bool _uiPlot3ResetFlag;
+        bool _uiPlot4ResetFlag;
 
 
 
@@ -1236,71 +1223,175 @@ namespace WORKFLOW
             }
         }
 
+        int parse1_idx;
         private void _backgroundDataPlot1Read()
         {
             if (this.GetConnState() == 1)
             {
-                byte[] RH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB4);
-                //Thread.Sleep(10);
-                dXD1 = _bytearrayToDoubleXAxis(RH_COMP_STROKE_REALTIME);
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
+                if ((byte)(TRIG[0] & 0x02) == 0x02)
+                {
+                    parse1_idx = 0;
+                    dXD1 = new double[] { };
+                    dYD1 = new double[] { };
 
-                byte[] RH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB5);
-                //Thread.Sleep(10);
-                dYD1 = _bytearrayToDoubleYAxis(RH_COMP_LOAD_REALTIME);
+                    Array.Resize(ref dXD1, 1);
+                    Array.Resize(ref dYD1, 1);
 
-                _uiPlot1UpdateFlag = true;
+                    byte[] RH_COMP_STROKE_REALTIME_PARSE = _eeipObject.AssemblyObject.getInstance(0xB4);
+                    dXD1[parse1_idx] = _bytearrayToDoubleXAxis(RH_COMP_STROKE_REALTIME_PARSE)[0];
+
+                    byte[] RH_COMP_LOAD_REALTIME_PARSE = _eeipObject.AssemblyObject.getInstance(0xB5);
+                    dYD1[parse1_idx] = _bytearrayToDoubleYAxis(RH_COMP_LOAD_REALTIME_PARSE)[0];
+
+                    _kvconnObject.writeDataCommand("W0FE0", "", "3");
+
+                    _uiPlot1UpdateFlag = true;
+                }
+                else if((byte)(TRIG[0] & 0x01) == 0x01) 
+                {
+                    parse1_idx += 1;
+                    Array.Resize(ref dXD1, dXD1.Length + 1);
+                    Array.Resize(ref dYD1, dYD1.Length + 1);
+
+                    byte[] RH_COMP_STROKE_REALTIME_PARSE = _eeipObject.AssemblyObject.getInstance(0xB4);
+                    dXD1[parse1_idx] = _bytearrayToDoubleXAxis(RH_COMP_STROKE_REALTIME_PARSE)[0];
+
+                    byte[] RH_COMP_LOAD_REALTIME_PARSE = _eeipObject.AssemblyObject.getInstance(0xB5);
+                    dYD1[parse1_idx] = _bytearrayToDoubleYAxis(RH_COMP_LOAD_REALTIME_PARSE)[0];
+
+                    _kvconnObject.writeDataCommand("W0FE0", "", "3");
+
+                    _uiPlot1UpdateFlag = true;
+                }
             }
         }
 
+        int parse2_idx;
         private void _backgroundDataPlot2Read()
         {
             if (this.GetConnState() == 1)
             {
-                byte[] RH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB6);
-                //Thread.Sleep(10);
-                dXD2 = _bytearrayToDoubleXAxis(RH_EXTN_STROKE_REALTIME);
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
+                if ((byte)(TRIG[2] & 0x02) == 0x02)
+                {
+                    parse2_idx = 0;
+                    dXD2 = new double[] { };
+                    dYD2 = new double[] { };
 
-                byte[] RH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB7);
-                //Thread.Sleep(10);
-                dYD2 = _bytearrayToDoubleYAxis(RH_EXTN_LOAD_REALTIME);
+                    Array.Resize(ref dXD2, 1);
+                    Array.Resize(ref dYD2, 1);
 
-                _uiPlot2UpdateFlag = true;
+                    byte[] RH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB6);
+                    dXD2[parse2_idx] = _bytearrayToDoubleXAxis(RH_EXTN_STROKE_REALTIME)[0];
+
+                    byte[] RH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB7);
+                    dYD2[parse2_idx] = _bytearrayToDoubleYAxis(RH_EXTN_LOAD_REALTIME)[0];
+
+                    _kvconnObject.writeDataCommand("W0FE1", "", "3");
+                    _uiPlot1UpdateFlag = true;
+                }
+                else if ((byte)(TRIG[2] & 0x01) == 0x01)
+                {
+                    parse2_idx += 1;
+                    Array.Resize(ref dXD2, dXD2.Length + 1);
+                    Array.Resize(ref dYD2, dYD2.Length + 1);
+
+                    byte[] RH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB6);
+                    dXD2[parse2_idx] = _bytearrayToDoubleXAxis(RH_EXTN_STROKE_REALTIME)[0];
+
+                    byte[] RH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB7);
+                    dYD2[parse2_idx] = _bytearrayToDoubleYAxis(RH_EXTN_LOAD_REALTIME)[0];
+
+                    _kvconnObject.writeDataCommand("W0FE1", "", "3");
+                    _uiPlot2UpdateFlag = true;
+                }
             }
         }
 
+        int parse3_idx;
         private void _backgroundDataPlot3Read()
         {
             if (this.GetConnState() == 1)
             {
-                byte[] LH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB8);
-                //Thread.Sleep(10);
-                dXD3 = _bytearrayToDoubleXAxis(LH_COMP_STROKE_REALTIME);
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
+                if ((byte)(TRIG[4] & 0x02) == 0x02)
+                {
+                    parse3_idx = 0;
+                    dXD3 = new double[] { };
+                    dYD3 = new double[] { };
 
-                byte[] LH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB9);
-                //Thread.Sleep(10);
-                dYD3 = _bytearrayToDoubleYAxis(LH_COMP_LOAD_REALTIME);
+                    Array.Resize(ref dXD3, 1);
+                    Array.Resize(ref dYD3, 1);
 
-                _uiPlot3UpdateFlag = true;
+                    byte[] LH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB8);
+                    dXD3[parse3_idx] = _bytearrayToDoubleXAxis(LH_COMP_STROKE_REALTIME)[0];
+
+                    byte[] LH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB9);
+                    dYD3[parse3_idx] = _bytearrayToDoubleYAxis(LH_COMP_LOAD_REALTIME)[0];
+
+                    _kvconnObject.writeDataCommand("W0FE2", "", "3");
+                    _uiPlot3UpdateFlag = true;
+                }
+                else if ((byte)(TRIG[4] & 0x01) == 0x01)
+                {
+                    parse3_idx += 1;
+                    Array.Resize(ref dXD3, dXD3.Length + 1);
+                    Array.Resize(ref dYD3, dYD3.Length + 1);
+
+                    byte[] LH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB8);
+                    dXD3[parse3_idx] = _bytearrayToDoubleXAxis(LH_COMP_STROKE_REALTIME)[0];
+
+                    byte[] LH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB9);
+                    dYD3[parse3_idx] = _bytearrayToDoubleYAxis(LH_COMP_LOAD_REALTIME)[0];
+
+                    _kvconnObject.writeDataCommand("W0FE2", "", "3");
+                    _uiPlot3UpdateFlag = true;
+                }
             }
         }
 
+        int parse4_idx;
         private void _backgroundDataPlot4Read()
         {
             if (this.GetConnState() == 1)
             {
-                byte[] LH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBA);
-                //Thread.Sleep(10);
-                dXD4 = _bytearrayToDoubleXAxis(LH_EXTN_STROKE_REALTIME);
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
+                if ((byte)(TRIG[6] & 0x02) == 0x02)
+                {
+                    parse4_idx = 0;
+                    dXD4 = new double[] { };
+                    dYD4 = new double[] { };
 
-                byte[] LH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBB);
-                //Thread.Sleep(10);
-                dYD4 = _bytearrayToDoubleYAxis(LH_EXTN_LOAD_REALTIME);
+                    Array.Resize(ref dXD4, 1);
+                    Array.Resize(ref dYD4, 1);
 
-                _uiPlot4UpdateFlag = true;
+                    byte[] LH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBA);
+                    dXD4[parse4_idx] = _bytearrayToDoubleXAxis(LH_EXTN_STROKE_REALTIME)[0];
+
+                    byte[] LH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBB);
+                    dYD4[parse4_idx] = _bytearrayToDoubleYAxis(LH_EXTN_LOAD_REALTIME)[0];
+
+                    _kvconnObject.writeDataCommand("W0FE3", "", "3");
+                    _uiPlot4UpdateFlag = true;
+                }
+                else if ((byte)(TRIG[6] & 0x01) == 0x01)
+                {
+                    parse4_idx += 1;
+                    Array.Resize(ref dXD4, dXD4.Length + 1);
+                    Array.Resize(ref dYD4, dYD4.Length + 1);
+
+                    byte[] LH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBA);
+                    dXD4[parse4_idx] = _bytearrayToDoubleXAxis(LH_EXTN_STROKE_REALTIME)[0];
+
+                    byte[] LH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBB);
+                    dYD4[parse4_idx] = _bytearrayToDoubleYAxis(LH_EXTN_LOAD_REALTIME)[0];
+
+                    _kvconnObject.writeDataCommand("W0FE3", "", "3");
+                    _uiPlot4UpdateFlag = true;
+                }
             }
         }
-
-
     }
 
     public class DATAMODEL

@@ -14,6 +14,8 @@ using WORKFLOW;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using ScottPlot;
+using static OpenTK.Graphics.OpenGL.GL;
 
 namespace KVCOMSERVER
 {
@@ -128,56 +130,60 @@ namespace KVCOMSERVER
         public void connStatLampOn()
         {
             button5.Text = "Connected";
-            button5.ForeColor = Color.Black;
-            button5.BackColor = Color.LimeGreen;
+            button5.ForeColor = System.Drawing.Color.Black;
+            button5.BackColor = System.Drawing.Color.LimeGreen;
         }
 
         public void connStatLampOff()
         {
             button5.Text = "Disconnected";
-            button5.ForeColor = Color.Black;
-            button5.BackColor = Color.Red;
+            button5.ForeColor = System.Drawing.Color.Black;
+            button5.BackColor = System.Drawing.Color.Red;
         }
 
         public void beaconnStatLampOn()
         {
             button6.Text = "ON";
-            button6.ForeColor = Color.Black;
-            button6.BackColor = Color.LimeGreen;
+            button6.ForeColor = System.Drawing.Color.Black;
+            button6.BackColor = System.Drawing.Color.LimeGreen;
         }
 
         public void beaconnStatLampOff()
         {
             button6.Text = "OFF";
-            button6.ForeColor = Color.Black;
-            button6.BackColor = Color.BlueViolet;
+            button6.ForeColor = System.Drawing.Color.Black;
+            button6.BackColor = System.Drawing.Color.BlueViolet;
         }
 
         public void Plot1Update(double[] xd, double[] yd)
         {
             formsPlot1.Reset();
-            formsPlot1.Plot.Add.Scatter(xd, yd);
+            var sp1 = formsPlot1.Plot.Add.Scatter(xd, yd);
+            formsPlot1.Plot.Axes.AntiAlias(true);
             formsPlot1.Refresh();
         }
 
         public void Plot2Update(double[] xd, double[] yd)
         {
             formsPlot2.Reset();
-            formsPlot2.Plot.Add.Scatter(xd, yd);
+            var sp2 = formsPlot2.Plot.Add.Scatter(xd, yd);
+            formsPlot2.Plot.Axes.AntiAlias(true);
             formsPlot2.Refresh();
         }
 
         public void Plot3Update(double[] xd, double[] yd)
         {
             formsPlot3.Reset();
-            formsPlot3.Plot.Add.Scatter(xd, yd);
+            var sp3 = formsPlot3.Plot.Add.Scatter(xd, yd);
+            formsPlot3.Plot.Axes.AntiAlias(true);
             formsPlot3.Refresh();
         }
 
         public void Plot4Update(double[] xd, double[] yd)
         {
             formsPlot4.Reset();
-            formsPlot4.Plot.Add.Scatter(xd, yd);
+            var sp4 = formsPlot4.Plot.Add.Scatter(xd, yd);
+            formsPlot4.Plot.Axes.AntiAlias(true);
             formsPlot4.Refresh();
         }
 
