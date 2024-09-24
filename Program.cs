@@ -233,7 +233,7 @@ namespace WORKFLOW
                     _kvconnObject.writeDataCommand("W0C1", "", "0");
                     //_kvconnObject.CloseConnection();
                     
-                    Thread.Sleep(10);
+                    Thread.Sleep(1);
                 }
 
             }
@@ -275,7 +275,7 @@ namespace WORKFLOW
                     _kvconnObject.writeDataCommand("W0C2", "", "0");
                     //_kvconnObject.CloseConnection();
                     
-                    Thread.Sleep(10);
+                    Thread.Sleep(1);
                 }
             }
             if ((byte)(STAT_INPUT[4] & 0x01) == 0x00)
@@ -352,7 +352,7 @@ namespace WORKFLOW
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA1);
                 char[] _charINPUT;
                 _charINPUT = System.Text.Encoding.ASCII.GetString(_INPUT).ToCharArray();
-                Thread.Sleep(10);
+                Thread.Sleep(1);
 
                 char[] _charModelBuff = new char[20];
                 char[] _charNumBuff = new char[20];
@@ -414,7 +414,7 @@ namespace WORKFLOW
                 byte[] _INPUT;
                 List<int> _buffDTM = new List<int>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA2);
-                Thread.Sleep(10);
+                Thread.Sleep(1);
 
                 //Debug.Write("DateTime");
                 //Debug.Write((char)'\n');
@@ -465,7 +465,7 @@ namespace WORKFLOW
                 byte[] _INPUT;
                 List<byte[]> _buffPARAM1 = new List<byte[]>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA3);
-                Thread.Sleep(10);
+                Thread.Sleep(1);
 
                 //Debug.Write("Step1Parameter");
                 //Debug.Write((char)'\n');
@@ -550,7 +550,7 @@ namespace WORKFLOW
                 byte[] _INPUT;
                 List<byte[]> _buffPARAM2345 = new List<byte[]>();
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA4);
-                Thread.Sleep(10);
+                Thread.Sleep(1);
 
                 //Debug.Write("Step2345Parameter");
                 //Debug.Write((char)'\n');
@@ -628,7 +628,7 @@ namespace WORKFLOW
             //try
             {
                 byte[] _INPUT = _eeipObject.AssemblyObject.getInstance(addr);
-                Thread.Sleep(10);
+                Thread.Sleep(1);
                 //Debug.Write("Judgement");
                 //Debug.Write((char)'\n');
                 //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
@@ -987,7 +987,7 @@ namespace WORKFLOW
                     await _uiPlot4UpdateAsync(_cts.Token);
                     await _backgroundDataPlot4ReadAsync(_cts.Token);
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(1);
             }
         }
 
@@ -1095,7 +1095,7 @@ namespace WORKFLOW
                 }
             }
 
-            Thread.Sleep(10);
+            Thread.Sleep(1);
         }
 
         //double[] _dXD1;
