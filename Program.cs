@@ -28,6 +28,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using MoreLinq.Extensions;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Reflection;
+using System.DirectoryServices;
 
 namespace KVCOMSERVER
 {
@@ -525,13 +526,17 @@ namespace WORKFLOW
 
                 for (int i = 0; i < _data.Step1Param.Count(); i++)
                 {
-                    if (i == 0 || i == 4)
+                    if (i == 0)
                     {
-                        _data.Step1Param[i] = BitConverter.ToInt32(_buffPARAM1[i], 0).ToString();
+                        _data._step1Enable = BitConverter.ToInt32(_buffPARAM1[i], 0);
+                    }
+                    else if (i == 4)
+                    {
+                        _data._step1CycleCount = BitConverter.ToInt32(_buffPARAM1[i], 0);
                     }
                     else
                     {
-                        _data.Step1Param[i] = BitConverter.ToSingle(_buffPARAM1[i], 0).ToString();
+                        _data.Step1Param[i] = BitConverter.ToSingle(_buffPARAM1[i], 0);
                     }
 
                     //for (int it = 0; it < _buffPARAM1[i].Length; it++) { Debug.Write(_buffPARAM1[i][it]); Debug.Write(", "); }
@@ -606,13 +611,25 @@ namespace WORKFLOW
 
                 for (int i = 0; i < _data.Step2345Param.Count(); i++)
                 {
-                    if (i == 0 || i == 9 || i == 10 || i == 19)
+                    if (i == 0)
                     {
-                        _data.Step2345Param[i] = BitConverter.ToInt16(_buffPARAM2345[i], 0).ToString();
+                        _data._step2Enable = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                    }
+                    else if (i == 9)
+                    {
+                        _data._step2LoadRefTolerance = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                    }
+                    else if (i == 10)
+                    {
+                        _data._step3Enable = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                    }
+                    else if (i == 19)
+                    {
+                        _data._step3LoadRefTolerance = BitConverter.ToInt16(_buffPARAM2345[i], 0);
                     }
                     else
                     {
-                        _data.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0).ToString();
+                        _data.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0);
                     }
                     //for (int it = 0; it < _buffPARAM2345[i].Length; it++) { Debug.Write(_buffPARAM2345[i][it]); Debug.Write(", "); }
                     //Debug.Write(" : ");
@@ -623,7 +640,7 @@ namespace WORKFLOW
             //catch { }
         }
 
-        void _eeipreadJudgement(ref List<string> judgementresult, Int16 addr)
+        void _eeipreadJudgement(ref List<object> judgementresult, Int16 addr)
         {
             //try
             {
@@ -635,7 +652,7 @@ namespace WORKFLOW
                 //Debug.Write((char)'\n');
 
 
-                double[] _buffJudgement = new double[] { };
+                float[] _buffJudgement = new float[] { };
                 byte[] buff = new byte[4];
                 int iv = 0;
                 int iz = 0;
@@ -654,7 +671,7 @@ namespace WORKFLOW
 
                         iz++;
                         Array.Resize(ref _buffJudgement, iz);
-                        _buffJudgement[iz - 1] = Convert.ToDouble(BitConverter.ToSingle(buff, 0));
+                        _buffJudgement[iz - 1] = BitConverter.ToSingle(buff, 0);
                         judgementresult[iz - 1] = _buffJudgement[iz - 1].ToString();
                         iv = 0;
                         Array.Clear(buff);
@@ -670,7 +687,7 @@ namespace WORKFLOW
                         {
                             iz++;
                             Array.Resize(ref _buffJudgement, iz);
-                            _buffJudgement[iz - 1] = Convert.ToDouble(BitConverter.ToSingle(buff, 0));
+                            _buffJudgement[iz - 1] = BitConverter.ToSingle(buff, 0);
                             judgementresult[iz - 1] = _buffJudgement[iz - 1].ToString();
                             iv = 0;
                             Array.Clear(buff);
@@ -693,16 +710,16 @@ namespace WORKFLOW
             //catch { }
         }
 
-        void _eeipreadRealtime(ref List<List<string>> realtimeresult, Int16 addr)
+        void _eeipreadRealtime(ref List<List<object>> realtimeresult, Int16 addr)
         {
             try
             {
-
+                
             }
             catch { }
         }
 
-        void _kvreadRealtime(ref List<List<string>> realtimeresult, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, int count)
+        void _kvreadRealtime(ref List<List<object>> realtimeresult, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, int count)
         {
             //try
             {
@@ -756,19 +773,12 @@ namespace WORKFLOW
                 List<float> float_diff_stroke = new List<float>(hex16tofloat32(diff_stroke));
                 List<float> float_diff_load = new List<float>(hex16tofloat32(diff_load));
 
-                List<string> string_comp_stroke = float_comp_stroke.ConvertAll(new Converter<float, string>(floattostring));
-                List<string> string_comp_load = float_comp_load.ConvertAll(new Converter<float, string>(floattostring));
-                List<string> string_extn_stroke = float_extn_stroke.ConvertAll(new Converter<float, string>(floattostring));
-                List<string> string_extn_load = float_extn_load.ConvertAll(new Converter<float, string>(floattostring));
-                List<string> string_diff_stroke = float_diff_stroke.ConvertAll(new Converter<float, string>(floattostring));
-                List<string> string_diff_load = float_diff_load.ConvertAll(new Converter<float, string>(floattostring));
-
-                realtimeresult.Add(string_comp_stroke);
-                realtimeresult.Add(string_comp_load);
-                realtimeresult.Add(string_extn_stroke);
-                realtimeresult.Add(string_extn_load);
-                realtimeresult.Add(string_diff_stroke);
-                realtimeresult.Add(string_diff_load);
+                realtimeresult.Add(float_comp_stroke);
+                realtimeresult.Add(float_comp_load);
+                realtimeresult.Add(float_extn_stroke);
+                realtimeresult.Add(float_extn_load);
+                realtimeresult.Add(float_diff_stroke);
+                realtimeresult.Add(float_diff_load);
             }
             //catch { }
         }
@@ -1405,42 +1415,42 @@ namespace WORKFLOW
         public　string _activeMinute;
         public　string _activeSecond;
 
-        public string _step1Enable;
-        public string _step1Stroke;
-        public string _step1CompresSpeed;
-        public string _step1ExtendSpeed;
-        public string _step1CycleCount;
-        public string _step1MaxLoad;
+        public int _step1Enable;
+        public float _step1Stroke;
+        public float _step1CompresSpeed;
+        public float _step1ExtendSpeed;
+        public int _step1CycleCount;
+        public float _step1MaxLoad;
 
-        public string _step2Enable;
-        public string _step2CompresSpeed;
-        public string _step2CompressJudgeMin;
-        public string _step2CompressJudgeMax;
-        public string _step2CompressLoadRef;
-        public string _step2ExtendSpeed;
-        public string _step2ExtendJudgeMin;
-        public string _step2ExtendJudgeMax;
-        public string _step2ExtendLoadRef;
-        public string _step2LoadRefTolerance;
+        public int _step2Enable;
+        public float _step2CompresSpeed;
+        public float _step2CompressJudgeMin;
+        public float _step2CompressJudgeMax;
+        public float _step2CompressLoadRef;
+        public float _step2ExtendSpeed;
+        public float _step2ExtendJudgeMin;
+        public float _step2ExtendJudgeMax;
+        public float _step2ExtendLoadRef;
+        public int _step2LoadRefTolerance;
 
-        public string _step3Enable;
-        public string _step3CompresSpeed;
-        public string _step3CompressJudgeMin;
-        public string _step3CompressJudgeMax;
-        public string _step3CompressLoadRef;
-        public string _step3ExtendSpeed;
-        public string _step3ExtendJudgeMin;
-        public string _step3ExtendJudgeMax;
-        public string _step3ExtendLoadRef;
-        public string _step3LoadRefTolerance;
+        public int _step3Enable;
+        public float _step3CompresSpeed;
+        public float _step3CompressJudgeMin;
+        public float _step3CompressJudgeMax;
+        public float _step3CompressLoadRef;
+        public float _step3ExtendSpeed;
+        public float _step3ExtendJudgeMin;
+        public float _step3ExtendJudgeMax;
+        public float _step3ExtendLoadRef;
+        public int _step3LoadRefTolerance;
 
-        public　List<string> DTM;
-        public　List<string> Step1Param;
-        public　List<string> Step2345Param;
+        public　List<object> DTM;
+        public　List<object> Step1Param;
+        public　List<object> Step2345Param;
 
         public DATAMODEL()
         {
-            DTM = new List<string>()
+            DTM = new List<object>()
                 {
                     _activeDay,
                     _activeMonth,
@@ -1450,7 +1460,7 @@ namespace WORKFLOW
                     _activeSecond
                 };
 
-            Step1Param = new List<string>()
+            Step1Param = new List<object>()
                 {
                     _step1Enable,
                     _step1Stroke,
@@ -1460,7 +1470,7 @@ namespace WORKFLOW
                     _step1MaxLoad
                 };
 
-            Step2345Param = new List<string>()
+            Step2345Param = new List<object>()
                 {
                     _step2Enable,
                     _step2CompresSpeed,
@@ -1489,61 +1499,61 @@ namespace WORKFLOW
 
     public class DATAMODEL_R
     {
-        public List<string> Judgement;
-        public List<List<string>> RealtimeStep2;
-        public List<List<string>> RealtimeStep3;
-        public List<List<string>> MasteringStep2;
-        public List<List<string>> MasteringStep3;
+        public List<float> Judgement;
+        public List<List<float>> RealtimeStep2;
+        public List<List<float>> RealtimeStep3;
+        public List<List<float>> MasteringStep2;
+        public List<List<float>> MasteringStep3;
 
-        public string _MaxLoad;
-        public string _Step2CompLoadRef;
-        public string _Step2ExtnLoadRef;
-        public string _Step3CompLoadRef;
-        public string _Step3ExtnLoadRef;
+        public float _MaxLoad;
+        public float _Step2CompLoadRef;
+        public float _Step2ExtnLoadRef;
+        public float _Step3CompLoadRef;
+        public float _Step3ExtnLoadRef;
 
-        List<string> _RealtimeStep2CompStroke;
-        List<string> _RealtimeStep2CompLoad;
-        List<string> _RealtimeStep2ExtnStroke;
-        List<string> _RealtimeStep2ExtnLoad;
-        List<string> _RealtimeStep2DiffStroke;
-        List<string> _RealtimeStep2DiffLoad;
-
-        List<string> _RealtimeStep3CompStroke;
-        List<string> _RealtimeStep3CompLoad;
-        List<string> _RealtimeStep3ExtnStroke;
-        List<string> _RealtimeStep3ExtnLoad;
-        List<string> _RealtimeStep3DiffStroke;
-        List<string> _RealtimeStep3DiffLoad;
-
-        List<string> _MasterStep2CompStroke;
-        List<string> _MasterStep2CompLoad;
-        List<string> _MasterStep2CompLoadLower;
-        List<string> _MasterStep2CompLoadUpper;
-        List<string> _MasterStep2ExtnStroke;
-        List<string> _MasterStep2ExtnLoad;
-        List<string> _MasterStep2ExtnLoadLower;
-        List<string> _MasterStep2ExtnLoadUpper;
-        List<string> _MasterStep2DiffStroke;
-        List<string> _MasterStep2DiffLoad;
-        List<string> _MasterStep2DiffLoadLower;
-        List<string> _MasterStep2DiffLoadUpper;
-
-        List<string> _MasterStep3CompStroke;
-        List<string> _MasterStep3CompLoad;
-        List<string> _MasterStep3CompLoadLower;
-        List<string> _MasterStep3CompLoadUpper;
-        List<string> _MasterStep3ExtnStroke;
-        List<string> _MasterStep3ExtnLoad;
-        List<string> _MasterStep3ExtnLoadLower;
-        List<string> _MasterStep3ExtnLoadUpper;
-        List<string> _MasterStep3DiffStroke;
-        List<string> _MasterStep3DiffLoad;
-        List<string> _MasterStep3DiffLoadLower;
-        List<string> _MasterStep3DiffLoadUpper;
+        List<float> _RealtimeStep2CompStroke;
+        List<float> _RealtimeStep2CompLoad;
+        List<float> _RealtimeStep2ExtnStroke;
+        List<float> _RealtimeStep2ExtnLoad;
+        List<float> _RealtimeStep2DiffStroke;
+        List<float> _RealtimeStep2DiffLoad;
+             
+        List<float> _RealtimeStep3CompStroke;
+        List<float> _RealtimeStep3CompLoad;
+        List<float> _RealtimeStep3ExtnStroke;
+        List<float> _RealtimeStep3ExtnLoad;
+        List<float> _RealtimeStep3DiffStroke;
+        List<float> _RealtimeStep3DiffLoad;
+             
+        List<float> _MasterStep2CompStroke;
+        List<float> _MasterStep2CompLoad;
+        List<float> _MasterStep2CompLoadLower;
+        List<float> _MasterStep2CompLoadUpper;
+        List<float> _MasterStep2ExtnStroke;
+        List<float> _MasterStep2ExtnLoad;
+        List<float> _MasterStep2ExtnLoadLower;
+        List<float> _MasterStep2ExtnLoadUpper;
+        List<float> _MasterStep2DiffStroke;
+        List<float> _MasterStep2DiffLoad;
+        List<float> _MasterStep2DiffLoadLower;
+        List<float> _MasterStep2DiffLoadUpper;
+             
+        List<float> _MasterStep3CompStroke;
+        List<float> _MasterStep3CompLoad;
+        List<float> _MasterStep3CompLoadLower;
+        List<float> _MasterStep3CompLoadUpper;
+        List<float> _MasterStep3ExtnStroke;
+        List<float> _MasterStep3ExtnLoad;
+        List<float> _MasterStep3ExtnLoadLower;
+        List<float> _MasterStep3ExtnLoadUpper;
+        List<float> _MasterStep3DiffStroke;
+        List<float> _MasterStep3DiffLoad;
+        List<float> _MasterStep3DiffLoadLower;
+        List<float> _MasterStep3DiffLoadUpper;
 
         public DATAMODEL_R()
         {
-            Judgement = new List<string>() 
+            Judgement = new List<float>() 
             {
                 _MaxLoad,
                 _Step2CompLoadRef,
@@ -1552,7 +1562,7 @@ namespace WORKFLOW
                 _Step3ExtnLoadRef
             };
 
-            RealtimeStep2 = new List<List<string>>()
+            RealtimeStep2 = new List<List<float>>()
             {
                 _RealtimeStep2CompStroke,
                 _RealtimeStep2CompLoad,
@@ -1562,7 +1572,7 @@ namespace WORKFLOW
                 _RealtimeStep2DiffLoad
             };
 
-            RealtimeStep3 = new List<List<string>>()
+            RealtimeStep3 = new List<List<float>>()
             {
                 _RealtimeStep3CompStroke,
                 _RealtimeStep3CompLoad,
@@ -1572,7 +1582,7 @@ namespace WORKFLOW
                 _RealtimeStep3DiffLoad
             };
 
-            MasteringStep2 = new List<List<string>>()
+            MasteringStep2 = new List<List<float>>()
             {
                 _MasterStep2CompStroke,
                 _MasterStep2CompLoad,
@@ -1588,7 +1598,7 @@ namespace WORKFLOW
                 _MasterStep2DiffLoadUpper
             };
 
-            MasteringStep3 = new List<List<string>>()
+            MasteringStep3 = new List<List<float>>()
             {
                 _MasterStep3CompStroke,
                 _MasterStep3CompLoad,
@@ -1608,61 +1618,61 @@ namespace WORKFLOW
 
     public class DATAMODEL_L
     {
-        public List<string> Judgement;
-        public List<List<string>> RealtimeStep2;
-        public List<List<string>> RealtimeStep3;
-        public List<List<string>> MasteringStep2;
-        public List<List<string>> MasteringStep3;
+        public List<float> Judgement;
+        public List<List<float>> RealtimeStep2;
+        public List<List<float>> RealtimeStep3;
+        public List<List<float>> MasteringStep2;
+        public List<List<float>> MasteringStep3;
 
-        public string _MaxLoad;
-        public string _Step2CompLoadRef;
-        public string _Step2ExtnLoadRef;
-        public string _Step3CompLoadRef;
-        public string _Step3ExtnLoadRef;
+        public float _MaxLoad;
+        public float _Step2CompLoadRef;
+        public float _Step2ExtnLoadRef;
+        public float _Step3CompLoadRef;
+        public float _Step3ExtnLoadRef;
 
-        List<string> _RealtimeStep2CompStroke;
-        List<string> _RealtimeStep2CompLoad;
-        List<string> _RealtimeStep2ExtnStroke;
-        List<string> _RealtimeStep2ExtnLoad;
-        List<string> _RealtimeStep2DiffStroke;
-        List<string> _RealtimeStep2DiffLoad;
+        List<float> _RealtimeStep2CompStroke;
+        List<float> _RealtimeStep2CompLoad;
+        List<float> _RealtimeStep2ExtnStroke;
+        List<float> _RealtimeStep2ExtnLoad;
+        List<float> _RealtimeStep2DiffStroke;
+        List<float> _RealtimeStep2DiffLoad;
 
-        List<string> _RealtimeStep3CompStroke;
-        List<string> _RealtimeStep3CompLoad;
-        List<string> _RealtimeStep3ExtnStroke;
-        List<string> _RealtimeStep3ExtnLoad;
-        List<string> _RealtimeStep3DiffStroke;
-        List<string> _RealtimeStep3DiffLoad;
+        List<float> _RealtimeStep3CompStroke;
+        List<float> _RealtimeStep3CompLoad;
+        List<float> _RealtimeStep3ExtnStroke;
+        List<float> _RealtimeStep3ExtnLoad;
+        List<float> _RealtimeStep3DiffStroke;
+        List<float> _RealtimeStep3DiffLoad;
 
-        List<string> _MasterStep2CompStroke;
-        List<string> _MasterStep2CompLoad;
-        List<string> _MasterStep2CompLoadLower;
-        List<string> _MasterStep2CompLoadUpper;
-        List<string> _MasterStep2ExtnStroke;
-        List<string> _MasterStep2ExtnLoad;
-        List<string> _MasterStep2ExtnLoadLower;
-        List<string> _MasterStep2ExtnLoadUpper;
-        List<string> _MasterStep2DiffStroke;
-        List<string> _MasterStep2DiffLoad;
-        List<string> _MasterStep2DiffLoadLower;
-        List<string> _MasterStep2DiffLoadUpper;
+        List<float> _MasterStep2CompStroke;
+        List<float> _MasterStep2CompLoad;
+        List<float> _MasterStep2CompLoadLower;
+        List<float> _MasterStep2CompLoadUpper;
+        List<float> _MasterStep2ExtnStroke;
+        List<float> _MasterStep2ExtnLoad;
+        List<float> _MasterStep2ExtnLoadLower;
+        List<float> _MasterStep2ExtnLoadUpper;
+        List<float> _MasterStep2DiffStroke;
+        List<float> _MasterStep2DiffLoad;
+        List<float> _MasterStep2DiffLoadLower;
+        List<float> _MasterStep2DiffLoadUpper;
 
-        List<string> _MasterStep3CompStroke;
-        List<string> _MasterStep3CompLoad;
-        List<string> _MasterStep3CompLoadLower;
-        List<string> _MasterStep3CompLoadUpper;
-        List<string> _MasterStep3ExtnStroke;
-        List<string> _MasterStep3ExtnLoad;
-        List<string> _MasterStep3ExtnLoadLower;
-        List<string> _MasterStep3ExtnLoadUpper;
-        List<string> _MasterStep3DiffStroke;
-        List<string> _MasterStep3DiffLoad;
-        List<string> _MasterStep3DiffLoadLower;
-        List<string> _MasterStep3DiffLoadUpper;
+        List<float> _MasterStep3CompStroke;
+        List<float> _MasterStep3CompLoad;
+        List<float> _MasterStep3CompLoadLower;
+        List<float> _MasterStep3CompLoadUpper;
+        List<float> _MasterStep3ExtnStroke;
+        List<float> _MasterStep3ExtnLoad;
+        List<float> _MasterStep3ExtnLoadLower;
+        List<float> _MasterStep3ExtnLoadUpper;
+        List<float> _MasterStep3DiffStroke;
+        List<float> _MasterStep3DiffLoad;
+        List<float> _MasterStep3DiffLoadLower;
+        List<float> _MasterStep3DiffLoadUpper;
 
         public DATAMODEL_L()
         {
-            Judgement = new List<string>()
+            Judgement = new List<float>()
             {
                 _MaxLoad,
                 _Step2CompLoadRef,
@@ -1671,7 +1681,7 @@ namespace WORKFLOW
                 _Step3ExtnLoadRef
             };
 
-            RealtimeStep2 = new List<List<string>>()
+            RealtimeStep2 = new List<List<float>>()
             {
                 _RealtimeStep2CompStroke,
                 _RealtimeStep2CompLoad,
@@ -1679,9 +1689,9 @@ namespace WORKFLOW
                 _RealtimeStep2ExtnLoad,
                 _RealtimeStep2DiffStroke,
                 _RealtimeStep2DiffLoad
-            };
+       .     };
 
-            RealtimeStep3 = new List<List<string>>()
+            RealtimeStep3 = new List<List<float>>()
             {
                 _RealtimeStep3CompStroke,
                 _RealtimeStep3CompLoad,
@@ -1691,7 +1701,7 @@ namespace WORKFLOW
                 _RealtimeStep3DiffLoad
             };
 
-            MasteringStep2 = new List<List<string>>()
+            MasteringStep2 = new List<List<float>>()
             {
                 _MasterStep2CompStroke,
                 _MasterStep2CompLoad,
@@ -1707,7 +1717,7 @@ namespace WORKFLOW
                 _MasterStep2DiffLoadUpper
             };
 
-            MasteringStep3 = new List<List<string>>()
+            MasteringStep3 = new List<List<float>>()
             {
                 _MasterStep3CompStroke,
                 _MasterStep3CompLoad,
