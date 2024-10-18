@@ -321,19 +321,88 @@ namespace WORKFLOW
             RealtimeFileR1.setRealtimeStep2(_Rdata.RealtimeStep2);
             RealtimeFileL1.setRealtimeStep2(_Ldata.RealtimeStep2);
 
-
-
-            //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
-            //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
             string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_20{_data.DTM[0]}\\MONTH_{_data.DTM[1]}\\DAY_{_data.DTM[2]}";
             CheckFolderPath(DirRealtime);
 
-            string _filenameR1 = ($"{DirRealtime}\\RealtimeData_RH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
-            RealtimeFileR1.FilePrint(_filenameR1);
+            if (_Rdata._Step1MaxLoad_NG == 1 | _Rdata._Step2CompRef_NG == 1 | _Rdata._Step2CompGraph_NG == 1 | _Rdata._Step2ExtnRef_NG == 1 | _Rdata._Step2ExtnGraph_NG == 1 | _Rdata._Step2DiffGraph_NG == 1)
+            {
+                RealtimeFileR1.SET_LABEL_NG();
 
-            string _filenameL1 = ($"{DirRealtime}\\RealtimeData_LH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
-            RealtimeFileL1.FilePrint(_filenameL1);
+                if(_Rdata._Step1MaxLoad_NG == 1)
+                {
+                    RealtimeFileR1.STEP1_MAXLOAD_NG_SET();
+                }
+                if (_Rdata._Step2CompRef_NG == 1)
+                {
+                    RealtimeFileR1.STEP2_COMP_REF_NG_SET();
+                }
+                if (_Rdata._Step2CompGraph_NG == 1)
+                {
+                    RealtimeFileR1.STEP2_COMP_GRAPH_NG_SET();
+                }
+                if (_Rdata._Step2ExtnRef_NG == 1)
+                {
+                    RealtimeFileR1.STEP2_EXTN_REF_NG_SET();
+                }
+                if (_Rdata._Step2ExtnGraph_NG == 1)
+                {
+                    RealtimeFileR1.STEP2_EXTN_GRAPH_NG_SET();
+                }
+                if (_Rdata._Step2DiffGraph_NG == 1)
+                {
+                    RealtimeFileR1.STEP2_DIFF_GRAPH_NG_SET();
+                }
 
+                string _filenameR1 = ($"{DirRealtime}\\RealtimeData_RH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}_NG_RESULT.xlsx");
+                RealtimeFileR1.FilePrint(_filenameR1);
+            }
+            else
+            {
+                string _filenameR1 = ($"{DirRealtime}\\RealtimeData_RH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
+                RealtimeFileR1.FilePrint(_filenameR1);
+            }
+
+            if (_Ldata._Step1MaxLoad_NG == 1 | _Ldata._Step2CompRef_NG == 1 | _Ldata._Step2CompGraph_NG == 1 | _Ldata._Step2ExtnRef_NG == 1 | _Ldata._Step2ExtnGraph_NG == 1 | _Ldata._Step2DiffGraph_NG == 1)
+            {
+                RealtimeFileL1.SET_LABEL_NG();
+
+                if (_Ldata._Step1MaxLoad_NG == 1)
+                {
+                    RealtimeFileL1.STEP1_MAXLOAD_NG_SET();
+                }
+                if (_Ldata._Step2CompRef_NG == 1)
+                {
+                    RealtimeFileL1.STEP2_COMP_REF_NG_SET();
+                }
+                if (_Ldata._Step2CompGraph_NG == 1)
+                {
+                    RealtimeFileL1.STEP2_COMP_GRAPH_NG_SET();
+                }
+                if (_Ldata._Step2ExtnRef_NG == 1)
+                {
+                    RealtimeFileL1.STEP2_EXTN_REF_NG_SET();
+                }
+                if (_Ldata._Step2ExtnGraph_NG == 1)
+                {
+                    RealtimeFileL1.STEP2_EXTN_GRAPH_NG_SET();
+                }
+                if (_Ldata._Step2DiffGraph_NG == 1)
+                {
+                    RealtimeFileL1.STEP2_DIFF_GRAPH_NG_SET();
+                }
+
+                string _filenameL1 = ($"{DirRealtime}\\RealtimeData_LH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}_NG_RESULT.xlsx");
+                RealtimeFileL1.FilePrint(_filenameL1);
+            }
+            else
+            {
+                string _filenameL1 = ($"{DirRealtime}\\RealtimeData_LH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
+                RealtimeFileL1.FilePrint(_filenameL1);
+            }
+
+            //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
+            //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
+            
             _realtimeReadFlag = false;
             _kvconnObject.writeDataCommand("W0C2", "", "0");
         }
