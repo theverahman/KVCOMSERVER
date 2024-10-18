@@ -263,6 +263,20 @@ namespace WORKFLOW
                     _kvreadRealtime(ref _Ldata.RealtimeStep2, "ZF210000", "ZF210400", "ZF210800", "ZF211200", "ZF210000", "ZF510500", 400);
                     //_kvreadRealtime(ref _Ldata.RealtimeStep3, "ZF211604", "ZF212004", "ZF212404", "ZF213208", "ZF211604", "ZF510500", 400);
 
+                    _Rdata._Step1MaxLoad_NG = _kvconnObject.readbitCommand("LR201");
+                    _Rdata._Step2CompRef_NG = _kvconnObject.readbitCommand("LR203");
+                    _Rdata._Step2CompGraph_NG = _kvconnObject.readbitCommand("LR205");
+                    _Rdata._Step2ExtnRef_NG = _kvconnObject.readbitCommand("LR207");
+                    _Rdata._Step2ExtnGraph_NG = _kvconnObject.readbitCommand("LR209");
+                    _Rdata._Step2DiffGraph_NG = _kvconnObject.readbitCommand("LR211");
+
+                    _Ldata._Step1MaxLoad_NG = _kvconnObject.readbitCommand("LR601");
+                    _Ldata._Step2CompRef_NG = _kvconnObject.readbitCommand("LR603");
+                    _Ldata._Step2CompGraph_NG = _kvconnObject.readbitCommand("LR605");
+                    _Ldata._Step2ExtnRef_NG = _kvconnObject.readbitCommand("LR607");
+                    _Ldata._Step2ExtnGraph_NG = _kvconnObject.readbitCommand("LR609");
+                    _Ldata._Step2DiffGraph_NG = _kvconnObject.readbitCommand("LR611");
+
                     _excelStoreRealtimeData();
                 }
                 if (_realtimeReadFlag)
@@ -306,6 +320,8 @@ namespace WORKFLOW
 
             RealtimeFileR1.setRealtimeStep2(_Rdata.RealtimeStep2);
             RealtimeFileL1.setRealtimeStep2(_Ldata.RealtimeStep2);
+
+
 
             //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
             //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
@@ -1494,12 +1510,12 @@ namespace WORKFLOW
 
     public class DATAMODEL_R
     {
-        public bool _Step1MaxLoad_NG;
-        public bool _Step2CompRef_NG;
-        public bool _Step2ExtnRef_NG;
-        public bool _Step2CompGraph_NG;
-        public bool _Step2ExtnGraph_NG;
-        public bool _Step2DiffGraph_NG;
+        public int _Step1MaxLoad_NG;
+        public int _Step2CompRef_NG;
+        public int _Step2ExtnRef_NG;
+        public int _Step2CompGraph_NG;
+        public int _Step2ExtnGraph_NG;
+        public int _Step2DiffGraph_NG;
 
         public List<float> Judgement;
         public List<List<float>> RealtimeStep2;
@@ -1620,12 +1636,12 @@ namespace WORKFLOW
 
     public class DATAMODEL_L
     {
-        public bool _Step1MaxLoad_NG;
-        public bool _Step2CompRef_NG;
-        public bool _Step2ExtnRef_NG;
-        public bool _Step2CompGraph_NG;
-        public bool _Step2ExtnGraph_NG;
-        public bool _Step2DiffGraph_NG;
+        public int _Step1MaxLoad_NG;
+        public int _Step2CompRef_NG;
+        public int _Step2ExtnRef_NG;
+        public int _Step2CompGraph_NG;
+        public int _Step2ExtnGraph_NG;
+        public int _Step2DiffGraph_NG;
 
         public List<float> Judgement;
         public List<List<float>> RealtimeStep2;
