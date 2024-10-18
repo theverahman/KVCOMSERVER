@@ -32,8 +32,6 @@ using System.DirectoryServices;
 
 namespace KVCOMSERVER
 {
-
-    
     internal class Program
     {
         //WORKFLOW.WORKFLOWHANDLER _WorkflowHandler = new WORKFLOW.WORKFLOWHANDLER(1);
@@ -48,15 +46,12 @@ namespace KVCOMSERVER
             Application.Run(new Form1());
         }
     }
-
-
-    
-
 }
 
 
 namespace WORKFLOW
 {
+
     public class WORKFLOWHANDLER
     {
         private KVCOMSERVER.Form1 _uiObject;
@@ -195,7 +190,7 @@ namespace WORKFLOW
                 //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 _kvconnObject.writeDataCommand("W0A0", "", "1");
                 //_kvconnObject.CloseConnection();
-                
+
             }
             if ((byte)(STAT_INPUT[0] & 0x01) == 0x00)
             {
@@ -203,11 +198,11 @@ namespace WORKFLOW
                 //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 _kvconnObject.writeDataCommand("W0A0", "", "0");
                 //_kvconnObject.CloseConnection();
-                
+
             }
 
         }
-        
+
 
 
         void _eeipTriggerReadParameter(byte[] STAT_INPUT)
@@ -233,7 +228,7 @@ namespace WORKFLOW
                     //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                     _kvconnObject.writeDataCommand("W0C1", "", "0");
                     //_kvconnObject.CloseConnection();
-                    
+
                     Thread.Sleep(1);
                 }
 
@@ -267,7 +262,7 @@ namespace WORKFLOW
                     //_kvreadRealtime(ref _Rdata.RealtimeStep3, "ZF111604", "ZF112004", "ZF112404", "ZF113208", "ZF111604", "ZF510000", 400);
                     _kvreadRealtime(ref _Ldata.RealtimeStep2, "ZF210000", "ZF210400", "ZF210800", "ZF211200", "ZF210000", "ZF510500", 400);
                     //_kvreadRealtime(ref _Ldata.RealtimeStep3, "ZF211604", "ZF212004", "ZF212404", "ZF213208", "ZF211604", "ZF510500", 400);
-                    
+
                     _excelStoreRealtimeData();
                 }
                 if (_realtimeReadFlag)
@@ -275,7 +270,7 @@ namespace WORKFLOW
                     //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                     _kvconnObject.writeDataCommand("W0C2", "", "0");
                     //_kvconnObject.CloseConnection();
-                    
+
                     Thread.Sleep(1);
                 }
             }
@@ -640,7 +635,7 @@ namespace WORKFLOW
             //catch { }
         }
 
-        void _eeipreadJudgement(ref List<object> judgementresult, Int16 addr)
+        void _eeipreadJudgement(ref List<float> judgementresult, Int16 addr)
         {
             //try
             {
@@ -672,7 +667,7 @@ namespace WORKFLOW
                         iz++;
                         Array.Resize(ref _buffJudgement, iz);
                         _buffJudgement[iz - 1] = BitConverter.ToSingle(buff, 0);
-                        judgementresult[iz - 1] = _buffJudgement[iz - 1].ToString();
+                        judgementresult[iz - 1] = _buffJudgement[iz - 1];
                         iv = 0;
                         Array.Clear(buff);
                     }
@@ -688,7 +683,7 @@ namespace WORKFLOW
                             iz++;
                             Array.Resize(ref _buffJudgement, iz);
                             _buffJudgement[iz - 1] = BitConverter.ToSingle(buff, 0);
-                            judgementresult[iz - 1] = _buffJudgement[iz - 1].ToString();
+                            judgementresult[iz - 1] = _buffJudgement[iz - 1];
                             iv = 0;
                             Array.Clear(buff);
 
@@ -714,12 +709,12 @@ namespace WORKFLOW
         {
             try
             {
-                
+
             }
             catch { }
         }
 
-        void _kvreadRealtime(ref List<List<object>> realtimeresult, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, int count)
+        void _kvreadRealtime(ref List<List<float>> realtimeresult, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, int count)
         {
             //try
             {
@@ -762,7 +757,7 @@ namespace WORKFLOW
                 //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr6, count));
                 //Thread.Sleep(20);
-                
+
                 //_kvconnObject.CloseConnection();
                 //Thread.Sleep(20);
 
@@ -1258,7 +1253,7 @@ namespace WORKFLOW
 
                     _uiPlot1UpdateFlag = true;
                 }
-                else if((byte)(TRIG[0] & 0x01) == 0x01) 
+                else if ((byte)(TRIG[0] & 0x01) == 0x01)
                 {
                     parse1_idx += 1;
                     Array.Resize(ref dXD1, dXD1.Length + 1);
@@ -1407,13 +1402,13 @@ namespace WORKFLOW
     public class DATAMODEL
     {
         public string _activeModelName;
-        public　string _activeKayabaNumber;
-        public　string _activeDay;
-        public　string _activeMonth;
-        public　string _activeYear;
-        public　string _activeHour;
-        public　string _activeMinute;
-        public　string _activeSecond;
+        public string _activeKayabaNumber;
+        public string _activeDay;
+        public string _activeMonth;
+        public string _activeYear;
+        public string _activeHour;
+        public string _activeMinute;
+        public string _activeSecond;
 
         public int _step1Enable;
         public float _step1Stroke;
@@ -1444,9 +1439,9 @@ namespace WORKFLOW
         public float _step3ExtendLoadRef;
         public int _step3LoadRefTolerance;
 
-        public　List<object> DTM;
-        public　List<object> Step1Param;
-        public　List<object> Step2345Param;
+        public List<object> DTM;
+        public List<object> Step1Param;
+        public List<object> Step2345Param;
 
         public DATAMODEL()
         {
@@ -1499,6 +1494,13 @@ namespace WORKFLOW
 
     public class DATAMODEL_R
     {
+        public bool _Step1MaxLoad_NG;
+        public bool _Step2CompRef_NG;
+        public bool _Step2ExtnRef_NG;
+        public bool _Step2CompGraph_NG;
+        public bool _Step2ExtnGraph_NG;
+        public bool _Step2DiffGraph_NG;
+
         public List<float> Judgement;
         public List<List<float>> RealtimeStep2;
         public List<List<float>> RealtimeStep3;
@@ -1517,14 +1519,14 @@ namespace WORKFLOW
         List<float> _RealtimeStep2ExtnLoad;
         List<float> _RealtimeStep2DiffStroke;
         List<float> _RealtimeStep2DiffLoad;
-             
+
         List<float> _RealtimeStep3CompStroke;
         List<float> _RealtimeStep3CompLoad;
         List<float> _RealtimeStep3ExtnStroke;
         List<float> _RealtimeStep3ExtnLoad;
         List<float> _RealtimeStep3DiffStroke;
         List<float> _RealtimeStep3DiffLoad;
-             
+
         List<float> _MasterStep2CompStroke;
         List<float> _MasterStep2CompLoad;
         List<float> _MasterStep2CompLoadLower;
@@ -1537,7 +1539,7 @@ namespace WORKFLOW
         List<float> _MasterStep2DiffLoad;
         List<float> _MasterStep2DiffLoadLower;
         List<float> _MasterStep2DiffLoadUpper;
-             
+
         List<float> _MasterStep3CompStroke;
         List<float> _MasterStep3CompLoad;
         List<float> _MasterStep3CompLoadLower;
@@ -1553,7 +1555,7 @@ namespace WORKFLOW
 
         public DATAMODEL_R()
         {
-            Judgement = new List<float>() 
+            Judgement = new List<float>()
             {
                 _MaxLoad,
                 _Step2CompLoadRef,
@@ -1618,6 +1620,13 @@ namespace WORKFLOW
 
     public class DATAMODEL_L
     {
+        public bool _Step1MaxLoad_NG;
+        public bool _Step2CompRef_NG;
+        public bool _Step2ExtnRef_NG;
+        public bool _Step2CompGraph_NG;
+        public bool _Step2ExtnGraph_NG;
+        public bool _Step2DiffGraph_NG;
+
         public List<float> Judgement;
         public List<List<float>> RealtimeStep2;
         public List<List<float>> RealtimeStep3;
@@ -1689,7 +1698,7 @@ namespace WORKFLOW
                 _RealtimeStep2ExtnLoad,
                 _RealtimeStep2DiffStroke,
                 _RealtimeStep2DiffLoad
-       .     };
+            };
 
             RealtimeStep3 = new List<List<float>>()
             {
