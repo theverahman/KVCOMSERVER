@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using ScottPlot;
 using static OpenTK.Graphics.OpenGL.GL;
+using DocumentFormat.OpenXml.Bibliography;
+using System.IO;
 
 namespace KVCOMSERVER
 {
@@ -49,6 +51,8 @@ namespace KVCOMSERVER
             textBox2.Text = settingPortIp.ToString();
 
 
+
+
             //backgroundThread_1 = new Thread(_WorkflowHandler.BackgroundWork_1);
             //backgroundThread_2 = new Thread(_WorkflowHandler.BackgroundWork_2);
             //backgroundThread_3 = new Thread(_WorkflowHandler.BackgroundWork_3);
@@ -62,15 +66,15 @@ namespace KVCOMSERVER
 
         }
 
-        public void setTextBox2(string text)
-        {
-            richTextBox2.Text = text;
-        }
+        //public void setTextBox2(string text)
+        //{
+        //richTextBox2.Text = text;
+        //}
 
-        public string getTextBox2()
-        {
-            return richTextBox2.Text;
-        }
+        //public string getTextBox2()
+        //{
+        //return richTextBox2.Text;
+        //}
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -106,9 +110,9 @@ namespace KVCOMSERVER
 
         private void button3_Click(object sender, EventArgs e)
         {
-            msgToBeSent = richTextBox1.Text + "\r";
-            _WorkflowHandler.SendMessage(msgToBeSent);
-            Thread.Sleep(100);
+            //msgToBeSent = richTextBox1.Text + "\r";
+            //_WorkflowHandler.SendMessage(msgToBeSent);
+            //Thread.Sleep(100);
         }
 
 
@@ -205,6 +209,116 @@ namespace KVCOMSERVER
         private void tabPage1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        void CheckFolderPath(string pathblazer) { if (!Directory.Exists(pathblazer)) { Directory.CreateDirectory(pathblazer); } }
+
+        public void RealtimeUpdateList()
+        {
+            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            CheckFolderPath(DirRealtime);
+
+            string[] listfiles = new string[] { };
+            string[] listfiles_date = new string[] { };
+            int idx1 = new int();
+
+            foreach (string files in Directory.GetFiles(DirRealtime))
+            {
+                idx1 += 1;
+                Array.Resize(ref listfiles, idx1);
+                Array.Resize(ref listfiles_date, idx1);
+                listfiles[idx1 - 1] = Path.GetFileName(files);
+                listfiles_date[idx1 - 1] = File.GetCreationTime(files).ToLongTimeString();
+            }
+
+            DataTable listtablefile = new DataTable();
+            listtablefile.Columns.Add("Time");
+            listtablefile.Columns.Add("File Name");
+
+            for (int i = 0; i < idx1; i++)
+            {
+                DataRow newRow = listtablefile.NewRow();
+                newRow["Time"] = listfiles_date[i];
+                newRow["File Name"] = listfiles[i];
+                listtablefile.Rows.Add(newRow);
+            }
+
+            dataGridView1.DataSource = listtablefile;
+            dataGridView1.Update();
+        }
+
+        public void MasteringUpdateList()
+        {
+            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
+            CheckFolderPath(DirRealtime);
+
+            string[] listfiles = new string[] { };
+            string[] listfiles_date = new string[] { };
+            int idx2 = new int();
+
+            foreach (string files in Directory.GetFiles(DirRealtime))
+            {
+                idx2 += 1;
+                Array.Resize(ref listfiles, idx2);
+                Array.Resize(ref listfiles_date, idx2);
+                listfiles[idx2 - 1] = Path.GetFileName(files);
+                listfiles_date[idx2 - 1] = File.GetCreationTime(files).ToLongTimeString();
+            }
+
+            DataTable listtablefile = new DataTable();
+            listtablefile.Columns.Add("Time");
+            listtablefile.Columns.Add("File Name");
+
+            for (int i = 0; i < idx2; i++)
+            {
+                DataRow newRow = listtablefile.NewRow();
+                newRow["Time"] = listfiles_date[i];
+                newRow["File Name"] = listfiles[i];
+                listtablefile.Rows.Add(newRow);
+            }
+
+            dataGridView2.DataSource = listtablefile;
+            dataGridView2.Update();
+        }
+
+        public void RealtimeList_SetDate(DateTime daten)
+        {
+            dateTimePicker1.Value = daten;
+        }
+
+        public DateTime RealtimeList_GetDate()
+        {
+            return dateTimePicker1.Value;
+        }
+
+        private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
+        {
+            RealtimeUpdateList();
         }
     }
 

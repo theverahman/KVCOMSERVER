@@ -29,6 +29,7 @@ using MoreLinq.Extensions;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Reflection;
 using System.DirectoryServices;
+using SixLabors.ImageSharp.Drawing;
 
 namespace KVCOMSERVER
 {
@@ -400,9 +401,21 @@ namespace WORKFLOW
                 RealtimeFileL1.FilePrint(_filenameL1);
             }
 
+            DateTime daten = new DateTime(2000 + Int16.Parse(_data.DTM[0].ToString()), Int16.Parse(_data.DTM[1].ToString()), Int16.Parse(_data.DTM[2].ToString()));
+            if (daten != _uiObject.RealtimeList_GetDate())
+            {
+                _uiObject.RealtimeList_SetDate(daten);
+            }
+            else if (daten == _uiObject.RealtimeList_GetDate())
+            {
+                _uiObject.RealtimeUpdateList();
+            }
+            
+            
+
             //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
             //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
-            
+
             _realtimeReadFlag = false;
             _kvconnObject.writeDataCommand("W0C2", "", "0");
         }
@@ -418,7 +431,7 @@ namespace WORKFLOW
                     {
                         _kvconnObject.connRecv();
                         _kvMsgRecv = new string(Encoding.ASCII.GetString(_kvconnObject.getMsgRecv(), 0, _kvconnObject.getByteRecv()));
-                        _uiObject.setTextBox2(_kvMsgRecv);
+                        //_uiObject.setTextBox2(_kvMsgRecv);
                     }
                 }
             }
