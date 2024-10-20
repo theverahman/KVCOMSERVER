@@ -251,10 +251,10 @@ namespace WORKFLOW
             {
                 if (!_realtimeReadFlag)
                 {
+                    _realtimeReadFlag = true;
+
                     Debug.Write("RL Read On");
                     Debug.Write((char)'\n');
-
-                    _realtimeReadFlag = true;
 
                     _eeipreadDateTime();
                     _eeipreadJudgement(ref _Rdata.Judgement, 0xA5);
@@ -279,6 +279,11 @@ namespace WORKFLOW
                     _Ldata._Step2DiffGraph_NG = _kvconnObject.readbitCommand("LR611");
 
                     _excelStoreRealtimeData();
+
+                    _backgroundDataPlot1Read();
+                    _backgroundDataPlot2Read();
+                    _backgroundDataPlot3Read();
+                    _backgroundDataPlot4Read();
                 }
                 if (_realtimeReadFlag)
                 {
