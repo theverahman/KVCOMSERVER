@@ -322,7 +322,7 @@ namespace WORKFLOW
             RealtimeFileR1.setRealtimeStep2(_Rdata.RealtimeStep2);
             RealtimeFileL1.setRealtimeStep2(_Ldata.RealtimeStep2);
 
-            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_20{_data.DTM[0]}\\MONTH_{_data.DTM[1]}\\DAY_{_data.DTM[2]}";
+            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{_data.DTM[0]}\\MONTH_{_data.DTM[1]}\\DAY_{_data.DTM[2]}";
             CheckFolderPath(DirRealtime);
 
             if (_Rdata._Step1MaxLoad_NG == 1 | _Rdata._Step2CompRef_NG == 1 | _Rdata._Step2CompGraph_NG == 1 | _Rdata._Step2ExtnRef_NG == 1 | _Rdata._Step2ExtnGraph_NG == 1 | _Rdata._Step2DiffGraph_NG == 1)
@@ -340,6 +340,11 @@ namespace WORKFLOW
                 if (_Rdata._Step2CompGraph_NG == 1)
                 {
                     RealtimeFileR1.STEP2_COMP_GRAPH_NG_SET();
+                    D1Col = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    D1Col = System.Drawing.Color.Green;
                 }
                 if (_Rdata._Step2ExtnRef_NG == 1)
                 {
@@ -348,7 +353,13 @@ namespace WORKFLOW
                 if (_Rdata._Step2ExtnGraph_NG == 1)
                 {
                     RealtimeFileR1.STEP2_EXTN_GRAPH_NG_SET();
+                    D2Col = System.Drawing.Color.Red;
                 }
+                else
+                {
+                    D2Col = System.Drawing.Color.Green;
+                }
+                
                 if (_Rdata._Step2DiffGraph_NG == 1)
                 {
                     RealtimeFileR1.STEP2_DIFF_GRAPH_NG_SET();
@@ -378,6 +389,11 @@ namespace WORKFLOW
                 if (_Ldata._Step2CompGraph_NG == 1)
                 {
                     RealtimeFileL1.STEP2_COMP_GRAPH_NG_SET();
+                    D3Col = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    D3Col = System.Drawing.Color.Green;
                 }
                 if (_Ldata._Step2ExtnRef_NG == 1)
                 {
@@ -386,6 +402,11 @@ namespace WORKFLOW
                 if (_Ldata._Step2ExtnGraph_NG == 1)
                 {
                     RealtimeFileL1.STEP2_EXTN_GRAPH_NG_SET();
+                    D4Col = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    D4Col = System.Drawing.Color.Green;
                 }
                 if (_Ldata._Step2DiffGraph_NG == 1)
                 {
@@ -411,8 +432,6 @@ namespace WORKFLOW
                 _uiObject.RealtimeUpdateList();
             }
             
-            
-
             //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
             //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
 
@@ -543,9 +562,15 @@ namespace WORKFLOW
 
                 for (int i = 0; i < _data.DTM.Count(); i++)
                 {
-                    _data.DTM[i] = _buffDTM[i].ToString();
+                    if (i == 0)
+                    {
+                        _data.DTM[i] = Convert.ToString(2000 + _buffDTM[i]);
+                    }
+                    else
+                    {
+                        _data.DTM[i] = _buffDTM[i].ToString();
+                    }
                     //Debug.Write(_data.DTM[i].ToString());
-
                 }
                 //Debug.Write((char)'\n');
             }
@@ -1213,6 +1238,10 @@ namespace WORKFLOW
         public double[] dYD3;
         public double[] dYD4;
 
+        System.Drawing.Color D1Col;
+        System.Drawing.Color D2Col;
+        System.Drawing.Color D3Col;
+        System.Drawing.Color D4Col;
 
         bool _uiPlot1UpdateFlag;
         bool _uiPlot2UpdateFlag;
@@ -1238,11 +1267,11 @@ namespace WORKFLOW
 
                 if (_uiObject.InvokeRequired)
                 {
-                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot1Update(xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot1Update(xd, yd, D1Col)));
                 }
                 else
                 {
-                    _uiObject.Plot1Update(xd, yd);
+                    _uiObject.Plot1Update(xd, yd, D1Col);
                 }
 
                 _uiPlot1UpdateFlag = false;
@@ -1263,11 +1292,11 @@ namespace WORKFLOW
 
                 if (_uiObject.InvokeRequired)
                 {
-                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot2Update(xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot2Update(xd, yd, D2Col)));
                 }
                 else
                 {
-                    _uiObject.Plot2Update(xd, yd);
+                    _uiObject.Plot2Update(xd, yd, D2Col);
                 }
 
                 _uiPlot2UpdateFlag = false;
@@ -1288,11 +1317,11 @@ namespace WORKFLOW
 
                 if (_uiObject.InvokeRequired)
                 {
-                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot3Update(xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot3Update(xd, yd, D3Col)));
                 }
                 else
                 {
-                    _uiObject.Plot3Update(xd, yd);
+                    _uiObject.Plot3Update(xd, yd, D3Col);
                 }
 
                 _uiPlot3UpdateFlag = false;
@@ -1313,11 +1342,11 @@ namespace WORKFLOW
 
                 if (_uiObject.InvokeRequired)
                 {
-                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot4Update(xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot4Update(xd, yd, D4Col)));
                 }
                 else
                 {
-                    _uiObject.Plot4Update(xd, yd);
+                    _uiObject.Plot4Update(xd, yd, D4Col);
                 }
 
                 _uiPlot4UpdateFlag = false;
@@ -1331,6 +1360,20 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
+                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110000", 400));
+                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110400", 400));
+
+                List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
+                List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
+
+                float[] fXD1 = float_comp_stroke.ToArray();
+                float[] fYD1 = float_comp_load.ToArray();
+
+                dXD1 = Array.ConvertAll(fXD1, x => (double)x);
+                dYD1 = Array.ConvertAll(fYD1, x => (double)x);
+
+                _uiPlot1UpdateFlag = true;
+                /*
                 byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
                 if ((byte)(TRIG[0] & 0x02) == 0x02)
                 {
@@ -1367,6 +1410,7 @@ namespace WORKFLOW
 
                     _uiPlot1UpdateFlag = true;
                 }
+                */
             }
         }
 
@@ -1375,6 +1419,20 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
+                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110800", 400));
+                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF111200", 400));
+
+                List<float> float_extn_stroke = new List<float>(hex16tofloat32(extn_stroke));
+                List<float> float_extn_load = new List<float>(hex16tofloat32(extn_load));
+
+                float[] fXD2 = float_extn_stroke.ToArray();
+                float[] fYD2 = float_extn_load.ToArray();
+
+                dXD2 = Array.ConvertAll(fXD2, x => (double)x);
+                dYD2 = Array.ConvertAll(fYD2, x => (double)x);
+
+                _uiPlot2UpdateFlag = true;
+                /*
                 byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
                 if ((byte)(TRIG[2] & 0x02) == 0x02)
                 {
@@ -1392,7 +1450,7 @@ namespace WORKFLOW
                     dYD2[parse2_idx] = _bytearrayToDoubleYAxis(RH_EXTN_LOAD_REALTIME)[0];
 
                     _kvconnObject.writeDataCommand("W0FE1", "", "3");
-                    _uiPlot1UpdateFlag = true;
+                    _uiPlot2UpdateFlag = true;
                 }
                 else if ((byte)(TRIG[2] & 0x01) == 0x01)
                 {
@@ -1409,6 +1467,7 @@ namespace WORKFLOW
                     _kvconnObject.writeDataCommand("W0FE1", "", "3");
                     _uiPlot2UpdateFlag = true;
                 }
+                */
             }
         }
 
@@ -1417,6 +1476,20 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
+                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210000", 400));
+                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210400", 400));
+
+                List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
+                List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
+
+                float[] fXD3 = float_comp_stroke.ToArray();
+                float[] fYD3 = float_comp_load.ToArray();
+
+                dXD3 = Array.ConvertAll(fXD3, x => (double)x);
+                dYD3 = Array.ConvertAll(fYD3, x => (double)x);
+
+                _uiPlot3UpdateFlag = true;
+                /*
                 byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
                 if ((byte)(TRIG[4] & 0x02) == 0x02)
                 {
@@ -1451,6 +1524,7 @@ namespace WORKFLOW
                     _kvconnObject.writeDataCommand("W0FE2", "", "3");
                     _uiPlot3UpdateFlag = true;
                 }
+                */
             }
         }
 
@@ -1459,6 +1533,20 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
+                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210800", 400));
+                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF211200", 400));
+
+                List<float> float_extn_stroke = new List<float>(hex16tofloat32(extn_stroke));
+                List<float> float_extn_load = new List<float>(hex16tofloat32(extn_load));
+
+                float[] fXD4 = float_extn_stroke.ToArray();
+                float[] fYD4 = float_extn_load.ToArray();
+
+                dXD4 = Array.ConvertAll(fXD4, x => (double)x);
+                dYD4 = Array.ConvertAll(fYD4, x => (double)x);
+
+                _uiPlot4UpdateFlag = true;
+                /*
                 byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
                 if ((byte)(TRIG[6] & 0x02) == 0x02)
                 {
@@ -1493,6 +1581,7 @@ namespace WORKFLOW
                     _kvconnObject.writeDataCommand("W0FE3", "", "3");
                     _uiPlot4UpdateFlag = true;
                 }
+                */
             }
         }
     }

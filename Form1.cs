@@ -18,6 +18,7 @@ using ScottPlot;
 using static OpenTK.Graphics.OpenGL.GL;
 using DocumentFormat.OpenXml.Bibliography;
 using System.IO;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace KVCOMSERVER
 {
@@ -159,36 +160,139 @@ namespace KVCOMSERVER
             button6.BackColor = System.Drawing.Color.BlueViolet;
         }
 
-        public void Plot1Update(double[] xd, double[] yd)
+        public void Plot1Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot1.Reset();
-            var sp1 = formsPlot1.Plot.Add.Scatter(xd, yd);
+            var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
+            sp1.Color = ScottPlot.Color.FromColor(linecolor);
             formsPlot1.Plot.Axes.AntiAlias(true);
             formsPlot1.Refresh();
         }
 
-        public void Plot2Update(double[] xd, double[] yd)
+        public void Plot1AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
+            sp1.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot1.Plot.Axes.AntiAlias(true);
+            formsPlot1.Refresh();
+        }
+
+        public void Plot2Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot2.Reset();
-            var sp2 = formsPlot2.Plot.Add.Scatter(xd, yd);
+            var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
+            sp2.Color = ScottPlot.Color.FromColor(linecolor);
             formsPlot2.Plot.Axes.AntiAlias(true);
             formsPlot2.Refresh();
         }
 
-        public void Plot3Update(double[] xd, double[] yd)
+        public void Plot2AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
+            sp2.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot2.Plot.Axes.AntiAlias(true);
+            formsPlot2.Refresh();
+        }
+
+        public void Plot3Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot3.Reset();
-            var sp3 = formsPlot3.Plot.Add.Scatter(xd, yd);
+            var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
+            sp3.Color = ScottPlot.Color.FromColor(linecolor);
             formsPlot3.Plot.Axes.AntiAlias(true);
             formsPlot3.Refresh();
         }
 
-        public void Plot4Update(double[] xd, double[] yd)
+        public void Plot3AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
+            sp3.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot3.Plot.Axes.AntiAlias(true);
+            formsPlot3.Refresh();
+        }
+
+        public void Plot4Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot4.Reset();
-            var sp4 = formsPlot4.Plot.Add.Scatter(xd, yd);
+            var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
+            sp4.Color = ScottPlot.Color.FromColor(linecolor);
             formsPlot4.Plot.Axes.AntiAlias(true);
             formsPlot4.Refresh();
+        }
+
+        public void Plot4ShowLimit(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
+            sp4.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot4.Plot.Axes.AntiAlias(true);
+            formsPlot4.Refresh();
+        }
+
+        public void Plot5Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot5.Reset();
+            var sp5 = formsPlot5.Plot.Add.Scatter(xd, yd);
+            sp5.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot5.Plot.Axes.AntiAlias(true);
+            formsPlot5.Refresh();
+        }
+        public void Plot5UAddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp5 = formsPlot5.Plot.Add.Scatter(xd, yd);
+            sp5.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot5.Plot.Axes.AntiAlias(true);
+            formsPlot5.Refresh();
+        }
+
+        public void Plot6Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot6.Reset();
+            var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
+            sp6.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot6.Plot.Axes.AntiAlias(true);
+            formsPlot6.Refresh();
+        }
+
+        public void Plot6AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
+            sp6.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot6.Plot.Axes.AntiAlias(true);
+            formsPlot6.Refresh();
+        }
+
+        public void Plot7Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot7.Reset();
+            var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
+            sp7.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot7.Plot.Axes.AntiAlias(true);
+            formsPlot7.Refresh();
+        }
+
+        public void Plot7AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
+            sp7.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot7.Plot.Axes.AntiAlias(true);
+            formsPlot7.Refresh();
+        }
+
+        public void Plot8Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot8.Reset();
+            var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
+            sp8.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot8.Plot.Axes.AntiAlias(true);
+            formsPlot8.Refresh();
+        }
+
+        public void Plot8AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
+            sp8.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot8.Plot.Axes.AntiAlias(true);
+            formsPlot8.Refresh();
         }
 
         private void tabPage4_Click(object sender, EventArgs e)
@@ -252,7 +356,7 @@ namespace KVCOMSERVER
                 idx1 += 1;
                 Array.Resize(ref listfiles, idx1);
                 Array.Resize(ref listfiles_date, idx1);
-                listfiles[idx1 - 1] = Path.GetFileName(files);
+                listfiles[idx1 - 1] = System.IO.Path.GetFileName(files);
                 listfiles_date[idx1 - 1] = File.GetCreationTime(files).ToLongTimeString();
             }
 
@@ -274,19 +378,19 @@ namespace KVCOMSERVER
 
         public void MasteringUpdateList()
         {
-            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
-            CheckFolderPath(DirRealtime);
+            string DirMaster = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
+            CheckFolderPath(DirMaster);
 
             string[] listfiles = new string[] { };
             string[] listfiles_date = new string[] { };
             int idx2 = new int();
 
-            foreach (string files in Directory.GetFiles(DirRealtime))
+            foreach (string files in Directory.GetFiles(DirMaster))
             {
                 idx2 += 1;
                 Array.Resize(ref listfiles, idx2);
                 Array.Resize(ref listfiles_date, idx2);
-                listfiles[idx2 - 1] = Path.GetFileName(files);
+                listfiles[idx2 - 1] = System.IO.Path.GetFileName(files);
                 listfiles_date[idx2 - 1] = File.GetCreationTime(files).ToLongTimeString();
             }
 
@@ -319,6 +423,22 @@ namespace KVCOMSERVER
         private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
         {
             RealtimeUpdateList();
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            CheckFolderPath(DirRealtime);
+            string selectedfile = new string(dataGridView1.SelectedRows[1].Index.ToString());
+            System.Diagnostics.Process.Start(($"{DirRealtime}\\{selectedfile}"));
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            string DirMaster = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
+            CheckFolderPath(DirMaster);
+            string selectedfile = new string(dataGridView2.SelectedRows[1].Index.ToString());
+            System.Diagnostics.Process.Start(($"{DirMaster}\\{selectedfile}"));
         }
     }
 

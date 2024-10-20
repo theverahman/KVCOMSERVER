@@ -38,6 +38,7 @@
             button4 = new System.Windows.Forms.Button();
             tabControl1 = new System.Windows.Forms.TabControl();
             tabPage1 = new System.Windows.Forms.TabPage();
+            button19 = new System.Windows.Forms.Button();
             button8 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
             label3 = new System.Windows.Forms.Label();
@@ -58,6 +59,7 @@
             formsPlot1 = new ScottPlot.WinForms.FormsPlot();
             tabPage7 = new System.Windows.Forms.TabPage();
             tabPage6 = new System.Windows.Forms.TabPage();
+            button20 = new System.Windows.Forms.Button();
             button12 = new System.Windows.Forms.Button();
             button11 = new System.Windows.Forms.Button();
             button9 = new System.Windows.Forms.Button();
@@ -195,6 +197,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button19);
             tabPage1.Controls.Add(button8);
             tabPage1.Controls.Add(button3);
             tabPage1.Controls.Add(label3);
@@ -209,6 +212,16 @@
             tabPage1.Text = "REALTIME DATA LIST";
             tabPage1.UseVisualStyleBackColor = true;
             tabPage1.Click += tabPage1_Click;
+            // 
+            // button19
+            // 
+            button19.Location = new System.Drawing.Point(102, 597);
+            button19.Name = "button19";
+            button19.Size = new System.Drawing.Size(91, 60);
+            button19.TabIndex = 9;
+            button19.Text = "OPEN SELECTED";
+            button19.UseVisualStyleBackColor = true;
+            button19.Click += button19_Click;
             // 
             // button8
             // 
@@ -325,9 +338,9 @@
             label17.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             label17.Location = new System.Drawing.Point(460, 326);
             label17.Name = "label17";
-            label17.Size = new System.Drawing.Size(208, 18);
+            label17.Size = new System.Drawing.Size(192, 18);
             label17.TabIndex = 11;
-            label17.Text = "RH SIDE COMPRESSION GRAPH";
+            label17.Text = "RH SIDE EXTENSION GRAPH";
             label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label16
@@ -406,6 +419,7 @@
             // 
             // tabPage6
             // 
+            tabPage6.Controls.Add(button20);
             tabPage6.Controls.Add(button12);
             tabPage6.Controls.Add(button11);
             tabPage6.Controls.Add(button9);
@@ -418,6 +432,16 @@
             tabPage6.TabIndex = 5;
             tabPage6.Text = "MASTER DATA LIST";
             tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // button20
+            // 
+            button20.Location = new System.Drawing.Point(101, 596);
+            button20.Name = "button20";
+            button20.Size = new System.Drawing.Size(91, 60);
+            button20.TabIndex = 14;
+            button20.Text = "OPEN SELECTED";
+            button20.UseVisualStyleBackColor = true;
+            button20.Click += button20_Click;
             // 
             // button12
             // 
@@ -519,9 +543,9 @@
             label18.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             label18.Location = new System.Drawing.Point(460, 326);
             label18.Name = "label18";
-            label18.Size = new System.Drawing.Size(208, 18);
+            label18.Size = new System.Drawing.Size(192, 18);
             label18.TabIndex = 15;
-            label18.Text = "RH SIDE COMPRESSION GRAPH";
+            label18.Text = "RH SIDE EXTENSION GRAPH";
             label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label19
@@ -695,7 +719,7 @@
             pictureBox2.InitialImage = (System.Drawing.Image)resources.GetObject("pictureBox2.InitialImage");
             pictureBox2.Location = new System.Drawing.Point(670, 587);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new System.Drawing.Size(239, 33);
+            pictureBox2.Size = new System.Drawing.Size(238, 33);
             pictureBox2.TabIndex = 25;
             pictureBox2.TabStop = false;
             // 
@@ -887,6 +911,8 @@
         private ScottPlot.WinForms.FormsPlot formsPlot8;
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Button button20;
     }
 }
 
