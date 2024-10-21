@@ -280,10 +280,14 @@ namespace WORKFLOW
 
                     _excelStoreRealtimeData();
 
-                    _backgroundDataPlot1Read();
-                    _backgroundDataPlot2Read();
-                    _backgroundDataPlot3Read();
-                    _backgroundDataPlot4Read();
+                    //_backgroundDataPlot1Read();
+                    //_uiPlot1Update();
+                    //_backgroundDataPlot2Read();
+                    //_uiPlot2Update();
+                    //_backgroundDataPlot3Read();
+                    //_uiPlot3Update();
+                    //_backgroundDataPlot4Read();
+                    //_uiPlot4Update();
                 }
                 if (_realtimeReadFlag)
                 {
@@ -430,11 +434,11 @@ namespace WORKFLOW
             DateTime daten = new DateTime(2000 + Int16.Parse(_data.DTM[0].ToString()), Int16.Parse(_data.DTM[1].ToString()), Int16.Parse(_data.DTM[2].ToString()));
             if (daten != _uiObject.RealtimeList_GetDate())
             {
-                _uiObject.RealtimeList_SetDate(daten);
+                //_uiObject.RealtimeList_SetDate(daten);
             }
             else if (daten == _uiObject.RealtimeList_GetDate())
             {
-                _uiObject.RealtimeUpdateList();
+                //_uiObject.RealtimeUpdateList();
             }
             
             //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
@@ -944,6 +948,39 @@ namespace WORKFLOW
             return floatdata;
         }
 
+        List<float> hex16tofloat32_InvertedList(List<byte[]> hexdata)
+        {
+            List<float> floatdata = new List<float>();
+            List<byte[]> buffs = new List<byte[]>();
+            byte[] qbytebuff = new byte[4];
+            int iend = hexdata.Count - 1;
+            int iv = 0;
+
+            for (int i = iend; i >= 0; i--)
+            {
+                if (i % 2 == 0)
+                {
+                    for (int ivy = 0; ivy < hexdata[i].Length; ivy++)
+                    {
+                        qbytebuff[iv] = hexdata[i][ivy];
+                        iv++;
+                    }
+                }
+                else if (i % 2 != 0)
+                {
+                    for (int ivy = 0; ivy < hexdata[i].Length; ivy++)
+                    {
+                        qbytebuff[iv] = hexdata[i][ivy];
+                        iv++;
+                    }
+                    floatdata.Add(BitConverter.ToSingle(qbytebuff, 0));
+                    iv = 0;
+                    Array.Clear(qbytebuff);
+                }
+            }
+            return floatdata;
+        }
+
         double[] _bytearrayToDoubleXAxis(byte[] bytearraystream)
         {
             byte[] streaminput = new byte[bytearraystream.Length];
@@ -1108,17 +1145,17 @@ namespace WORKFLOW
                     await _eeipEventHandler_2Async(_cts.Token);
                     await _eeipEventHandler_3Async(_cts.Token);
 
-                    await _uiPlot1UpdateAsync(_cts.Token);
-                    await _backgroundDataPlot1ReadAsync(_cts.Token);
+                    //await _uiPlot1UpdateAsync(_cts.Token);
+                    //await _backgroundDataPlot1ReadAsync(_cts.Token);
 
-                    await _uiPlot2UpdateAsync(_cts.Token);
-                    await _backgroundDataPlot2ReadAsync(_cts.Token);
+                    //await _uiPlot2UpdateAsync(_cts.Token);
+                    //await _backgroundDataPlot2ReadAsync(_cts.Token);
 
-                    await _uiPlot3UpdateAsync(_cts.Token);
-                    await _backgroundDataPlot3ReadAsync(_cts.Token);
+                    //await _uiPlot3UpdateAsync(_cts.Token);
+                    //await _backgroundDataPlot3ReadAsync(_cts.Token);
 
-                    await _uiPlot4UpdateAsync(_cts.Token);
-                    await _backgroundDataPlot4ReadAsync(_cts.Token);
+                    //await _uiPlot4UpdateAsync(_cts.Token);
+                   // await _backgroundDataPlot4ReadAsync(_cts.Token);
                 }
                 Thread.Sleep(1);
             }
@@ -1365,17 +1402,67 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
-                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110000", 400));
-                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110400", 400));
 
-                List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
-                List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
+                //List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110000", 400));
+                //List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110400", 400));
 
-                float[] fXD1 = float_comp_stroke.ToArray();
-                float[] fYD1 = float_comp_load.ToArray();
+                //List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
+                //List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
 
-                dXD1 = Array.ConvertAll(fXD1, x => (double)x);
-                dYD1 = Array.ConvertAll(fYD1, x => (double)x);
+                //float[] fXD1 = float_comp_stroke.ToArray();
+                //float[] fYD1 = float_comp_load.ToArray();
+
+                float[] fXD1 = _Rdata.RealtimeStep2[0].ToArray();
+                float[] fYD1 = _Rdata.RealtimeStep2[1].ToArray();
+
+                int idxx = 0;
+                for (int i = 0; i < fXD1.Length; i++)
+                {
+                    if (fXD1[i] != 0 && i != 0)
+                    {
+                        Array.Resize(ref dXD1, idxx + 1);
+                        if((double)fXD1[i] == dXD1[idxx-1]) 
+                        {
+                            dXD1[idxx] = (double)fXD1[i] + 1;
+                        }
+                        else
+                        {
+                            dXD1[idxx] = (double)fXD1[i];
+                        }
+                        idxx++;
+                    }
+                    else if(i == 0)
+                    {
+                        Array.Resize(ref dXD1, idxx + 1);
+                        dXD1[idxx] = (double)fXD1[i];
+                        idxx++;
+                    }
+                }
+
+                int idxy = 0;
+                for (int i = 0; i < fYD1.Length; i++)
+                {
+                    if (fYD1[i] != 0 && i != 0)
+                    {
+                        Array.Resize(ref dYD1, idxy + 1);
+                        dYD1[idxy] = (double)fYD1[i];
+                        idxy++;
+                    }
+                    else if (i == 0)
+                    {
+                        Array.Resize(ref dYD1, idxy + 1);
+                        dYD1[idxy] = (double)fYD1[i];
+                        idxy++;
+                    }
+                }
+
+                //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
+                //dYD1 = Array.ConvertAll(fYD1, x => (x != 0) ? (double)x);
+
+                if (dXD1.Count() != dYD1.Count())
+                {
+                    _uiPlot1UpdateFlag = false;
+                }
 
                 _uiPlot1UpdateFlag = true;
                 /*
@@ -1427,14 +1514,35 @@ namespace WORKFLOW
                 List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110800", 400));
                 List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF111200", 400));
 
-                List<float> float_extn_stroke = new List<float>(hex16tofloat32(extn_stroke));
-                List<float> float_extn_load = new List<float>(hex16tofloat32(extn_load));
+                List<float> float_extn_stroke = new List<float>(hex16tofloat32_InvertedList(extn_stroke));
+                List<float> float_extn_load = new List<float>(hex16tofloat32_InvertedList(extn_load));
 
                 float[] fXD2 = float_extn_stroke.ToArray();
                 float[] fYD2 = float_extn_load.ToArray();
 
+                //float[] fXD2 = _Rdata.RealtimeStep2[2].ToArray();
+                //float[] fYD2 = _Rdata.RealtimeStep2[3].ToArray();
+
+                //int idxx = 0;
+                //int idxy = 0;
+                //foreach (float x in fXD2) { if (x != 0) idxx++; }
+                //foreach (float y in fYD2) { if (y != 0) idxy++; }
+
+                //Array.Resize(ref dXD2, idxx + 1);
+                //Array.Resize(ref dYD2, idxy);
+
+                //int idx = 0;
+                //int idy = 0;
+                //foreach (float x in fXD2) { if (x != 0) { dXD2[idx] = (double)x; idx++; } }
+                //foreach (float y in fYD2) { if (y != 0) { dYD2[idy] = (double)y; idy++; } }
+
                 dXD2 = Array.ConvertAll(fXD2, x => (double)x);
                 dYD2 = Array.ConvertAll(fYD2, x => (double)x);
+
+                if (dXD2.Count() != dYD2.Count())
+                {
+                    _uiPlot2UpdateFlag = false;
+                }
 
                 _uiPlot2UpdateFlag = true;
                 /*
@@ -1481,17 +1589,66 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
-                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210000", 400));
-                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210400", 400));
+                //List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210000", 400));
+                //List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210400", 400));
 
-                List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
-                List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
+                //List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
+                //List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
 
-                float[] fXD3 = float_comp_stroke.ToArray();
-                float[] fYD3 = float_comp_load.ToArray();
+                //float[] fXD3 = float_comp_stroke.ToArray();
+                //float[] fYD3 = float_comp_load.ToArray();
 
-                dXD3 = Array.ConvertAll(fXD3, x => (double)x);
-                dYD3 = Array.ConvertAll(fYD3, x => (double)x);
+                float[] fXD3 = _Ldata.RealtimeStep2[0].ToArray();
+                float[] fYD3 = _Ldata.RealtimeStep2[1].ToArray();
+
+                int idxx = 0;
+                int idxy = 0;
+                for (int i = 0; i < fXD3.Length; i++)
+                {
+                    if (fXD3[i] != 0 && i != 0)
+                    {
+                        Array.Resize(ref dXD3, idxx + 1);
+                        if ((double)fXD3[i] == dXD3[idxx - 1])
+                        {
+                            dXD3[idxx] = (double)fXD3[i] + 1;
+                        }
+                        else
+                        {
+                            dXD3[idxx] = (double)fXD3[i];
+                        }
+                        idxx++;
+                    }
+                    else if (i == 0)
+                    {
+                        Array.Resize(ref dXD3, idxx + 1);
+                        dXD3[idxx] = (double)fXD3[i];
+                        idxx++;
+                    }
+                }
+
+                for (int i = 0; i < fYD3.Length; i++)
+                {
+                    if (fYD3[i] != 0 && i != 0)
+                    {
+                        Array.Resize(ref dYD3, idxy + 1);
+                        dYD3[idxy] = (double)fYD3[i];
+                        idxy++;
+                    }
+                    else if (i == 0)
+                    {
+                        Array.Resize(ref dYD3, idxy + 1);
+                        dYD3[idxy] = (double)fYD3[i];
+                        idxy++;
+                    }
+                }
+
+                //dXD3 = Array.ConvertAll(fXD3, x => (x != 0) ? (double)x);
+                //dYD3 = Array.ConvertAll(fYD3, x => (x != 0) ? (double)x);
+
+                if (dXD3.Count() != dYD3.Count())
+                {
+                    _uiPlot3UpdateFlag = false;
+                }
 
                 _uiPlot3UpdateFlag = true;
                 /*
@@ -1541,14 +1698,35 @@ namespace WORKFLOW
                 List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210800", 400));
                 List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF211200", 400));
 
-                List<float> float_extn_stroke = new List<float>(hex16tofloat32(extn_stroke));
-                List<float> float_extn_load = new List<float>(hex16tofloat32(extn_load));
+                List<float> float_extn_stroke = new List<float>(hex16tofloat32_InvertedList(extn_stroke));
+                List<float> float_extn_load = new List<float>(hex16tofloat32_InvertedList(extn_load));
 
                 float[] fXD4 = float_extn_stroke.ToArray();
                 float[] fYD4 = float_extn_load.ToArray();
 
+                //float[] fXD4 = _Ldata.RealtimeStep2[2].ToArray();
+                //float[] fYD4 = _Ldata.RealtimeStep2[3].ToArray();
+
+                //int idxx = 0;
+                //int idxy = 0;
+                //foreach (float x in fXD4) { if (x != 0) idxx++; }
+                //foreach (float y in fYD4) { if (y != 0) idxy++; }
+
+                //Array.Resize(ref dXD4, idxx + 1);
+                //Array.Resize(ref dYD4, idxy);
+
+                //int idx = 0;
+                //int idy = 0;
+                //foreach (float x in fXD4) { if (x != 0) { dXD4[idx] = (double)x; idx++; } }
+                //foreach (float y in fYD4) { if (y != 0) { dYD4[idy] = (double)y; idy++; } }
+
                 dXD4 = Array.ConvertAll(fXD4, x => (double)x);
                 dYD4 = Array.ConvertAll(fYD4, x => (double)x);
+
+                if (dXD4.Count() != dYD4.Count())
+                {
+                    _uiPlot4UpdateFlag = false;
+                }
 
                 _uiPlot4UpdateFlag = true;
                 /*

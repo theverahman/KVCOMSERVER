@@ -220,7 +220,7 @@ namespace KVCOMSERVER
             formsPlot4.Refresh();
         }
 
-        public void Plot4ShowLimit(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        public void Plot4AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
             sp4.Color = ScottPlot.Color.FromColor(linecolor);
@@ -231,14 +231,14 @@ namespace KVCOMSERVER
         public void Plot5Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot5.Reset();
-            var sp5 = formsPlot5.Plot.Add.Scatter(xd, yd);
+            var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
             sp5.Color = ScottPlot.Color.FromColor(linecolor);
             formsPlot5.Plot.Axes.AntiAlias(true);
             formsPlot5.Refresh();
         }
         public void Plot5UAddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
-            var sp5 = formsPlot5.Plot.Add.Scatter(xd, yd);
+            var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
             sp5.Color = ScottPlot.Color.FromColor(linecolor);
             formsPlot5.Plot.Axes.AntiAlias(true);
             formsPlot5.Refresh();
