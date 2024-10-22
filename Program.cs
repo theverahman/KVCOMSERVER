@@ -157,7 +157,13 @@ namespace WORKFLOW
             {
                 byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
                 _eeipBeacon(STAT_INPUT);
-                //Thread.Sleep(100);
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
+                if ((byte)(TRIG[0] & 0x01) == 0x01)
+                {
+                    _uiPlotClear();
+                    _kvconnObject.writeDataCommand("W0FE0", "", "0");
+                }
+                    //Thread.Sleep(100);
             }
         }
 
@@ -253,6 +259,20 @@ namespace WORKFLOW
                 {
                     _realtimeReadFlag = true;
 
+                    _Rdata._Step1MaxLoad_NG = 0;
+                    _Rdata._Step2CompRef_NG = 0;
+                    _Rdata._Step2CompGraph_NG = 0;
+                    _Rdata._Step2ExtnRef_NG = 0;
+                    _Rdata._Step2ExtnGraph_NG = 0;
+                    _Rdata._Step2DiffGraph_NG = 0;
+
+                    _Ldata._Step1MaxLoad_NG = 0;
+                    _Ldata._Step2CompRef_NG = 0;
+                    _Ldata._Step2CompGraph_NG = 0;
+                    _Ldata._Step2ExtnRef_NG = 0;
+                    _Ldata._Step2ExtnGraph_NG = 0;
+                    _Ldata._Step2DiffGraph_NG = 0;
+
                     Debug.Write("RL Read On");
                     Debug.Write((char)'\n');
 
@@ -278,16 +298,51 @@ namespace WORKFLOW
                     _Ldata._Step2ExtnGraph_NG = _kvconnObject.readbitCommand("LR609");
                     _Ldata._Step2DiffGraph_NG = _kvconnObject.readbitCommand("LR611");
 
+                    if (_Rdata._Step2CompGraph_NG == 1)
+                    {
+                        D1Col = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        D1Col = System.Drawing.Color.LimeGreen;
+                    }
+
+                    if (_Rdata._Step2ExtnGraph_NG == 1)
+                    {
+                        D2Col = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        D2Col = System.Drawing.Color.LimeGreen;
+                    }
+
+                    if (_Ldata._Step2CompGraph_NG == 1)
+                    {
+                        D3Col = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        D3Col = System.Drawing.Color.LimeGreen;
+                    }
+                    if (_Ldata._Step2ExtnGraph_NG == 1)
+                    {
+                        D4Col = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        D4Col = System.Drawing.Color.LimeGreen;
+                    }
+
                     _excelStoreRealtimeData();
 
-                    //_backgroundDataPlot1Read();
-                    //_uiPlot1Update();
-                    //_backgroundDataPlot2Read();
-                    //_uiPlot2Update();
-                    //_backgroundDataPlot3Read();
-                    //_uiPlot3Update();
-                    //_backgroundDataPlot4Read();
-                    //_uiPlot4Update();
+                    _backgroundDataPlot1Read();
+                    _uiPlot1Update();
+                    _backgroundDataPlot2Read();
+                    _uiPlot2Update();
+                    _backgroundDataPlot3Read();
+                    _uiPlot3Update();
+                    _backgroundDataPlot4Read();
+                    _uiPlot4Update();
                 }
                 if (_realtimeReadFlag)
                 {
@@ -349,11 +404,6 @@ namespace WORKFLOW
                 if (_Rdata._Step2CompGraph_NG == 1)
                 {
                     RealtimeFileR1.STEP2_COMP_GRAPH_NG_SET();
-                    D1Col = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    D1Col = System.Drawing.Color.Green;
                 }
                 if (_Rdata._Step2ExtnRef_NG == 1)
                 {
@@ -362,11 +412,6 @@ namespace WORKFLOW
                 if (_Rdata._Step2ExtnGraph_NG == 1)
                 {
                     RealtimeFileR1.STEP2_EXTN_GRAPH_NG_SET();
-                    D2Col = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    D2Col = System.Drawing.Color.Green;
                 }
                 
                 if (_Rdata._Step2DiffGraph_NG == 1)
@@ -398,11 +443,6 @@ namespace WORKFLOW
                 if (_Ldata._Step2CompGraph_NG == 1)
                 {
                     RealtimeFileL1.STEP2_COMP_GRAPH_NG_SET();
-                    D3Col = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    D3Col = System.Drawing.Color.Green;
                 }
                 if (_Ldata._Step2ExtnRef_NG == 1)
                 {
@@ -411,11 +451,6 @@ namespace WORKFLOW
                 if (_Ldata._Step2ExtnGraph_NG == 1)
                 {
                     RealtimeFileL1.STEP2_EXTN_GRAPH_NG_SET();
-                    D4Col = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    D4Col = System.Drawing.Color.Green;
                 }
                 if (_Ldata._Step2DiffGraph_NG == 1)
                 {
@@ -655,11 +690,11 @@ namespace WORKFLOW
                 {
                     if (i == 0)
                     {
-                        _data._step1Enable = BitConverter.ToInt32(_buffPARAM1[i], 0);
+                        _data.Step1Param[0] = BitConverter.ToInt32(_buffPARAM1[i], 0);
                     }
                     else if (i == 4)
                     {
-                        _data._step1CycleCount = BitConverter.ToInt32(_buffPARAM1[i], 0);
+                        _data.Step1Param[4] = BitConverter.ToInt32(_buffPARAM1[i], 0);
                     }
                     else
                     {
@@ -740,19 +775,19 @@ namespace WORKFLOW
                 {
                     if (i == 0)
                     {
-                        _data._step2Enable = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                        _data.Step2345Param[0] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
                     }
                     else if (i == 9)
                     {
-                        _data._step2LoadRefTolerance = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                        _data.Step2345Param[9] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
                     }
                     else if (i == 10)
                     {
-                        _data._step3Enable = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                        _data.Step2345Param[10] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
                     }
                     else if (i == 19)
                     {
-                        _data._step3LoadRefTolerance = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                        _data.Step2345Param[19] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
                     }
                     else
                     {
@@ -1295,7 +1330,19 @@ namespace WORKFLOW
         bool _uiPlot3ResetFlag;
         bool _uiPlot4ResetFlag;
 
+        
 
+        private void _uiPlotClear()
+        {
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.AllPlotReset()));
+            }
+            else
+            {
+                _uiObject.AllPlotReset();
+            }
+        }
 
         private void _uiPlot1Update()
         {
@@ -1440,20 +1487,11 @@ namespace WORKFLOW
                 }
 
                 int idxy = 0;
-                for (int i = 0; i < fYD1.Length; i++)
+                for (int i = 0; i < dXD1.Length; i++)
                 {
-                    if (fYD1[i] != 0 && i != 0)
-                    {
-                        Array.Resize(ref dYD1, idxy + 1);
-                        dYD1[idxy] = (double)fYD1[i];
-                        idxy++;
-                    }
-                    else if (i == 0)
-                    {
-                        Array.Resize(ref dYD1, idxy + 1);
-                        dYD1[idxy] = (double)fYD1[i];
-                        idxy++;
-                    }
+                    Array.Resize(ref dYD1, idxy + 1);
+                    dYD1[idxy] = (double)fYD1[i];
+                    idxy++;
                 }
 
                 //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
@@ -1511,18 +1549,19 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
-                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110800", 400));
-                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF111200", 400));
+                //List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110800", 400));
+                //List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF111200", 400));
 
-                List<float> float_extn_stroke = new List<float>(hex16tofloat32_InvertedList(extn_stroke));
-                List<float> float_extn_load = new List<float>(hex16tofloat32_InvertedList(extn_load));
+                //List<float> float_extn_stroke = new List<float>(hex16tofloat32_InvertedList(extn_stroke));
+                //List<float> float_extn_load = new List<float>(hex16tofloat32_InvertedList(extn_load));
 
-                float[] fXD2 = float_extn_stroke.ToArray();
-                float[] fYD2 = float_extn_load.ToArray();
+                //float[] fXD2 = float_extn_stroke.ToArray();
+                //float[] fYD2 = float_extn_load.ToArray();
 
-                //float[] fXD2 = _Rdata.RealtimeStep2[2].ToArray();
-                //float[] fYD2 = _Rdata.RealtimeStep2[3].ToArray();
-
+                float[] fXD2 = _Rdata.RealtimeStep2[2].ToArray();
+                Array.Reverse(fXD2);
+                float[] fYD2 = _Rdata.RealtimeStep2[3].ToArray();
+                Array.Reverse(fYD2);
                 //int idxx = 0;
                 //int idxy = 0;
                 //foreach (float x in fXD2) { if (x != 0) idxx++; }
@@ -1626,20 +1665,11 @@ namespace WORKFLOW
                     }
                 }
 
-                for (int i = 0; i < fYD3.Length; i++)
+                for (int i = 0; i < dXD3.Length; i++)
                 {
-                    if (fYD3[i] != 0 && i != 0)
-                    {
-                        Array.Resize(ref dYD3, idxy + 1);
-                        dYD3[idxy] = (double)fYD3[i];
-                        idxy++;
-                    }
-                    else if (i == 0)
-                    {
-                        Array.Resize(ref dYD3, idxy + 1);
-                        dYD3[idxy] = (double)fYD3[i];
-                        idxy++;
-                    }
+                    Array.Resize(ref dYD3, idxy + 1);
+                    dYD3[idxy] = (double)fYD3[i];
+                    idxy++;
                 }
 
                 //dXD3 = Array.ConvertAll(fXD3, x => (x != 0) ? (double)x);
@@ -1695,17 +1725,19 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
-                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210800", 400));
-                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF211200", 400));
+                //List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210800", 400));
+                //List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF211200", 400));
 
-                List<float> float_extn_stroke = new List<float>(hex16tofloat32_InvertedList(extn_stroke));
-                List<float> float_extn_load = new List<float>(hex16tofloat32_InvertedList(extn_load));
+                //List<float> float_extn_stroke = new List<float>(hex16tofloat32_InvertedList(extn_stroke));
+                //List<float> float_extn_load = new List<float>(hex16tofloat32_InvertedList(extn_load));
 
-                float[] fXD4 = float_extn_stroke.ToArray();
-                float[] fYD4 = float_extn_load.ToArray();
+                //float[] fXD4 = float_extn_stroke.ToArray();
+                //float[] fYD4 = float_extn_load.ToArray();
 
-                //float[] fXD4 = _Ldata.RealtimeStep2[2].ToArray();
-                //float[] fYD4 = _Ldata.RealtimeStep2[3].ToArray();
+                float[] fXD4 = _Ldata.RealtimeStep2[2].ToArray();
+                Array.Reverse(fXD4);
+                float[] fYD4 = _Ldata.RealtimeStep2[3].ToArray();
+                Array.Reverse(fYD4);
 
                 //int idxx = 0;
                 //int idxy = 0;
@@ -1809,13 +1841,13 @@ namespace WORKFLOW
         public float _step3ExtendLoadRef;
         public int _step3LoadRefTolerance;
 
-        public List<object> DTM;
+        public List<string> DTM;
         public List<object> Step1Param;
         public List<object> Step2345Param;
 
         public DATAMODEL()
         {
-            DTM = new List<object>()
+            DTM = new List<String>()
                 {
                     _activeDay,
                     _activeMonth,

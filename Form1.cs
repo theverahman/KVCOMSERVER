@@ -160,11 +160,27 @@ namespace KVCOMSERVER
             button6.BackColor = System.Drawing.Color.BlueViolet;
         }
 
+        public void AllPlotReset()
+        {
+            formsPlot1.Reset();
+            formsPlot2.Reset();
+            formsPlot3.Reset();
+            formsPlot4.Reset();
+
+            formsPlot1.Refresh();
+            formsPlot2.Refresh();
+            formsPlot3.Refresh();
+            formsPlot4.Refresh();
+        }
+
+
         public void Plot1Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot1.Reset();
+            //formsPlot1.BackColor = System.Drawing.Color.Black;
             var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
             sp1.Color = ScottPlot.Color.FromColor(linecolor);
+            sp1.LineWidth = 3;
             formsPlot1.Plot.Axes.AntiAlias(true);
             formsPlot1.Refresh();
         }
@@ -173,6 +189,7 @@ namespace KVCOMSERVER
         {
             var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
             sp1.Color = ScottPlot.Color.FromColor(linecolor);
+            sp1.LineWidth = 3;
             formsPlot1.Plot.Axes.AntiAlias(true);
             formsPlot1.Refresh();
         }
@@ -180,8 +197,10 @@ namespace KVCOMSERVER
         public void Plot2Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot2.Reset();
+            //formsPlot2.BackColor = System.Drawing.Color.Black;
             var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
             sp2.Color = ScottPlot.Color.FromColor(linecolor);
+            sp2.LineWidth = 3;
             formsPlot2.Plot.Axes.AntiAlias(true);
             formsPlot2.Refresh();
         }
@@ -190,6 +209,7 @@ namespace KVCOMSERVER
         {
             var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
             sp2.Color = ScottPlot.Color.FromColor(linecolor);
+            sp2.LineWidth = 3;
             formsPlot2.Plot.Axes.AntiAlias(true);
             formsPlot2.Refresh();
         }
@@ -197,8 +217,10 @@ namespace KVCOMSERVER
         public void Plot3Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot3.Reset();
+            //formsPlot3.BackColor = System.Drawing.Color.Black;
             var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
             sp3.Color = ScottPlot.Color.FromColor(linecolor);
+            sp3.LineWidth = 3;
             formsPlot3.Plot.Axes.AntiAlias(true);
             formsPlot3.Refresh();
         }
@@ -207,6 +229,7 @@ namespace KVCOMSERVER
         {
             var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
             sp3.Color = ScottPlot.Color.FromColor(linecolor);
+            sp3.LineWidth = 3;
             formsPlot3.Plot.Axes.AntiAlias(true);
             formsPlot3.Refresh();
         }
@@ -214,8 +237,10 @@ namespace KVCOMSERVER
         public void Plot4Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot4.Reset();
+            //formsPlot4.BackColor = System.Drawing.Color.Black;
             var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
             sp4.Color = ScottPlot.Color.FromColor(linecolor);
+            sp4.LineWidth = 3;
             formsPlot4.Plot.Axes.AntiAlias(true);
             formsPlot4.Refresh();
         }
@@ -224,6 +249,7 @@ namespace KVCOMSERVER
         {
             var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
             sp4.Color = ScottPlot.Color.FromColor(linecolor);
+            sp4.LineWidth = 3;
             formsPlot4.Plot.Axes.AntiAlias(true);
             formsPlot4.Refresh();
         }
