@@ -19,6 +19,9 @@ using static OpenTK.Graphics.OpenGL.GL;
 using DocumentFormat.OpenXml.Bibliography;
 using System.IO;
 using DocumentFormat.OpenXml.Drawing;
+using Microsoft.Office.Interop;
+using Excel = Microsoft.Office.Interop.Excel;
+using DocumentFormat.OpenXml.Packaging;
 
 namespace KVCOMSERVER
 {
@@ -51,39 +54,41 @@ namespace KVCOMSERVER
             textBox1.Text = settingIpv4;
             textBox2.Text = settingPortIp.ToString();
 
+            try
+            {
+                RealtimeUpdateList();
+                MasteringUpdateList();
+                if (_connStat != 1)
+                {
+                    _WorkflowHandler.SetConnection();
+                    _connStat = _WorkflowHandler.GetConnState();
+                }
+            }
+            catch
+            {
 
-
-
-            //backgroundThread_1 = new Thread(_WorkflowHandler.BackgroundWork_1);
-            //backgroundThread_2 = new Thread(_WorkflowHandler.BackgroundWork_2);
-            //backgroundThread_3 = new Thread(_WorkflowHandler.BackgroundWork_3);
-
-            //uibackgroundThread_0 = new Thread(this._uiBackgroundWork_0);
-            //uibackgroundThread_0.Start();
-            //Debug.Write(uibackgroundThread_0.ManagedThreadId);
-            //Debug.Write((char)'\n');
+            }
 
             _cts = new CancellationTokenSource();
 
         }
 
-        //public void setTextBox2(string text)
-        //{
-        //richTextBox2.Text = text;
-        //}
-
-        //public string getTextBox2()
-        //{
-        //return richTextBox2.Text;
-        //}
-
         private void button1_Click(object sender, EventArgs e)
         {
             //Connect
-            //start_background_task();
-            //start_async_background_task();
-            _WorkflowHandler.SetConnection();
-            _connStat = _WorkflowHandler.GetConnState();
+
+            try
+            {
+                if (_connStat != 1)
+                {
+                    _WorkflowHandler.SetConnection();
+                    _connStat = _WorkflowHandler.GetConnState();
+                }
+            }
+            catch
+            {
+
+            }
         }
 
 
@@ -385,7 +390,6 @@ namespace KVCOMSERVER
                 listfiles[idx1 - 1] = System.IO.Path.GetFileName(files);
                 listfiles_date[idx1 - 1] = File.GetCreationTime(files).ToLongTimeString();
             }
-
             DataTable listtablefile = new DataTable();
             listtablefile.Columns.Add("Time");
             listtablefile.Columns.Add("File Name");
@@ -431,7 +435,6 @@ namespace KVCOMSERVER
                 newRow["File Name"] = listfiles[i];
                 listtablefile.Rows.Add(newRow);
             }
-
             dataGridView2.DataSource = listtablefile;
             dataGridView2.Update();
         }
@@ -455,16 +458,46 @@ namespace KVCOMSERVER
         {
             string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
             CheckFolderPath(DirRealtime);
-            string selectedfile = new string(dataGridView1.SelectedRows[1].Index.ToString());
-            System.Diagnostics.Process.Start(($"{DirRealtime}\\{selectedfile}"));
+            DataGridViewRow test1 = new DataGridViewRow();
+            test1 = dataGridView1.CurrentRow;
+            string selectedfile = new string(test1.Cells[1].FormattedValue.ToString());
+
+            Excel.Application objExcel = new Excel.Application();
+            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirRealtime}\\{selectedfile}");
+            objExcel.Visible = true;
         }
 
         private void button20_Click(object sender, EventArgs e)
         {
             string DirMaster = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
             CheckFolderPath(DirMaster);
-            string selectedfile = new string(dataGridView2.SelectedRows[1].Index.ToString());
-            System.Diagnostics.Process.Start(($"{DirMaster}\\{selectedfile}"));
+            DataGridViewRow test2 = new DataGridViewRow();
+            test2 = dataGridView2.CurrentRow;
+            string selectedfile = new string(test2.Cells[1].FormattedValue.ToString());
+
+            Excel.Application objExcel = new Excel.Application();
+            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirMaster}\\{selectedfile}");
+            objExcel.Visible = true;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            CheckFolderPath(DirRealtime);
+            var psi = new ProcessStartInfo();
+            psi.FileName = @"c:\windows\explorer.exe";
+            psi.Arguments = DirRealtime;
+            Process.Start(psi);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string DirMaster = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
+            CheckFolderPath(DirMaster);
+            var psi = new ProcessStartInfo();
+            psi.FileName = @"c:\windows\explorer.exe";
+            psi.Arguments = DirMaster;
+            Process.Start(psi);
         }
     }
 

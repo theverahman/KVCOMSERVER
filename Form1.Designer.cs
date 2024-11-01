@@ -231,6 +231,7 @@
             button8.TabIndex = 8;
             button8.Text = "OPEN FOLDER";
             button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
             // 
             // button3
             // 
@@ -470,6 +471,7 @@
             button9.TabIndex = 11;
             button9.Text = "OPEN FOLDER";
             button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
             // 
             // button10
             // 
