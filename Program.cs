@@ -580,14 +580,9 @@ namespace WORKFLOW
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA2);
                 Thread.Sleep(1);
 
-                //Debug.Write("DateTime");
-                //Debug.Write((char)'\n');
-
                 byte[] buff = new byte[2];
                 int iv = 0;
 
-                //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
-                //Debug.Write((char)'\n');
 
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
@@ -603,13 +598,9 @@ namespace WORKFLOW
                         Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
 
                         _buffDTM.Add(BitConverter.ToInt16(sbuff, 0));
-                        //Debug.Write(BitConverter.ToInt16(sbuff, 0));
-                        //Debug.Write(", ");
+                        
                     }
                 }
-                //Debug.Write((char)'\n');
-                //Debug.Write(_buffDTM.Count().ToString());
-                //Debug.Write((char)'\n');
 
                 for (int i = 0; i < _data.DTM.Count(); i++)
                 {
@@ -621,9 +612,7 @@ namespace WORKFLOW
                     {
                         _data.DTM[i] = _buffDTM[i].ToString();
                     }
-                    //Debug.Write(_data.DTM[i].ToString());
                 }
-                //Debug.Write((char)'\n');
             }
             //catch { }
         }
@@ -637,16 +626,8 @@ namespace WORKFLOW
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA3);
                 Thread.Sleep(1);
 
-                //Debug.Write("Step1Parameter");
-                //Debug.Write((char)'\n');
-
                 byte[] buff = new byte[4];
                 int iv = 0;
-                //Debug.Write(_INPUT.Length);
-                //Debug.Write((char)'\n');
-
-                //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
-                //Debug.Write((char)'\n');
 
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
@@ -686,12 +667,7 @@ namespace WORKFLOW
                     }
 
                 }
-                //Debug.Write((char)'\n');
-                //Debug.Write(_buffPARAM1.Count().ToString());
-                //Debug.Write((char)'\n');
-
-                //Debug.Write(_data.Step1Param.Count().ToString());
-                //Debug.Write((char)'\n');
+                
 
                 for (int i = 0; i < _data.Step1Param.Count(); i++)
                 {
@@ -708,10 +684,6 @@ namespace WORKFLOW
                         _data.Step1Param[i] = BitConverter.ToSingle(_buffPARAM1[i], 0);
                     }
 
-                    //for (int it = 0; it < _buffPARAM1[i].Length; it++) { Debug.Write(_buffPARAM1[i][it]); Debug.Write(", "); }
-                    //Debug.Write(" : ");
-                    //Debug.Write(_data.Step1Param[i]);
-                    //Debug.Write((char)'\n');
                 }
             }
             //catch { }
@@ -726,14 +698,8 @@ namespace WORKFLOW
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA4);
                 Thread.Sleep(1);
 
-                //Debug.Write("Step2345Parameter");
-                //Debug.Write((char)'\n');
-
                 byte[] buff = new byte[4];
                 int iv = 0;
-
-                //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
-                //Debug.Write((char)'\n');
 
                 for (int i = 0; i < _INPUT.Length; i++)
                 {
@@ -771,12 +737,6 @@ namespace WORKFLOW
                         }
                     }
                 }
-                ////Debug.Write((char)'\n');
-                ////Debug.Write(_buffPARAM2345.Count().ToString());
-                ////Debug.Write((char)'\n');
-
-                ////Debug.Write(_data.Step2345Param.Count().ToString());
-                ////Debug.Write((char)'\n');
 
                 for (int i = 0; i < _data.Step2345Param.Count(); i++)
                 {
@@ -800,10 +760,6 @@ namespace WORKFLOW
                     {
                         _data.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0);
                     }
-                    //for (int it = 0; it < _buffPARAM2345[i].Length; it++) { Debug.Write(_buffPARAM2345[i][it]); Debug.Write(", "); }
-                    //Debug.Write(" : ");
-                    //Debug.Write(_data.Step2345Param[i]);
-                    //Debug.Write((char)'\n');
                 }
             }
             //catch { }
@@ -815,11 +771,6 @@ namespace WORKFLOW
             {
                 byte[] _INPUT = _eeipObject.AssemblyObject.getInstance(addr);
                 Thread.Sleep(1);
-                //Debug.Write("Judgement");
-                //Debug.Write((char)'\n');
-                //for (int i = 0; i < _INPUT.Length; i++) { Debug.Write(_INPUT[i]); Debug.Write(", "); }
-                //Debug.Write((char)'\n');
-
 
                 float[] _buffJudgement = new float[] { };
                 byte[] buff = new byte[4];
@@ -867,14 +818,6 @@ namespace WORKFLOW
                     }
 
                 }
-
-                //for (int it = 0; it < judgementresult.Count() - 1; it++)
-                //{
-                //  Debug.Write(_buffJudgement[it].ToString());
-                //  Debug.Write(" : ");
-                //  Debug.Write(judgementresult[i]);
-                //  Debug.Write((char)'\n');
-                //}
             }
             //catch { }
         }
@@ -890,64 +833,22 @@ namespace WORKFLOW
 
         void _kvreadRealtime(ref List<List<float>> realtimeresult, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, int count)
         {
-            //try
             {
                 realtimeresult.Clear();
 
-                //Debug.Write("RealTimeData");
-                //Debug.Write((char)'\n');
-
-                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
-
                 List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr1, count));
-                //Thread.Sleep(20);
-                //_kvconnObject.CloseConnection();
-                //Thread.Sleep(20);
-
-                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr2, count));
-                //Thread.Sleep(20);
-                //_kvconnObject.CloseConnection();
-                //Thread.Sleep(20);
-
-                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr3, count));
-                //Thread.Sleep(20);
-                //_kvconnObject.CloseConnection();
-                //Thread.Sleep(20);
-
-                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr4, count));
-                //Thread.Sleep(20);
-                //_kvconnObject.CloseConnection();
-                //Thread.Sleep(20);
-
-                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr5, count));
-                //Thread.Sleep(20);
-                //_kvconnObject.CloseConnection();
-                //Thread.Sleep(20);
-
-                //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                 List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr6, count));
-                //Thread.Sleep(20);
-
-                //_kvconnObject.CloseConnection();
-                //Thread.Sleep(20);
-
-                List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
-                List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
-                List<float> float_extn_stroke = new List<float>(hex16tofloat32(extn_stroke));
-                List<float> float_extn_load = new List<float>(hex16tofloat32(extn_load));
-                List<float> float_diff_stroke = new List<float>(hex16tofloat32(diff_stroke));
-                List<float> float_diff_load = new List<float>(hex16tofloat32(diff_load));
-
-                realtimeresult.Add(float_comp_stroke);
-                realtimeresult.Add(float_comp_load);
-                realtimeresult.Add(float_extn_stroke);
-                realtimeresult.Add(float_extn_load);
-                realtimeresult.Add(float_diff_stroke);
-                realtimeresult.Add(float_diff_load);
+                
+                realtimeresult.Add(hex16tofloat32(comp_stroke));
+                realtimeresult.Add(hex16tofloat32(comp_load));
+                realtimeresult.Add(hex16tofloat32(extn_stroke));
+                realtimeresult.Add(hex16tofloat32(extn_load));
+                realtimeresult.Add(hex16tofloat32(diff_stroke));
+                realtimeresult.Add(hex16tofloat32(diff_load));
             }
             //catch { }
         }
