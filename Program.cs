@@ -37,6 +37,7 @@ using DocumentFormat.OpenXml.Packaging;
 
 using Microsoft.Office.Interop;
 using Excel = Microsoft.Office.Interop.Excel;
+using MethodInvoker = System.Windows.Forms.MethodInvoker;
 
 namespace KVCOMSERVER
 {
@@ -75,6 +76,9 @@ namespace WORKFLOW
         EXCELSTREAM RealtimeFileL1;
         EXCELSTREAM RealtimeFileR1;
 
+        EXCELSTREAM LogBufferReadFileL1;
+        EXCELSTREAM LogBufferReadFileR1;
+
         DATAMODEL _data;
         DATAMODEL_L _Ldata;
         DATAMODEL_R _Rdata;
@@ -106,6 +110,9 @@ namespace WORKFLOW
             MasterFileR1 = new EXCELSTREAM("MASTER");
             RealtimeFileL1 = new EXCELSTREAM("REALTIME");
             RealtimeFileR1 = new EXCELSTREAM("REALTIME");
+
+            LogBufferReadFileL1 = new EXCELSTREAM("REALTIME");
+            LogBufferReadFileR1 = new EXCELSTREAM("REALTIME");
 
             _data = new DATAMODEL();
             _Ldata = new DATAMODEL_L();
@@ -351,12 +358,10 @@ namespace WORKFLOW
                     _backgroundDataPlot4Read();
                     _uiPlot4Update();
                 }
+
                 if (_realtimeReadFlag)
                 {
-                    //_kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
                     _kvconnObject.writeDataCommand("W0C2", "", "0");
-                    //_kvconnObject.CloseConnection();
-
                     Thread.Sleep(1);
                 }
             }
@@ -384,6 +389,9 @@ namespace WORKFLOW
 
         void _excelStoreRealtimeData()
         {
+            RealtimeFileR1.RESET_LABEL_NG();
+            RealtimeFileL1.RESET_LABEL_NG();
+
             RealtimeFileR1.setDateTime(_data.DTM);
             RealtimeFileL1.setDateTime(_data.DTM);
 
@@ -473,21 +481,10 @@ namespace WORKFLOW
                 RealtimeFileL1.FilePrint(_filenameL1);
             }
 
-            DateTime daten = new DateTime(2000 + Int16.Parse(_data.DTM[0].ToString()), Int16.Parse(_data.DTM[1].ToString()), Int16.Parse(_data.DTM[2].ToString()));
-            if (daten != _uiObject.RealtimeList_GetDate())
-            {
-                //_uiObject.RealtimeList_SetDate(daten);
-            }
-            else if (daten == _uiObject.RealtimeList_GetDate())
-            {
-                //_uiObject.RealtimeUpdateList();
-            }
-            
-            //RealtimeFileR1.setRealtimeStep3(_Rdata.RealtimeStep3);
-            //RealtimeFileL1.setRealtimeStep3(_Ldata.RealtimeStep3);
-
+            //should this removed because there's already call for this outside the function after this execution
             _realtimeReadFlag = false;
             _kvconnObject.writeDataCommand("W0C2", "", "0");
+            //should this removed because there's already call for this outside the function after this execution
         }
 
 
@@ -833,6 +830,7 @@ namespace WORKFLOW
 
         void _kvreadRealtime(ref List<List<float>> realtimeresult, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, int count)
         {
+            try
             {
                 realtimeresult.Clear();
 
@@ -850,7 +848,42 @@ namespace WORKFLOW
                 realtimeresult.Add(hex16tofloat32(diff_stroke));
                 realtimeresult.Add(hex16tofloat32(diff_load));
             }
-            //catch { }
+            catch { }
+        }
+
+        void _kvreadMaster(ref List<List<float>> masterdata, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, string addr7, string addr8, string addr9, string addr10, string addr11, string addr12, int count)
+        {
+            try
+            {
+                masterdata.Clear();
+
+                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr1, count));
+                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr2, count));
+                List<byte[]> comp_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr3, count));
+                List<byte[]> comp_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr4, count));
+                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr5, count));
+                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr6, count));
+                List<byte[]> extn_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr7, count));
+                List<byte[]> extn_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr8, count));
+                List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr9, count));
+                List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr10, count));
+                List<byte[]> diff_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr11, count));
+                List<byte[]> diff_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr12, count));
+
+                masterdata.Add(hex16tofloat32(comp_stroke));
+                masterdata.Add(hex16tofloat32(comp_load));
+                masterdata.Add(hex16tofloat32(comp_upper));
+                masterdata.Add(hex16tofloat32(comp_lower));
+                masterdata.Add(hex16tofloat32(extn_stroke));
+                masterdata.Add(hex16tofloat32(extn_load));
+                masterdata.Add(hex16tofloat32(extn_upper));
+                masterdata.Add(hex16tofloat32(extn_lower));
+                masterdata.Add(hex16tofloat32(diff_stroke));
+                masterdata.Add(hex16tofloat32(diff_load));
+                masterdata.Add(hex16tofloat32(diff_upper));
+                masterdata.Add(hex16tofloat32(diff_lower));
+            }
+            catch { }
         }
 
         public static string floattostring(float pf)

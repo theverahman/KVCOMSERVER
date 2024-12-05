@@ -95,6 +95,13 @@
             label7 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
+            button21 = new System.Windows.Forms.Button();
+            button22 = new System.Windows.Forms.Button();
+            button23 = new System.Windows.Forms.Button();
+            button24 = new System.Windows.Forms.Button();
+            button25 = new System.Windows.Forms.Button();
+            button26 = new System.Windows.Forms.Button();
+            button27 = new System.Windows.Forms.Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -197,6 +204,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button21);
             tabPage1.Controls.Add(button19);
             tabPage1.Controls.Add(button8);
             tabPage1.Controls.Add(button3);
@@ -215,7 +223,7 @@
             // 
             // button19
             // 
-            button19.Location = new System.Drawing.Point(102, 597);
+            button19.Location = new System.Drawing.Point(104, 597);
             button19.Name = "button19";
             button19.Size = new System.Drawing.Size(91, 60);
             button19.TabIndex = 9;
@@ -276,6 +284,7 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(button24);
             tabPage3.Controls.Add(button16);
             tabPage3.Controls.Add(button15);
             tabPage3.Controls.Add(button14);
@@ -420,6 +429,8 @@
             // 
             // tabPage6
             // 
+            tabPage6.Controls.Add(button23);
+            tabPage6.Controls.Add(button22);
             tabPage6.Controls.Add(button20);
             tabPage6.Controls.Add(button12);
             tabPage6.Controls.Add(button11);
@@ -504,6 +515,9 @@
             // 
             // tabPage5
             // 
+            tabPage5.Controls.Add(button25);
+            tabPage5.Controls.Add(button26);
+            tabPage5.Controls.Add(button27);
             tabPage5.Controls.Add(button17);
             tabPage5.Controls.Add(button18);
             tabPage5.Controls.Add(label18);
@@ -811,6 +825,71 @@
             label4.TabIndex = 17;
             label4.Text = "PT. TOKOTON MEIWA INDONESIA - www.meiwacorp.co.jp";
             // 
+            // button21
+            // 
+            button21.Location = new System.Drawing.Point(203, 597);
+            button21.Name = "button21";
+            button21.Size = new System.Drawing.Size(125, 60);
+            button21.TabIndex = 10;
+            button21.Text = "BATCH EXPORT TO DRIVE/FOLDER";
+            button21.UseVisualStyleBackColor = true;
+            // 
+            // button22
+            // 
+            button22.Location = new System.Drawing.Point(201, 597);
+            button22.Name = "button22";
+            button22.Size = new System.Drawing.Size(125, 60);
+            button22.TabIndex = 15;
+            button22.Text = "BATCH EXPORT TO DRIVE/FOLDER";
+            button22.UseVisualStyleBackColor = true;
+            // 
+            // button23
+            // 
+            button23.Location = new System.Drawing.Point(332, 597);
+            button23.Name = "button23";
+            button23.Size = new System.Drawing.Size(140, 60);
+            button23.TabIndex = 16;
+            button23.Text = "OVERWRITE MASTER FILE FROM FILE";
+            button23.UseVisualStyleBackColor = true;
+            // 
+            // button24
+            // 
+            button24.Font = new System.Drawing.Font("Sarasa Fixed J", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            button24.Location = new System.Drawing.Point(912, 347);
+            button24.Name = "button24";
+            button24.Size = new System.Drawing.Size(77, 64);
+            button24.TabIndex = 16;
+            button24.Text = "SHOW/HIDE DRAGGABLE AXIS LINE";
+            button24.UseVisualStyleBackColor = true;
+            // 
+            // button25
+            // 
+            button25.Font = new System.Drawing.Font("Sarasa Fixed J", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            button25.Location = new System.Drawing.Point(912, 347);
+            button25.Name = "button25";
+            button25.Size = new System.Drawing.Size(77, 64);
+            button25.TabIndex = 20;
+            button25.Text = "SHOW/HIDE DRAGGABLE AXIS LINE";
+            button25.UseVisualStyleBackColor = true;
+            // 
+            // button26
+            // 
+            button26.Location = new System.Drawing.Point(912, 252);
+            button26.Name = "button26";
+            button26.Size = new System.Drawing.Size(77, 71);
+            button26.TabIndex = 19;
+            button26.Text = "HIDE MASTER LIMIT";
+            button26.UseVisualStyleBackColor = true;
+            // 
+            // button27
+            // 
+            button27.Location = new System.Drawing.Point(912, 175);
+            button27.Name = "button27";
+            button27.Size = new System.Drawing.Size(77, 71);
+            button27.TabIndex = 18;
+            button27.Text = "SHOW MASTER LIMIT";
+            button27.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -915,6 +994,13 @@
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.Button button23;
+        private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.Button button25;
+        private System.Windows.Forms.Button button26;
+        private System.Windows.Forms.Button button27;
     }
 }
 
