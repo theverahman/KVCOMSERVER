@@ -1085,6 +1085,116 @@ namespace WORKFLOW
             return _buffResult;
         }
 
+        static decimal[] FloatToDecimal(float[] floatArray)
+        {
+            // Initialize a decimal array with the same length as the float array
+            decimal[] decimalArray = new decimal[floatArray.Length];
+
+            // Convert each float to decimal
+            for (int i = 0; i < floatArray.Length; i++)
+            {
+                decimalArray[i] = (decimal)floatArray[i];
+            }
+
+            return decimalArray;
+        }
+
+        static uint FloatToUInt32(float value)
+        {
+            // Get the byte array from the float
+            byte[] bytes = BitConverter.GetBytes(value);
+
+            // Convert the byte array to an unsigned 32-bit integer
+            return BitConverter.ToUInt32(bytes, 0);
+        }
+
+        static uint[] ConvertFloatArrayToUInt32Array(float[] floatArray)
+        {
+            uint[] unsignedIntArray = new uint[floatArray.Length];
+
+            for (int i = 0; i < floatArray.Length; i++)
+            {
+                unsignedIntArray[i] = FloatToUInt32(floatArray[i]);
+            }
+
+            return unsignedIntArray;
+        }
+
+        static string[] ConvertFloatArrayToUInt32StringArray(float[] floatArray)
+        {
+            string[] unsignedIntStringArray = new string[floatArray.Length];
+
+            for (int i = 0; i < floatArray.Length; i++)
+            {
+                // Convert float to unsigned 32-bit integer and then to string
+                uint unsignedIntValue = BitConverter.ToUInt32(BitConverter.GetBytes(floatArray[i]), 0);
+                unsignedIntStringArray[i] = unsignedIntValue.ToString();
+            }
+
+            return unsignedIntStringArray;
+        }
+
+        static uint[] StringToUInt32Array(string str)
+        {
+            int newSize = (str.Length + 1) / 2;
+            uint[] uint32Values = new uint[newSize];
+
+            for (int i = 0; i < str.Length; i += 2)
+            {
+                uint firstCharValue = (uint)str[i];
+                uint secondCharValue = (i + 1 < str.Length) ? (uint)str[i + 1] : 0;
+
+                uint32Values[i / 2] = (firstCharValue << 16) | secondCharValue;
+            }
+
+            return uint32Values;
+        }
+
+        static ushort[] StringToUInt16Array(string str)
+        {
+            // Calculate the size of the new array
+            int newSize = (str.Length + 1) / 2; // Round up for odd lengths
+            ushort[] uint16Values = new ushort[newSize];
+
+            for (int i = 0; i < str.Length; i += 2)
+            {
+                // Get the first character (higher byte)
+                byte firstCharValue = (byte)str[i];
+
+                // Get the second character (lower byte) if it exists
+                byte secondCharValue = (i + 1 < str.Length) ? (byte)str[i + 1] : (byte)0; // Use 0 if there's no second character
+
+                // Combine the two characters into one ushort value
+                uint16Values[i / 2] = (ushort)((firstCharValue << 8) | secondCharValue); // Shift first char and combine
+            }
+
+            return uint16Values;
+        }
+
+        static string[] ConvertStringToUInt32StringArray(string stringArray)
+        {
+            uint[] uints = StringToUInt32Array(stringArray);
+            string[] unsignedIntStringArray = new string[uints.Length];
+
+            for (int i = 0; i < unsignedIntStringArray.Length; i++)
+            {
+                unsignedIntStringArray[i] = uints[i].ToString();
+            }
+            return unsignedIntStringArray;
+        }
+
+        static string[] ConvertStringToUInt16StringArray(string stringArray)
+        {
+            ushort[] ushorts = StringToUInt16Array(stringArray);
+            string[] unsignedInt16StringArray = new string[ushorts.Length];
+
+            for (int i = 0; i < unsignedInt16StringArray.Length; i++)
+            {
+                unsignedInt16StringArray[i] = ushorts[i].ToString();
+            }
+            return unsignedInt16StringArray;
+        }
+
         private async Task InvokeAsync(Action action, CancellationToken cancellationToken)
         {
             await Task.Run(() => action(), cancellationToken);
