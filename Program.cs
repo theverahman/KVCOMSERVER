@@ -50,11 +50,22 @@ namespace KVCOMSERVER
         [STAThread]
         static void Main()
         {
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += (sender, e) =>
             {
-                Environment.Exit(1); // Terminate the program with a non-zero exit code
+                if (e.Exception is OutOfMemoryException)
+                {
+                    // Terminate the program if an OutOfMemoryException occurs
+                    Environment.Exit(1);
+                }
+                else
+                {
+                    // Log the exception and continue running
+                    Console.WriteLine("Unhandled exception occurred: " + e.Exception);
+                    MessageBox.Show("An error occurred. The program will continue running.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             };
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
