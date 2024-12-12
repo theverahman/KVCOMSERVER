@@ -62,7 +62,7 @@ namespace KVCOMSERVER
                 {
                     // Log the exception and continue running
                     Console.WriteLine("Unhandled exception occurred: " + e.Exception);
-                    MessageBox.Show("An error occurred. The program will continue running.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Unhandled exception occurred: "+  e.Exception +". The program will continue running.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
 
