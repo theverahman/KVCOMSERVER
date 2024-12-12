@@ -53,7 +53,7 @@ namespace KVCOMSERVER
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += (sender, e) =>
             {
-                if (e.Exception is OutOfMemoryException)
+                if (e.Exception is TimeoutException)
                 {
                     // Terminate the program if an OutOfMemoryException occurs
                     Environment.Exit(1);
