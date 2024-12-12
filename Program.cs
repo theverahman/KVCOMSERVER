@@ -50,6 +50,7 @@ namespace KVCOMSERVER
         [STAThread]
         static void Main()
         {
+            /*
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += (sender, e) =>
             {
@@ -65,7 +66,7 @@ namespace KVCOMSERVER
                     MessageBox.Show("Unhandled exception occurred: "+  e.Exception +". The program will continue running.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
-
+            */
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
