@@ -50,6 +50,12 @@ namespace KVCOMSERVER
         [STAThread]
         static void Main()
         {
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+            Application.ThreadException += (sender, e) =>
+            {
+                Environment.Exit(1); // Terminate the program with a non-zero exit code
+            };
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
