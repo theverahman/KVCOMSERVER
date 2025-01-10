@@ -1,4 +1,7 @@
-﻿using System;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+
+
+using System;
 using System.Windows.Forms;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,6 +41,7 @@ using DocumentFormat.OpenXml.Packaging;
 using Microsoft.Office.Interop;
 using Excel = Microsoft.Office.Interop.Excel;
 using MethodInvoker = System.Windows.Forms.MethodInvoker;
+using STimer = System.Threading.Timer;
 
 namespace KVCOMSERVER
 {
@@ -66,11 +70,15 @@ namespace KVCOMSERVER
 
 namespace WORKFLOW
 {
-
     public class WORKFLOWHANDLER
     {
         private KVCOMSERVER.Form1 _uiObject;
         private CancellationTokenSource _cts;
+        private CancellationTokenSource _ctsClock;
+        private STimer _clock1s;
+        private STimer _clock1ms;
+        private STimer _clock10ms;
+        private STimer _clock100ms;
         Thread backgroundThread;
 
         SETTEI _settingObject;
@@ -88,6 +96,10 @@ namespace WORKFLOW
         DATAMODEL _data;
         DATAMODEL_L _Ldata;
         DATAMODEL_R _Rdata;
+
+        string HeadDir;
+        string RealLogDir;
+        string MasterDir;
 
         bool _parameterRead;
         bool _parameterReadFlag;
@@ -124,10 +136,62 @@ namespace WORKFLOW
             _Ldata = new DATAMODEL_L();
             _Rdata = new DATAMODEL_R();
 
+            _ctsClock = new CancellationTokenSource();
+            _clock1s = new STimer(async _ => await Clock1s(_ctsClock.Token), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
+            _clock1ms = new STimer(async _ => await Clock1ms(_ctsClock.Token), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1));
+            _clock10ms = new STimer(async _ => await Clock10ms(_ctsClock.Token), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(10));
+            _clock100ms = new STimer(async _ => await Clock100ms(_ctsClock.Token), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
+
+            string HeadDir = $"C:\\FTP_DB_FUNCTION_TESTER\\";
+            string RealLogDir = HeadDir + $"LOG_REALTIME\\";
+            string MasterDir = HeadDir + $"MASTER_MODEL_DATA\\";
+
             backgroundThread = new Thread(BackgroundWork);
             backgroundThread.Start();
 
         }
+
+        private async Task Clock1s(CancellationToken cancellationToken)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            await Task.Run(() => UpdateUIRealtimeList(), cancellationToken);
+        }
+
+        private async Task Clock1ms(CancellationToken cancellationToken)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                return;
+        }
+
+        private async Task Clock10ms(CancellationToken cancellationToken)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                return;
+        }
+
+        private async Task Clock100ms(CancellationToken cancellationToken)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            
+        }
+
+        void UpdateUIRealtimeList()
+        {
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(_uiObject.RealtimeUpdateList));
+            }
+            else
+            {
+                _uiObject.RealtimeUpdateList();
+            }
+        }
+
+
 
         void CheckFolderPath(string pathblazer) { if (!Directory.Exists(pathblazer)) { Directory.CreateDirectory(pathblazer); } }
 
