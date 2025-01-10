@@ -179,6 +179,8 @@ namespace WORKFLOW
             
         }
 
+        
+
         void UpdateUIRealtimeList()
         {
             if (_uiObject.InvokeRequired)
@@ -235,7 +237,7 @@ namespace WORKFLOW
                 );
         }
 
-        void _eeipEventHandler_1()
+        void _eeipEventHandler_1() //Beacon
         {
             if (this.GetConnState() == 1)
             {
@@ -251,7 +253,7 @@ namespace WORKFLOW
             }
         }
 
-        void _eeipEventHandler_2()
+        void _eeipEventHandler_2() //Parameter Data Retrieve
         {
             if (this.GetConnState() == 1)
             {
@@ -262,13 +264,30 @@ namespace WORKFLOW
 
         }
 
-        void _eeipEventHandler_3()
+        void _eeipEventHandler_3() //Realtime Data Retrieve
         {
             if (this.GetConnState() == 1)
             {
                 byte[] STAT_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
                 _eeipTriggerReadRealtime(STAT_INPUT);
                 //Thread.Sleep(10);
+            }
+
+        }
+
+        void _eeipEventHandler_4() //Master Fetch Model
+        {
+            if (this.GetConnState() == 1)
+            {
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E); //undetermined byte address
+                if ((byte)(TRIG[0] & 0x01) == 0x01) //undetermined value
+                {
+                    //undetermined parameter address
+                    //byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
+                    ////undetermined method
+                    //_eeipTrigMasterFetchModel(MODEL_NAME_INPUT); 
+                    //Thread.Sleep(10);
+                }
             }
 
         }
@@ -294,7 +313,10 @@ namespace WORKFLOW
 
         }
 
+        void _eeipTrigMasterFetchModel(byte[] MODNAME_VAR)
+        {
 
+        }
 
         void _eeipTriggerReadParameter(byte[] STAT_INPUT)
         {
