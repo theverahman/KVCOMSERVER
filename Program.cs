@@ -97,9 +97,9 @@ namespace WORKFLOW
         DATAMODEL_L _Ldata;
         DATAMODEL_R _Rdata;
 
-        string HeadDir;
-        string RealLogDir;
-        string MasterDir;
+        public string HeadDir;
+        public string RealLogDir;
+        public string MasterDir;
 
         bool _parameterRead;
         bool _parameterReadFlag;
@@ -142,9 +142,9 @@ namespace WORKFLOW
             _clock10ms = new STimer(async _ => await Clock10ms(_ctsClock.Token), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(10));
             _clock100ms = new STimer(async _ => await Clock100ms(_ctsClock.Token), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
 
-            string HeadDir = $"C:\\FTP_DB_FUNCTION_TESTER\\";
-            string RealLogDir = HeadDir + $"LOG_REALTIME\\";
-            string MasterDir = HeadDir + $"MASTER_MODEL_DATA\\";
+            HeadDir = _settingObject.FILEDIR_SETTEI_GET();
+            RealLogDir = HeadDir + $"LOG_REALTIME\\";
+            MasterDir = HeadDir + $"MASTER_MODEL_DATA\\";
 
             backgroundThread = new Thread(BackgroundWork);
             backgroundThread.Start();
@@ -471,7 +471,7 @@ namespace WORKFLOW
             RealtimeFileR1.setRealtimeStep2(_Rdata.RealtimeStep2);
             RealtimeFileL1.setRealtimeStep2(_Ldata.RealtimeStep2);
 
-            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{_data.DTM[0]}\\MONTH_{_data.DTM[1]}\\DAY_{_data.DTM[2]}";
+            string DirRealtime = RealLogDir + $"YEAR_{_data.DTM[0]}\\MONTH_{_data.DTM[1]}\\DAY_{_data.DTM[2]}";
             CheckFolderPath(DirRealtime);
 
             if (_Rdata._Step1MaxLoad_NG == 1 | _Rdata._Step2CompRef_NG == 1 | _Rdata._Step2CompGraph_NG == 1 | _Rdata._Step2ExtnRef_NG == 1 | _Rdata._Step2ExtnGraph_NG == 1 | _Rdata._Step2DiffGraph_NG == 1)

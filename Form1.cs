@@ -377,7 +377,7 @@ namespace KVCOMSERVER
 
         public void RealtimeUpdateList()
         {
-            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
             CheckFolderPath(DirRealtime);
 
             string[] listfiles = new string[] { };
@@ -410,7 +410,7 @@ namespace KVCOMSERVER
 
         public void MasteringUpdateList()
         {
-            string DirMaster = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
+            string DirMaster = _WorkflowHandler.MasterDir;
             CheckFolderPath(DirMaster);
 
             string[] listfiles = new string[] { };
@@ -458,7 +458,7 @@ namespace KVCOMSERVER
 
         private void button19_Click(object sender, EventArgs e)
         {
-            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
             CheckFolderPath(DirRealtime);
             DataGridViewRow test1 = new DataGridViewRow();
             test1 = dataGridView1.CurrentRow;
@@ -471,7 +471,7 @@ namespace KVCOMSERVER
 
         private void button20_Click(object sender, EventArgs e)
         {
-            string DirMaster = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
+            string DirMaster = _WorkflowHandler.MasterDir;
             CheckFolderPath(DirMaster);
             DataGridViewRow test2 = new DataGridViewRow();
             test2 = dataGridView2.CurrentRow;
@@ -484,7 +484,7 @@ namespace KVCOMSERVER
 
         private void button8_Click(object sender, EventArgs e)
         {
-            string DirRealtime = $"C:\\FTP_DB_FUNCTION_TESTER\\LOG_REALTIME\\YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
             CheckFolderPath(DirRealtime);
             var psi = new ProcessStartInfo();
             psi.FileName = @"c:\windows\explorer.exe";
@@ -494,7 +494,7 @@ namespace KVCOMSERVER
 
         private void button9_Click(object sender, EventArgs e)
         {
-            string DirMaster = $"C:\\FTP_DB_FUNCTION_TESTER\\MASTERING";
+            string DirMaster = _WorkflowHandler.MasterDir;
             CheckFolderPath(DirMaster);
             var psi = new ProcessStartInfo();
             psi.FileName = @"c:\windows\explorer.exe";
