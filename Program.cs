@@ -85,15 +85,16 @@ namespace WORKFLOW
         KVPROTOCOL _kvconnObject;
         EEIPClient _eeipObject;
 
-        EXCELSTREAM MasterFileL1;
-        EXCELSTREAM MasterFileR1;
+        EXCELSTREAM MasterFileL1Active;
+        EXCELSTREAM MasterFileR1Active;
         EXCELSTREAM RealtimeFileL1;
         EXCELSTREAM RealtimeFileR1;
 
         EXCELSTREAM LogBufferReadFileL1;
         EXCELSTREAM LogBufferReadFileR1;
 
-        DATAMODEL _data;
+        DATAMODEL_COMMON _data;
+        DATAMODEL_MASTER _masterData;
         DATAMODEL_L _Ldata;
         DATAMODEL_R _Rdata;
 
@@ -315,8 +316,25 @@ namespace WORKFLOW
 
         void _eeipTrigMasterFetchModel(byte[] MODNAME_VAR)
         {
-
+            string MODNAME = Encoding.Default.GetString(MODNAME_VAR);
+            foreach (string files in Directory.GetFiles(MasterDir))
+            {
+                if (files.Contains(MODNAME))
+                {
+                    _excelReadMasterData(MODNAME);
+                    //>//_kvconnObject.writeDataCommand("W0A0", "", "0"); //>confirm if read file complete
+                    //MasterFileL1.FileRead(files);
+                    //MasterFileR1.FileRead(files);
+                }
+                else
+                {
+                    //_kvconnObject.writeDataCommand("W0A0", "", "0"); //>confirm if not found
+                    //MessageBox.Show("Master File for this model is not found. Please initiate setting.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
+
+        
 
         void _eeipTriggerReadParameter(byte[] STAT_INPUT)
         {
@@ -577,6 +595,11 @@ namespace WORKFLOW
             _realtimeReadFlag = false;
             _kvconnObject.writeDataCommand("W0C2", "", "0");
             //should this removed because there's already call for this outside the function after this execution
+        }
+
+        void _excelReadMasterData(string modname)
+        {
+
         }
 
 
@@ -1944,7 +1967,7 @@ namespace WORKFLOW
         }
     }
 
-    public class DATAMODEL
+    public class DATAMODEL_COMMON
     {
         public string _activeModelName;
         public string _activeKayabaNumber;
@@ -1988,7 +2011,7 @@ namespace WORKFLOW
         public List<object> Step1Param;
         public List<object> Step2345Param;
 
-        public DATAMODEL()
+        public DATAMODEL_COMMON()
         {
             DTM = new List<String>()
                 {
@@ -2072,32 +2095,6 @@ namespace WORKFLOW
         List<float> _RealtimeStep3DiffStroke;
         List<float> _RealtimeStep3DiffLoad;
 
-        List<float> _MasterStep2CompStroke;
-        List<float> _MasterStep2CompLoad;
-        List<float> _MasterStep2CompLoadLower;
-        List<float> _MasterStep2CompLoadUpper;
-        List<float> _MasterStep2ExtnStroke;
-        List<float> _MasterStep2ExtnLoad;
-        List<float> _MasterStep2ExtnLoadLower;
-        List<float> _MasterStep2ExtnLoadUpper;
-        List<float> _MasterStep2DiffStroke;
-        List<float> _MasterStep2DiffLoad;
-        List<float> _MasterStep2DiffLoadLower;
-        List<float> _MasterStep2DiffLoadUpper;
-
-        List<float> _MasterStep3CompStroke;
-        List<float> _MasterStep3CompLoad;
-        List<float> _MasterStep3CompLoadLower;
-        List<float> _MasterStep3CompLoadUpper;
-        List<float> _MasterStep3ExtnStroke;
-        List<float> _MasterStep3ExtnLoad;
-        List<float> _MasterStep3ExtnLoadLower;
-        List<float> _MasterStep3ExtnLoadUpper;
-        List<float> _MasterStep3DiffStroke;
-        List<float> _MasterStep3DiffLoad;
-        List<float> _MasterStep3DiffLoadLower;
-        List<float> _MasterStep3DiffLoadUpper;
-
         public DATAMODEL_R()
         {
             Judgement = new List<float>()
@@ -2127,38 +2124,6 @@ namespace WORKFLOW
                 _RealtimeStep3ExtnLoad,
                 _RealtimeStep3DiffStroke,
                 _RealtimeStep3DiffLoad
-            };
-
-            MasteringStep2 = new List<List<float>>()
-            {
-                _MasterStep2CompStroke,
-                _MasterStep2CompLoad,
-                _MasterStep2CompLoadLower,
-                _MasterStep2CompLoadUpper,
-                _MasterStep2ExtnStroke,
-                _MasterStep2ExtnLoad,
-                _MasterStep2ExtnLoadLower,
-                _MasterStep2ExtnLoadUpper,
-                _MasterStep2DiffStroke,
-                _MasterStep2DiffLoad,
-                _MasterStep2DiffLoadLower,
-                _MasterStep2DiffLoadUpper
-            };
-
-            MasteringStep3 = new List<List<float>>()
-            {
-                _MasterStep3CompStroke,
-                _MasterStep3CompLoad,
-                _MasterStep3CompLoadLower,
-                _MasterStep3CompLoadUpper,
-                _MasterStep3ExtnStroke,
-                _MasterStep3ExtnLoad,
-                _MasterStep3ExtnLoadLower,
-                _MasterStep3ExtnLoadUpper,
-                _MasterStep3DiffStroke,
-                _MasterStep3DiffLoad,
-                _MasterStep3DiffLoadLower,
-                _MasterStep3DiffLoadUpper
             };
         }
     }
@@ -2198,32 +2163,6 @@ namespace WORKFLOW
         List<float> _RealtimeStep3DiffStroke;
         List<float> _RealtimeStep3DiffLoad;
 
-        List<float> _MasterStep2CompStroke;
-        List<float> _MasterStep2CompLoad;
-        List<float> _MasterStep2CompLoadLower;
-        List<float> _MasterStep2CompLoadUpper;
-        List<float> _MasterStep2ExtnStroke;
-        List<float> _MasterStep2ExtnLoad;
-        List<float> _MasterStep2ExtnLoadLower;
-        List<float> _MasterStep2ExtnLoadUpper;
-        List<float> _MasterStep2DiffStroke;
-        List<float> _MasterStep2DiffLoad;
-        List<float> _MasterStep2DiffLoadLower;
-        List<float> _MasterStep2DiffLoadUpper;
-
-        List<float> _MasterStep3CompStroke;
-        List<float> _MasterStep3CompLoad;
-        List<float> _MasterStep3CompLoadLower;
-        List<float> _MasterStep3CompLoadUpper;
-        List<float> _MasterStep3ExtnStroke;
-        List<float> _MasterStep3ExtnLoad;
-        List<float> _MasterStep3ExtnLoadLower;
-        List<float> _MasterStep3ExtnLoadUpper;
-        List<float> _MasterStep3DiffStroke;
-        List<float> _MasterStep3DiffLoad;
-        List<float> _MasterStep3DiffLoadLower;
-        List<float> _MasterStep3DiffLoadUpper;
-
         public DATAMODEL_L()
         {
             Judgement = new List<float>()
@@ -2254,38 +2193,224 @@ namespace WORKFLOW
                 _RealtimeStep3DiffStroke,
                 _RealtimeStep3DiffLoad
             };
+        }
+    }
 
-            MasteringStep2 = new List<List<float>>()
+    public class DATAMODEL_MASTER
+    {
+
+        public string _activeModelName;
+        public string _activeKayabaNumber;
+        public string _activeDay;
+        public string _activeMonth;
+        public string _activeYear;
+        public string _activeHour;
+        public string _activeMinute;
+        public string _activeSecond;
+
+        public int _step1Enable;
+        public float _step1Stroke;
+        public float _step1CompresSpeed;
+        public float _step1ExtendSpeed;
+        public int _step1CycleCount;
+        public float _step1MaxLoad;
+
+        public int _step2Enable;
+        public float _step2CompresSpeed;
+        public float _step2CompressJudgeMin;
+        public float _step2CompressJudgeMax;
+        public float _step2CompressLoadRef;
+        public float _step2ExtendSpeed;
+        public float _step2ExtendJudgeMin;
+        public float _step2ExtendJudgeMax;
+        public float _step2ExtendLoadRef;
+        public int _step2LoadRefTolerance;
+
+        public int _step3Enable;
+        public float _step3CompresSpeed;
+        public float _step3CompressJudgeMin;
+        public float _step3CompressJudgeMax;
+        public float _step3CompressLoadRef;
+        public float _step3ExtendSpeed;
+        public float _step3ExtendJudgeMin;
+        public float _step3ExtendJudgeMax;
+        public float _step3ExtendLoadRef;
+        public int _step3LoadRefTolerance;
+
+        public List<string> DTM;
+        public List<object> Step1Param;
+        public List<object> Step2345Param;
+
+        public List<List<float>> RMasteringStep2;
+        public List<List<float>> RMasteringStep3;
+
+        public List<List<float>> LMasteringStep2;
+        public List<List<float>> LMasteringStep3;
+
+        List<float> _RsideMasterStep2CompStroke;
+        List<float> _RsideMasterStep2CompLoad;
+        List<float> _RsideMasterStep2CompLoadLower;
+        List<float> _RsideMasterStep2CompLoadUpper;
+        List<float> _RsideMasterStep2ExtnStroke;
+        List<float> _RsideMasterStep2ExtnLoad;
+        List<float> _RsideMasterStep2ExtnLoadLower;
+        List<float> _RsideMasterStep2ExtnLoadUpper;
+        List<float> _RsideMasterStep2DiffStroke;
+        List<float> _RsideMasterStep2DiffLoad;
+        List<float> _RsideMasterStep2DiffLoadLower;
+        List<float> _RsideMasterStep2DiffLoadUpper;
+
+        List<float> _RsideMasterStep3CompStroke;
+        List<float> _RsideMasterStep3CompLoad;
+        List<float> _RsideMasterStep3CompLoadLower;
+        List<float> _RsideMasterStep3CompLoadUpper;
+        List<float> _RsideMasterStep3ExtnStroke;
+        List<float> _RsideMasterStep3ExtnLoad;
+        List<float> _RsideMasterStep3ExtnLoadLower;
+        List<float> _RsideMasterStep3ExtnLoadUpper;
+        List<float> _RsideMasterStep3DiffStroke;
+        List<float> _RsideMasterStep3DiffLoad;
+        List<float> _RsideMasterStep3DiffLoadLower;
+        List<float> _RsideMasterStep3DiffLoadUpper;
+
+        List<float> _LsideMasterStep2CompStroke;
+        List<float> _LsideMasterStep2CompLoad;
+        List<float> _LsideMasterStep2CompLoadLower;
+        List<float> _LsideMasterStep2CompLoadUpper;
+        List<float> _LsideMasterStep2ExtnStroke;
+        List<float> _LsideMasterStep2ExtnLoad;
+        List<float> _LsideMasterStep2ExtnLoadLower;
+        List<float> _LsideMasterStep2ExtnLoadUpper;
+        List<float> _LsideMasterStep2DiffStroke;
+        List<float> _LsideMasterStep2DiffLoad;
+        List<float> _LsideMasterStep2DiffLoadLower;
+        List<float> _LsideMasterStep2DiffLoadUpper;
+
+        List<float> _LsideMasterStep3CompStroke;
+        List<float> _LsideMasterStep3CompLoad;
+        List<float> _LsideMasterStep3CompLoadLower;
+        List<float> _LsideMasterStep3CompLoadUpper;
+        List<float> _LsideMasterStep3ExtnStroke;
+        List<float> _LsideMasterStep3ExtnLoad;
+        List<float> _LsideMasterStep3ExtnLoadLower;
+        List<float> _LsideMasterStep3ExtnLoadUpper;
+        List<float> _LsideMasterStep3DiffStroke;
+        List<float> _LsideMasterStep3DiffLoad;
+        List<float> _LsideMasterStep3DiffLoadLower;
+        List<float> _LsideMasterStep3DiffLoadUpper;
+
+        public DATAMODEL_MASTER()
+        {
+
+            DTM = new List<String>()
             {
-                _MasterStep2CompStroke,
-                _MasterStep2CompLoad,
-                _MasterStep2CompLoadLower,
-                _MasterStep2CompLoadUpper,
-                _MasterStep2ExtnStroke,
-                _MasterStep2ExtnLoad,
-                _MasterStep2ExtnLoadLower,
-                _MasterStep2ExtnLoadUpper,
-                _MasterStep2DiffStroke,
-                _MasterStep2DiffLoad,
-                _MasterStep2DiffLoadLower,
-                _MasterStep2DiffLoadUpper
+                _activeDay,
+                _activeMonth,
+                _activeYear,
+                _activeHour,
+                _activeMinute,
+                _activeSecond
             };
 
-            MasteringStep3 = new List<List<float>>()
+            Step1Param = new List<object>()
             {
-                _MasterStep3CompStroke,
-                _MasterStep3CompLoad,
-                _MasterStep3CompLoadLower,
-                _MasterStep3CompLoadUpper,
-                _MasterStep3ExtnStroke,
-                _MasterStep3ExtnLoad,
-                _MasterStep3ExtnLoadLower,
-                _MasterStep3ExtnLoadUpper,
-                _MasterStep3DiffStroke,
-                _MasterStep3DiffLoad,
-                _MasterStep3DiffLoadLower,
-                _MasterStep3DiffLoadUpper
+                _step1Enable,
+                _step1Stroke,
+                _step1CompresSpeed,
+                _step1ExtendSpeed,
+                _step1CycleCount,
+                _step1MaxLoad
+            };
+
+            Step2345Param = new List<object>()
+            {
+                _step2Enable,
+                _step2CompresSpeed,
+                _step2CompressJudgeMin,
+                _step2CompressJudgeMax,
+                _step2CompressLoadRef,
+                _step2ExtendSpeed,
+                _step2ExtendJudgeMin,
+                _step2ExtendJudgeMax,
+                _step2ExtendLoadRef,
+                _step2LoadRefTolerance,
+                _step3Enable,
+                _step3CompresSpeed,
+                _step3CompressJudgeMin,
+                _step3CompressJudgeMax,
+                _step3CompressLoadRef,
+                _step3ExtendSpeed,
+                _step3ExtendJudgeMin,
+                _step3ExtendJudgeMax,
+                _step3ExtendLoadRef,
+                _step3LoadRefTolerance
+            };
+
+            RMasteringStep2 = new List<List<float>>()
+            {
+                _RsideMasterStep2CompStroke,
+                _RsideMasterStep2CompLoad,
+                _RsideMasterStep2CompLoadLower,
+                _RsideMasterStep2CompLoadUpper,
+                _RsideMasterStep2ExtnStroke,
+                _RsideMasterStep2ExtnLoad,
+                _RsideMasterStep2ExtnLoadLower,
+                _RsideMasterStep2ExtnLoadUpper,
+                _RsideMasterStep2DiffStroke,
+                _RsideMasterStep2DiffLoad,
+                _RsideMasterStep2DiffLoadLower,
+                _RsideMasterStep2DiffLoadUpper
+            };
+
+            RMasteringStep3 = new List<List<float>>()
+            {
+                _RsideMasterStep3CompStroke,
+                _RsideMasterStep3CompLoad,
+                _RsideMasterStep3CompLoadLower,
+                _RsideMasterStep3CompLoadUpper,
+                _RsideMasterStep3ExtnStroke,
+                _RsideMasterStep3ExtnLoad,
+                _RsideMasterStep3ExtnLoadLower,
+                _RsideMasterStep3ExtnLoadUpper,
+                _RsideMasterStep3DiffStroke,
+                _RsideMasterStep3DiffLoad,
+                _RsideMasterStep3DiffLoadLower,
+                _RsideMasterStep3DiffLoadUpper
+            };
+
+            LMasteringStep2 = new List<List<float>>()
+            {
+                _LsideMasterStep2CompStroke,
+                _LsideMasterStep2CompLoad,
+                _LsideMasterStep2CompLoadLower,
+                _LsideMasterStep2CompLoadUpper,
+                _LsideMasterStep2ExtnStroke,
+                _LsideMasterStep2ExtnLoad,
+                _LsideMasterStep2ExtnLoadLower,
+                _LsideMasterStep2ExtnLoadUpper,
+                _LsideMasterStep2DiffStroke,
+                _LsideMasterStep2DiffLoad,
+                _LsideMasterStep2DiffLoadLower,
+                _LsideMasterStep2DiffLoadUpper
+            };
+
+            LMasteringStep3 = new List<List<float>>()
+            {
+                _LsideMasterStep3CompStroke,
+                _LsideMasterStep3CompLoad,
+                _LsideMasterStep3CompLoadLower,
+                _LsideMasterStep3CompLoadUpper,
+                _LsideMasterStep3ExtnStroke,
+                _LsideMasterStep3ExtnLoad,
+                _LsideMasterStep3ExtnLoadLower,
+                _LsideMasterStep3ExtnLoadUpper,
+                _LsideMasterStep3DiffStroke,
+                _LsideMasterStep3DiffLoad,
+                _LsideMasterStep3DiffLoadLower,
+                _LsideMasterStep3DiffLoadUpper
             };
         }
     }
+
+
 }
