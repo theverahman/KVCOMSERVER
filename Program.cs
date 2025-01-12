@@ -319,7 +319,7 @@ namespace WORKFLOW
             {
                 if (files.Contains(MODNAME))
                 {
-                    _excelReadMasterData(MODNAME);
+                    _excelReadMasterData(files);
                     //>//_kvconnObject.writeDataCommand("W0A0", "", "0"); //>confirm if read file complete
                     //MasterFileL1.FileRead(files);
                     //MasterFileR1.FileRead(files);
@@ -595,9 +595,9 @@ namespace WORKFLOW
             //should this removed because there's already call for this outside the function after this execution
         }
 
-        void _excelReadMasterData(string modname)
+        void _excelReadMasterData(string modfile)
         {
-
+            MasterFileActive.FileReadMaster(modfile);
         }
 
 
