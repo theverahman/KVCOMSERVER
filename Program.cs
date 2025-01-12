@@ -85,8 +85,7 @@ namespace WORKFLOW
         KVPROTOCOL _kvconnObject;
         EEIPClient _eeipObject;
 
-        EXCELSTREAM MasterFileL1Active;
-        EXCELSTREAM MasterFileR1Active;
+        EXCELSTREAM MasterFileActive;
         EXCELSTREAM RealtimeFileL1;
         EXCELSTREAM RealtimeFileR1;
 
@@ -125,15 +124,14 @@ namespace WORKFLOW
             _eeipObject = new EEIPClient();
             _eeipObject.IPAddress = _uiObject.settingIpv4;
 
-            MasterFileL1 = new EXCELSTREAM("MASTER");
-            MasterFileR1 = new EXCELSTREAM("MASTER");
+            MasterFileActive = new EXCELSTREAM("MASTER");
             RealtimeFileL1 = new EXCELSTREAM("REALTIME");
             RealtimeFileR1 = new EXCELSTREAM("REALTIME");
 
             LogBufferReadFileL1 = new EXCELSTREAM("REALTIME");
             LogBufferReadFileR1 = new EXCELSTREAM("REALTIME");
 
-            _data = new DATAMODEL();
+            _data = new DATAMODEL_COMMON();
             _Ldata = new DATAMODEL_L();
             _Rdata = new DATAMODEL_R();
 
