@@ -441,9 +441,9 @@ namespace KVCOMSERVER
             dataGridView2.Update();
         }
 
-        public void RealtimeList_SetDate(DateTime daten)
+        public void RealtimeList_SetDate(DateTime datentime)
         {
-            dateTimePicker1.Value = daten;
+            dateTimePicker1.Value = datentime;
         }
 
         public DateTime RealtimeList_GetDate()
