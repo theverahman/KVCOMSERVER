@@ -112,6 +112,91 @@ namespace WORKFLOW
 
         string _kvMsgRecv;
 
+        string[] dataRsideStep2addrs = new string[] 
+                    { 
+                        "ZF110000", 
+                        "ZF110400", 
+                        "ZF110800", 
+                        "ZF111200", 
+                        "ZF110000", 
+                        "ZF510000" 
+                    };
+
+        string[] dataLsideStep2addrs = new string[] 
+                    { 
+                        "ZF210000", 
+                        "ZF210400", 
+                        "ZF210800", 
+                        "ZF211200", 
+                        "ZF210000", 
+                        "ZF510500" 
+                    };
+
+
+        string[] dataMasterRsideStep2addrs = new string[]
+                    {
+                        "ZFx1",
+                        "ZFx2",
+                        "ZFx3",
+                        "ZFx4",
+                        "ZFx5",
+                        "ZFx6",
+                        "ZFx7",
+                        "ZFx8",
+                        "ZFx9",
+                        "ZFx10",
+                        "ZFx11",
+                        "ZFx12"
+                    };
+
+        string[] dataMasterLsideStep2addrs = new string[]
+                    {
+                        "ZFx1",
+                        "ZFx2",
+                        "ZFx3",
+                        "ZFx4",
+                        "ZFx5",
+                        "ZFx6",
+                        "ZFx7",
+                        "ZFx8",
+                        "ZFx9",
+                        "ZFx10",
+                        "ZFx11",
+                        "ZFx12"
+                    };
+
+        string[] dataMasterRsideStep3addrs = new string[]
+                    {
+                        "ZFx1",
+                        "ZFx2",
+                        "ZFx3",
+                        "ZFx4",
+                        "ZFx5",
+                        "ZFx6",
+                        "ZFx7",
+                        "ZFx8",
+                        "ZFx9",
+                        "ZFx10",
+                        "ZFx11",
+                        "ZFx12"
+                    };
+
+        string[] dataMasterLsideStep3addrs = new string[]
+                    {
+                        "ZFx1",
+                        "ZFx2",
+                        "ZFx3",
+                        "ZFx4",
+                        "ZFx5",
+                        "ZFx6",
+                        "ZFx7",
+                        "ZFx8",
+                        "ZFx9",
+                        "ZFx10",
+                        "ZFx11",
+                        "ZFx12"
+                    };
+
 
         public WORKFLOWHANDLER(KVCOMSERVER.Form1 formobject)
         {
@@ -278,13 +363,12 @@ namespace WORKFLOW
         {
             if (this.GetConnState() == 1)
             {
-                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E); //undetermined byte address
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8F); //undetermined byte address
                 if ((byte)(TRIG[0] & 0x01) == 0x01) //undetermined value
                 {
                     //undetermined parameter address
-                    //byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xA0);
-                    ////undetermined method
-                    //_eeipTrigMasterFetchModel(MODEL_NAME_INPUT); 
+                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xA1);
+                    _eeipTrigMasterFetchModel(MODEL_NAME_INPUT); 
                     //Thread.Sleep(10);
                 }
             }
@@ -320,13 +404,16 @@ namespace WORKFLOW
                 if (files.Contains(MODNAME))
                 {
                     _excelReadMasterData(files);
-                    //>//_kvconnObject.writeDataCommand("W0A0", "", "0"); //>confirm if read file complete
-                    //MasterFileL1.FileRead(files);
-                    //MasterFileR1.FileRead(files);
+                    
+                    
+                    _kvreadRealtime(ref _Rdata.RealtimeStep2, dataRsideStep2addrs, 400);
+
+
+                    _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                 }
                 else
                 {
-                    //_kvconnObject.writeDataCommand("W0A0", "", "0"); //>confirm if not found
+                    _kvconnObject.writeDataCommand("W0FF", "", "1"); //>confirm if not found
                     //MessageBox.Show("Master File for this model is not found. Please initiate setting.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -401,9 +488,9 @@ namespace WORKFLOW
                     _eeipreadDateTime();
                     _eeipreadJudgement(ref _Rdata.Judgement, 0xA5);
                     _eeipreadJudgement(ref _Ldata.Judgement, 0xA6);
-                    _kvreadRealtime(ref _Rdata.RealtimeStep2, "ZF110000", "ZF110400", "ZF110800", "ZF111200", "ZF110000", "ZF510000", 400);
+                    _kvreadRealtime(ref _Rdata.RealtimeStep2, dataRsideStep2addrs, 400);
                     //_kvreadRealtime(ref _Rdata.RealtimeStep3, "ZF111604", "ZF112004", "ZF112404", "ZF113208", "ZF111604", "ZF510000", 400);
-                    _kvreadRealtime(ref _Ldata.RealtimeStep2, "ZF210000", "ZF210400", "ZF210800", "ZF211200", "ZF210000", "ZF510500", 400);
+                    _kvreadRealtime(ref _Ldata.RealtimeStep2, dataLsideStep2addrs, 400);
                     //_kvreadRealtime(ref _Ldata.RealtimeStep3, "ZF211604", "ZF212004", "ZF212404", "ZF213208", "ZF211604", "ZF510500", 400);
 
                     _Rdata._Step1MaxLoad_NG = _kvconnObject.readbitCommand("LR201");
@@ -483,14 +570,29 @@ namespace WORKFLOW
                 }
             }
         }
+        void _excelReadMasterData(string modfile)
+        {
+            MasterFileActive.FileReadMaster(modfile);
+            _masterData._activeModelName = MasterFileActive.getModelName();
+            _masterData.Step1Param = ParamStep1toObject(MasterFileActive.getParameterStep1());
+            _masterData.Step2345Param = ParamStep2345toObject(MasterFileActive.getParameterStep2345());
+
+            _masterData.RMasteringStep2 = MasterFileActive.getRsideMasterStep2();
+            _masterData.LMasteringStep2 = MasterFileActive.getLsideMasterStep2();
+
+            _masterData.RMasteringStep3 = MasterFileActive.getRsideMasterStep3();
+            _masterData.LMasteringStep3 = MasterFileActive.getLsideMasterStep3();
+        }
 
         void _excelStoreParameterData()
         {
             RealtimeFileR1.setModelName(_data._activeModelName);
+            RealtimeFileR1.setKYBNUM(_data._activeKayabaNumber);
             RealtimeFileR1.setParameterStep1(_data.Step1Param);
             RealtimeFileR1.setParameterStep2345(_data.Step2345Param);
 
             RealtimeFileL1.setModelName(_data._activeModelName);
+            RealtimeFileL1.setKYBNUM(_data._activeKayabaNumber);
             RealtimeFileL1.setParameterStep1(_data.Step1Param);
             RealtimeFileL1.setParameterStep2345(_data.Step2345Param);
         }
@@ -595,10 +697,6 @@ namespace WORKFLOW
             //should this removed because there's already call for this outside the function after this execution
         }
 
-        void _excelReadMasterData(string modfile)
-        {
-            MasterFileActive.FileReadMaster(modfile);
-        }
 
 
         void _backgroundMessageRecv()
@@ -941,47 +1039,107 @@ namespace WORKFLOW
             catch { }
         }
 
-        void _kvreadRealtime(ref List<List<float>> realtimeresult, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, int count)
+        void _kvreadRealtime(ref List<List<float>> realtimeresult, string[] addrs, int count)
         {
             try
             {
                 realtimeresult.Clear();
 
-                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr1, count));
-                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr2, count));
-                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr3, count));
-                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr4, count));
-                List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr5, count));
-                List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr6, count));
-                
-                realtimeresult.Add(hex16tofloat32(comp_stroke));
-                realtimeresult.Add(hex16tofloat32(comp_load));
-                realtimeresult.Add(hex16tofloat32(extn_stroke));
-                realtimeresult.Add(hex16tofloat32(extn_load));
-                realtimeresult.Add(hex16tofloat32(diff_stroke));
-                realtimeresult.Add(hex16tofloat32(diff_load));
+                if (addrs.Length != 6)
+                {
+                    throw new ArgumentException("Array must have exactly 6 elements.");
+                }
+                else
+                {
+                    List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[0], count));
+                    List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[1], count));
+                    List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[2], count));
+                    List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[3], count));
+                    List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[4], count));
+                    List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[5], count));
+
+                    realtimeresult.Add(hex16tofloat32(comp_stroke));
+                    realtimeresult.Add(hex16tofloat32(comp_load));
+                    realtimeresult.Add(hex16tofloat32(extn_stroke));
+                    realtimeresult.Add(hex16tofloat32(extn_load));
+                    realtimeresult.Add(hex16tofloat32(diff_stroke));
+                    realtimeresult.Add(hex16tofloat32(diff_load));
+                }
             }
             catch { }
         }
 
-        void _kvreadMaster(ref List<List<float>> masterdata, string addr1, string addr2, string addr3, string addr4, string addr5, string addr6, string addr7, string addr8, string addr9, string addr10, string addr11, string addr12, int count)
+        void _kvMasterModelUpload(ref List<object> masterparameter1, string[] addrs, int count)
+        {
+            if (addrs.Length != 6)
+            {
+                throw new ArgumentException("Array must have exactly 6 elements.");
+            }
+        }
+
+        void _kvMasterModelDownload(ref List<object> masterparameter1, string[] addrs, int count)
+        {
+            if (addrs.Length != 6)
+            {
+                throw new ArgumentException("Array must have exactly 6 elements.");
+            }
+        }
+
+        void _kvMasterParam1Upload(ref List<object> masterparameter1, string[] addrs, int count)
+        {
+            if (addrs.Length != 6)
+            {
+                throw new ArgumentException("Array must have exactly 6 elements.");
+            }
+        }
+
+        void _kvMasterParam1Download(ref List<object> masterparameter1, string[] addrs, int count)
+        {
+            if (addrs.Length != 6)
+            {
+                throw new ArgumentException("Array must have exactly 6 elements.");
+            }
+        }
+
+        void _kvMasterParam2345Upload(ref List<object> masterparameter2345, string[] addrs, int count)
+        {
+            if (addrs.Length != 20)
+            {
+                throw new ArgumentException("Array must have exactly 20 elements.");
+            }
+        }
+
+        void _kvMasterParam2345Download(ref List<object> masterparameter2345, string[] addrs, int count)
+        {
+            if (addrs.Length != 20)
+            {
+                throw new ArgumentException("Array must have exactly 20 elements.");
+            }
+        }
+
+        void _kvMasterGraphUpload(ref List<List<float>> masterdata, string[] addrs, int count)
         {
             try
             {
                 masterdata.Clear();
 
-                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr1, count));
-                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr2, count));
-                List<byte[]> comp_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr3, count));
-                List<byte[]> comp_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr4, count));
-                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr5, count));
-                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr6, count));
-                List<byte[]> extn_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr7, count));
-                List<byte[]> extn_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr8, count));
-                List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr9, count));
-                List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr10, count));
-                List<byte[]> diff_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr11, count));
-                List<byte[]> diff_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addr12, count));
+                if (addrs.Length != 12)
+                {
+                    throw new ArgumentException("Array must have exactly 12 elements.");
+                }
+
+                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[0], count));
+                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[1], count));
+                List<byte[]> comp_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[2], count));
+                List<byte[]> comp_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[3], count));
+                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[4], count));
+                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[5], count));
+                List<byte[]> extn_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[6], count));
+                List<byte[]> extn_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[7], count));
+                List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[8], count));
+                List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[9], count));
+                List<byte[]> diff_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[10], count));
+                List<byte[]> diff_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[11], count));
 
                 masterdata.Add(hex16tofloat32(comp_stroke));
                 masterdata.Add(hex16tofloat32(comp_load));
@@ -997,6 +1155,80 @@ namespace WORKFLOW
                 masterdata.Add(hex16tofloat32(diff_lower));
             }
             catch { }
+        }
+
+        void _kvMasterGraphDownload(ref List<List<float>> masterdata, string[] addrs, int count)
+        {
+            try
+            {
+                masterdata.Clear();
+
+                if (addrs.Length != 12)
+                {
+                    throw new ArgumentException("Array must have exactly 12 elements.");
+                }
+
+                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[0], count));
+                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[1], count));
+                List<byte[]> comp_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[2], count));
+                List<byte[]> comp_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[3], count));
+                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[4], count));
+                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[5], count));
+                List<byte[]> extn_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[6], count));
+                List<byte[]> extn_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[7], count));
+                List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[8], count));
+                List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[9], count));
+                List<byte[]> diff_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[10], count));
+                List<byte[]> diff_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[11], count));
+
+                masterdata.Add(hex16tofloat32(comp_stroke));
+                masterdata.Add(hex16tofloat32(comp_load));
+                masterdata.Add(hex16tofloat32(comp_upper));
+                masterdata.Add(hex16tofloat32(comp_lower));
+                masterdata.Add(hex16tofloat32(extn_stroke));
+                masterdata.Add(hex16tofloat32(extn_load));
+                masterdata.Add(hex16tofloat32(extn_upper));
+                masterdata.Add(hex16tofloat32(extn_lower));
+                masterdata.Add(hex16tofloat32(diff_stroke));
+                masterdata.Add(hex16tofloat32(diff_load));
+                masterdata.Add(hex16tofloat32(diff_upper));
+                masterdata.Add(hex16tofloat32(diff_lower));
+            }
+            catch { }
+        }
+
+        List<object> ParamStep1toObject<T>(List<T> dataread)
+        {
+            List<object> dataobject = new List<object>();
+            for (int i = 0; i < dataread.Count; i++)
+            {
+                if (i == 0 | i == 4)
+                {
+                    dataobject.Add(Convert.ToInt16(dataread[i]));
+                }
+                else
+                {
+                    dataobject.Add(Convert.ToSingle(dataread[i]));
+                }
+            }
+            return dataobject;
+        }
+
+        List<object> ParamStep2345toObject<T>(List<T> dataread)
+        {
+            List<object> dataobject = new List<object>();
+            for (int i = 0; i < dataread.Count; i++)
+            {
+                if (i == 0 | i == 9 | i==10 | i==19)
+                {
+                    dataobject.Add(Convert.ToInt16(dataread[i]));
+                }
+                else
+                {
+                    dataobject.Add(Convert.ToSingle(dataread[i]));
+                }
+            }
+            return dataobject;
         }
 
         public static string floattostring(float pf)
