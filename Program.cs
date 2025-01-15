@@ -718,7 +718,7 @@ namespace WORKFLOW
 
         void _eeipreadActiveModelData()
         {
-            //try
+            try
             {
                 byte[] _INPUT;
                 _INPUT = _eeipObject.AssemblyObject.getInstance(0xA1);
@@ -776,12 +776,12 @@ namespace WORKFLOW
                 //Debug.Write(_data._activeKayabaNumber);
                 //Debug.Write((char)'\n');
             }
-            //catch { }
+            catch { }
         }
 
         void _eeipreadDateTime()
         {
-            //try
+            try
             {
                 byte[] _INPUT;
                 List<int> _buffDTM = new List<int>();
@@ -822,12 +822,12 @@ namespace WORKFLOW
                     }
                 }
             }
-            //catch { }
+            catch { }
         }
 
         void _eeipreadStep1Param()
         {
-            //try
+            try
             {
                 byte[] _INPUT;
                 List<byte[]> _buffPARAM1 = new List<byte[]>();
@@ -894,12 +894,12 @@ namespace WORKFLOW
 
                 }
             }
-            //catch { }
+            catch { }
         }
 
         void _eeipreadStep2345Param()
         {
-            //try
+            try
             {
                 byte[] _INPUT;
                 List<byte[]> _buffPARAM2345 = new List<byte[]>();
@@ -970,12 +970,12 @@ namespace WORKFLOW
                     }
                 }
             }
-            //catch { }
+            catch { }
         }
 
         void _eeipreadJudgement(ref List<float> judgementresult, Int16 addr)
         {
-            //try
+            try
             {
                 byte[] _INPUT = _eeipObject.AssemblyObject.getInstance(addr);
                 Thread.Sleep(1);
@@ -1027,7 +1027,7 @@ namespace WORKFLOW
 
                 }
             }
-            //catch { }
+            catch { }
         }
 
         void _eeipreadRealtime(ref List<List<object>> realtimeresult, Int16 addr)
@@ -1069,23 +1069,79 @@ namespace WORKFLOW
             catch { }
         }
 
-        void _kvMasterModelUpload(ref List<object> masterparameter1, string[] addrs, int count)
+        void _eeipMasterModelUpload(ref DATAMODEL_MASTER master)
         {
-            if (addrs.Length != 6)
+            try
             {
-                throw new ArgumentException("Array must have exactly 6 elements.");
+                byte[] _INPUT;
+                _INPUT = _eeipObject.AssemblyObject.getInstance(0xAB);
+                char[] _charINPUT;
+                _charINPUT = System.Text.Encoding.ASCII.GetString(_INPUT).ToCharArray();
+                Thread.Sleep(1);
+
+                char[] _charModelBuff = new char[20];
+                char[] _charNumBuff = new char[20];
+
+                for (int i = 0; i < _charINPUT.Length; i++)
+                {
+                    if (i < 20)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            if (i > _charINPUT.Length - 2)
+                            {
+                                _charModelBuff[i] = _charINPUT[i];
+                            }
+                            else
+                            {
+                                _charModelBuff[i] = _charINPUT[i + 1];
+                            }
+                        }
+                        else if (i % 2 == 1)
+                        {
+                            _charModelBuff[i] = _charINPUT[i - 1];
+                        }
+                    }
+                    else
+                    {
+                        if (i % 2 == 0)
+                        {
+                            if (i > _charINPUT.Length - 2)
+                            {
+                                _charNumBuff[i - 20] = _charINPUT[i];
+                            }
+                            else
+                            {
+                                _charNumBuff[i - 20] = _charINPUT[i + 1];
+                            }
+                        }
+                        else if (i % 2 == 1)
+                        {
+                            _charNumBuff[i - 20] = _charINPUT[i - 1];
+                        }
+                    }
+                }
+                master._activeModelName = string.Join("", _charModelBuff);
+                master._activeKayabaNumber = string.Join("", _charNumBuff);
             }
+            catch { }
         }
 
-        void _kvMasterModelDownload(ref List<object> masterparameter1, string[] addrs, int count)
+        void _kvMasterModelDownload(ref DATAMODEL_MASTER master)
         {
-            if (addrs.Length != 6)
+            try
             {
-                throw new ArgumentException("Array must have exactly 6 elements.");
+                string[] hexModelBuff = StringToHex(SplitString2C(master._activeModelName));
+                string[] hexNumBuff = StringToHex(SplitString2C(master._activeKayabaNumber));
+                _kvconnObject.batchwriteDataCommand("W300", ".H", hexModelBuff.Length, hexModelBuff);
+                Thread.Sleep(1);
+                _kvconnObject.batchwriteDataCommand("W310", ".H", hexNumBuff.Length, hexNumBuff);
+                Thread.Sleep(1);
             }
+            catch { }
         }
 
-        void _kvMasterParam1Upload(ref List<object> masterparameter1, string[] addrs, int count)
+        void _eeipMasterParam1Upload(ref List<object> masterparameter1, string[] addrs, int count)
         {
             if (addrs.Length != 6)
             {
@@ -1101,7 +1157,7 @@ namespace WORKFLOW
             }
         }
 
-        void _kvMasterParam2345Upload(ref List<object> masterparameter2345, string[] addrs, int count)
+        void _eeipMasterParam2345Upload(ref List<object> masterparameter2345, string[] addrs, int count)
         {
             if (addrs.Length != 20)
             {
@@ -1229,6 +1285,24 @@ namespace WORKFLOW
                 }
             }
             return dataobject;
+        }
+
+        static string StringToHex(string input)
+        {
+            return string.Concat(input.Select(c => c == ' ' ? "00" : ((int)c).ToString("X2")));
+        }
+
+        static string[] StringToHex(string[] input)
+        {
+            return input.Select(ips => StringToHex(ips)).ToArray();
+        }
+
+        static string[] SplitString2C(string input)
+        {
+            if (input.Length % 2 != 0) input += " ";
+            return Enumerable.Range(0, input.Length / 2)
+                             .Select(i => input.Substring(i * 2, 2))
+                             .ToArray();
         }
 
         public static string floattostring(float pf)
