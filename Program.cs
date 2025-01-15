@@ -1305,6 +1305,63 @@ namespace WORKFLOW
                              .ToArray();
         }
 
+        public static string IntToHex(int num)
+        {
+            return num.ToString("X");
+        }
+
+        static string FloatToHex(float num)
+        {
+            byte[] bytes = BitConverter.GetBytes(num);
+            string hexString = BitConverter.ToString(bytes).Replace("-", "");
+            string swappedHex = string.Concat(Enumerable.Range(0, hexString.Length / 4)
+                                                         .Select(i =>
+                                                         {
+                                                             string segment = hexString.Substring(i * 4, 4);
+                                                             return segment.Substring(2, 2) + segment.Substring(0, 2);
+                                                         }));
+            return string.Concat(Enumerable.Range(0, swappedHex.Length / 8)
+                                           .Select(i =>
+                                           {
+                                               string segment = swappedHex.Substring(i * 8, 8);
+                                               return segment.Substring(4, 4) + segment.Substring(0, 4);
+                                           }));
+        }
+
+        static string[] FloatToHexArray(float num)
+        {
+            string hexString = FloatToHex(num);
+            string[] segments = Enumerable.Range(0, hexString.Length / 4)
+                                          .Select(i => hexString.Substring(i * 4, 4))
+                                          .ToArray();
+            return segments.Select((value, index) => new { value, index })
+                           .OrderBy(x => x.index % 2 == 0 ? x.index + 1 : x.index - 1)
+                           .Select(x => x.value)
+                           .ToArray();
+        }
+
+        static void AppendToArray<T>(ref T[] array, T newItem)
+        {
+            T[] newArray = new T[array.Length + 1];
+            Array.Copy(array, newArray, array.Length);
+            newArray[newArray.Length - 1] = newItem;
+            Array.Resize(ref array, newArray.Length);
+            Array.Copy(newArray, array, newArray.Length);
+        }
+
+        static void AppendToArray<T>(ref T[] array, T[] newItems)
+        {
+            T[] newArray = new T[array.Length + newItems.Length];
+            if (array.Length > 0)
+            {
+                Array.Copy(array, newArray, array.Length);
+                Array.Copy(newItems, 0, newArray, array.Length, newItems.Length);
+            }
+            else { Array.Copy(newItems, newArray, newItems.Length); }
+            Array.Resize(ref array, newArray.Length);
+            Array.Copy(newArray, array, newArray.Length);
+        }
+
         public static string floattostring(float pf)
         {
             return new string(pf.ToString());
