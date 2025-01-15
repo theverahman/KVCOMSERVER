@@ -94,8 +94,8 @@ namespace WORKFLOW
 
         DATAMODEL_COMMON _data;
         DATAMODEL_MASTER _masterData;
-        DATAMODEL_L _Ldata;
-        DATAMODEL_R _Rdata;
+        DATAMODEL_RL _Ldata;
+        DATAMODEL_RL _Rdata;
 
         public string HeadDir;
         public string RealLogDir;
@@ -217,8 +217,8 @@ namespace WORKFLOW
             LogBufferReadFileR1 = new EXCELSTREAM("REALTIME");
 
             _data = new DATAMODEL_COMMON();
-            _Ldata = new DATAMODEL_L();
-            _Rdata = new DATAMODEL_R();
+            _Ldata = new DATAMODEL_RL();
+            _Rdata = new DATAMODEL_RL();
 
             _ctsClock = new CancellationTokenSource();
             _clock1s = new STimer(async _ => await Clock1s(_ctsClock.Token), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
@@ -404,9 +404,9 @@ namespace WORKFLOW
                 if (files.Contains(MODNAME))
                 {
                     _excelReadMasterData(files);
-                    
-                    
-                    _kvreadRealtime(ref _Rdata.RealtimeStep2, dataRsideStep2addrs, 400);
+                    _kvMasterModelDownload(ref _masterData);
+                    _kvMasterParam1Download(ref _masterData);
+                    _kvMasterParam2345Download(ref _masterData);
 
 
                     _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
@@ -432,11 +432,12 @@ namespace WORKFLOW
 
                     _parameterReadFlag = true;
 
-                    _eeipreadActiveModelData();
-                    _eeipreadStep1Param();
-                    _eeipreadStep2345Param();
-
-                    _excelStoreParameterData();
+                    _eeipreadActiveModelData(ref _data);
+                    _eeipreadStep1Param(ref _data);
+                    _eeipreadStep2345Param(ref _data);
+                                        
+                    _excelStoreParameterData(ref _data, ref RealtimeFileR1);
+                    _excelStoreParameterData(ref _data, ref RealtimeFileL1);
                 }
 
                 if (_parameterReadFlag)
@@ -485,7 +486,7 @@ namespace WORKFLOW
                     Debug.Write("RL Read On");
                     Debug.Write((char)'\n');
 
-                    _eeipreadDateTime();
+                    _eeipreadDateTime(ref _data);
                     _eeipreadJudgement(ref _Rdata.Judgement, 0xA5);
                     _eeipreadJudgement(ref _Ldata.Judgement, 0xA6);
                     _kvreadRealtime(ref _Rdata.RealtimeStep2, dataRsideStep2addrs, 400);
@@ -542,7 +543,8 @@ namespace WORKFLOW
                         D4Col = System.Drawing.Color.LimeGreen;
                     }
 
-                    _excelStoreRealtimeData();
+                    _excelStoreRealtimeData(ref _data, ref _Rdata, ref RealtimeFileR1, "R");
+                    _excelStoreRealtimeData(ref _data, ref _Ldata, ref RealtimeFileL1, "L");
 
                     _backgroundDataPlot1Read();
                     _uiPlot1Update();
@@ -584,119 +586,61 @@ namespace WORKFLOW
             _masterData.LMasteringStep3 = MasterFileActive.getLsideMasterStep3();
         }
 
-        void _excelStoreParameterData()
+        void _excelStoreParameterData(ref DATAMODEL_COMMON feeddata, ref EXCELSTREAM exceldata)
         {
-            RealtimeFileR1.setModelName(_data._activeModelName);
-            RealtimeFileR1.setKYBNUM(_data._activeKayabaNumber);
-            RealtimeFileR1.setParameterStep1(_data.Step1Param);
-            RealtimeFileR1.setParameterStep2345(_data.Step2345Param);
-
-            RealtimeFileL1.setModelName(_data._activeModelName);
-            RealtimeFileL1.setKYBNUM(_data._activeKayabaNumber);
-            RealtimeFileL1.setParameterStep1(_data.Step1Param);
-            RealtimeFileL1.setParameterStep2345(_data.Step2345Param);
+            exceldata.setModelName(feeddata._activeModelName);
+            exceldata.setKYBNUM(feeddata._activeKayabaNumber);
+            exceldata.setParameterStep1(feeddata.Step1Param);
+            exceldata.setParameterStep2345(feeddata.Step2345Param);
         }
 
-        void _excelStoreRealtimeData()
+        void _excelStoreRealtimeData(ref DATAMODEL_COMMON datacm, ref DATAMODEL_RL datarl, ref EXCELSTREAM exceldata, string side)
         {
-            RealtimeFileR1.RESET_LABEL_NG();
-            RealtimeFileL1.RESET_LABEL_NG();
-
-            RealtimeFileR1.setDateTime(_data.DTM);
-            RealtimeFileL1.setDateTime(_data.DTM);
-
-            RealtimeFileR1.setRealtimeJudgement(_Rdata.Judgement);
-            RealtimeFileL1.setRealtimeJudgement(_Ldata.Judgement);
-
-            RealtimeFileR1.setRealtimeStep2(_Rdata.RealtimeStep2);
-            RealtimeFileL1.setRealtimeStep2(_Ldata.RealtimeStep2);
-
-            string DirRealtime = RealLogDir + $"YEAR_{_data.DTM[0]}\\MONTH_{_data.DTM[1]}\\DAY_{_data.DTM[2]}";
+            string DirRealtime = RealLogDir + $"YEAR_{datacm.DTM[0]}\\MONTH_{datacm.DTM[1]}\\DAY_{datacm.DTM[2]}";
             CheckFolderPath(DirRealtime);
 
-            if (_Rdata._Step1MaxLoad_NG == 1 | _Rdata._Step2CompRef_NG == 1 | _Rdata._Step2CompGraph_NG == 1 | _Rdata._Step2ExtnRef_NG == 1 | _Rdata._Step2ExtnGraph_NG == 1 | _Rdata._Step2DiffGraph_NG == 1)
+            exceldata.RESET_LABEL_NG();
+            exceldata.setDateTime(datacm.DTM);
+            exceldata.setRealtimeJudgement(datarl.Judgement);
+            exceldata.setRealtimeStep2(datarl.RealtimeStep2);
+
+            if (datarl._Step1MaxLoad_NG == 1 | datarl._Step2CompRef_NG == 1 | datarl._Step2CompGraph_NG == 1 | datarl._Step2ExtnRef_NG == 1 | datarl._Step2ExtnGraph_NG == 1 | datarl._Step2DiffGraph_NG == 1)
             {
-                RealtimeFileR1.SET_LABEL_NG();
+                exceldata.SET_LABEL_NG();
 
-                if(_Rdata._Step1MaxLoad_NG == 1)
+                if (datarl._Step1MaxLoad_NG == 1)
                 {
-                    RealtimeFileR1.STEP1_MAXLOAD_NG_SET();
+                    exceldata.STEP1_MAXLOAD_NG_SET();
                 }
-                if (_Rdata._Step2CompRef_NG == 1)
+                if (datarl._Step2CompRef_NG == 1)
                 {
-                    RealtimeFileR1.STEP2_COMP_REF_NG_SET();
+                    exceldata.STEP2_COMP_REF_NG_SET();
                 }
-                if (_Rdata._Step2CompGraph_NG == 1)
+                if (datarl._Step2CompGraph_NG == 1)
                 {
-                    RealtimeFileR1.STEP2_COMP_GRAPH_NG_SET();
+                    exceldata.STEP2_COMP_GRAPH_NG_SET();
                 }
-                if (_Rdata._Step2ExtnRef_NG == 1)
+                if (datarl._Step2ExtnRef_NG == 1)
                 {
-                    RealtimeFileR1.STEP2_EXTN_REF_NG_SET();
+                    exceldata.STEP2_EXTN_REF_NG_SET();
                 }
-                if (_Rdata._Step2ExtnGraph_NG == 1)
+                if (datarl._Step2ExtnGraph_NG == 1)
                 {
-                    RealtimeFileR1.STEP2_EXTN_GRAPH_NG_SET();
+                    exceldata.STEP2_EXTN_GRAPH_NG_SET();
                 }
-                
-                if (_Rdata._Step2DiffGraph_NG == 1)
+                if (datarl._Step2DiffGraph_NG == 1)
                 {
-                    RealtimeFileR1.STEP2_DIFF_GRAPH_NG_SET();
+                    exceldata.STEP2_DIFF_GRAPH_NG_SET();
                 }
-
-                string _filenameR1 = ($"{DirRealtime}\\RealtimeData_RH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}_NG_RESULT.xlsx");
-                RealtimeFileR1.FilePrint(_filenameR1);
+                string _filename = ($"{DirRealtime}\\RealtimeData_{side}H_{datacm.DTM[3]}-{datacm.DTM[4]}-{datacm.DTM[5]}_NG_RESULT.xlsx");
+                exceldata.FilePrint(_filename);
             }
             else
             {
-                string _filenameR1 = ($"{DirRealtime}\\RealtimeData_RH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
-                RealtimeFileR1.FilePrint(_filenameR1);
+                string _filenames = ($"{DirRealtime}\\RealtimeData_{side}H_{datacm.DTM[3]}-{datacm.DTM[4]}-{datacm.DTM[5]}.xlsx");
+                exceldata.FilePrint(_filenames);
             }
-
-            if (_Ldata._Step1MaxLoad_NG == 1 | _Ldata._Step2CompRef_NG == 1 | _Ldata._Step2CompGraph_NG == 1 | _Ldata._Step2ExtnRef_NG == 1 | _Ldata._Step2ExtnGraph_NG == 1 | _Ldata._Step2DiffGraph_NG == 1)
-            {
-                RealtimeFileL1.SET_LABEL_NG();
-
-                if (_Ldata._Step1MaxLoad_NG == 1)
-                {
-                    RealtimeFileL1.STEP1_MAXLOAD_NG_SET();
-                }
-                if (_Ldata._Step2CompRef_NG == 1)
-                {
-                    RealtimeFileL1.STEP2_COMP_REF_NG_SET();
-                }
-                if (_Ldata._Step2CompGraph_NG == 1)
-                {
-                    RealtimeFileL1.STEP2_COMP_GRAPH_NG_SET();
-                }
-                if (_Ldata._Step2ExtnRef_NG == 1)
-                {
-                    RealtimeFileL1.STEP2_EXTN_REF_NG_SET();
-                }
-                if (_Ldata._Step2ExtnGraph_NG == 1)
-                {
-                    RealtimeFileL1.STEP2_EXTN_GRAPH_NG_SET();
-                }
-                if (_Ldata._Step2DiffGraph_NG == 1)
-                {
-                    RealtimeFileL1.STEP2_DIFF_GRAPH_NG_SET();
-                }
-
-                string _filenameL1 = ($"{DirRealtime}\\RealtimeData_LH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}_NG_RESULT.xlsx");
-                RealtimeFileL1.FilePrint(_filenameL1);
-            }
-            else
-            {
-                string _filenameL1 = ($"{DirRealtime}\\RealtimeData_LH_{_data.DTM[3]}-{_data.DTM[4]}-{_data.DTM[5]}.xlsx");
-                RealtimeFileL1.FilePrint(_filenameL1);
-            }
-
-            //should this removed because there's already call for this outside the function after this execution
-            _realtimeReadFlag = false;
-            _kvconnObject.writeDataCommand("W0C2", "", "0");
-            //should this removed because there's already call for this outside the function after this execution
         }
-
 
 
         void _backgroundMessageRecv()
@@ -716,7 +660,7 @@ namespace WORKFLOW
             catch { }
         }
 
-        void _eeipreadActiveModelData()
+        void _eeipreadActiveModelData(ref DATAMODEL_COMMON data)
         {
             try
             {
@@ -769,17 +713,17 @@ namespace WORKFLOW
                     }
                 }
 
-                _data._activeModelName = string.Join("", _charModelBuff);
+                data._activeModelName = string.Join("", _charModelBuff);
                 //Debug.Write(_data._activeModelName);
                 //Debug.Write((char)'\n');
-                _data._activeKayabaNumber = string.Join("", _charNumBuff);
+                data._activeKayabaNumber = string.Join("", _charNumBuff);
                 //Debug.Write(_data._activeKayabaNumber);
                 //Debug.Write((char)'\n');
             }
             catch { }
         }
 
-        void _eeipreadDateTime()
+        void _eeipreadDateTime(ref DATAMODEL_COMMON data)
         {
             try
             {
@@ -810,22 +754,22 @@ namespace WORKFLOW
                     }
                 }
 
-                for (int i = 0; i < _data.DTM.Count(); i++)
+                for (int i = 0; i < data.DTM.Count(); i++)
                 {
                     if (i == 0)
                     {
-                        _data.DTM[i] = Convert.ToString(2000 + _buffDTM[i]);
+                        data.DTM[i] = Convert.ToString(2000 + _buffDTM[i]);
                     }
                     else
                     {
-                        _data.DTM[i] = _buffDTM[i].ToString();
+                        data.DTM[i] = _buffDTM[i].ToString();
                     }
                 }
             }
             catch { }
         }
 
-        void _eeipreadStep1Param()
+        void _eeipreadStep1Param(ref DATAMODEL_COMMON data)
         {
             try
             {
@@ -873,31 +817,25 @@ namespace WORKFLOW
                             iv++;
                         }
                     }
-
                 }
                 
 
-                for (int i = 0; i < _data.Step1Param.Count(); i++)
+                for (int i = 0; i < data.Step1Param.Count(); i++)
                 {
-                    if (i == 0)
+                    if (i == 0 | i == 4)
                     {
-                        _data.Step1Param[0] = BitConverter.ToInt32(_buffPARAM1[i], 0);
-                    }
-                    else if (i == 4)
-                    {
-                        _data.Step1Param[4] = BitConverter.ToInt32(_buffPARAM1[i], 0);
+                        data.Step1Param[i] = BitConverter.ToInt32(_buffPARAM1[i], 0);
                     }
                     else
                     {
-                        _data.Step1Param[i] = BitConverter.ToSingle(_buffPARAM1[i], 0);
+                        data.Step1Param[i] = BitConverter.ToSingle(_buffPARAM1[i], 0);
                     }
-
                 }
             }
             catch { }
         }
 
-        void _eeipreadStep2345Param()
+        void _eeipreadStep2345Param(ref DATAMODEL_COMMON data)
         {
             try
             {
@@ -946,27 +884,15 @@ namespace WORKFLOW
                     }
                 }
 
-                for (int i = 0; i < _data.Step2345Param.Count(); i++)
+                for (int i = 0; i < data.Step2345Param.Count(); i++)
                 {
-                    if (i == 0)
+                    if (i == 0 | i == 9 | i == 10 | i == 19)
                     {
-                        _data.Step2345Param[0] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
-                    }
-                    else if (i == 9)
-                    {
-                        _data.Step2345Param[9] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
-                    }
-                    else if (i == 10)
-                    {
-                        _data.Step2345Param[10] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
-                    }
-                    else if (i == 19)
-                    {
-                        _data.Step2345Param[19] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                        data.Step2345Param[i] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
                     }
                     else
                     {
-                        _data.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0);
+                        data.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0);
                     }
                 }
             }
@@ -1024,7 +950,6 @@ namespace WORKFLOW
                             iv++;
                         }
                     }
-
                 }
             }
             catch { }
@@ -1141,36 +1066,176 @@ namespace WORKFLOW
             catch { }
         }
 
-        void _eeipMasterParam1Upload(ref List<object> masterparameter1, string[] addrs, int count)
+        void _eeipMasterParam1Upload(ref DATAMODEL_MASTER masterparam1)
         {
-            if (addrs.Length != 6)
+            try
             {
-                throw new ArgumentException("Array must have exactly 6 elements.");
+                byte[] _INPUT;
+                List<byte[]> _buffPARAM1 = new List<byte[]>();
+                _INPUT = _eeipObject.AssemblyObject.getInstance(0xAD);
+                Thread.Sleep(1);
+
+                byte[] buff = new byte[4];
+                int iv = 0;
+
+                for (int i = 0; i < _INPUT.Length; i++)
+                {
+                    if (i < 1)
+                    {
+                        buff[iv] = _INPUT[i];
+                        iv++;
+                    }
+                    else if (i == _INPUT.Length - 1)
+                    {
+                        buff[iv] = _INPUT[i];
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffPARAM1.Add(sbuff);
+                    }
+                    else
+                    {
+                        if (i % 4 != 0)
+                        {
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                        else if (i % 4 == 0)
+                        {
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, buff.Length);
+                            Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+
+                            _buffPARAM1.Add(sbuff);
+                            iv = 0;
+
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                    }
+                }
+                for (int i = 0; i < masterparam1.Step1Param.Count(); i++)
+                {
+                    if (i == 0 | i == 4)
+                    {
+                        masterparam1.Step1Param[i] = BitConverter.ToInt32(_buffPARAM1[i], 0);
+                    }
+                    else
+                    {
+                        masterparam1.Step1Param[i] = BitConverter.ToSingle(_buffPARAM1[i], 0);
+                    }
+                }
             }
+            catch { }
         }
 
-        void _kvMasterParam1Download(ref List<object> masterparameter1, string[] addrs, int count)
+        void _kvMasterParam1Download(ref DATAMODEL_MASTER masterparam1)
         {
-            if (addrs.Length != 6)
+            string[] tfdata = new string[] { };
+            try
             {
-                throw new ArgumentException("Array must have exactly 6 elements.");
+                for (int i = 0; i > masterparam1.Step1Param.Count(); i++)
+                {
+                    if (i == 0 | i == 4)
+                    {
+                        if (masterparam1.Step1Param[i] is int value) AppendToArray(ref tfdata, IntToHex(value));
+                    }
+                    else
+                    {
+                        if (masterparam1.Step1Param[i] is float value) AppendToArray(ref tfdata, FloatToHexArray(value));
+                    }
+                }
+                _kvconnObject.batchwriteDataCommand("W330", ".H", tfdata.Length, tfdata);
+                Thread.Sleep(1);
             }
+            catch { }
         }
 
-        void _eeipMasterParam2345Upload(ref List<object> masterparameter2345, string[] addrs, int count)
+        void _eeipMasterParam2345Upload(ref DATAMODEL_MASTER masterparam2345)
         {
-            if (addrs.Length != 20)
+            try
             {
-                throw new ArgumentException("Array must have exactly 20 elements.");
+                byte[] _INPUT;
+                List<byte[]> _buffPARAM2345 = new List<byte[]>();
+                _INPUT = _eeipObject.AssemblyObject.getInstance(0xAE);
+                Thread.Sleep(1);
+
+                byte[] buff = new byte[4];
+                int iv = 0;
+
+                for (int i = 0; i < _INPUT.Length; i++)
+                {
+                    if (i < 1)
+                    {
+                        buff[iv] = _INPUT[i];
+                        iv++;
+                    }
+                    else if (i == _INPUT.Length - 1)
+                    {
+                        buff[iv] = _INPUT[i];
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffPARAM2345.Add(sbuff);
+                    }
+                    else
+                    {
+                        if (i % 4 != 0)
+                        {
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                        else if (i % 4 == 0)
+                        {
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, buff.Length);
+                            Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+
+                            _buffPARAM2345.Add(sbuff);
+                            iv = 0;
+
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < masterparam2345.Step2345Param.Count(); i++)
+                {
+                    if (i == 0 | i == 9 | i == 10 | i == 19)
+                    {
+                        masterparam2345.Step2345Param[i] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                    }
+                    else
+                    {
+                        masterparam2345.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0);
+                    }
+                }
             }
+            catch { }
         }
 
-        void _kvMasterParam2345Download(ref List<object> masterparameter2345, string[] addrs, int count)
+        void _kvMasterParam2345Download(ref DATAMODEL_MASTER masterparam2345)
         {
-            if (addrs.Length != 20)
+            string[] tfdata = new string[] { };
+            try
             {
-                throw new ArgumentException("Array must have exactly 20 elements.");
+                for (int i = 0; i < masterparam2345.Step2345Param.Count(); i++)
+                {
+                    if (i == 0 | i == 9 | i == 10 | i == 19)
+                    {
+                        if (masterparam2345.Step2345Param[i] is int value) AppendToArray(ref tfdata, IntToHex(value));
+                    }
+                    else
+                    {
+                        if (masterparam2345.Step1Param[i] is float value) AppendToArray(ref tfdata, FloatToHexArray(value));
+                    }
+                }
+                _kvconnObject.batchwriteDataCommand("W340", ".H", tfdata.Length, tfdata);
+                Thread.Sleep(1);
             }
+            catch { }
+            
         }
 
         void _kvMasterGraphUpload(ref List<List<float>> masterdata, string[] addrs, int count)
@@ -2421,7 +2486,7 @@ namespace WORKFLOW
         }
     }
 
-    public class DATAMODEL_R
+    public class DATAMODEL_RL
     {
         public int _Step1MaxLoad_NG;
         public int _Step2CompRef_NG;
@@ -2456,75 +2521,7 @@ namespace WORKFLOW
         List<float> _RealtimeStep3DiffStroke;
         List<float> _RealtimeStep3DiffLoad;
 
-        public DATAMODEL_R()
-        {
-            Judgement = new List<float>()
-            {
-                _MaxLoad,
-                _Step2CompLoadRef,
-                _Step2ExtnLoadRef,
-                _Step3CompLoadRef,
-                _Step3ExtnLoadRef
-            };
-
-            RealtimeStep2 = new List<List<float>>()
-            {
-                _RealtimeStep2CompStroke,
-                _RealtimeStep2CompLoad,
-                _RealtimeStep2ExtnStroke,
-                _RealtimeStep2ExtnLoad,
-                _RealtimeStep2DiffStroke,
-                _RealtimeStep2DiffLoad
-            };
-
-            RealtimeStep3 = new List<List<float>>()
-            {
-                _RealtimeStep3CompStroke,
-                _RealtimeStep3CompLoad,
-                _RealtimeStep3ExtnStroke,
-                _RealtimeStep3ExtnLoad,
-                _RealtimeStep3DiffStroke,
-                _RealtimeStep3DiffLoad
-            };
-        }
-    }
-
-    public class DATAMODEL_L
-    {
-        public int _Step1MaxLoad_NG;
-        public int _Step2CompRef_NG;
-        public int _Step2ExtnRef_NG;
-        public int _Step2CompGraph_NG;
-        public int _Step2ExtnGraph_NG;
-        public int _Step2DiffGraph_NG;
-
-        public List<float> Judgement;
-        public List<List<float>> RealtimeStep2;
-        public List<List<float>> RealtimeStep3;
-        public List<List<float>> MasteringStep2;
-        public List<List<float>> MasteringStep3;
-
-        public float _MaxLoad;
-        public float _Step2CompLoadRef;
-        public float _Step2ExtnLoadRef;
-        public float _Step3CompLoadRef;
-        public float _Step3ExtnLoadRef;
-
-        List<float> _RealtimeStep2CompStroke;
-        List<float> _RealtimeStep2CompLoad;
-        List<float> _RealtimeStep2ExtnStroke;
-        List<float> _RealtimeStep2ExtnLoad;
-        List<float> _RealtimeStep2DiffStroke;
-        List<float> _RealtimeStep2DiffLoad;
-
-        List<float> _RealtimeStep3CompStroke;
-        List<float> _RealtimeStep3CompLoad;
-        List<float> _RealtimeStep3ExtnStroke;
-        List<float> _RealtimeStep3ExtnLoad;
-        List<float> _RealtimeStep3DiffStroke;
-        List<float> _RealtimeStep3DiffLoad;
-
-        public DATAMODEL_L()
+        public DATAMODEL_RL()
         {
             Judgement = new List<float>()
             {
