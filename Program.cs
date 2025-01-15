@@ -407,6 +407,8 @@ namespace WORKFLOW
                     _kvMasterModelDownload(ref _masterData);
                     _kvMasterParam1Download(ref _masterData);
                     _kvMasterParam2345Download(ref _masterData);
+                    
+                    //_kvMasterGraphDownload(ref _masterData);
 
 
                     _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
