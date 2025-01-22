@@ -42,6 +42,7 @@ using Microsoft.Office.Interop;
 using Excel = Microsoft.Office.Interop.Excel;
 using MethodInvoker = System.Windows.Forms.MethodInvoker;
 using STimer = System.Threading.Timer;
+using DocumentFormat.OpenXml.Vml;
 
 namespace KVCOMSERVER
 {
@@ -97,6 +98,12 @@ namespace WORKFLOW
         DATAMODEL_RL _Ldata;
         DATAMODEL_RL _Rdata;
 
+        EXCELSTREAM _editmaster;
+        DATAMODEL_MASTER _editdatamaster;
+
+        EXCELSTREAM _copymaster;
+        DATAMODEL_MASTER _copydatamaster;
+
         public string HeadDir;
         public string RealLogDir;
         public string MasterDir;
@@ -135,34 +142,34 @@ namespace WORKFLOW
 
         string[] dataMasterRsideStep2addrs = new string[]
                     {
-                        "ZFx1",
-                        "ZFx2",
-                        "ZFx3",
-                        "ZFx4",
-                        "ZFx5",
-                        "ZFx6",
-                        "ZFx7",
-                        "ZFx8",
-                        "ZFx9",
-                        "ZFx10",
-                        "ZFx11",
-                        "ZFx12"
+                        "ZF117200",
+                        "ZF117600",
+                        "ZF118000",
+                        "ZF118400",
+                        "ZF118800",
+                        "ZF119200",
+                        "ZF119600",
+                        "ZF120000",
+                        "ZF511000",
+                        "ZF511400",
+                        "ZF511800",
+                        "ZF512200"
                     };
 
         string[] dataMasterLsideStep2addrs = new string[]
                     {
-                        "ZFx1",
-                        "ZFx2",
-                        "ZFx3",
-                        "ZFx4",
-                        "ZFx5",
-                        "ZFx6",
-                        "ZFx7",
-                        "ZFx8",
-                        "ZFx9",
-                        "ZFx10",
-                        "ZFx11",
-                        "ZFx12"
+                        "ZF217200",
+                        "ZF217600",
+                        "ZF218000",
+                        "ZF218400",
+                        "ZF218800",
+                        "ZF219200",
+                        "ZF219600",
+                        "ZF220000",
+                        "ZF515000",
+                        "ZF515400",
+                        "ZF515800",
+                        "ZF516200"
                     };
 
         string[] dataMasterRsideStep3addrs = new string[]
@@ -229,6 +236,8 @@ namespace WORKFLOW
             HeadDir = _settingObject.FILEDIR_SETTEI_GET();
             RealLogDir = HeadDir + $"LOG_REALTIME\\";
             MasterDir = HeadDir + $"MASTER_MODEL_DATA\\";
+            CheckFolderPath(RealLogDir);
+            CheckFolderPath(MasterDir);
 
             backgroundThread = new Thread(BackgroundWork);
             backgroundThread.Start();
@@ -359,20 +368,78 @@ namespace WORKFLOW
 
         }
 
-        void _eeipEventHandler_4() //Master Fetch Model
+        void _eeipEventHandler_4() //Master Model
         {
             if (this.GetConnState() == 1)
             {
-                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8F); //undetermined byte address
-                if ((byte)(TRIG[0] & 0x01) == 0x01) //undetermined value
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8F);
+                if ((byte)(TRIG[0] & 0x01) == 0x01)
                 {
-                    //undetermined parameter address
-                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xA1);
-                    _eeipTrigMasterFetchModel(MODEL_NAME_INPUT); 
+                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
+                    _eeipTrigMasterFetchModel(MODEL_NAME_INPUT, ref MasterFileActive, ref _masterData);
+                    _kvconnObject.writeDataCommand("W0D0", "", "0");
                     //Thread.Sleep(10);
                 }
-            }
 
+                if ((byte)(TRIG[2] & 0x01) == 0x01)
+                {
+                    //byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAB);
+                    _eeipTrigMasterNewModelParam();
+                    _kvconnObject.writeDataCommand("W0D1", "", "0");
+                    //Thread.Sleep(10);
+                }
+
+                if ((byte)(TRIG[4] & 0x01) == 0x01)
+                {
+                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
+                    _editmaster = new EXCELSTREAM("MASTER");
+                    _editdatamaster = new DATAMODEL_MASTER();
+                    _eeipTrigMasterFetchModel(MODEL_NAME_INPUT, ref _editmaster, ref _editdatamaster);
+                    _kvconnObject.writeDataCommand("W0D2", "", "0");
+                }
+                if ((byte)(TRIG[6] & 0x01) == 0x01)
+                {
+                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
+                    _eeipTrigMasterEditModelParam(ref _editmaster, ref _editdatamaster);
+                    _kvconnObject.writeDataCommand("W0D3", "", "0");
+                    //Thread.Sleep(10);
+                }
+                else if ((byte)(TRIG[6] & 0x02) == 0x02)
+                {
+                    _editmaster = null;
+                    _editdatamaster = null;
+                    _kvconnObject.writeDataCommand("W0D3", "", "0");
+                }
+
+                if ((byte)(TRIG[8] & 0x01) == 0x01)
+                {
+                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
+                    _copymaster = new EXCELSTREAM("MASTER");
+                    _copydatamaster = new DATAMODEL_MASTER();
+                    _eeipTrigMasterFetchModel(MODEL_NAME_INPUT, ref _copymaster, ref _copydatamaster);
+                    _kvconnObject.writeDataCommand("W0D4", "", "0");
+                }
+                if ((byte)(TRIG[10] & 0x01) == 0x01)
+                {
+                    _eeipTrigMasterCopyModel(ref _copymaster, ref _copydatamaster);
+                    _kvconnObject.writeDataCommand("W0D5", "", "0");
+                    //Thread.Sleep(10);
+                }
+                else if ((byte)(TRIG[10] & 0x02) == 0x02)
+                {
+                    _copymaster = null;
+                    _copydatamaster = null;
+                    _kvconnObject.writeDataCommand("W0D5", "", "0");
+                }
+
+                if ((byte)(TRIG[12] & 0x01) == 0x01)
+                {
+                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
+                    _eeipTrigMasterDeleteModel(MODEL_NAME_INPUT);
+                    _kvconnObject.writeDataCommand("W0D6", "", "0");
+                }
+
+            }
         }
 
         void _eeipBeacon(byte[] STAT_INPUT)
@@ -393,37 +460,126 @@ namespace WORKFLOW
                 //_kvconnObject.CloseConnection();
 
             }
-
         }
 
-        void _eeipTrigMasterFetchModel(byte[] MODNAME_VAR)
+        void _eeipTrigMasterFetchModel(byte[] MODNAME_VAR, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
             string MODNAME = Encoding.Default.GetString(MODNAME_VAR);
             foreach (string files in Directory.GetFiles(MasterDir))
             {
                 if (files.Contains(MODNAME))
                 {
-                    _excelReadMasterData(files);
-                    _kvMasterModelDownload(ref _masterData);
-                    _kvMasterParam1Download(ref _masterData);
-                    _kvMasterParam2345Download(ref _masterData);
-                    
+                    _excelReadMasterData(files, ref filemaster, ref datamaster);
+                    _kvMasterModelDownload(ref datamaster);
+                    _kvMasterParam1Download(ref datamaster);
+                    _kvMasterParam2345Download(ref datamaster);
                     //_kvMasterGraphDownload(ref _masterData);
-
 
                     _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                 }
                 else
                 {
+                    DATAMODEL_MASTER _INITMODEL = new DATAMODEL_MASTER();
+                    _INITMODEL._activeModelName = MODNAME;
+                    _excelInitMasterData(ref _INITMODEL);
                     _kvconnObject.writeDataCommand("W0FF", "", "1"); //>confirm if not found
                     //MessageBox.Show("Master File for this model is not found. Please initiate setting.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
 
-        
+        void _eeipTrigMasterNewModelParam(/*byte[] MODNAME_VAR*/)
+        {
+            DATAMODEL_MASTER _NEWMODEL = new DATAMODEL_MASTER();
+            _eeipMasterModelUpload(ref _NEWMODEL);
+            _eeipMasterParam1Upload(ref _NEWMODEL);
+            _eeipMasterParam2345Upload(ref _NEWMODEL);
+            _excelInitMasterData(ref _NEWMODEL);
 
-        void _eeipTriggerReadParameter(byte[] STAT_INPUT)
+            _kvconnObject.writeDataCommand("W0F1", "", "1");
+            //>confirm if complete add new model (only initiate master file and parameter, give warning to continue teaching)
+
+            /*
+            //string MODNAME = Encoding.Default.GetString(MODNAME_VAR);
+            //foreach (string files in Directory.GetFiles(MasterDir))
+            {
+                //if (files.Contains(MODNAME))
+                {
+                    //_kvconnObject.writeDataCommand("W0FE", "", "1");
+                    //>confirm if the file master already exist and warning to choose another name, or create another model
+                }
+                //else
+                {
+                    
+                    _eeipMasterModelUpload(ref _masterData);
+                    _eeipMasterParam1Upload(ref _masterData);
+                    _eeipMasterParam2345Upload(ref _masterData);
+                    //_excelInitMasterParamData(ref _masterData);
+
+                    _kvconnObject.writeDataCommand("W0F1", "", "1");
+                    //>confirm if complete add new model (only initiate master file and parameter, give warning to continue teaching)
+                    
+                }
+            }
+            */
+        }
+
+        void _eeipTrigMasterEditModelParam(ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
+        {
+            _eeipMasterModelUpload(ref datamaster);
+            _eeipMasterParam1Upload(ref datamaster);
+            _eeipMasterParam2345Upload(ref datamaster);
+            //test if need to reassign/reupload graph data or not, if need from which entity
+
+            filemaster.setModelName(datamaster._activeModelName);
+            filemaster.setParameterStep1(datamaster.Step1Param);
+            filemaster.setParameterStep2345(datamaster.Step2345Param);
+            //test also if excelstream need to reassign graph data or not
+            //use this method instead if need all data to be reassigned to master//_excelStoreMasterParamData(ref datamaster, ref filemaster);
+
+            _excelPrintMasterData(ref datamaster, ref filemaster);
+
+            filemaster = null;
+            datamaster = null;
+            _kvconnObject.writeDataCommand("W0F2", "", "1");
+            //>confirm if complete edit new model (only initiate master file and parameter, give warning to continue teaching)
+        }
+
+        void _eeipTrigMasterCopyModel(ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
+        {
+            _eeipMasterModelUpload(ref datamaster);
+            filemaster.setModelName(datamaster._activeModelName);
+            //test if need to reassign/reupload graph data or not, if need from which entity
+            //test also if excelstream need to reassign graph data or not
+            //use this method instead if need all data to be reassigned to master//_excelStoreMasterParamData(ref datamaster, ref filemaster);
+
+            _excelPrintMasterData(ref datamaster, ref filemaster);
+
+            filemaster = null;
+            datamaster = null;
+            _kvconnObject.writeDataCommand("W0F3", "", "1");
+            //>confirm if complete edit new model (only initiate master file and parameter, give warning to continue teaching)
+        }
+
+        void _eeipTrigMasterDeleteModel(byte[] MODNAME_VAR)
+        {
+            string MODNAME = Encoding.Default.GetString(MODNAME_VAR);
+            foreach (string files in Directory.GetFiles(MasterDir))
+            {
+                if (files.Contains(MODNAME))
+                {
+                    File.Delete(files);
+                    _kvconnObject.writeDataCommand("W0F4", "", "1"); //>confirm if read file complete
+                }
+                else
+                {
+                    _kvconnObject.writeDataCommand("W0FE", "", "1"); //>confirm if not found
+                    //MessageBox.Show("Master File for this model is not found. Please initiate setting.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+            void _eeipTriggerReadParameter(byte[] STAT_INPUT)
         {
             if ((byte)(STAT_INPUT[2] & 0x01) == 0x01)
             {
@@ -574,18 +730,51 @@ namespace WORKFLOW
                 }
             }
         }
-        void _excelReadMasterData(string modfile)
+
+        void _excelReadMasterData(string modfile, ref EXCELSTREAM masterfile, ref DATAMODEL_MASTER masterdata)
         {
-            MasterFileActive.FileReadMaster(modfile);
-            _masterData._activeModelName = MasterFileActive.getModelName();
-            _masterData.Step1Param = ParamStep1toObject(MasterFileActive.getParameterStep1());
-            _masterData.Step2345Param = ParamStep2345toObject(MasterFileActive.getParameterStep2345());
+            masterfile.FileReadMaster(modfile);
+            masterdata._activeModelName = masterfile.getModelName();
+            masterdata.Step1Param = ParamStep1toObject(masterfile.getParameterStep1());
+            masterdata.Step2345Param = ParamStep2345toObject(masterfile.getParameterStep2345());
 
-            _masterData.RMasteringStep2 = MasterFileActive.getRsideMasterStep2();
-            _masterData.LMasteringStep2 = MasterFileActive.getLsideMasterStep2();
+            masterdata.RMasteringStep2 = masterfile.getRsideMasterStep2();
+            masterdata.LMasteringStep2 = masterfile.getLsideMasterStep2();
 
-            _masterData.RMasteringStep3 = MasterFileActive.getRsideMasterStep3();
-            _masterData.LMasteringStep3 = MasterFileActive.getLsideMasterStep3();
+            masterdata.RMasteringStep3 = masterfile.getRsideMasterStep3();
+            masterdata.LMasteringStep3 = masterfile.getLsideMasterStep3();
+        }
+
+        void _excelInitMasterData(ref DATAMODEL_MASTER feeddata)
+        {
+            EXCELSTREAM newmasterfile = new EXCELSTREAM("MASTER");
+            newmasterfile.setModelName(feeddata._activeModelName);
+            newmasterfile.setParameterStep1(feeddata.Step1Param);
+            newmasterfile.setParameterStep2345(feeddata.Step2345Param);
+
+            _excelPrintMasterData(ref feeddata, ref newmasterfile);            
+        }
+
+        void _excelStoreMasterParamData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM excelmaster)
+        {
+            excelmaster.setModelName(feeddata._activeModelName);
+            excelmaster.setKYBNUM(feeddata._activeKayabaNumber);
+            excelmaster.setParameterStep1(feeddata.Step1Param);
+            excelmaster.setParameterStep2345(feeddata.Step2345Param);
+        }
+
+        void _excelStoreMasterGraphData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM excelmaster)
+        {
+            excelmaster.setRsideMasterStep2(feeddata.RMasteringStep2);
+            excelmaster.setRsideMasterStep2(feeddata.LMasteringStep2);
+            //excelmaster.setRsideMasterStep3(feeddata.RMasteringStep3);
+            //excelmaster.setRsideMasterStep3(feeddata.LMasteringStep3);
+        }
+
+        void _excelPrintMasterData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM exceldata)
+        {
+            string _filename = ($"{MasterDir}\\{feeddata._activeModelName}.xlsx");
+            exceldata.FilePrint(_filename);
         }
 
         void _excelStoreParameterData(ref DATAMODEL_COMMON feeddata, ref EXCELSTREAM exceldata)
@@ -636,6 +825,7 @@ namespace WORKFLOW
                 }
                 string _filename = ($"{DirRealtime}\\RealtimeData_{side}H_{datacm.DTM[3]}-{datacm.DTM[4]}-{datacm.DTM[5]}_NG_RESULT.xlsx");
                 exceldata.FilePrint(_filename);
+
             }
             else
             {
@@ -752,7 +942,6 @@ namespace WORKFLOW
                         Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
 
                         _buffDTM.Add(BitConverter.ToInt16(sbuff, 0));
-                        
                     }
                 }
 
