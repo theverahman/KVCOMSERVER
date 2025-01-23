@@ -58,13 +58,14 @@ namespace KVCOMSERVER
 
             try
             {
-                RealtimeUpdateList();
-                MasteringUpdateList();
                 if (_connStat != 1)
                 {
-                    _WorkflowHandler.SetConnection();
+                    //_WorkflowHandler.SetConnection();
                     _connStat = _WorkflowHandler.GetConnState();
                 }
+                //RealtimeUpdateList();
+                //MasteringUpdateList();
+                
             }
             catch
             {

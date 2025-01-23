@@ -227,6 +227,7 @@ namespace WORKFLOW
             _data = new DATAMODEL_COMMON();
             _Ldata = new DATAMODEL_RL();
             _Rdata = new DATAMODEL_RL();
+            _masterData = new DATAMODEL_MASTER();
 
             _ctsClock = new CancellationTokenSource();
             _clock1s = new STimer(async _ => await Clock1s(_ctsClock.Token), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
@@ -242,6 +243,7 @@ namespace WORKFLOW
 
             backgroundThread = new Thread(BackgroundWork);
             backgroundThread.Start();
+            SetConnection();
 
         }
 
@@ -250,7 +252,7 @@ namespace WORKFLOW
             if (cancellationToken.IsCancellationRequested)
                 return;
 
-            await Task.Run(() => UpdateUIRealtimeList(), cancellationToken);
+            //await Task.Run(() => UpdateUIRealtimeList(), cancellationToken);
         }
 
         private async Task Clock1ms(CancellationToken cancellationToken)
@@ -377,7 +379,10 @@ namespace WORKFLOW
                 if ((byte)(TRIG[0] & 0x01) == 0x01)
                 {
                     byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
-                    _eeipTrigMasterFetchModel(MODEL_NAME_INPUT, ref MasterFileActive, ref _masterData);
+                    _eeipTrigMasterFetch(MODEL_NAME_INPUT, ref MasterFileActive, ref _masterData);
+                    _eeipTrigMasterFetchModel(ref _masterData);
+                    _eeipTrigMasterFetchGraph(ref _masterData);
+                    _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                     _kvconnObject.writeDataCommand("W0D0", "", "0");
                     //Thread.Sleep(10);
                 }
@@ -395,7 +400,10 @@ namespace WORKFLOW
                     byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
                     _editmaster = new EXCELSTREAM("MASTER");
                     _editdatamaster = new DATAMODEL_MASTER();
-                    _eeipTrigMasterFetchModel(MODEL_NAME_INPUT, ref _editmaster, ref _editdatamaster);
+                    _eeipTrigMasterFetch(MODEL_NAME_INPUT, ref _editmaster, ref _editdatamaster);
+                    _eeipTrigMasterFetchModel(ref _editdatamaster);
+                    //_eeipTrigMasterFetchGraph(ref _masterData);
+                    _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                     _kvconnObject.writeDataCommand("W0D2", "", "0");
                 }
                 if ((byte)(TRIG[6] & 0x01) == 0x01)
@@ -417,12 +425,15 @@ namespace WORKFLOW
                     byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
                     _copymaster = new EXCELSTREAM("MASTER");
                     _copydatamaster = new DATAMODEL_MASTER();
-                    _eeipTrigMasterFetchModel(MODEL_NAME_INPUT, ref _copymaster, ref _copydatamaster);
+                    _eeipTrigMasterFetch(MODEL_NAME_INPUT, ref _copymaster, ref _copydatamaster);
+                    //_eeipTrigMasterFetchGraph(ref _masterData);
+                    _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                     _kvconnObject.writeDataCommand("W0D4", "", "0");
                 }
                 if ((byte)(TRIG[10] & 0x01) == 0x01)
                 {
-                    _eeipTrigMasterCopyModel(ref _copymaster, ref _copydatamaster);
+                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAB);
+                    _eeipTrigMasterCopyModel(MODEL_NAME_INPUT, ref _copymaster, ref _copydatamaster);
                     _kvconnObject.writeDataCommand("W0D5", "", "0");
                     //Thread.Sleep(10);
                 }
@@ -440,6 +451,23 @@ namespace WORKFLOW
                     _kvconnObject.writeDataCommand("W0D6", "", "0");
                 }
 
+                if ((byte)(TRIG[18] & 0x01) == 0x01)
+                {
+                    byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
+                    string __MODNAME = ParseByteString(MODEL_NAME_INPUT);
+                    string[] __files = Directory.GetFiles(MasterDir);
+                    if (__files.Length > 0)
+                    {
+                        foreach (string __file in __files)
+                        {
+                            if (__file.Contains(__MODNAME))
+                            {
+                                _excelReadMasterData(__file, ref MasterFileActive, ref _masterData);
+                            }
+                        }
+                    }
+                    _kvconnObject.writeDataCommand("W0D9", "", "0");
+                }
             }
         }
 
@@ -477,33 +505,67 @@ namespace WORKFLOW
             }
         }
 
-        void _eeipTrigMasterFetchModel(byte[] MODNAME_VAR, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
+        void _eeipTrigMasterFetch(byte[] MODNAME_VAR, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
             string MODNAME = ParseByteString(MODNAME_VAR);
-            foreach (string files in Directory.GetFiles(MasterDir))
+            string[] files = Directory.GetFiles(MasterDir);
+            bool notfound = false;
+            if (files.Length > 0)
             {
-                if (files.Contains(MODNAME))
+                foreach (string file in files)
                 {
-                    _excelReadMasterData(files, ref filemaster, ref datamaster);
-                    _kvMasterModelDownload(ref datamaster);
-                    _kvMasterParam1Download(ref datamaster);
-                    _kvMasterParam2345Download(ref datamaster);
-                    _kvMasterGraphDownload(ref datamaster.RMasteringStep2, dataMasterRsideStep2addrs, 400);
-                    _kvMasterGraphDownload(ref datamaster.LMasteringStep2, dataMasterLsideStep2addrs, 400);
-                    //_kvMasterGraphDownload(ref datamaster.RMasteringStep3, dataMasterRsideStep3addrs, 400);
-                    //_kvMasterGraphDownload(ref datamaster.LMasteringStep3, dataMasterLsideStep3addrs, 400);
-
-                    _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
+                    if (file.Contains(MODNAME))
+                    {
+                        notfound = false;
+                        _excelReadMasterData(file, ref filemaster, ref datamaster);
+                        break;
+                        //_kvMasterGraphDownload(ref datamaster.RMasteringStep2, dataMasterRsideStep2addrs, 400);
+                        //_kvMasterGraphDownload(ref datamaster.LMasteringStep2, dataMasterLsideStep2addrs, 400);
+                        //_kvMasterGraphDownload(ref datamaster.RMasteringStep3, dataMasterRsideStep3addrs, 400);
+                        //_kvMasterGraphDownload(ref datamaster.LMasteringStep3, dataMasterLsideStep3addrs, 400);
+                    }
+                    else
+                    {
+                        notfound = true;
+                    }
                 }
-                else
+
+                if (notfound)
                 {
                     DATAMODEL_MASTER _INITMODEL = new DATAMODEL_MASTER();
                     _INITMODEL._activeModelName = MODNAME;
+                    _INITMODEL._activeKayabaNumber = "000000";
                     _excelInitMasterData(ref _INITMODEL);
                     _kvconnObject.writeDataCommand("W0FF", "", "1"); //>confirm if not found
                     //MessageBox.Show("Master File for this model is not found. Please initiate setting.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+            else 
+            {
+                DATAMODEL_MASTER _INITMODEL = new DATAMODEL_MASTER();
+                _INITMODEL._activeModelName = MODNAME;
+                _INITMODEL._activeKayabaNumber = "000000";
+                _excelInitMasterData(ref _INITMODEL);
+                _kvconnObject.writeDataCommand("W0FF", "", "1"); //>confirm if not found
+                                                                 //MessageBox.Show("Master File for this model is not found. Please initiate setting.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        void _eeipTrigMasterFetchModel(ref DATAMODEL_MASTER datamaster)
+        {
+            _kvMasterModelDownload(ref datamaster);
+            _kvMasterParam1Download(ref datamaster);
+            _kvMasterParam2345Download(ref datamaster);
+        }
+
+        void _eeipTrigMasterFetchGraph(ref DATAMODEL_MASTER datamaster)
+        {
+            _kvMasterGraphDownload(ref datamaster.RMasteringStep2, dataMasterRsideStep2addrs, 400);
+            _kvMasterGraphDownload(ref datamaster.LMasteringStep2, dataMasterLsideStep2addrs, 400);
+            //_kvMasterGraphDownload(ref datamaster.RMasteringStep3, dataMasterRsideStep3addrs, 400);
+            //_kvMasterGraphDownload(ref datamaster.LMasteringStep3, dataMasterLsideStep3addrs, 400);
+
+            //_kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
         }
 
         void _eeipTrigMasterNewModelParam(/*byte[] MODNAME_VAR*/)
@@ -559,9 +621,11 @@ namespace WORKFLOW
             //>confirm if complete edit new model (only initiate master file and parameter, give warning to continue teaching)
         }
 
-        void _eeipTrigMasterCopyModel(ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
+        void _eeipTrigMasterCopyModel(byte[] MODNAME_VAR, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
-            _eeipMasterModelUpload(ref datamaster);
+            string MODNAME = ParseByteString(MODNAME_VAR);
+            //_eeipMasterModelUpload(ref datamaster);
+            datamaster._activeModelName = MODNAME;
             filemaster.setModelName(datamaster._activeModelName);
             //test if need to reassign/reupload graph data or not, if need from which entity
             //test also if excelstream need to reassign graph data or not
@@ -749,6 +813,7 @@ namespace WORKFLOW
         {
             masterfile.FileReadMaster(modfile);
             masterdata._activeModelName = masterfile.getModelName();
+            masterdata._activeKayabaNumber = masterfile.getKYBNUM();
             masterdata.Step1Param = ParamStep1toObject(masterfile.getParameterStep1());
             masterdata.Step2345Param = ParamStep2345toObject(masterfile.getParameterStep2345());
 
@@ -777,9 +842,9 @@ namespace WORKFLOW
         void _excelStoreMasterGraphData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM excelmaster)
         {
             excelmaster.setRsideMasterStep2(feeddata.RMasteringStep2);
-            excelmaster.setRsideMasterStep2(feeddata.LMasteringStep2);
+            excelmaster.setLsideMasterStep2(feeddata.LMasteringStep2);
             //excelmaster.setRsideMasterStep3(feeddata.RMasteringStep3);
-            //excelmaster.setRsideMasterStep3(feeddata.LMasteringStep3);
+            //excelmaster.setLsideMasterStep3(feeddata.LMasteringStep3);
         }
 
         void _excelPrintMasterData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM exceldata)
@@ -884,16 +949,25 @@ namespace WORKFLOW
                         {
                             if (i > _charINPUT.Length - 2)
                             {
-                                _charModelBuff[i] = _charINPUT[i];
+                                if (_charINPUT[i] != 0x00)
+                                {
+                                    _charModelBuff[i] = _charINPUT[i];
+                                }
                             }
                             else
                             {
-                                _charModelBuff[i] = _charINPUT[i + 1];
+                                if (_charINPUT[i + 1] != 0x00)
+                                {
+                                    _charModelBuff[i] = _charINPUT[i + 1];
+                                }
                             }
                         }
                         else if (i % 2 == 1)
                         {
-                            _charModelBuff[i] = _charINPUT[i - 1];
+                            if (_charINPUT[i - 1] != 0x00)
+                            {
+                                _charModelBuff[i] = _charINPUT[i - 1];
+                            }
                         }
                     }
                     else
@@ -902,24 +976,32 @@ namespace WORKFLOW
                         {
                             if (i > _charINPUT.Length - 2)
                             {
-                                _charNumBuff[i - 20] = _charINPUT[i];
+                                if (_charINPUT[i] != 0x00)
+                                {
+                                    _charNumBuff[i - 20] = _charINPUT[i];
+                                }
                             }
                             else
                             {
-                                _charNumBuff[i - 20] = _charINPUT[i + 1];
+                                if (_charINPUT[i + 1] != 0x00)
+                                {
+                                    _charNumBuff[i - 20] = _charINPUT[i + 1];
+                                }
                             }
                         }
                         else if (i % 2 == 1)
                         {
-                            _charNumBuff[i - 20] = _charINPUT[i - 1];
+                            if (_charINPUT[i - 1] != 0x00)
+                            {
+                                _charNumBuff[i - 20] = _charINPUT[i - 1];
+                            }
                         }
                     }
                 }
-
-                data._activeModelName = string.Join("", _charModelBuff);
+                data._activeModelName = string.Join("", _charModelBuff.Where(c => c != '\0'));
                 //Debug.Write(_data._activeModelName);
                 //Debug.Write((char)'\n');
-                data._activeKayabaNumber = string.Join("", _charNumBuff);
+                data._activeKayabaNumber = string.Join("", _charNumBuff.Where(c => c != '\0'));
                 //Debug.Write(_data._activeKayabaNumber);
                 //Debug.Write((char)'\n');
             }
@@ -1207,16 +1289,25 @@ namespace WORKFLOW
                         {
                             if (i > _charINPUT.Length - 2)
                             {
-                                _charModelBuff[i] = _charINPUT[i];
+                                if (_charINPUT[i] != 0x00)
+                                {
+                                    _charModelBuff[i] = _charINPUT[i];
+                                }
                             }
                             else
                             {
-                                _charModelBuff[i] = _charINPUT[i + 1];
+                                if (_charINPUT[i + 1] != 0x00)
+                                {
+                                    _charModelBuff[i] = _charINPUT[i + 1];
+                                }
                             }
                         }
                         else if (i % 2 == 1)
                         {
-                            _charModelBuff[i] = _charINPUT[i - 1];
+                            if (_charINPUT[i - 1] != 0x00)
+                            {
+                                _charModelBuff[i] = _charINPUT[i - 1];
+                            }
                         }
                     }
                     else
@@ -1225,21 +1316,30 @@ namespace WORKFLOW
                         {
                             if (i > _charINPUT.Length - 2)
                             {
-                                _charNumBuff[i - 20] = _charINPUT[i];
+                                if (_charINPUT[i] != 0x00)
+                                {
+                                    _charNumBuff[i - 20] = _charINPUT[i];
+                                }
                             }
                             else
                             {
-                                _charNumBuff[i - 20] = _charINPUT[i + 1];
+                                if (_charINPUT[i + 1] != 0x00)
+                                {
+                                    _charNumBuff[i - 20] = _charINPUT[i + 1];
+                                }
                             }
                         }
                         else if (i % 2 == 1)
                         {
-                            _charNumBuff[i - 20] = _charINPUT[i - 1];
+                            if (_charINPUT[i - 1] != 0x00)
+                            {
+                                _charNumBuff[i - 20] = _charINPUT[i - 1];
+                            }
                         }
                     }
                 }
-                master._activeModelName = string.Join("", _charModelBuff);
-                master._activeKayabaNumber = string.Join("", _charNumBuff);
+                master._activeModelName = string.Join("", _charModelBuff.Where(c => c != '\0'));
+                master._activeKayabaNumber = string.Join("", _charNumBuff.Where(c => c != '\0'));
             }
             catch { }
         }
@@ -1326,16 +1426,14 @@ namespace WORKFLOW
             string[] tfdata = new string[] { };
             try
             {
-                for (int i = 0; i > masterparam1.Step1Param.Count(); i++)
+                for (int i = 0; i < masterparam1.Step1Param.Count(); i++)
                 {
-                    if (i == 0 | i == 4)
-                    {
-                        if (masterparam1.Step1Param[i] is int value) AppendToArray(ref tfdata, IntToHex(value));
-                    }
-                    else
-                    {
-                        if (masterparam1.Step1Param[i] is float value) AppendToArray(ref tfdata, FloatToHexArray(value));
-                    }
+                    if (masterparam1.Step1Param[i] is short value1)
+                    { AppendToArray(ref tfdata, IntToHex((int)value1));
+                       Debug.WriteLine(value1); }
+                    else if (masterparam1.Step1Param[i] is float value2)
+                    { AppendToArray(ref tfdata, FloatToHexArray(value2));
+                       Debug.WriteLine((float)value2); }
                 }
                 _kvconnObject.batchwriteDataCommand("W330", ".H", tfdata.Length, tfdata);
                 Thread.Sleep(1);
@@ -1414,14 +1512,13 @@ namespace WORKFLOW
             {
                 for (int i = 0; i < masterparam2345.Step2345Param.Count(); i++)
                 {
-                    if (i == 0 | i == 9 | i == 10 | i == 19)
-                    {
-                        if (masterparam2345.Step2345Param[i] is int value) AppendToArray(ref tfdata, IntToHex(value));
-                    }
-                    else
-                    {
-                        if (masterparam2345.Step1Param[i] is float value) AppendToArray(ref tfdata, FloatToHexArray(value));
-                    }
+                   //Debug.WriteLine((float)masterparam2345.Step2345Param[i]);
+                    if (masterparam2345.Step2345Param[i] is short value1) 
+                    { AppendToArray(ref tfdata, IntToHex((int)value1)); 
+                        Debug.WriteLine(value1); }
+                    else if (masterparam2345.Step2345Param[i] is float value2) 
+                    { AppendToArray(ref tfdata, FloatToHexArray(value2)); 
+                        Debug.WriteLine((float)value2); }
                 }
                 _kvconnObject.batchwriteDataCommand("W340", ".H", tfdata.Length, tfdata);
                 Thread.Sleep(1);
@@ -1452,16 +1549,16 @@ namespace WORKFLOW
 
         void _kvMasterGraphDownload(ref List<List<float>> masterdata, string[] addrs, int count)
         {
-            try
+            //try
             {
-                masterdata.Clear();
+                //masterdata.Clear();
 
                 if (addrs.Length != 12)
                 {
                     throw new ArgumentException("Array must have exactly 12 elements.");
                 }
 
-                for (int iv = 0; iv < masterdata.Count(); iv++)
+                for (int iv = 0; iv < masterdata.Count; iv++)
                 {
                     string[] masterdatalist = new string[] { };
                     for (int ivy = 0; ivy < masterdata[iv].Count(); ivy++)
@@ -1472,7 +1569,7 @@ namespace WORKFLOW
                     Thread.Sleep(1);
                 }
             }
-            catch { }
+            //catch { }
         }
 
         void _updateMasterDatabase()
@@ -1485,7 +1582,6 @@ namespace WORKFLOW
             _excelPrintMasterData(ref _masterData, ref MasterFileActive);
 
             _kvconnObject.writeDataCommand("W0FA", "", "1");
-
         }
 
         string ParseByteString(byte[] MODNAME_BYTE)
@@ -1498,23 +1594,35 @@ namespace WORKFLOW
 
                 for (int i = 0; i < _charINPUT.Length; i++)
                 {
-                    if (i % 2 == 0)
+                    if (i < 20)
                     {
-                        if (i > _charINPUT.Length - 2)
+                        if (i % 2 == 0)
                         {
-                            _charStringBuff[i] = _charINPUT[i];
+                            if (i > _charINPUT.Length - 2)
+                            {
+                                if(_charINPUT[i] != 0x00)
+                                {
+                                    _charStringBuff[i] = _charINPUT[i];
+                                }
+                            }
+                            else
+                            {
+                                if (_charINPUT[i + 1] != 0x00)
+                                {
+                                    _charStringBuff[i] = _charINPUT[i + 1];
+                                }
+                            }
                         }
-                        else
+                        else if (i % 2 == 1)
                         {
-                            _charStringBuff[i] = _charINPUT[i + 1];
+                            if (_charINPUT[i - 1] != 0x00)
+                            {
+                                _charStringBuff[i] = _charINPUT[i - 1];
+                            }
                         }
-                    }
-                    else if (i % 2 == 1)
-                    {
-                        _charStringBuff[i] = _charINPUT[i - 1];
                     }
                 }
-                return string.Join("", _charStringBuff);
+                return string.Join("", _charStringBuff.Where(c => c != '\0'));
             }
             catch 
             {
