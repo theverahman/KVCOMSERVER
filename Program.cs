@@ -479,7 +479,7 @@ namespace WORKFLOW
 
         void _eeipTrigMasterFetchModel(byte[] MODNAME_VAR, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
-            string MODNAME = Encoding.Default.GetString(MODNAME_VAR);
+            string MODNAME = ParseByteString(MODNAME_VAR);
             foreach (string files in Directory.GetFiles(MasterDir))
             {
                 if (files.Contains(MODNAME))
@@ -577,7 +577,7 @@ namespace WORKFLOW
 
         void _eeipTrigMasterDeleteModel(byte[] MODNAME_VAR)
         {
-            string MODNAME = Encoding.Default.GetString(MODNAME_VAR);
+            string MODNAME = ParseByteString(MODNAME_VAR);
             foreach (string files in Directory.GetFiles(MasterDir))
             {
                 if (files.Contains(MODNAME))
@@ -1488,6 +1488,39 @@ namespace WORKFLOW
 
         }
 
+        string ParseByteString(byte[] MODNAME_BYTE)
+        {
+            try
+            {
+                char[] _charINPUT;
+                char[] _charStringBuff = new char[20];
+                _charINPUT = System.Text.Encoding.ASCII.GetString(MODNAME_BYTE).ToCharArray();
+
+                for (int i = 0; i < _charINPUT.Length; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        if (i > _charINPUT.Length - 2)
+                        {
+                            _charStringBuff[i] = _charINPUT[i];
+                        }
+                        else
+                        {
+                            _charStringBuff[i] = _charINPUT[i + 1];
+                        }
+                    }
+                    else if (i % 2 == 1)
+                    {
+                        _charStringBuff[i] = _charINPUT[i - 1];
+                    }
+                }
+                return string.Join("", _charStringBuff);
+            }
+            catch 
+            {
+                return "";
+            }
+        }
 
         List<object> ParamStep1toObject<T>(List<T> dataread)
         {

@@ -404,6 +404,9 @@ namespace KVCOMSERVER
                 listtablefile.Rows.Add(newRow);
             }
 
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
             dataGridView1.DataSource = listtablefile;
             dataGridView1.Update();
         }
