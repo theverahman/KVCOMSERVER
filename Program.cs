@@ -43,6 +43,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using MethodInvoker = System.Windows.Forms.MethodInvoker;
 using STimer = System.Threading.Timer;
 using DocumentFormat.OpenXml.Vml;
+using System.Data;
 
 namespace KVCOMSERVER
 {
@@ -1175,21 +1176,11 @@ namespace WORKFLOW
                 {
                     throw new ArgumentException("Array must have exactly 6 elements.");
                 }
-                else
-                {
-                    List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[0], count));
-                    List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[1], count));
-                    List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[2], count));
-                    List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[3], count));
-                    List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[4], count));
-                    List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[5], count));
 
-                    realtimeresult.Add(hex16tofloat32(comp_stroke));
-                    realtimeresult.Add(hex16tofloat32(comp_load));
-                    realtimeresult.Add(hex16tofloat32(extn_stroke));
-                    realtimeresult.Add(hex16tofloat32(extn_load));
-                    realtimeresult.Add(hex16tofloat32(diff_stroke));
-                    realtimeresult.Add(hex16tofloat32(diff_load));
+                for (int iv = 0; iv < addrs.Length; iv++)
+                {
+                    List<byte[]> masterDataList = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[iv], count));
+                    realtimeresult.Add(hex16tofloat32(masterDataList));
                 }
             }
             catch { }
@@ -1450,31 +1441,11 @@ namespace WORKFLOW
                     throw new ArgumentException("Array must have exactly 12 elements.");
                 }
 
-                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[0], count));
-                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[1], count));
-                List<byte[]> comp_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[2], count));
-                List<byte[]> comp_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[3], count));
-                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[4], count));
-                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[5], count));
-                List<byte[]> extn_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[6], count));
-                List<byte[]> extn_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[7], count));
-                List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[8], count));
-                List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[9], count));
-                List<byte[]> diff_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[10], count));
-                List<byte[]> diff_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[11], count));
-
-                masterdata.Add(hex16tofloat32(comp_stroke));
-                masterdata.Add(hex16tofloat32(comp_load));
-                masterdata.Add(hex16tofloat32(comp_upper));
-                masterdata.Add(hex16tofloat32(comp_lower));
-                masterdata.Add(hex16tofloat32(extn_stroke));
-                masterdata.Add(hex16tofloat32(extn_load));
-                masterdata.Add(hex16tofloat32(extn_upper));
-                masterdata.Add(hex16tofloat32(extn_lower));
-                masterdata.Add(hex16tofloat32(diff_stroke));
-                masterdata.Add(hex16tofloat32(diff_load));
-                masterdata.Add(hex16tofloat32(diff_upper));
-                masterdata.Add(hex16tofloat32(diff_lower));
+                for (int iv = 0; iv < addrs.Length; iv++)
+                {
+                    List<byte[]> masterDataList = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[iv], count));
+                    masterdata.Add(hex16tofloat32(masterDataList));
+                }
             }
             catch { }
         }
@@ -1490,31 +1461,16 @@ namespace WORKFLOW
                     throw new ArgumentException("Array must have exactly 12 elements.");
                 }
 
-                List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[0], count));
-                List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[1], count));
-                List<byte[]> comp_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[2], count));
-                List<byte[]> comp_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[3], count));
-                List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[4], count));
-                List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[5], count));
-                List<byte[]> extn_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[6], count));
-                List<byte[]> extn_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[7], count));
-                List<byte[]> diff_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[8], count));
-                List<byte[]> diff_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[9], count));
-                List<byte[]> diff_upper = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[10], count));
-                List<byte[]> diff_lower = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[11], count));
-
-                masterdata.Add(hex16tofloat32(comp_stroke));
-                masterdata.Add(hex16tofloat32(comp_load));
-                masterdata.Add(hex16tofloat32(comp_upper));
-                masterdata.Add(hex16tofloat32(comp_lower));
-                masterdata.Add(hex16tofloat32(extn_stroke));
-                masterdata.Add(hex16tofloat32(extn_load));
-                masterdata.Add(hex16tofloat32(extn_upper));
-                masterdata.Add(hex16tofloat32(extn_lower));
-                masterdata.Add(hex16tofloat32(diff_stroke));
-                masterdata.Add(hex16tofloat32(diff_load));
-                masterdata.Add(hex16tofloat32(diff_upper));
-                masterdata.Add(hex16tofloat32(diff_lower));
+                for (int iv = 0; iv < masterdata.Count(); iv++)
+                {
+                    string[] masterdatalist = new string[] { };
+                    for (int ivy = 0; ivy < masterdata[iv].Count(); ivy++)
+                    {   
+                        if (masterdata[iv][ivy] is float value) AppendToArray(ref masterdatalist, FloatToHexArray(value));
+                    }
+                    _kvconnObject.batchwriteDataCommand(addrs[iv], ".H", masterdatalist.Length, masterdatalist);
+                    Thread.Sleep(1);
+                }
             }
             catch { }
         }
@@ -1531,7 +1487,6 @@ namespace WORKFLOW
             _kvconnObject.writeDataCommand("W0FA", "", "1");
 
         }
-
 
 
         List<object> ParamStep1toObject<T>(List<T> dataread)
