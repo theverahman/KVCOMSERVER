@@ -174,34 +174,34 @@ namespace WORKFLOW
 
         string[] dataMasterRsideStep3addrs = new string[]
                     {
-                        "ZFx1",
-                        "ZFx2",
-                        "ZFx3",
-                        "ZFx4",
-                        "ZFx5",
-                        "ZFx6",
-                        "ZFx7",
-                        "ZFx8",
-                        "ZFx9",
-                        "ZFx10",
-                        "ZFx11",
-                        "ZFx12"
+                        "ZF120400",
+                        "ZF120800",
+                        "ZF121200",
+                        "ZF121600",
+                        "ZF122000",
+                        "ZF122400",
+                        "ZF122800",
+                        "ZF123200",
+                        "ZF513000",
+                        "ZF513400",
+                        "ZF513800",
+                        "ZF514200"
                     };
 
         string[] dataMasterLsideStep3addrs = new string[]
                     {
-                        "ZFx1",
-                        "ZFx2",
-                        "ZFx3",
-                        "ZFx4",
-                        "ZFx5",
-                        "ZFx6",
-                        "ZFx7",
-                        "ZFx8",
-                        "ZFx9",
-                        "ZFx10",
-                        "ZFx11",
-                        "ZFx12"
+                        "ZF220400",
+                        "ZF220800",
+                        "ZF221200",
+                        "ZF221600",
+                        "ZF222000",
+                        "ZF222400",
+                        "ZF222800",
+                        "ZF223200",
+                        "ZF517000",
+                        "ZF517400",
+                        "ZF517800",
+                        "ZF518200"
                     };
 
 
@@ -442,6 +442,20 @@ namespace WORKFLOW
             }
         }
 
+        void _eeipEventHandler_5() //Master Teaching
+        {
+            if (this.GetConnState() == 1)
+            {
+                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8F);
+                if ((byte)(TRIG[20] & 0x01) == 0x01)
+                {
+                    _updateMasterDatabase();
+                    _kvconnObject.writeDataCommand("W0DA", "", "0");
+                    //Thread.Sleep(10);
+                }
+            }
+        }
+
         void _eeipBeacon(byte[] STAT_INPUT)
         {
             if ((byte)(STAT_INPUT[0] & 0x01) == 0x01)
@@ -473,7 +487,10 @@ namespace WORKFLOW
                     _kvMasterModelDownload(ref datamaster);
                     _kvMasterParam1Download(ref datamaster);
                     _kvMasterParam2345Download(ref datamaster);
-                    //_kvMasterGraphDownload(ref _masterData);
+                    _kvMasterGraphDownload(ref datamaster.RMasteringStep2, dataMasterRsideStep2addrs, 400);
+                    _kvMasterGraphDownload(ref datamaster.LMasteringStep2, dataMasterLsideStep2addrs, 400);
+                    //_kvMasterGraphDownload(ref datamaster.RMasteringStep3, dataMasterRsideStep3addrs, 400);
+                    //_kvMasterGraphDownload(ref datamaster.LMasteringStep3, dataMasterLsideStep3addrs, 400);
 
                     _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                 }
@@ -531,12 +548,8 @@ namespace WORKFLOW
             _eeipMasterParam2345Upload(ref datamaster);
             //test if need to reassign/reupload graph data or not, if need from which entity
 
-            filemaster.setModelName(datamaster._activeModelName);
-            filemaster.setParameterStep1(datamaster.Step1Param);
-            filemaster.setParameterStep2345(datamaster.Step2345Param);
+            _excelStoreMasterParamData(ref datamaster, ref filemaster);
             //test also if excelstream need to reassign graph data or not
-            //use this method instead if need all data to be reassigned to master//_excelStoreMasterParamData(ref datamaster, ref filemaster);
-
             _excelPrintMasterData(ref datamaster, ref filemaster);
 
             filemaster = null;
@@ -748,10 +761,7 @@ namespace WORKFLOW
         void _excelInitMasterData(ref DATAMODEL_MASTER feeddata)
         {
             EXCELSTREAM newmasterfile = new EXCELSTREAM("MASTER");
-            newmasterfile.setModelName(feeddata._activeModelName);
-            newmasterfile.setParameterStep1(feeddata.Step1Param);
-            newmasterfile.setParameterStep2345(feeddata.Step2345Param);
-
+            _excelStoreMasterParamData(ref feeddata, ref newmasterfile);
             _excelPrintMasterData(ref feeddata, ref newmasterfile);            
         }
 
@@ -1509,6 +1519,21 @@ namespace WORKFLOW
             catch { }
         }
 
+        void _updateMasterDatabase()
+        {
+            _kvMasterGraphUpload(ref _masterData.RMasteringStep2, dataMasterRsideStep2addrs, 400);
+            _kvMasterGraphUpload(ref _masterData.LMasteringStep2, dataMasterLsideStep2addrs, 400);
+            //_kvMasterGraphUpload(ref _masterData.RMasteringStep3, dataMasterRsideStep3addrs, 400);
+            //_kvMasterGraphUpload(ref _masterData.LMasteringStep3, dataMasterLsideStep3addrs, 400);
+            _excelStoreMasterGraphData(ref _masterData, ref MasterFileActive);
+            _excelPrintMasterData(ref _masterData, ref MasterFileActive);
+
+            _kvconnObject.writeDataCommand("W0FA", "", "1");
+
+        }
+
+
+
         List<object> ParamStep1toObject<T>(List<T> dataread)
         {
             List<object> dataobject = new List<object>();
@@ -1962,6 +1987,8 @@ namespace WORKFLOW
                     await _eeipEventHandler_1Async(_cts.Token);
                     await _eeipEventHandler_2Async(_cts.Token);
                     await _eeipEventHandler_3Async(_cts.Token);
+                    await _eeipEventHandler_4Async(_cts.Token);
+                    await _eeipEventHandler_5Async(_cts.Token);
 
                     //await _uiPlot1UpdateAsync(_cts.Token);
                     //await _backgroundDataPlot1ReadAsync(_cts.Token);
@@ -1973,7 +2000,7 @@ namespace WORKFLOW
                     //await _backgroundDataPlot3ReadAsync(_cts.Token);
 
                     //await _uiPlot4UpdateAsync(_cts.Token);
-                   // await _backgroundDataPlot4ReadAsync(_cts.Token);
+                    // await _backgroundDataPlot4ReadAsync(_cts.Token);
                 }
                 Thread.Sleep(1);
             }
@@ -1997,6 +2024,16 @@ namespace WORKFLOW
         private async Task _eeipEventHandler_3Async(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _eeipEventHandler_3(), cancellationToken);
+        }
+
+        private async Task _eeipEventHandler_4Async(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _eeipEventHandler_4(), cancellationToken);
+        }
+
+        private async Task _eeipEventHandler_5Async(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _eeipEventHandler_5(), cancellationToken);
         }
 
         private async Task _uibeaconnUpdateAsync(CancellationToken cancellationToken)
