@@ -554,6 +554,7 @@ namespace WORKFLOW
         void _eeipTrigMasterFetchModel(ref DATAMODEL_MASTER datamaster)
         {
             _kvMasterModelDownload(ref datamaster);
+            _kvMasterParamSizeDownload(ref datamaster);
             _kvMasterParam1Download(ref datamaster);
             _kvMasterParam2345Download(ref datamaster);
         }
@@ -572,6 +573,7 @@ namespace WORKFLOW
         {
             DATAMODEL_MASTER _NEWMODEL = new DATAMODEL_MASTER();
             _eeipMasterModelUpload(ref _NEWMODEL);
+            _eeipMasterParamSizeUpload(ref _NEWMODEL);
             _eeipMasterParam1Upload(ref _NEWMODEL);
             _eeipMasterParam2345Upload(ref _NEWMODEL);
             _excelInitMasterData(ref _NEWMODEL);
@@ -607,6 +609,7 @@ namespace WORKFLOW
         void _eeipTrigMasterEditModelParam(ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
             _eeipMasterModelUpload(ref datamaster);
+            _eeipMasterParamSizeUpload(ref datamaster);
             _eeipMasterParam1Upload(ref datamaster);
             _eeipMasterParam2345Upload(ref datamaster);
             //test if need to reassign/reupload graph data or not, if need from which entity
@@ -703,8 +706,6 @@ namespace WORKFLOW
             {
                 if (!_realtimeReadFlag)
                 {
-                    _realtimeReadFlag = true;
-
                     _Rdata._Step1MaxLoad_NG = 0;
                     _Rdata._Step2CompRef_NG = 0;
                     _Rdata._Step2CompGraph_NG = 0;
@@ -790,12 +791,10 @@ namespace WORKFLOW
                     _uiPlot3Update();
                     _backgroundDataPlot4Read();
                     _uiPlot4Update();
-                }
 
-                if (_realtimeReadFlag)
-                {
                     _kvconnObject.writeDataCommand("W0C2", "", "0");
                     Thread.Sleep(1);
+                    _realtimeReadFlag = true;
                 }
             }
             if ((byte)(STAT_INPUT[4] & 0x01) == 0x00)
@@ -1353,6 +1352,63 @@ namespace WORKFLOW
                 _kvconnObject.batchwriteDataCommand("W300", ".H", hexModelBuff.Length, hexModelBuff);
                 Thread.Sleep(1);
                 _kvconnObject.batchwriteDataCommand("W310", ".H", hexNumBuff.Length, hexNumBuff);
+                Thread.Sleep(1);
+            }
+            catch { }
+        }
+
+        void _eeipMasterParamSizeUpload(ref DATAMODEL_MASTER masterparam1)
+        {
+            try
+            {
+                byte[] _INPUT;
+                List<byte[]> _buffPARAM1 = new List<byte[]>();
+                _INPUT = _eeipObject.AssemblyObject.getInstance(0xAF);
+                Thread.Sleep(1);
+
+                byte[] buff = new byte[4];
+                int iv = 0;
+                for (int i = 0; i < _INPUT.Length; i++)
+                {
+                    if (i % 4 != 0)
+                    {
+                        buff[iv] = _INPUT[i];
+                        iv++;
+                    }
+                    else if (i % 4 == 0)
+                    {
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffPARAM1.Add(sbuff);
+                        iv = 0;
+                        buff[iv] = _INPUT[i];
+                        iv++;
+                    }
+                }
+                masterparam1._MaxLoadLimit = BitConverter.ToSingle(_buffPARAM1[0], 0);
+                masterparam1._ProdLen = BitConverter.ToSingle(_buffPARAM1[1], 0);
+            }
+            catch { }
+        }
+
+        void _kvMasterParamSizeDownload(ref DATAMODEL_MASTER masterparam1)
+        {
+            string[] tfdata = new string[] { };
+            try
+            {
+                if (masterparam1._MaxLoadLimit is float value1)
+                {
+                    AppendToArray(ref tfdata, FloatToHexArray((float)value1));
+                    Debug.WriteLine((float)value1);
+                }
+                else if (masterparam1._ProdLen is float value2)
+                {
+                    AppendToArray(ref tfdata, FloatToHexArray(value2));
+                    Debug.WriteLine((float)value2);
+                }
+
+                _kvconnObject.batchwriteDataCommand("W320", ".H", tfdata.Length, tfdata);
                 Thread.Sleep(1);
             }
             catch { }
@@ -2889,6 +2945,9 @@ namespace WORKFLOW
         public string _activeHour;
         public string _activeMinute;
         public string _activeSecond;
+
+        public float _MaxLoadLimit;
+        public float _ProdLen;
 
         public int _step1Enable;
         public float _step1Stroke;
