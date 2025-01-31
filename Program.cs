@@ -426,6 +426,7 @@ namespace WORKFLOW
                     _copymaster = new EXCELSTREAM("MASTER");
                     _copydatamaster = new DATAMODEL_MASTER();
                     _eeipTrigMasterFetch(MODEL_NAME_INPUT, ref _copymaster, ref _copydatamaster);
+                    _eeipTrigMasterFetchModel(ref _copydatamaster);
                     //_eeipTrigMasterFetchGraph(ref _masterData);
                     _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                     _kvconnObject.writeDataCommand("W0D4", "", "0");
