@@ -243,7 +243,7 @@ namespace WORKFLOW
 
             backgroundThread = new Thread(BackgroundWork);
             backgroundThread.Start();
-            SetConnection();
+            //SetConnection();
 
         }
 

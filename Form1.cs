@@ -22,12 +22,17 @@ using DocumentFormat.OpenXml.Packaging;
 using Microsoft.Office.Interop;
 using Excel = Microsoft.Office.Interop.Excel;
 
+using Color = System.Drawing.Color;
+using SColor = ScottPlot.Color;
+
+using FontStyle = System.Drawing.FontStyle;
+using SFontStyle = ScottPlot.FontStyle;
+
 using LIBKVPROTOCOL;
 using WORKFLOW;
 
 namespace KVCOMSERVER
 {
-
     public partial class Form1 : Form
     {
         private WORKFLOWHANDLER _WorkflowHandler;
@@ -39,23 +44,13 @@ namespace KVCOMSERVER
         public int _connStat;
         public int _beaconn;
 
-        Thread backgroundThread_1;
-        Thread backgroundThread_2;
-        Thread backgroundThread_3;
-
-        Thread uibackgroundThread_0;
-
-        //public Form1(KVPROTOCOL connEst)
-
-
-
         public Form1()
         {
             InitializeComponent();
             _WorkflowHandler = new WORKFLOWHANDLER(this);
             textBox1.Text = settingIpv4;
             textBox2.Text = settingPortIp.ToString();
-
+            _cts = new CancellationTokenSource();
             try
             {
                 if (_connStat != 1)
@@ -64,22 +59,62 @@ namespace KVCOMSERVER
                     _connStat = _WorkflowHandler.GetConnState();
                 }
                 //RealtimeUpdateList();
-                //MasteringUpdateList();
-                
+                //MasteringUpdateList();   
             }
             catch
-            {
+            { }
+            InitializeUI();
+        }
 
-            }
+        private void InitializeUI()
+        {
+            // Set form properties
+            this.Text = "Damping Force Function Tester";
+            this.BackColor = Color.White;
+            this.Font = new Font("Arial", 10);
 
-            _cts = new CancellationTokenSource();
+            // Initialize buttons
+            InitializeModernButton(button1, "Connect");
+            InitializeModernButton(button2, "Close");
+            InitializeModernButton(button4, "Save Setting");
+            InitializeModernButton(button3, "Display to Graph");
+            InitializeModernButton(button19, "Open Selected");
+            InitializeModernButton(button8, "Open Folder");
+
+            // Initialize TextBoxes
+            textBox1.Font = new Font("Arial", 12);
+            textBox2.Font = new Font("Arial", 12);
+            textBox1.TextChanged += textBox1_TextChanged;
+            textBox2.TextChanged += textBox2_TextChanged;
+
+            // Initialize DataGridViews
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // Set up DateTimePicker
+            dateTimePicker1.Font = new Font("Arial", 12);
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged_1;
+        }
+
+        private void InitializeModernButton(Button button, string text)
+        {
+            button.Text = text;
+            button.BackColor = Color.LimeGreen;
+            button.FlatStyle = FlatStyle.Flat;
+            button.ForeColor = Color.White;
+            button.Font = new Font("Arial", 12, FontStyle.Bold);
+            button.Size = new Size(150, 50);
+            button.MouseEnter += (s, e) => button.BackColor = Color.DarkGreen;
+            button.MouseLeave += (s, e) => button.BackColor = Color.LimeGreen;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //Connect
-
             try
             {
                 if (_connStat != 1)
@@ -90,20 +125,8 @@ namespace KVCOMSERVER
             }
             catch
             {
-
+                MessageBox.Show("Connection failed. Please check your settings.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        //IPV4Address Input
-        {
-            settingIpv4 = textBox1.Text;
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            settingPortIp = int.Parse(textBox2.Text);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -117,264 +140,73 @@ namespace KVCOMSERVER
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            //msgToBeSent = richTextBox1.Text + "\r";
-            //_WorkflowHandler.SendMessage(msgToBeSent);
-            //Thread.Sleep(100);
+            settingIpv4 = textBox1.Text;
         }
 
-
-        private void richTextBox2_TextChanged(object sender, EventArgs e)
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
-
+            if (int.TryParse(textBox2.Text, out int port))
+            {
+                settingPortIp = port;
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid port number.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void button8_Click(object sender, EventArgs e)
         {
-
+            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            CheckFolderPath(DirRealtime);
+            var psi = new ProcessStartInfo();
+            psi.FileName = @"c:\windows\explorer.exe";
+            psi.Arguments = DirRealtime;
+            Process.Start(psi);
         }
 
-        private void label5_Click(object sender, EventArgs e)
+        private void button9_Click(object sender, EventArgs e)
         {
-
+            string DirMaster = _WorkflowHandler.MasterDir;
+            CheckFolderPath(DirMaster);
+            var psi = new ProcessStartInfo();
+            psi.FileName = @"c:\windows\explorer.exe";
+            psi.Arguments = DirMaster;
+            Process.Start(psi);
         }
 
-        public void connStatLampOn()
+        private void button19_Click(object sender, EventArgs e)
         {
-            button5.Text = "Connected";
-            button5.ForeColor = System.Drawing.Color.Black;
-            button5.BackColor = System.Drawing.Color.LimeGreen;
+            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            CheckFolderPath(DirRealtime);
+            DataGridViewRow test1 = new DataGridViewRow();
+            test1 = dataGridView1.CurrentRow;
+            string selectedfile = new string(test1.Cells[1].FormattedValue.ToString());
+
+            Excel.Application objExcel = new Excel.Application();
+            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirRealtime}\\{selectedfile}");
+            objExcel.Visible = true;
         }
 
-        public void connStatLampOff()
+        private void button20_Click(object sender, EventArgs e)
         {
-            button5.Text = "Disconnected";
-            button5.ForeColor = System.Drawing.Color.Black;
-            button5.BackColor = System.Drawing.Color.Red;
+            string DirMaster = _WorkflowHandler.MasterDir;
+            CheckFolderPath(DirMaster);
+            DataGridViewRow test2 = new DataGridViewRow();
+            test2 = dataGridView2.CurrentRow;
+            string selectedfile = new string(test2.Cells[1].FormattedValue.ToString());
+
+            Excel.Application objExcel = new Excel.Application();
+            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirMaster}\\{selectedfile}");
+            objExcel.Visible = true;
         }
 
-        public void beaconnStatLampOn()
+        private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
         {
-            button6.Text = "ON";
-            button6.ForeColor = System.Drawing.Color.Black;
-            button6.BackColor = System.Drawing.Color.LimeGreen;
+            RealtimeUpdateList();
         }
-
-        public void beaconnStatLampOff()
-        {
-            button6.Text = "OFF";
-            button6.ForeColor = System.Drawing.Color.Black;
-            button6.BackColor = System.Drawing.Color.BlueViolet;
-        }
-
-        public void AllPlotReset()
-        {
-            formsPlot1.Reset();
-            formsPlot2.Reset();
-            formsPlot3.Reset();
-            formsPlot4.Reset();
-
-            formsPlot1.Refresh();
-            formsPlot2.Refresh();
-            formsPlot3.Refresh();
-            formsPlot4.Refresh();
-        }
-
-
-        public void Plot1Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot1.Reset();
-            //formsPlot1.BackColor = System.Drawing.Color.Black;
-            var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
-            sp1.Color = ScottPlot.Color.FromColor(linecolor);
-            sp1.LineWidth = 3;
-            formsPlot1.Plot.Axes.AntiAlias(true);
-            formsPlot1.Refresh();
-        }
-
-        public void Plot1AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
-            sp1.Color = ScottPlot.Color.FromColor(linecolor);
-            sp1.LineWidth = 3;
-            formsPlot1.Plot.Axes.AntiAlias(true);
-            formsPlot1.Refresh();
-        }
-
-        public void Plot2Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot2.Reset();
-            //formsPlot2.BackColor = System.Drawing.Color.Black;
-            var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
-            sp2.Color = ScottPlot.Color.FromColor(linecolor);
-            sp2.LineWidth = 3;
-            formsPlot2.Plot.Axes.AntiAlias(true);
-            formsPlot2.Refresh();
-        }
-
-        public void Plot2AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
-            sp2.Color = ScottPlot.Color.FromColor(linecolor);
-            sp2.LineWidth = 3;
-            formsPlot2.Plot.Axes.AntiAlias(true);
-            formsPlot2.Refresh();
-        }
-
-        public void Plot3Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot3.Reset();
-            //formsPlot3.BackColor = System.Drawing.Color.Black;
-            var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
-            sp3.Color = ScottPlot.Color.FromColor(linecolor);
-            sp3.LineWidth = 3;
-            formsPlot3.Plot.Axes.AntiAlias(true);
-            formsPlot3.Refresh();
-        }
-
-        public void Plot3AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
-            sp3.Color = ScottPlot.Color.FromColor(linecolor);
-            sp3.LineWidth = 3;
-            formsPlot3.Plot.Axes.AntiAlias(true);
-            formsPlot3.Refresh();
-        }
-
-        public void Plot4Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot4.Reset();
-            //formsPlot4.BackColor = System.Drawing.Color.Black;
-            var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
-            sp4.Color = ScottPlot.Color.FromColor(linecolor);
-            sp4.LineWidth = 3;
-            formsPlot4.Plot.Axes.AntiAlias(true);
-            formsPlot4.Refresh();
-        }
-
-        public void Plot4AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
-            sp4.Color = ScottPlot.Color.FromColor(linecolor);
-            sp4.LineWidth = 3;
-            formsPlot4.Plot.Axes.AntiAlias(true);
-            formsPlot4.Refresh();
-        }
-
-        public void Plot5Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot5.Reset();
-            var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
-            sp5.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot5.Plot.Axes.AntiAlias(true);
-            formsPlot5.Refresh();
-        }
-        public void Plot5UAddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
-            sp5.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot5.Plot.Axes.AntiAlias(true);
-            formsPlot5.Refresh();
-        }
-
-        public void Plot6Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot6.Reset();
-            var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
-            sp6.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot6.Plot.Axes.AntiAlias(true);
-            formsPlot6.Refresh();
-        }
-
-        public void Plot6AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
-            sp6.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot6.Plot.Axes.AntiAlias(true);
-            formsPlot6.Refresh();
-        }
-
-        public void Plot7Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot7.Reset();
-            var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
-            sp7.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot7.Plot.Axes.AntiAlias(true);
-            formsPlot7.Refresh();
-        }
-
-        public void Plot7AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
-            sp7.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot7.Plot.Axes.AntiAlias(true);
-            formsPlot7.Refresh();
-        }
-
-        public void Plot8Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot8.Reset();
-            var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
-            sp8.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot8.Plot.Axes.AntiAlias(true);
-            formsPlot8.Refresh();
-        }
-
-        public void Plot8AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
-            sp8.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot8.Plot.Axes.AntiAlias(true);
-            formsPlot8.Refresh();
-        }
-
-        private void tabPage4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void formsPlot1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        void CheckFolderPath(string pathblazer) { if (!Directory.Exists(pathblazer)) { Directory.CreateDirectory(pathblazer); } }
 
         public void RealtimeUpdateList()
         {
@@ -455,56 +287,252 @@ namespace KVCOMSERVER
             return dateTimePicker1.Value;
         }
 
-        private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
+        void CheckFolderPath(string path)
         {
-            RealtimeUpdateList();
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
 
-        private void button19_Click(object sender, EventArgs e)
+        public void connStatLampOn()
         {
-            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
-            CheckFolderPath(DirRealtime);
-            DataGridViewRow test1 = new DataGridViewRow();
-            test1 = dataGridView1.CurrentRow;
-            string selectedfile = new string(test1.Cells[1].FormattedValue.ToString());
-
-            Excel.Application objExcel = new Excel.Application();
-            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirRealtime}\\{selectedfile}");
-            objExcel.Visible = true;
+            button5.Text = "Connected";
+            button5.ForeColor = System.Drawing.Color.Black;
+            button5.BackColor = System.Drawing.Color.LimeGreen;
         }
 
-        private void button20_Click(object sender, EventArgs e)
+        public void connStatLampOff()
         {
-            string DirMaster = _WorkflowHandler.MasterDir;
-            CheckFolderPath(DirMaster);
-            DataGridViewRow test2 = new DataGridViewRow();
-            test2 = dataGridView2.CurrentRow;
-            string selectedfile = new string(test2.Cells[1].FormattedValue.ToString());
-
-            Excel.Application objExcel = new Excel.Application();
-            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirMaster}\\{selectedfile}");
-            objExcel.Visible = true;
+            button5.Text = "Disconnected";
+            button5.ForeColor = System.Drawing.Color.Black;
+            button5.BackColor = System.Drawing.Color.Red;
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        public void beaconnStatLampOn()
         {
-            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
-            CheckFolderPath(DirRealtime);
-            var psi = new ProcessStartInfo();
-            psi.FileName = @"c:\windows\explorer.exe";
-            psi.Arguments = DirRealtime;
-            Process.Start(psi);
+            button6.Text = "ON";
+            button6.ForeColor = System.Drawing.Color.Black;
+            button6.BackColor = System.Drawing.Color.LimeGreen;
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        public void beaconnStatLampOff()
         {
-            string DirMaster = _WorkflowHandler.MasterDir;
-            CheckFolderPath(DirMaster);
-            var psi = new ProcessStartInfo();
-            psi.FileName = @"c:\windows\explorer.exe";
-            psi.Arguments = DirMaster;
-            Process.Start(psi);
+            button6.Text = "OFF";
+            button6.ForeColor = System.Drawing.Color.Black;
+            button6.BackColor = System.Drawing.Color.BlueViolet;
+        }
+
+        public void AllPlotReset()
+        {
+            formsPlot1.Reset();
+            formsPlot2.Reset();
+            formsPlot3.Reset();
+            formsPlot4.Reset();
+
+            formsPlot1.Refresh();
+            formsPlot2.Refresh();
+            formsPlot3.Refresh();
+            formsPlot4.Refresh();
+        }
+
+        public void Plot1Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot1.Reset();
+            var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
+            sp1.Color = ScottPlot.Color.FromColor(linecolor);
+            sp1.LineWidth = 3;
+            formsPlot1.Plot.Axes.AntiAlias(true);
+            formsPlot1.Refresh();
+        }
+
+        public void Plot1AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
+            sp1.Color = ScottPlot.Color.FromColor(linecolor);
+            sp1.LineWidth = 3;
+            formsPlot1.Plot.Axes.AntiAlias(true);
+            formsPlot1.Refresh();
+        }
+
+        public void Plot2Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot2.Reset();
+            var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
+            sp2.Color = ScottPlot.Color.FromColor(linecolor);
+            sp2.LineWidth = 3;
+            formsPlot2.Plot.Axes.AntiAlias(true);
+            formsPlot2.Refresh();
+        }
+
+        public void Plot2AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
+            sp2.Color = ScottPlot.Color.FromColor(linecolor);
+            sp2.LineWidth = 3;
+            formsPlot2.Plot.Axes.AntiAlias(true);
+            formsPlot2.Refresh();
+        }
+
+        public void Plot3Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot3.Reset();
+            var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
+            sp3.Color = ScottPlot.Color.FromColor(linecolor);
+            sp3.LineWidth = 3;
+            formsPlot3.Plot.Axes.AntiAlias(true);
+            formsPlot3.Refresh();
+        }
+
+        public void Plot3AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
+            sp3.Color = ScottPlot.Color.FromColor(linecolor);
+            sp3.LineWidth = 3;
+            formsPlot3.Plot.Axes.AntiAlias(true);
+            formsPlot3.Refresh();
+        }
+
+        public void Plot4Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot4.Reset();
+            var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
+            sp4.Color = ScottPlot.Color.FromColor(linecolor);
+            sp4.LineWidth = 3;
+            formsPlot4.Plot.Axes.AntiAlias(true);
+            formsPlot4.Refresh();
+        }
+
+        public void Plot4AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
+            sp4.Color = ScottPlot.Color.FromColor(linecolor);
+            sp4.LineWidth = 3;
+            formsPlot4.Plot.Axes.AntiAlias(true);
+            formsPlot4.Refresh();
+        }
+
+        public void Plot5Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot5.Reset();
+            var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
+            sp5.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot5.Plot.Axes.AntiAlias(true);
+            formsPlot5.Refresh();
+        }
+
+        public void Plot5AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
+            sp5.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot5.Plot.Axes.AntiAlias(true);
+            formsPlot5.Refresh();
+        }
+
+        public void Plot6Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot6.Reset();
+            var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
+            sp6.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot6.Plot.Axes.AntiAlias(true);
+            formsPlot6.Refresh();
+        }
+
+        public void Plot6AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
+            sp6.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot6.Plot.Axes.AntiAlias(true);
+            formsPlot6.Refresh();
+        }
+
+        public void Plot7Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot7.Reset();
+            var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
+            sp7.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot7.Plot.Axes.AntiAlias(true);
+            formsPlot7.Refresh();
+        }
+
+        public void Plot7AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
+            sp7.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot7.Plot.Axes.AntiAlias(true);
+            formsPlot7.Refresh();
+        }
+
+        public void Plot8Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            formsPlot8.Reset();
+            var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
+            sp8.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot8.Plot.Axes.AntiAlias(true);
+            formsPlot8.Refresh();
+        }
+
+        public void Plot8AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
+        {
+            var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
+            sp8.Color = ScottPlot.Color.FromColor(linecolor);
+            formsPlot8.Plot.Axes.AntiAlias(true);
+            formsPlot8.Refresh();
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void formsPlot1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button28_Click(object sender, EventArgs e)
+        {
+
         }
     }
-
 }

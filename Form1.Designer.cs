@@ -38,6 +38,8 @@
             button4 = new System.Windows.Forms.Button();
             tabControl1 = new System.Windows.Forms.TabControl();
             tabPage1 = new System.Windows.Forms.TabPage();
+            button35 = new System.Windows.Forms.Button();
+            button21 = new System.Windows.Forms.Button();
             button19 = new System.Windows.Forms.Button();
             button8 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
@@ -45,6 +47,9 @@
             dataGridView1 = new System.Windows.Forms.DataGridView();
             dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             tabPage3 = new System.Windows.Forms.TabPage();
+            button36 = new System.Windows.Forms.Button();
+            button33 = new System.Windows.Forms.Button();
+            button24 = new System.Windows.Forms.Button();
             button16 = new System.Windows.Forms.Button();
             button15 = new System.Windows.Forms.Button();
             button14 = new System.Windows.Forms.Button();
@@ -58,7 +63,12 @@
             formsPlot2 = new ScottPlot.WinForms.FormsPlot();
             formsPlot1 = new ScottPlot.WinForms.FormsPlot();
             tabPage7 = new System.Windows.Forms.TabPage();
+            button34 = new System.Windows.Forms.Button();
+            button32 = new System.Windows.Forms.Button();
             tabPage6 = new System.Windows.Forms.TabPage();
+            button37 = new System.Windows.Forms.Button();
+            button23 = new System.Windows.Forms.Button();
+            button22 = new System.Windows.Forms.Button();
             button20 = new System.Windows.Forms.Button();
             button12 = new System.Windows.Forms.Button();
             button11 = new System.Windows.Forms.Button();
@@ -67,6 +77,11 @@
             dataGridView2 = new System.Windows.Forms.DataGridView();
             label13 = new System.Windows.Forms.Label();
             tabPage5 = new System.Windows.Forms.TabPage();
+            button38 = new System.Windows.Forms.Button();
+            button28 = new System.Windows.Forms.Button();
+            button25 = new System.Windows.Forms.Button();
+            button26 = new System.Windows.Forms.Button();
+            button27 = new System.Windows.Forms.Button();
             button17 = new System.Windows.Forms.Button();
             button18 = new System.Windows.Forms.Button();
             label18 = new System.Windows.Forms.Label();
@@ -78,7 +93,12 @@
             formsPlot7 = new ScottPlot.WinForms.FormsPlot();
             formsPlot8 = new ScottPlot.WinForms.FormsPlot();
             tabPage8 = new System.Windows.Forms.TabPage();
+            button39 = new System.Windows.Forms.Button();
+            button31 = new System.Windows.Forms.Button();
+            button30 = new System.Windows.Forms.Button();
+            button29 = new System.Windows.Forms.Button();
             tabPage2 = new System.Windows.Forms.TabPage();
+            button40 = new System.Windows.Forms.Button();
             button7 = new System.Windows.Forms.Button();
             button6 = new System.Windows.Forms.Button();
             label6 = new System.Windows.Forms.Label();
@@ -95,20 +115,25 @@
             label7 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
-            button21 = new System.Windows.Forms.Button();
-            button22 = new System.Windows.Forms.Button();
-            button23 = new System.Windows.Forms.Button();
-            button24 = new System.Windows.Forms.Button();
-            button25 = new System.Windows.Forms.Button();
-            button26 = new System.Windows.Forms.Button();
-            button27 = new System.Windows.Forms.Button();
+            button41 = new System.Windows.Forms.Button();
+            button42 = new System.Windows.Forms.Button();
+            button43 = new System.Windows.Forms.Button();
+            button44 = new System.Windows.Forms.Button();
+            button45 = new System.Windows.Forms.Button();
+            button46 = new System.Windows.Forms.Button();
+            button47 = new System.Windows.Forms.Button();
+            button48 = new System.Windows.Forms.Button();
+            timelabel0 = new System.Windows.Forms.Label();
+            datelabel0 = new System.Windows.Forms.Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tabPage3.SuspendLayout();
+            tabPage7.SuspendLayout();
             tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabPage5.SuspendLayout();
+            tabPage8.SuspendLayout();
             tabPage2.SuspendLayout();
             panel1.SuspendLayout();
             tabPage4.SuspendLayout();
@@ -186,24 +211,26 @@
             // 
             // tabControl1
             // 
+            tabControl1.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            tabControl1.Controls.Add(tabPage4);
+            tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage7);
             tabControl1.Controls.Add(tabPage6);
             tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage8);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Controls.Add(tabPage4);
-            tabControl1.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            tabControl1.Font = new System.Drawing.Font("Sarasa Fixed J", 10F);
             tabControl1.Location = new System.Drawing.Point(10, 10);
             tabControl1.Margin = new System.Windows.Forms.Padding(2);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1000, 690);
+            tabControl1.Size = new System.Drawing.Size(1878, 1001);
             tabControl1.TabIndex = 12;
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button35);
             tabPage1.Controls.Add(button21);
             tabPage1.Controls.Add(button19);
             tabPage1.Controls.Add(button8);
@@ -211,19 +238,37 @@
             tabPage1.Controls.Add(label3);
             tabPage1.Controls.Add(dataGridView1);
             tabPage1.Controls.Add(dateTimePicker1);
-            tabPage1.Location = new System.Drawing.Point(4, 26);
+            tabPage1.Location = new System.Drawing.Point(4, 4);
             tabPage1.Margin = new System.Windows.Forms.Padding(2);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new System.Windows.Forms.Padding(2);
-            tabPage1.Size = new System.Drawing.Size(992, 660);
+            tabPage1.Size = new System.Drawing.Size(1870, 971);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "REALTIME DATA LIST";
             tabPage1.UseVisualStyleBackColor = true;
             tabPage1.Click += tabPage1_Click;
             // 
+            // button35
+            // 
+            button35.Location = new System.Drawing.Point(1775, 908);
+            button35.Name = "button35";
+            button35.Size = new System.Drawing.Size(90, 60);
+            button35.TabIndex = 25;
+            button35.Text = "MAIN\r\nMENU";
+            button35.UseVisualStyleBackColor = true;
+            // 
+            // button21
+            // 
+            button21.Location = new System.Drawing.Point(201, 907);
+            button21.Name = "button21";
+            button21.Size = new System.Drawing.Size(125, 60);
+            button21.TabIndex = 10;
+            button21.Text = "BATCH EXPORT TO DRIVE/FOLDER";
+            button21.UseVisualStyleBackColor = true;
+            // 
             // button19
             // 
-            button19.Location = new System.Drawing.Point(104, 597);
+            button19.Location = new System.Drawing.Point(102, 907);
             button19.Name = "button19";
             button19.Size = new System.Drawing.Size(91, 60);
             button19.TabIndex = 9;
@@ -233,7 +278,7 @@
             // 
             // button8
             // 
-            button8.Location = new System.Drawing.Point(5, 596);
+            button8.Location = new System.Drawing.Point(3, 906);
             button8.Name = "button8";
             button8.Size = new System.Drawing.Size(91, 60);
             button8.TabIndex = 8;
@@ -243,7 +288,7 @@
             // 
             // button3
             // 
-            button3.Location = new System.Drawing.Point(890, 596);
+            button3.Location = new System.Drawing.Point(888, 906);
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(91, 60);
             button3.TabIndex = 7;
@@ -253,7 +298,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new System.Drawing.Font("Sarasa Fixed J", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            label3.Font = new System.Drawing.Font("Sarasa Fixed J", 16F, System.Drawing.FontStyle.Bold);
             label3.Location = new System.Drawing.Point(5, 8);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(228, 27);
@@ -267,15 +312,14 @@
             dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new System.Drawing.Point(5, 40);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new System.Drawing.Size(975, 550);
+            dataGridView1.Size = new System.Drawing.Size(975, 860);
             dataGridView1.TabIndex = 5;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // dateTimePicker1
             // 
-            dateTimePicker1.CalendarFont = new System.Drawing.Font("Sarasa Mono J", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            dateTimePicker1.Font = new System.Drawing.Font("Sarasa Mono J", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dateTimePicker1.CalendarFont = new System.Drawing.Font("Sarasa Mono J", 12F, System.Drawing.FontStyle.Bold);
+            dateTimePicker1.Font = new System.Drawing.Font("Sarasa Mono J", 9F);
             dateTimePicker1.Location = new System.Drawing.Point(752, 10);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new System.Drawing.Size(228, 22);
@@ -284,6 +328,8 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(button36);
+            tabPage3.Controls.Add(button33);
             tabPage3.Controls.Add(button24);
             tabPage3.Controls.Add(button16);
             tabPage3.Controls.Add(button15);
@@ -297,28 +343,56 @@
             tabPage3.Controls.Add(formsPlot3);
             tabPage3.Controls.Add(formsPlot2);
             tabPage3.Controls.Add(formsPlot1);
-            tabPage3.Location = new System.Drawing.Point(4, 26);
+            tabPage3.Location = new System.Drawing.Point(4, 4);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            tabPage3.Size = new System.Drawing.Size(992, 660);
+            tabPage3.Size = new System.Drawing.Size(1870, 971);
             tabPage3.TabIndex = 3;
             tabPage3.Text = "REALTIME GRAPH";
             tabPage3.UseVisualStyleBackColor = true;
             // 
+            // button36
+            // 
+            button36.Location = new System.Drawing.Point(1777, 908);
+            button36.Name = "button36";
+            button36.Size = new System.Drawing.Size(90, 60);
+            button36.TabIndex = 25;
+            button36.Text = "MAIN\r\nMENU";
+            button36.UseVisualStyleBackColor = true;
+            // 
+            // button33
+            // 
+            button33.Location = new System.Drawing.Point(940, 905);
+            button33.Name = "button33";
+            button33.Size = new System.Drawing.Size(130, 60);
+            button33.TabIndex = 22;
+            button33.Text = "SHOW TABLE";
+            button33.UseVisualStyleBackColor = true;
+            // 
+            // button24
+            // 
+            button24.Font = new System.Drawing.Font("Sarasa Fixed J", 10F);
+            button24.Location = new System.Drawing.Point(1348, 905);
+            button24.Name = "button24";
+            button24.Size = new System.Drawing.Size(130, 60);
+            button24.TabIndex = 16;
+            button24.Text = "SHOW/HIDE AXIS LINE";
+            button24.UseVisualStyleBackColor = true;
+            // 
             // button16
             // 
-            button16.Location = new System.Drawing.Point(912, 252);
+            button16.Location = new System.Drawing.Point(1212, 905);
             button16.Name = "button16";
-            button16.Size = new System.Drawing.Size(77, 71);
+            button16.Size = new System.Drawing.Size(130, 60);
             button16.TabIndex = 15;
             button16.Text = "HIDE MASTER LIMIT";
             button16.UseVisualStyleBackColor = true;
             // 
             // button15
             // 
-            button15.Location = new System.Drawing.Point(912, 175);
+            button15.Location = new System.Drawing.Point(1076, 905);
             button15.Name = "button15";
-            button15.Size = new System.Drawing.Size(77, 71);
+            button15.Size = new System.Drawing.Size(130, 60);
             button15.TabIndex = 14;
             button15.Text = "SHOW MASTER LIMIT";
             button15.UseVisualStyleBackColor = true;
@@ -326,7 +400,7 @@
             // 
             // button14
             // 
-            button14.Location = new System.Drawing.Point(912, 89);
+            button14.Location = new System.Drawing.Point(89, 905);
             button14.Name = "button14";
             button14.Size = new System.Drawing.Size(77, 60);
             button14.TabIndex = 13;
@@ -335,7 +409,7 @@
             // 
             // button13
             // 
-            button13.Location = new System.Drawing.Point(912, 23);
+            button13.Location = new System.Drawing.Point(6, 905);
             button13.Name = "button13";
             button13.Size = new System.Drawing.Size(77, 60);
             button13.TabIndex = 12;
@@ -345,8 +419,8 @@
             // label17
             // 
             label17.AutoSize = true;
-            label17.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label17.Location = new System.Drawing.Point(460, 326);
+            label17.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label17.Location = new System.Drawing.Point(1675, 458);
             label17.Name = "label17";
             label17.Size = new System.Drawing.Size(192, 18);
             label17.TabIndex = 11;
@@ -356,8 +430,8 @@
             // label16
             // 
             label16.AutoSize = true;
-            label16.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label16.Location = new System.Drawing.Point(460, 3);
+            label16.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label16.Location = new System.Drawing.Point(1659, 3);
             label16.Name = "label16";
             label16.Size = new System.Drawing.Size(208, 18);
             label16.TabIndex = 10;
@@ -367,8 +441,8 @@
             // label15
             // 
             label15.AutoSize = true;
-            label15.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label15.Location = new System.Drawing.Point(6, 326);
+            label15.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label15.Location = new System.Drawing.Point(6, 458);
             label15.Name = "label15";
             label15.Size = new System.Drawing.Size(192, 18);
             label15.TabIndex = 9;
@@ -378,7 +452,7 @@
             // label14
             // 
             label14.AutoSize = true;
-            label14.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            label14.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label14.Location = new System.Drawing.Point(6, 3);
             label14.Name = "label14";
             label14.Size = new System.Drawing.Size(208, 18);
@@ -389,25 +463,25 @@
             // formsPlot4
             // 
             formsPlot4.DisplayScale = 1F;
-            formsPlot4.Location = new System.Drawing.Point(460, 347);
+            formsPlot4.Location = new System.Drawing.Point(940, 479);
             formsPlot4.Name = "formsPlot4";
-            formsPlot4.Size = new System.Drawing.Size(450, 300);
+            formsPlot4.Size = new System.Drawing.Size(925, 423);
             formsPlot4.TabIndex = 7;
             // 
             // formsPlot3
             // 
             formsPlot3.DisplayScale = 1F;
-            formsPlot3.Location = new System.Drawing.Point(460, 23);
+            formsPlot3.Location = new System.Drawing.Point(940, 23);
             formsPlot3.Name = "formsPlot3";
-            formsPlot3.Size = new System.Drawing.Size(450, 300);
+            formsPlot3.Size = new System.Drawing.Size(925, 423);
             formsPlot3.TabIndex = 6;
             // 
             // formsPlot2
             // 
             formsPlot2.DisplayScale = 1F;
-            formsPlot2.Location = new System.Drawing.Point(6, 347);
+            formsPlot2.Location = new System.Drawing.Point(6, 479);
             formsPlot2.Name = "formsPlot2";
-            formsPlot2.Size = new System.Drawing.Size(450, 300);
+            formsPlot2.Size = new System.Drawing.Size(925, 423);
             formsPlot2.TabIndex = 5;
             // 
             // formsPlot1
@@ -415,20 +489,41 @@
             formsPlot1.DisplayScale = 1F;
             formsPlot1.Location = new System.Drawing.Point(6, 23);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new System.Drawing.Size(450, 300);
+            formsPlot1.Size = new System.Drawing.Size(925, 423);
             formsPlot1.TabIndex = 4;
             // 
             // tabPage7
             // 
-            tabPage7.Location = new System.Drawing.Point(4, 26);
+            tabPage7.Controls.Add(button34);
+            tabPage7.Controls.Add(button32);
+            tabPage7.Location = new System.Drawing.Point(4, 4);
             tabPage7.Name = "tabPage7";
-            tabPage7.Size = new System.Drawing.Size(992, 660);
+            tabPage7.Size = new System.Drawing.Size(1870, 971);
             tabPage7.TabIndex = 6;
             tabPage7.Text = "REALTIME DATA TABLE";
             tabPage7.UseVisualStyleBackColor = true;
             // 
+            // button34
+            // 
+            button34.Location = new System.Drawing.Point(1777, 908);
+            button34.Name = "button34";
+            button34.Size = new System.Drawing.Size(90, 60);
+            button34.TabIndex = 24;
+            button34.Text = "MAIN\r\nMENU";
+            button34.UseVisualStyleBackColor = true;
+            // 
+            // button32
+            // 
+            button32.Location = new System.Drawing.Point(3, 908);
+            button32.Name = "button32";
+            button32.Size = new System.Drawing.Size(116, 60);
+            button32.TabIndex = 23;
+            button32.Text = "SHOW GRAPH";
+            button32.UseVisualStyleBackColor = true;
+            // 
             // tabPage6
             // 
+            tabPage6.Controls.Add(button37);
             tabPage6.Controls.Add(button23);
             tabPage6.Controls.Add(button22);
             tabPage6.Controls.Add(button20);
@@ -438,16 +533,43 @@
             tabPage6.Controls.Add(button10);
             tabPage6.Controls.Add(dataGridView2);
             tabPage6.Controls.Add(label13);
-            tabPage6.Location = new System.Drawing.Point(4, 26);
+            tabPage6.Location = new System.Drawing.Point(4, 4);
             tabPage6.Name = "tabPage6";
-            tabPage6.Size = new System.Drawing.Size(992, 660);
+            tabPage6.Size = new System.Drawing.Size(1870, 971);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "MASTER DATA LIST";
             tabPage6.UseVisualStyleBackColor = true;
             // 
+            // button37
+            // 
+            button37.Location = new System.Drawing.Point(1777, 908);
+            button37.Name = "button37";
+            button37.Size = new System.Drawing.Size(90, 60);
+            button37.TabIndex = 26;
+            button37.Text = "MAIN\r\nMENU";
+            button37.UseVisualStyleBackColor = true;
+            // 
+            // button23
+            // 
+            button23.Location = new System.Drawing.Point(333, 909);
+            button23.Name = "button23";
+            button23.Size = new System.Drawing.Size(140, 60);
+            button23.TabIndex = 16;
+            button23.Text = "OVERWRITE MASTER FILE FROM FILE";
+            button23.UseVisualStyleBackColor = true;
+            // 
+            // button22
+            // 
+            button22.Location = new System.Drawing.Point(202, 909);
+            button22.Name = "button22";
+            button22.Size = new System.Drawing.Size(125, 60);
+            button22.TabIndex = 15;
+            button22.Text = "BATCH EXPORT TO DRIVE/FOLDER";
+            button22.UseVisualStyleBackColor = true;
+            // 
             // button20
             // 
-            button20.Location = new System.Drawing.Point(101, 596);
+            button20.Location = new System.Drawing.Point(102, 908);
             button20.Name = "button20";
             button20.Size = new System.Drawing.Size(91, 60);
             button20.TabIndex = 14;
@@ -457,7 +579,7 @@
             // 
             // button12
             // 
-            button12.Location = new System.Drawing.Point(622, 596);
+            button12.Location = new System.Drawing.Point(623, 908);
             button12.Name = "button12";
             button12.Size = new System.Drawing.Size(125, 60);
             button12.TabIndex = 13;
@@ -467,7 +589,7 @@
             // 
             // button11
             // 
-            button11.Location = new System.Drawing.Point(753, 596);
+            button11.Location = new System.Drawing.Point(754, 908);
             button11.Name = "button11";
             button11.Size = new System.Drawing.Size(130, 60);
             button11.TabIndex = 12;
@@ -476,7 +598,7 @@
             // 
             // button9
             // 
-            button9.Location = new System.Drawing.Point(4, 596);
+            button9.Location = new System.Drawing.Point(5, 908);
             button9.Name = "button9";
             button9.Size = new System.Drawing.Size(91, 60);
             button9.TabIndex = 11;
@@ -486,7 +608,7 @@
             // 
             // button10
             // 
-            button10.Location = new System.Drawing.Point(889, 596);
+            button10.Location = new System.Drawing.Point(890, 908);
             button10.Name = "button10";
             button10.Size = new System.Drawing.Size(91, 60);
             button10.TabIndex = 10;
@@ -498,14 +620,13 @@
             dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView2.Location = new System.Drawing.Point(5, 40);
             dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowTemplate.Height = 25;
-            dataGridView2.Size = new System.Drawing.Size(975, 550);
+            dataGridView2.Size = new System.Drawing.Size(976, 863);
             dataGridView2.TabIndex = 8;
             // 
             // label13
             // 
             label13.AutoSize = true;
-            label13.Font = new System.Drawing.Font("Sarasa Fixed J", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            label13.Font = new System.Drawing.Font("Sarasa Fixed J", 16F, System.Drawing.FontStyle.Bold);
             label13.Location = new System.Drawing.Point(5, 8);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(204, 27);
@@ -515,6 +636,8 @@
             // 
             // tabPage5
             // 
+            tabPage5.Controls.Add(button38);
+            tabPage5.Controls.Add(button28);
             tabPage5.Controls.Add(button25);
             tabPage5.Controls.Add(button26);
             tabPage5.Controls.Add(button27);
@@ -528,16 +651,62 @@
             tabPage5.Controls.Add(formsPlot6);
             tabPage5.Controls.Add(formsPlot7);
             tabPage5.Controls.Add(formsPlot8);
-            tabPage5.Location = new System.Drawing.Point(4, 26);
+            tabPage5.Location = new System.Drawing.Point(4, 4);
             tabPage5.Name = "tabPage5";
-            tabPage5.Size = new System.Drawing.Size(992, 660);
+            tabPage5.Size = new System.Drawing.Size(1870, 971);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "MASTERING GRAPH";
             tabPage5.UseVisualStyleBackColor = true;
             // 
+            // button38
+            // 
+            button38.Location = new System.Drawing.Point(1777, 908);
+            button38.Name = "button38";
+            button38.Size = new System.Drawing.Size(90, 60);
+            button38.TabIndex = 26;
+            button38.Text = "MAIN\r\nMENU";
+            button38.UseVisualStyleBackColor = true;
+            // 
+            // button28
+            // 
+            button28.Location = new System.Drawing.Point(940, 908);
+            button28.Name = "button28";
+            button28.Size = new System.Drawing.Size(130, 60);
+            button28.TabIndex = 21;
+            button28.Text = "SHOW TABLE";
+            button28.UseVisualStyleBackColor = true;
+            // 
+            // button25
+            // 
+            button25.Font = new System.Drawing.Font("Sarasa Fixed J", 10F);
+            button25.Location = new System.Drawing.Point(1348, 908);
+            button25.Name = "button25";
+            button25.Size = new System.Drawing.Size(130, 60);
+            button25.TabIndex = 20;
+            button25.Text = "SHOW/HIDE\r\nAXIS LINE";
+            button25.UseVisualStyleBackColor = true;
+            // 
+            // button26
+            // 
+            button26.Location = new System.Drawing.Point(1212, 908);
+            button26.Name = "button26";
+            button26.Size = new System.Drawing.Size(130, 60);
+            button26.TabIndex = 19;
+            button26.Text = "HIDE MASTER LIMIT";
+            button26.UseVisualStyleBackColor = true;
+            // 
+            // button27
+            // 
+            button27.Location = new System.Drawing.Point(1076, 908);
+            button27.Name = "button27";
+            button27.Size = new System.Drawing.Size(130, 60);
+            button27.TabIndex = 18;
+            button27.Text = "SHOW MASTER LIMIT";
+            button27.UseVisualStyleBackColor = true;
+            // 
             // button17
             // 
-            button17.Location = new System.Drawing.Point(912, 89);
+            button17.Location = new System.Drawing.Point(89, 908);
             button17.Name = "button17";
             button17.Size = new System.Drawing.Size(77, 60);
             button17.TabIndex = 17;
@@ -546,7 +715,7 @@
             // 
             // button18
             // 
-            button18.Location = new System.Drawing.Point(912, 23);
+            button18.Location = new System.Drawing.Point(6, 908);
             button18.Name = "button18";
             button18.Size = new System.Drawing.Size(77, 60);
             button18.TabIndex = 16;
@@ -556,8 +725,8 @@
             // label18
             // 
             label18.AutoSize = true;
-            label18.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label18.Location = new System.Drawing.Point(460, 326);
+            label18.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label18.Location = new System.Drawing.Point(1675, 458);
             label18.Name = "label18";
             label18.Size = new System.Drawing.Size(192, 18);
             label18.TabIndex = 15;
@@ -567,8 +736,8 @@
             // label19
             // 
             label19.AutoSize = true;
-            label19.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label19.Location = new System.Drawing.Point(460, 3);
+            label19.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label19.Location = new System.Drawing.Point(1659, 3);
             label19.Name = "label19";
             label19.Size = new System.Drawing.Size(208, 18);
             label19.TabIndex = 14;
@@ -578,8 +747,8 @@
             // label20
             // 
             label20.AutoSize = true;
-            label20.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label20.Location = new System.Drawing.Point(6, 326);
+            label20.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label20.Location = new System.Drawing.Point(6, 458);
             label20.Name = "label20";
             label20.Size = new System.Drawing.Size(192, 18);
             label20.TabIndex = 13;
@@ -589,7 +758,7 @@
             // label21
             // 
             label21.AutoSize = true;
-            label21.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            label21.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label21.Location = new System.Drawing.Point(6, 3);
             label21.Name = "label21";
             label21.Size = new System.Drawing.Size(208, 18);
@@ -602,57 +771,107 @@
             formsPlot5.DisplayScale = 1F;
             formsPlot5.Location = new System.Drawing.Point(6, 23);
             formsPlot5.Name = "formsPlot5";
-            formsPlot5.Size = new System.Drawing.Size(450, 300);
+            formsPlot5.Size = new System.Drawing.Size(925, 423);
             formsPlot5.TabIndex = 11;
             // 
             // formsPlot6
             // 
             formsPlot6.DisplayScale = 1F;
-            formsPlot6.Location = new System.Drawing.Point(6, 347);
+            formsPlot6.Location = new System.Drawing.Point(6, 479);
             formsPlot6.Name = "formsPlot6";
-            formsPlot6.Size = new System.Drawing.Size(450, 300);
+            formsPlot6.Size = new System.Drawing.Size(925, 423);
             formsPlot6.TabIndex = 10;
             // 
             // formsPlot7
             // 
             formsPlot7.DisplayScale = 1F;
-            formsPlot7.Location = new System.Drawing.Point(460, 23);
+            formsPlot7.Location = new System.Drawing.Point(940, 23);
             formsPlot7.Name = "formsPlot7";
-            formsPlot7.Size = new System.Drawing.Size(450, 300);
+            formsPlot7.Size = new System.Drawing.Size(925, 423);
             formsPlot7.TabIndex = 9;
             // 
             // formsPlot8
             // 
             formsPlot8.DisplayScale = 1F;
-            formsPlot8.Location = new System.Drawing.Point(460, 347);
+            formsPlot8.Location = new System.Drawing.Point(940, 479);
             formsPlot8.Name = "formsPlot8";
-            formsPlot8.Size = new System.Drawing.Size(450, 300);
+            formsPlot8.Size = new System.Drawing.Size(925, 423);
             formsPlot8.TabIndex = 8;
             // 
             // tabPage8
             // 
-            tabPage8.Location = new System.Drawing.Point(4, 26);
+            tabPage8.Controls.Add(button39);
+            tabPage8.Controls.Add(button31);
+            tabPage8.Controls.Add(button30);
+            tabPage8.Controls.Add(button29);
+            tabPage8.Location = new System.Drawing.Point(4, 4);
             tabPage8.Name = "tabPage8";
-            tabPage8.Size = new System.Drawing.Size(992, 660);
+            tabPage8.Size = new System.Drawing.Size(1870, 971);
             tabPage8.TabIndex = 7;
             tabPage8.Text = "MASTER TABLE";
             tabPage8.UseVisualStyleBackColor = true;
             // 
+            // button39
+            // 
+            button39.Location = new System.Drawing.Point(1777, 908);
+            button39.Name = "button39";
+            button39.Size = new System.Drawing.Size(90, 60);
+            button39.TabIndex = 26;
+            button39.Text = "MAIN\r\nMENU";
+            button39.UseVisualStyleBackColor = true;
+            // 
+            // button31
+            // 
+            button31.Location = new System.Drawing.Point(125, 908);
+            button31.Name = "button31";
+            button31.Size = new System.Drawing.Size(116, 60);
+            button31.TabIndex = 24;
+            button31.Text = "CONFIRM EDIT";
+            button31.UseVisualStyleBackColor = true;
+            // 
+            // button30
+            // 
+            button30.Location = new System.Drawing.Point(247, 908);
+            button30.Name = "button30";
+            button30.Size = new System.Drawing.Size(116, 60);
+            button30.TabIndex = 23;
+            button30.Text = "CANCEL EDIT";
+            button30.UseVisualStyleBackColor = true;
+            // 
+            // button29
+            // 
+            button29.Location = new System.Drawing.Point(3, 908);
+            button29.Name = "button29";
+            button29.Size = new System.Drawing.Size(116, 60);
+            button29.TabIndex = 22;
+            button29.Text = "SHOW GRAPH";
+            button29.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(button40);
             tabPage2.Controls.Add(button7);
             tabPage2.Controls.Add(button6);
             tabPage2.Controls.Add(label6);
             tabPage2.Controls.Add(button5);
             tabPage2.Controls.Add(panel1);
-            tabPage2.Location = new System.Drawing.Point(4, 26);
+            tabPage2.Location = new System.Drawing.Point(4, 4);
             tabPage2.Margin = new System.Windows.Forms.Padding(2);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            tabPage2.Size = new System.Drawing.Size(992, 660);
+            tabPage2.Size = new System.Drawing.Size(1870, 971);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "CONNECTION AND SETTING";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button40
+            // 
+            button40.Location = new System.Drawing.Point(1775, 906);
+            button40.Name = "button40";
+            button40.Size = new System.Drawing.Size(90, 60);
+            button40.TabIndex = 27;
+            button40.Text = "MAIN\r\nMENU";
+            button40.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
@@ -667,7 +886,7 @@
             // button6
             // 
             button6.Enabled = false;
-            button6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            button6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             button6.Location = new System.Drawing.Point(543, 128);
             button6.Name = "button6";
             button6.Size = new System.Drawing.Size(162, 28);
@@ -686,7 +905,7 @@
             // button5
             // 
             button5.Enabled = false;
-            button5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            button5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             button5.Location = new System.Drawing.Point(139, 126);
             button5.Name = "button5";
             button5.Size = new System.Drawing.Size(162, 28);
@@ -710,6 +929,13 @@
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(button47);
+            tabPage4.Controls.Add(button44);
+            tabPage4.Controls.Add(button45);
+            tabPage4.Controls.Add(button46);
+            tabPage4.Controls.Add(button43);
+            tabPage4.Controls.Add(button42);
+            tabPage4.Controls.Add(button41);
             tabPage4.Controls.Add(pictureBox2);
             tabPage4.Controls.Add(label12);
             tabPage4.Controls.Add(label11);
@@ -719,13 +945,13 @@
             tabPage4.Controls.Add(label8);
             tabPage4.Controls.Add(label7);
             tabPage4.Controls.Add(label5);
-            tabPage4.Location = new System.Drawing.Point(4, 26);
+            tabPage4.Location = new System.Drawing.Point(4, 4);
             tabPage4.Margin = new System.Windows.Forms.Padding(2);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new System.Windows.Forms.Padding(2);
-            tabPage4.Size = new System.Drawing.Size(992, 660);
+            tabPage4.Size = new System.Drawing.Size(1870, 971);
             tabPage4.TabIndex = 2;
-            tabPage4.Text = "INFORMATION";
+            tabPage4.Text = "MAIN MENU";
             tabPage4.UseVisualStyleBackColor = true;
             tabPage4.Click += tabPage4_Click;
             // 
@@ -733,7 +959,7 @@
             // 
             pictureBox2.BackgroundImage = (System.Drawing.Image)resources.GetObject("pictureBox2.BackgroundImage");
             pictureBox2.InitialImage = (System.Drawing.Image)resources.GetObject("pictureBox2.InitialImage");
-            pictureBox2.Location = new System.Drawing.Point(670, 587);
+            pictureBox2.Location = new System.Drawing.Point(1513, 893);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new System.Drawing.Size(238, 33);
             pictureBox2.TabIndex = 25;
@@ -742,7 +968,7 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new System.Drawing.Point(669, 638);
+            label12.Location = new System.Drawing.Point(1512, 944);
             label12.Name = "label12";
             label12.Size = new System.Drawing.Size(197, 18);
             label12.TabIndex = 24;
@@ -751,8 +977,8 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            label11.Location = new System.Drawing.Point(867, 553);
+            label11.Font = new System.Drawing.Font("Segoe UI", 12F);
+            label11.Location = new System.Drawing.Point(1710, 859);
             label11.Name = "label11";
             label11.Size = new System.Drawing.Size(115, 21);
             label11.TabIndex = 23;
@@ -761,7 +987,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new System.Drawing.Point(669, 623);
+            label10.Location = new System.Drawing.Point(1512, 929);
             label10.Name = "label10";
             label10.Size = new System.Drawing.Size(351, 18);
             label10.TabIndex = 18;
@@ -771,7 +997,7 @@
             // 
             pictureBox1.BackgroundImage = (System.Drawing.Image)resources.GetObject("pictureBox1.BackgroundImage");
             pictureBox1.InitialImage = (System.Drawing.Image)resources.GetObject("pictureBox1.InitialImage");
-            pictureBox1.Location = new System.Drawing.Point(3, 101);
+            pictureBox1.Location = new System.Drawing.Point(1491, 6);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(367, 131);
             pictureBox1.TabIndex = 22;
@@ -780,7 +1006,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label9.Font = new System.Drawing.Font("Segoe UI", 18F);
             label9.Location = new System.Drawing.Point(5, 66);
             label9.Name = "label9";
             label9.Size = new System.Drawing.Size(264, 32);
@@ -790,7 +1016,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label8.Font = new System.Drawing.Font("Segoe UI", 24F);
             label8.Location = new System.Drawing.Point(5, 92);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(0, 45);
@@ -799,7 +1025,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label7.Font = new System.Drawing.Font("Segoe UI", 18F);
             label7.Location = new System.Drawing.Point(5, 34);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(289, 32);
@@ -809,7 +1035,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label5.Font = new System.Drawing.Font("Segoe UI", 18F);
             label5.Location = new System.Drawing.Point(5, 2);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(504, 32);
@@ -819,87 +1045,119 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(684, 711);
+            label4.Location = new System.Drawing.Point(1576, 1013);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(312, 15);
             label4.TabIndex = 17;
             label4.Text = "PT. TOKOTON MEIWA INDONESIA - www.meiwacorp.co.jp";
             // 
-            // button21
+            // button41
             // 
-            button21.Location = new System.Drawing.Point(203, 597);
-            button21.Name = "button21";
-            button21.Size = new System.Drawing.Size(125, 60);
-            button21.TabIndex = 10;
-            button21.Text = "BATCH EXPORT TO DRIVE/FOLDER";
-            button21.UseVisualStyleBackColor = true;
+            button41.Location = new System.Drawing.Point(37, 726);
+            button41.Name = "button41";
+            button41.Size = new System.Drawing.Size(232, 85);
+            button41.TabIndex = 26;
+            button41.Text = "REAL-TIME DATA LIST";
+            button41.UseVisualStyleBackColor = true;
             // 
-            // button22
+            // button42
             // 
-            button22.Location = new System.Drawing.Point(201, 597);
-            button22.Name = "button22";
-            button22.Size = new System.Drawing.Size(125, 60);
-            button22.TabIndex = 15;
-            button22.Text = "BATCH EXPORT TO DRIVE/FOLDER";
-            button22.UseVisualStyleBackColor = true;
+            button42.Location = new System.Drawing.Point(275, 726);
+            button42.Name = "button42";
+            button42.Size = new System.Drawing.Size(232, 85);
+            button42.TabIndex = 27;
+            button42.Text = "REAL-TIME DATA GRAPH";
+            button42.UseVisualStyleBackColor = true;
             // 
-            // button23
+            // button43
             // 
-            button23.Location = new System.Drawing.Point(332, 597);
-            button23.Name = "button23";
-            button23.Size = new System.Drawing.Size(140, 60);
-            button23.TabIndex = 16;
-            button23.Text = "OVERWRITE MASTER FILE FROM FILE";
-            button23.UseVisualStyleBackColor = true;
+            button43.Location = new System.Drawing.Point(513, 726);
+            button43.Name = "button43";
+            button43.Size = new System.Drawing.Size(232, 85);
+            button43.TabIndex = 28;
+            button43.Text = "REAL-TIME DATA TABLE";
+            button43.UseVisualStyleBackColor = true;
             // 
-            // button24
+            // button44
             // 
-            button24.Font = new System.Drawing.Font("Sarasa Fixed J", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            button24.Location = new System.Drawing.Point(912, 347);
-            button24.Name = "button24";
-            button24.Size = new System.Drawing.Size(77, 64);
-            button24.TabIndex = 16;
-            button24.Text = "SHOW/HIDE DRAGGABLE AXIS LINE";
-            button24.UseVisualStyleBackColor = true;
+            button44.Location = new System.Drawing.Point(513, 829);
+            button44.Name = "button44";
+            button44.Size = new System.Drawing.Size(232, 85);
+            button44.TabIndex = 31;
+            button44.Text = "MASTER DATA TABLE";
+            button44.UseVisualStyleBackColor = true;
             // 
-            // button25
+            // button45
             // 
-            button25.Font = new System.Drawing.Font("Sarasa Fixed J", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            button25.Location = new System.Drawing.Point(912, 347);
-            button25.Name = "button25";
-            button25.Size = new System.Drawing.Size(77, 64);
-            button25.TabIndex = 20;
-            button25.Text = "SHOW/HIDE DRAGGABLE AXIS LINE";
-            button25.UseVisualStyleBackColor = true;
+            button45.Location = new System.Drawing.Point(275, 829);
+            button45.Name = "button45";
+            button45.Size = new System.Drawing.Size(232, 85);
+            button45.TabIndex = 30;
+            button45.Text = "MASTER DATA GRAPH";
+            button45.UseVisualStyleBackColor = true;
             // 
-            // button26
+            // button46
             // 
-            button26.Location = new System.Drawing.Point(912, 252);
-            button26.Name = "button26";
-            button26.Size = new System.Drawing.Size(77, 71);
-            button26.TabIndex = 19;
-            button26.Text = "HIDE MASTER LIMIT";
-            button26.UseVisualStyleBackColor = true;
+            button46.Location = new System.Drawing.Point(37, 829);
+            button46.Name = "button46";
+            button46.Size = new System.Drawing.Size(232, 85);
+            button46.TabIndex = 29;
+            button46.Text = "MASTER DATA LIST";
+            button46.UseVisualStyleBackColor = true;
             // 
-            // button27
+            // button47
             // 
-            button27.Location = new System.Drawing.Point(912, 175);
-            button27.Name = "button27";
-            button27.Size = new System.Drawing.Size(77, 71);
-            button27.TabIndex = 18;
-            button27.Text = "SHOW MASTER LIMIT";
-            button27.UseVisualStyleBackColor = true;
+            button47.Location = new System.Drawing.Point(37, 626);
+            button47.Name = "button47";
+            button47.Size = new System.Drawing.Size(232, 85);
+            button47.TabIndex = 32;
+            button47.Text = "CONNECTION AND SETTING";
+            button47.UseVisualStyleBackColor = true;
+            // 
+            // button48
+            // 
+            button48.Enabled = false;
+            button48.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            button48.Location = new System.Drawing.Point(9, 1016);
+            button48.Name = "button48";
+            button48.Size = new System.Drawing.Size(162, 19);
+            button48.TabIndex = 18;
+            button48.UseVisualStyleBackColor = true;
+            // 
+            // timelabel0
+            // 
+            timelabel0.AutoSize = true;
+            timelabel0.Font = new System.Drawing.Font("Sarasa Term J", 10F);
+            timelabel0.Location = new System.Drawing.Point(177, 1017);
+            timelabel0.Name = "timelabel0";
+            timelabel0.Size = new System.Drawing.Size(64, 18);
+            timelabel0.TabIndex = 19;
+            timelabel0.Text = "00:00:00";
+            // 
+            // datelabel0
+            // 
+            datelabel0.AutoSize = true;
+            datelabel0.Font = new System.Drawing.Font("Sarasa Term J", 10F);
+            datelabel0.Location = new System.Drawing.Point(247, 1016);
+            datelabel0.Name = "datelabel0";
+            datelabel0.Size = new System.Drawing.Size(120, 18);
+            datelabel0.TabIndex = 20;
+            datelabel0.Text = "Abc, 00 Def 2025";
             // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1008, 729);
+            ClientSize = new System.Drawing.Size(1900, 1037);
+            Controls.Add(datelabel0);
+            Controls.Add(timelabel0);
+            Controls.Add(button48);
             Controls.Add(label4);
             Controls.Add(tabControl1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "Form1";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             Text = "DAMPING FORCE FUNCTION TESTER FRONT FORK ASSY LINE 5 PT. KAYABA INDONESIA - [BY TOKOTON MEIWA INDONESIA - MEIWACORP.JP]";
             WindowState = System.Windows.Forms.FormWindowState.Maximized;
             Load += Form1_Load;
@@ -909,11 +1167,13 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
+            tabPage7.ResumeLayout(false);
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
+            tabPage8.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             panel1.ResumeLayout(false);
@@ -1001,6 +1261,29 @@
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.Button button26;
         private System.Windows.Forms.Button button27;
+        private System.Windows.Forms.Button button28;
+        private System.Windows.Forms.Button button32;
+        private System.Windows.Forms.Button button31;
+        private System.Windows.Forms.Button button30;
+        private System.Windows.Forms.Button button29;
+        private System.Windows.Forms.Button button33;
+        private System.Windows.Forms.Button button34;
+        private System.Windows.Forms.Button button35;
+        private System.Windows.Forms.Button button36;
+        private System.Windows.Forms.Button button37;
+        private System.Windows.Forms.Button button38;
+        private System.Windows.Forms.Button button39;
+        private System.Windows.Forms.Button button40;
+        private System.Windows.Forms.Button button42;
+        private System.Windows.Forms.Button button41;
+        private System.Windows.Forms.Button button47;
+        private System.Windows.Forms.Button button44;
+        private System.Windows.Forms.Button button45;
+        private System.Windows.Forms.Button button46;
+        private System.Windows.Forms.Button button43;
+        private System.Windows.Forms.Button button48;
+        private System.Windows.Forms.Label timelabel0;
+        private System.Windows.Forms.Label datelabel0;
     }
 }
 
