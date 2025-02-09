@@ -51,7 +51,6 @@
             label10 = new System.Windows.Forms.Label();
             pictureBox1 = new System.Windows.Forms.PictureBox();
             label9 = new System.Windows.Forms.Label();
-            label8 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             tabPage2 = new System.Windows.Forms.TabPage();
@@ -247,7 +246,6 @@
             tabPage4.Controls.Add(label10);
             tabPage4.Controls.Add(pictureBox1);
             tabPage4.Controls.Add(label9);
-            tabPage4.Controls.Add(label8);
             tabPage4.Controls.Add(label7);
             tabPage4.Controls.Add(label5);
             tabPage4.Location = new System.Drawing.Point(4, 4);
@@ -399,7 +397,7 @@
             // 
             pictureBox1.BackgroundImage = (System.Drawing.Image)resources.GetObject("pictureBox1.BackgroundImage");
             pictureBox1.InitialImage = (System.Drawing.Image)resources.GetObject("pictureBox1.InitialImage");
-            pictureBox1.Location = new System.Drawing.Point(1491, 6);
+            pictureBox1.Location = new System.Drawing.Point(5, 5);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(367, 131);
             pictureBox1.TabIndex = 22;
@@ -409,26 +407,17 @@
             // 
             label9.AutoSize = true;
             label9.Font = new System.Drawing.Font("Segoe UI", 18F);
-            label9.Location = new System.Drawing.Point(5, 66);
+            label9.Location = new System.Drawing.Point(378, 69);
             label9.Name = "label9";
             label9.Size = new System.Drawing.Size(264, 32);
             label9.TabIndex = 21;
             label9.Text = "PT. KAYABA INDONESIA";
             // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Font = new System.Drawing.Font("Segoe UI", 24F);
-            label8.Location = new System.Drawing.Point(5, 92);
-            label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(0, 45);
-            label8.TabIndex = 20;
-            // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Font = new System.Drawing.Font("Segoe UI", 18F);
-            label7.Location = new System.Drawing.Point(5, 34);
+            label7.Location = new System.Drawing.Point(378, 37);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(289, 32);
             label7.TabIndex = 19;
@@ -438,7 +427,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new System.Drawing.Font("Segoe UI", 18F);
-            label5.Location = new System.Drawing.Point(5, 2);
+            label5.Location = new System.Drawing.Point(378, 5);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(504, 32);
             label5.TabIndex = 12;
@@ -1297,7 +1286,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
