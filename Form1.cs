@@ -28,21 +28,885 @@ using SColor = ScottPlot.Color;
 using FontStyle = System.Drawing.FontStyle;
 using SFontStyle = ScottPlot.FontStyle;
 
+using DRW = System.Drawing;
+using Point = System.Drawing.Point;
+using Label = System.Windows.Forms.Label;
+
 using LIBKVPROTOCOL;
 using WORKFLOW;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace KVCOMSERVER
 {
     public partial class Form1 : Form
     {
         private WORKFLOWHANDLER _WorkflowHandler;
+        private Panel drawingPanel;
+        private Panel drawingBorderLeft;
+        private Panel drawingBorderRight;
+        private Panel drawingBorderUpper;
+        private Panel drawingBorderLower;
         private CancellationTokenSource _cts;
+
+        CustomTableLayoutPanel tabRealSideL;
+        List<TextBox> tabRealSideLStroke = new List<TextBox>();
+        List<TextBox> tabRealSideLMaster = new List<TextBox>();
+        List<TextBox> tabRealSideLLower = new List<TextBox>();
+        List<TextBox> tabRealSideLReal = new List<TextBox>();
+        List<TextBox> tabRealSideLUpper = new List<TextBox>();
+
+        CustomTableLayoutPanel tabRealSideR;
+        List<TextBox> tabRealSideRStroke = new List<TextBox>();
+        List<TextBox> tabRealSideRMaster = new List<TextBox>();
+        List<TextBox> tabRealSideRLower = new List<TextBox>();
+        List<TextBox> tabRealSideRReal = new List<TextBox>();
+        List<TextBox> tabRealSideRUpper = new List<TextBox>();
+
+        CustomTableLayoutPanel tabMasterSideL;
+        List<TextBox> tabMasterSideLStroke = new List<TextBox>();
+        List<TextBox> tabMasterSideLMaster = new List<TextBox>();
+        List<TextBox> tabMasterSideLLower = new List<TextBox>();
+        List<TextBox> tabMasterSideLReal = new List<TextBox>();
+        List<TextBox> tabMasterSideLUpper = new List<TextBox>();
+
+        CustomTableLayoutPanel tabMasterSideR;
+        List<TextBox> tabMasterSideRStroke = new List<TextBox>();
+        List<TextBox> tabMasterSideRMaster = new List<TextBox>();
+        List<TextBox> tabMasterSideRLower = new List<TextBox>();
+        List<TextBox> tabMasterSideRReal = new List<TextBox>();
+        List<TextBox> tabMasterSideRUpper = new List<TextBox>();
+
+
 
         public string settingIpv4;
         public int settingPortIp;
         public string msgToBeSent;
         public int _connStat;
         public int _beaconn;
+
+        private void InitializeCustomComponents()
+        {
+            // Create a new Panel to contain the drawing
+            drawingPanel = new Panel
+            {
+                BackColor = Color.Transparent,
+                Location = new DRW.Point(985, 1025),
+                Size = new Size(910, 24)
+            };
+            // Add the Paint event handler for custom drawing
+            drawingPanel.Paint += DrawingPanel_Paint;
+            // Add the drawing panel to the form
+            this.Controls.Add(drawingPanel);
+        }
+
+        private void InitializeBorderComponent()
+        {
+            drawingBorderUpper = new Panel
+            {
+                BackColor = Color.Transparent,
+                Location = new DRW.Point(10, 5),
+                Size = new Size(1878, 4)
+            };
+
+            drawingBorderLower = new Panel
+            {
+                BackColor = Color.Transparent,
+                Location = new DRW.Point(10, 1020),
+                Size = new Size(1878, 4)
+            };
+
+            drawingBorderLeft = new Panel
+            {
+                BackColor = Color.Transparent,
+                Location = new DRW.Point(10, 10),
+                Size = new Size(4, 1080)
+            };
+
+            drawingBorderRight = new Panel
+            {
+                BackColor = Color.Transparent,
+                Location = new DRW.Point(1883, 10),
+                Size = new Size(5, 1080)
+            };
+
+            drawingBorderUpper.Paint += DrawingBorderUpper_Paint;
+            drawingBorderLower.Paint += DrawingBorderLower_Paint;
+            drawingBorderLeft.Paint += DrawingBorderLeft_Paint;
+            drawingBorderRight.Paint += DrawingBorderRight_Paint;
+
+            this.Controls.Add(drawingBorderUpper);
+            this.Controls.Add(drawingBorderLower);
+            this.Controls.Add(drawingBorderLeft);
+            this.Controls.Add(drawingBorderRight);
+        }
+
+        private void TabControl_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            TabControl tabControl = sender as TabControl;
+            Graphics g = e.Graphics;
+            DRW.Rectangle bounds;
+            DRW.Rectangle nokoribounds;
+            Color textColor;
+            Color backgroundColor;
+
+
+            for (int i = 0; i < tabControl.TabCount; i++)
+            {
+                bounds = tabControl.GetTabRect(i);
+                if (i == tabControl.SelectedIndex)
+                {
+                    string hexColor = "#037B7B";
+                    Color colorconvert = ColorTranslator.FromHtml(hexColor);
+                    backgroundColor = colorconvert;
+                    textColor = Color.Ivory;
+                    using (Brush backgroundBrush = new SolidBrush(backgroundColor))
+                    {
+                        g.FillRectangle(backgroundBrush, bounds);
+                    }
+                    string tabText = tabControl.TabPages[i].Text;
+                    TextRenderer.DrawText(g, tabText, tabControl.Font, bounds, textColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                }
+                else
+                {
+                    backgroundColor = Color.DarkSlateGray;
+                    textColor = Color.Ivory;
+                    using (Brush backgroundBrush = new SolidBrush(backgroundColor))
+                    {
+                        g.FillRectangle(backgroundBrush, bounds);
+                    }
+                    string tabText = tabControl.TabPages[i].Text;
+                    TextRenderer.DrawText(g, tabText, tabControl.Font, bounds, textColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                }
+            }
+        }
+
+        private void DrawingPanel_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            // Draw a rectangle
+            g.FillRectangle(Brushes.DarkSlateGray, new DRW.Rectangle(0, 0, 1878, 24));
+        }
+        private void DrawingBorderUpper_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.FillRectangle(Brushes.DarkCyan, new DRW.Rectangle(0, 0, 1878, 4));
+        }
+        private void DrawingBorderLower_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.FillRectangle(Brushes.DarkCyan, new DRW.Rectangle(0, 0, 1878, 4));
+        }
+
+        private void DrawingBorderLeft_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.FillRectangle(Brushes.DarkCyan, new DRW.Rectangle(0, 0, 4, 1020));
+        }
+
+        private void DrawingBorderRight_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.FillRectangle(Brushes.DarkCyan, new DRW.Rectangle(0, 0, 5, 1020));
+        }
+
+        public void defLayoutPanelRealSideR()
+        {
+            tabRealSideR = new CustomTableLayoutPanel()
+            {
+                ColumnCount = 5,
+                RowCount = 51,
+                Location = new Point(1163, 3),
+                Size = new Size(700, 1000),
+                AutoSize = false,
+                CellBorderColor = ColorTranslator.FromHtml("#037B7B") // Set the desired border color
+            };
+
+            tabRealSideR.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            for (int i = 0; i < 4; i++)
+            {
+                tabRealSideR.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 21F));
+            }
+
+            tabRealSideR.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
+            for (int i = 0; i < 40; i++)
+            {
+                tabRealSideR.RowStyles.Add(new RowStyle(SizeType.Absolute, 24));
+            }
+
+            Label lb1 = new Label
+            {
+                Text = $"STROKE[mm]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(100, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideR.Controls.Add(lb1, 0, 0);
+
+            Label lb2 = new Label
+            {
+                Text = $"MASTER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideR.Controls.Add(lb2, 1, 0);
+
+            Label lb3 = new Label
+            {
+                Text = $"LOWER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideR.Controls.Add(lb3, 2, 0);
+
+            Label lb4 = new Label
+            {
+                Text = $"REALTIME [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideR.Controls.Add(lb4, 3, 0);
+
+            Label lb5 = new Label
+            {
+                Text = $"UPPER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideR.Controls.Add(lb5, 4, 0);
+
+            // Add controls to CustomTableLayoutPanel
+            for (int col = 0; col < 1; col++)
+            {
+                for (int row = 1; row < 41; row++)
+                {
+                    TextBox tbx = new TextBox
+                    {
+                        Text = $"{row}",
+                        Dock = DockStyle.Fill,
+                        TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                        Margin = new Padding(0),
+                        Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                        Size = new Size(80, 24),
+                        ReadOnly = true,
+                        BackColor = Color.LightGray
+
+                    };
+                    tabRealSideRStroke.Add(tbx);
+                    tabRealSideR.Controls.Add(tbx, col, row);
+                }
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabRealSideRMaster.Add(tbx);
+                tabRealSideR.Controls.Add(tbx, 1, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabRealSideRLower.Add(tbx);
+                tabRealSideR.Controls.Add(tbx, 2, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabRealSideRReal.Add(tbx);
+                tabRealSideR.Controls.Add(tbx, 3, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabRealSideRUpper.Add(tbx);
+                tabRealSideR.Controls.Add(tbx, 4, row);
+            }
+            // Add the CustomTableLayoutPanel to the form
+            tabPage7.Controls.Add(tabRealSideR);
+            tabRealSideR.BringToFront();
+        }
+
+        public void defLayoutPanelRealSideL()
+        {
+            tabRealSideL = new CustomTableLayoutPanel()
+            {
+                ColumnCount = 5,
+                RowCount = 51,
+                Location = new Point(3, 3),
+                Size = new Size(700, 1000),
+                AutoSize = false,
+                CellBorderColor = ColorTranslator.FromHtml("#037B7B") // Set the desired border color
+            };
+
+            tabRealSideL.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            for (int i = 0; i < 4; i++)
+            {
+                tabRealSideL.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 21F));
+            }
+
+            tabRealSideL.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
+            for (int i = 0; i < 40; i++)
+            {
+                tabRealSideL.RowStyles.Add(new RowStyle(SizeType.Absolute, 24));
+            }
+
+            Label lb1 = new Label
+            {
+                Text = $"STROKE[mm]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(100, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideL.Controls.Add(lb1, 0, 0);
+
+            Label lb2 = new Label
+            {
+                Text = $"MASTER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideL.Controls.Add(lb2, 1, 0);
+
+            Label lb3 = new Label
+            {
+                Text = $"LOWER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideL.Controls.Add(lb3, 2, 0);
+
+            Label lb4 = new Label
+            {
+                Text = $"REALTIME [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideL.Controls.Add(lb4, 3, 0);
+
+            Label lb5 = new Label
+            {
+                Text = $"UPPER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabRealSideL.Controls.Add(lb5, 4, 0);
+
+            // Add controls to CustomTableLayoutPanel
+            for (int col = 0; col < 1; col++)
+            {
+                for (int row = 1; row < 41; row++)
+                {
+                    TextBox tbx = new TextBox
+                    {
+                        Text = $"{row}",
+                        Dock = DockStyle.Fill,
+                        TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                        Margin = new Padding(0),
+                        Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                        Size = new Size(80, 24),
+                        ReadOnly = true,
+                        BackColor = Color.LightGray
+
+                    };
+                    tabRealSideLStroke.Add(tbx);
+                    tabRealSideL.Controls.Add(tbx, col, row);
+                }
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+
+                };
+                tabRealSideLMaster.Add(tbx);
+                tabRealSideL.Controls.Add(tbx, 1, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabRealSideLLower.Add(tbx);
+                tabRealSideL.Controls.Add(tbx, 2, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabRealSideLReal.Add(tbx);
+                tabRealSideL.Controls.Add(tbx, 3, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabRealSideLUpper.Add(tbx);
+                tabRealSideL.Controls.Add(tbx, 4, row);
+            }
+            // Add the CustomTableLayoutPanel to the form
+            tabPage7.Controls.Add(tabRealSideL);
+            tabRealSideL.BringToFront();
+        }
+
+        public void defLayoutPanelMasterSideR()
+        {
+            tabMasterSideR = new CustomTableLayoutPanel()
+            {
+                ColumnCount = 5,
+                RowCount = 51,
+                Location = new Point(1163, 3),
+                Size = new Size(700, 1000),
+                AutoSize = false,
+                CellBorderColor = ColorTranslator.FromHtml("#037B7B") // Set the desired border color
+            };
+
+            tabMasterSideR.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            for (int i = 0; i < 4; i++)
+            {
+                tabMasterSideR.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 21F));
+            }
+
+            tabMasterSideR.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
+            for (int i = 0; i < 40; i++)
+            {
+                tabMasterSideR.RowStyles.Add(new RowStyle(SizeType.Absolute, 24));
+            }
+
+            Label lb1 = new Label
+            {
+                Text = $"STROKE[mm]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(100, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideR.Controls.Add(lb1, 0, 0);
+
+            Label lb2 = new Label
+            {
+                Text = $"MASTER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideR.Controls.Add(lb2, 1, 0);
+
+            Label lb3 = new Label
+            {
+                Text = $"ACC MASTER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideR.Controls.Add(lb3, 2, 0);
+
+            Label lb4 = new Label
+            {
+                Text = $"LOWER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideR.Controls.Add(lb4, 3, 0);
+
+            Label lb5 = new Label
+            {
+                Text = $"UPPER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideR.Controls.Add(lb5, 4, 0);
+
+            // Add controls to CustomTableLayoutPanel
+            for (int col = 0; col < 1; col++)
+            {
+                for (int row = 1; row < 41; row++)
+                {
+                    TextBox tbx = new TextBox
+                    {
+                        Text = $"{row}",
+                        Dock = DockStyle.Fill,
+                        TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                        Margin = new Padding(0),
+                        Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                        Size = new Size(80, 24),
+                        ReadOnly = true,
+                        BackColor = Color.LightGray
+
+                    };
+                    tabMasterSideRStroke.Add(tbx);
+                    tabMasterSideR.Controls.Add(tbx, col, row);
+                }
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+
+                };
+                tabMasterSideRMaster.Add(tbx);
+                tabMasterSideR.Controls.Add(tbx, 1, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+
+                };
+                tabMasterSideRLower.Add(tbx);
+                tabMasterSideR.Controls.Add(tbx, 2, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+
+                };
+                tabMasterSideRReal.Add(tbx);
+                tabMasterSideR.Controls.Add(tbx, 3, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+
+                };
+                tabMasterSideRUpper.Add(tbx);
+                tabMasterSideR.Controls.Add(tbx, 4, row);
+            }
+            // Add the CustomTableLayoutPanel to the form
+            tabPage8.Controls.Add(tabMasterSideR);
+            tabMasterSideR.BringToFront();
+        }
+
+        public void defLayoutPanelMasterSideL()
+        {
+            tabMasterSideL = new CustomTableLayoutPanel()
+            {
+                ColumnCount = 5,
+                RowCount = 51,
+                Location = new Point(3, 3),
+                Size = new Size(700, 1000),
+                AutoSize = false,
+                CellBorderColor = ColorTranslator.FromHtml("#037B7B") // Set the desired border color
+            };
+
+            tabMasterSideL.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            for (int i = 0; i < 4; i++)
+            {
+                tabMasterSideL.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 21F));
+            }
+
+            tabMasterSideL.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
+            for (int i = 0; i < 40; i++)
+            {
+                tabMasterSideL.RowStyles.Add(new RowStyle(SizeType.Absolute, 24));
+            }
+
+            Label lb1 = new Label
+            {
+                Text = $"STROKE[mm]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(100, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideL.Controls.Add(lb1, 0, 0);
+
+            Label lb2 = new Label
+            {
+                Text = $"MASTER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideL.Controls.Add(lb2, 1, 0);
+
+            Label lb3 = new Label
+            {
+                Text = $"ACC MASTER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideL.Controls.Add(lb3, 2, 0);
+
+            Label lb4 = new Label
+            {
+                Text = $"LOWER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideL.Controls.Add(lb4, 3, 0);
+
+            Label lb5 = new Label
+            {
+                Text = $"UPPER [N]",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle,
+                AutoSize = false,
+                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Size = new Size(80, 20),
+                BackColor = Color.Cyan
+            };
+            tabMasterSideL.Controls.Add(lb5, 4, 0);
+
+            // Add controls to CustomTableLayoutPanel
+            for (int col = 0; col < 1; col++)
+            {
+                for (int row = 1; row < 41; row++)
+                {
+                    TextBox tbx = new TextBox
+                    {
+                        Text = $"{row}",
+                        Dock = DockStyle.Fill,
+                        TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                        Margin = new Padding(0),
+                        Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                        Size = new Size(80, 24),
+                        ReadOnly = true,
+                        BackColor = Color.LightGray
+
+                    };
+                    tabMasterSideLStroke.Add(tbx);
+                    tabMasterSideL.Controls.Add(tbx, col, row);
+                }
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+
+                };
+                tabMasterSideLMaster.Add(tbx);
+                tabMasterSideL.Controls.Add(tbx, 1, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabMasterSideLLower.Add(tbx);
+                tabMasterSideL.Controls.Add(tbx, 2, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabMasterSideLReal.Add(tbx);
+                tabMasterSideL.Controls.Add(tbx, 3, row);
+            }
+            for (int row = 1; row < 41; row++)
+            {
+                TextBox tbx = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
+                    Margin = new Padding(0),
+                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Size = new Size(80, 24),
+                    ReadOnly = true,
+
+                };
+                tabMasterSideLUpper.Add(tbx);
+                tabMasterSideL.Controls.Add(tbx, 4, row);
+            }
+            // Add the CustomTableLayoutPanel to the form
+            tabPage8.Controls.Add(tabMasterSideL);
+            tabMasterSideL.BringToFront();
+        }
 
         public Form1()
         {
@@ -64,48 +928,54 @@ namespace KVCOMSERVER
             catch
             { }
             InitializeUI();
+            InitializeCustomComponents();
+            InitializeBorderComponent();
+            drawingBorderUpper.BringToFront();
+            drawingBorderLower.BringToFront();
+            drawingBorderLeft.BringToFront();
+            drawingBorderRight.BringToFront();
+            drawingPanel.BringToFront();
+
         }
 
         private void InitializeUI()
         {
             // Set form properties
             this.Text = "Damping Force Function Tester";
-            this.BackColor = Color.White;
-            this.Font = new Font("Arial", 10);
-
-            // Initialize buttons
-            InitializeModernButton(button1, "Connect");
-            InitializeModernButton(button2, "Close");
-            InitializeModernButton(button4, "Save Setting");
-            InitializeModernButton(button3, "Display to Graph");
-            InitializeModernButton(button19, "Open Selected");
-            InitializeModernButton(button8, "Open Folder");
+            //this.BackColor = Color.White;
+            //this.Font = new Font("Arial", 10);
 
             // Initialize TextBoxes
-            textBox1.Font = new Font("Arial", 12);
-            textBox2.Font = new Font("Arial", 12);
+            //textBox1.Font = new Font("Arial", 12);
+            //textBox2.Font = new Font("Arial", 12);
             textBox1.TextChanged += textBox1_TextChanged;
             textBox2.TextChanged += textBox2_TextChanged;
-
             // Initialize DataGridViews
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             // Set up DateTimePicker
-            dateTimePicker1.Font = new Font("Arial", 12);
+            //dateTimePicker1.Font = new Font("Arial", 12);
             dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged_1;
+
+            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControl1.DrawItem += TabControl_DrawItem;
+            tabControl1.Selected += TabControl_Selected;
+
+            defLayoutPanelRealSideR();
+            defLayoutPanelRealSideL();
+            defLayoutPanelMasterSideR();
+            defLayoutPanelMasterSideL();
         }
 
-        private void InitializeModernButton(Button button, string text)
+        private void TabControl_Selected(object sender, TabControlEventArgs e)
         {
-            button.Text = text;
-            button.BackColor = Color.LimeGreen;
-            button.FlatStyle = FlatStyle.Flat;
-            button.ForeColor = Color.White;
-            button.Font = new Font("Arial", 12, FontStyle.Bold);
-            button.Size = new Size(150, 50);
-            button.MouseEnter += (s, e) => button.BackColor = Color.DarkGreen;
-            button.MouseLeave += (s, e) => button.BackColor = Color.LimeGreen;
+            // Refresh the TabControl to apply the drawing changes
+            tabControl1.Invalidate();
+        }
+
+        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            // This will hide the tabs by not drawing them
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -300,6 +1170,10 @@ namespace KVCOMSERVER
             button5.Text = "Connected";
             button5.ForeColor = System.Drawing.Color.Black;
             button5.BackColor = System.Drawing.Color.LimeGreen;
+
+            button48.Text = "Connected";
+            button48.ForeColor = System.Drawing.Color.Black;
+            button48.BackColor = System.Drawing.Color.LimeGreen;
         }
 
         public void connStatLampOff()
@@ -307,6 +1181,10 @@ namespace KVCOMSERVER
             button5.Text = "Disconnected";
             button5.ForeColor = System.Drawing.Color.Black;
             button5.BackColor = System.Drawing.Color.Red;
+
+            button48.Text = "Disconnected";
+            button48.ForeColor = System.Drawing.Color.Black;
+            button48.BackColor = System.Drawing.Color.Red;
         }
 
         public void beaconnStatLampOn()
@@ -534,5 +1412,148 @@ namespace KVCOMSERVER
         {
 
         }
+
+        private void button47_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 1;
+        }
+
+        private void button41_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 2;
+        }
+
+        private void button42_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 3;
+        }
+
+        private void button43_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 4;
+        }
+
+        private void button46_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 5;
+        }
+
+        private void button45_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 6;
+        }
+
+        private void button44_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 7;
+        }
+
+        private void button40_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        private void button35_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        private void button36_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        private void button34_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        private void button37_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        private void button38_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        private void button39_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        private void button32_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 3;
+        }
+
+        private void button29_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 6;
+        }
+
+        private void button33_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 4;
+        }
+
+        private void button28_Click_1(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 7;
+        }
     }
+
+    public class CustomTableLayoutPanel : TableLayoutPanel
+    {
+        public Color CellBorderColor { get; set; }
+
+        public CustomTableLayoutPanel()
+        {
+            CellBorderColor = Color.Black; // Default border color
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            using (Pen pen = new Pen(CellBorderColor))
+            {
+                for (int row = 0; row < RowCount; row++)
+                {
+                    for (int col = 0; col < ColumnCount; col++)
+                    {
+                        DRW.Rectangle cellBounds = GetCellBounds(row, col);
+                        e.Graphics.DrawRectangle(pen, cellBounds);
+                    }
+                }
+            }
+        }
+
+        private DRW.Rectangle GetCellBounds(int row, int col)
+        {
+            DRW.Rectangle result = new DRW.Rectangle();
+
+            if (ColumnStyles.Count > col && RowStyles.Count > row)
+            {
+                for (int i = 0; i < col; i++)
+                {
+                    result.X += (int)(ColumnStyles[i].Width / 100F * ClientSize.Width);
+                }
+
+                for (int j = 0; j < row; j++)
+                {
+                    result.Y += (int)(RowStyles[j].Height / 100F * ClientSize.Height);
+                }
+
+                result.Width = (int)(ColumnStyles[col].Width / 100F * ClientSize.Width);
+                result.Height = (int)(RowStyles[row].Height / 100F * ClientSize.Height);
+            }
+
+            return result;
+        }
+
+        
+    }
+
 }
