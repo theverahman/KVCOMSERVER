@@ -49,6 +49,20 @@ namespace KVCOMSERVER
         private Panel drawingBorderLower;
         private CancellationTokenSource _cts;
 
+        public string settingIpv4;
+        public int settingPortIp;
+        public string msgToBeSent;
+        public int _connStat;
+        public int _beaconn;
+
+        int tabIdxRealSideL = 1;
+        int tabIdxRealSideR = 1;
+
+        int tabIdxMasterSideL = 1;
+        int tabIdxMasterSideR = 1;
+
+        #region Table Data Def 
+        #region Real Data
         CustomTableLayoutPanel tabRealSideL;
         List<TextBox> tabRealSideLStroke = new List<TextBox>();
         List<TextBox> tabRealSideLMaster = new List<TextBox>();
@@ -63,28 +77,323 @@ namespace KVCOMSERVER
         List<TextBox> tabRealSideRReal = new List<TextBox>();
         List<TextBox> tabRealSideRUpper = new List<TextBox>();
 
+        bool[] dataRealCompSideLJudge = new bool[200];
+        bool[] dataRealCompSideRJudge = new bool[200];
+
+        bool[] dataRealExtnSideLJudge = new bool[200];
+        bool[] dataRealExtnSideRJudge = new bool[200];
+
+        float[] _dataRealCompSideLStroke = new float[200];
+        float[] _dataRealCompSideLLoad = new float[200];
+        float[] _dataRealCompSideLMaster = new float[200];
+        float[] _dataRealCompSideLUpper = new float[200];
+        float[] _dataRealCompSideLLower = new float[200];
+
+        float[] _dataRealExtnSideLStroke = new float[200];
+        float[] _dataRealExtnSideLLoad = new float[200];
+        float[] _dataRealExtnSideLMaster = new float[200];
+        float[] _dataRealExtnSideLUpper = new float[200];
+        float[] _dataRealExtnSideLLower = new float[200];
+
+        float[] _dataRealCompSideRStroke = new float[200];
+        float[] _dataRealCompSideRLoad = new float[200];
+        float[] _dataRealCompSideRMaster = new float[200];
+        float[] _dataRealCompSideRUpper = new float[200];
+        float[] _dataRealCompSideRLower = new float[200];
+
+        float[] _dataRealExtnSideRStroke = new float[200];
+        float[] _dataRealExtnSideRLoad = new float[200];
+        float[] _dataRealExtnSideRMaster = new float[200];
+        float[] _dataRealExtnSideRUpper = new float[200];
+        float[] _dataRealExtnSideRLower = new float[200];
+
+        public float[] DataRealCompSideLStroke
+        {
+            get { return _dataRealCompSideLStroke; }
+            set { _dataRealCompSideLStroke = value; }
+        }
+
+        public float[] DataRealCompSideLLoad
+        {
+            get { return _dataRealCompSideLLoad; }
+            set { _dataRealCompSideLLoad = value; }
+        }
+
+        public float[] DataRealCompSideLMaster
+        {
+            get { return _dataRealCompSideLMaster; }
+            set { _dataRealCompSideLMaster = value; }
+        }
+
+        public float[] DataRealCompSideLUpper
+        {
+            get { return _dataRealCompSideLUpper; }
+            set { _dataRealCompSideLUpper = value; }
+        }
+
+        public float[] DataRealCompSideLLower
+        {
+            get { return _dataRealCompSideLLower; }
+            set { _dataRealCompSideLLower = value; }
+        }
+
+        public float[] DataRealExtnSideLStroke
+        {
+            get { return _dataRealExtnSideLStroke; }
+            set { _dataRealExtnSideLStroke = value; }
+        }
+
+        public float[] DataRealExtnSideLLoad
+        {
+            get { return _dataRealExtnSideLLoad; }
+            set { _dataRealExtnSideLLoad = value; }
+        }
+
+        public float[] DataRealExtnSideLMaster
+        {
+            get { return _dataRealExtnSideLMaster; }
+            set { _dataRealExtnSideLMaster = value; }
+        }
+
+        public float[] DataRealExtnSideLUpper
+        {
+            get { return _dataRealExtnSideLUpper; }
+            set { _dataRealExtnSideLUpper = value; }
+        }
+
+        public float[] DataRealExtnSideLLower
+        {
+            get { return _dataRealExtnSideLLower; }
+            set { _dataRealExtnSideLLower = value; }
+        }
+
+        public float[] DataRealCompSideRStroke
+        {
+            get { return _dataRealCompSideRStroke; }
+            set { _dataRealCompSideRStroke = value; }
+        }
+
+        public float[] DataRealCompSideRLoad
+        {
+            get { return _dataRealCompSideRLoad; }
+            set { _dataRealCompSideRLoad = value; }
+        }
+
+        public float[] DataRealCompSideRMaster
+        {
+            get { return _dataRealCompSideRMaster; }
+            set { _dataRealCompSideRMaster = value; }
+        }
+
+        public float[] DataRealCompSideRUpper
+        {
+            get { return _dataRealCompSideRUpper; }
+            set { _dataRealCompSideRUpper = value; }
+        }
+
+        public float[] DataRealCompSideRLower
+        {
+            get { return _dataRealCompSideRLower; }
+            set { _dataRealCompSideRLower = value; }
+        }
+
+        public float[] DataRealExtnSideRStroke
+        {
+            get { return _dataRealExtnSideRStroke; }
+            set { _dataRealExtnSideRStroke = value; }
+        }
+
+        public float[] DataRealExtnSideRLoad
+        {
+            get { return _dataRealExtnSideRLoad; }
+            set { _dataRealExtnSideRLoad = value; }
+        }
+
+        public float[] DataRealExtnSideRMaster
+        {
+            get { return _dataRealExtnSideRMaster; }
+            set { _dataRealExtnSideRMaster = value; }
+        }
+
+        public float[] DataRealExtnSideRUpper
+        {
+            get { return _dataRealExtnSideRUpper; }
+            set { _dataRealExtnSideRUpper = value; }
+        }
+
+        public float[] DataRealExtnSideRLower
+        {
+            get { return _dataRealExtnSideRLower; }
+            set { _dataRealExtnSideRLower = value; }
+        }
+
+        #endregion
+
+        #region Master Data
         CustomTableLayoutPanel tabMasterSideL;
         List<TextBox> tabMasterSideLStroke = new List<TextBox>();
         List<TextBox> tabMasterSideLMaster = new List<TextBox>();
+        List<TextBox> tabMasterSideLAccMaster = new List<TextBox>();
         List<TextBox> tabMasterSideLLower = new List<TextBox>();
-        List<TextBox> tabMasterSideLReal = new List<TextBox>();
         List<TextBox> tabMasterSideLUpper = new List<TextBox>();
 
         CustomTableLayoutPanel tabMasterSideR;
         List<TextBox> tabMasterSideRStroke = new List<TextBox>();
         List<TextBox> tabMasterSideRMaster = new List<TextBox>();
+        List<TextBox> tabMasterSideRAccMaster = new List<TextBox>();
         List<TextBox> tabMasterSideRLower = new List<TextBox>();
-        List<TextBox> tabMasterSideRReal = new List<TextBox>();
         List<TextBox> tabMasterSideRUpper = new List<TextBox>();
 
+        float[] _dataMasterCompSideLStroke = new float[200];
+        float[] _dataMasterCompSideLMaster = new float[200];
+        float[] _dataMasterCompSideLAccMaster = new float[200];
+        float[] _dataMasterCompSideLUpper = new float[200];
+        float[] _dataMasterCompSideLLower = new float[200];
+
+        float[] _dataMasterExtnSideLStroke = new float[200];
+        float[] _dataMasterExtnSideLMaster = new float[200];
+        float[] _dataMasterExtnSideLAccMaster = new float[200];
+        float[] _dataMasterExtnSideLUpper = new float[200];
+        float[] _dataMasterExtnSideLLower = new float[200];
+
+        float[] _dataMasterCompSideRStroke = new float[200];
+        float[] _dataMasterCompSideRMaster = new float[200];
+        float[] _dataMasterCompSideRAccMaster = new float[200];
+        float[] _dataMasterCompSideRUpper = new float[200];
+        float[] _dataMasterCompSideRLower = new float[200];
+
+        float[] _dataMasterExtnSideRStroke = new float[200];
+        float[] _dataMasterExtnSideRMaster = new float[200];
+        float[] _dataMasterExtnSideRAccMaster = new float[200];
+        float[] _dataMasterExtnSideRUpper = new float[200];
+        float[] _dataMasterExtnSideRLower = new float[200];
 
 
-        public string settingIpv4;
-        public int settingPortIp;
-        public string msgToBeSent;
-        public int _connStat;
-        public int _beaconn;
+        public float[] DataMasterCompSideLStroke
+        {
+            get { return _dataMasterCompSideLStroke; }
+            set { _dataMasterCompSideLStroke = value; }
+        }
 
+        public float[] DataMasterCompSideLMaster
+        {
+            get { return _dataMasterCompSideLMaster; }
+            set { _dataMasterCompSideLMaster = value; }
+        }
+
+        public float[] DataMasterCompSideLAccMaster
+        {
+            get { return _dataMasterCompSideLAccMaster; }
+            set { _dataMasterCompSideLAccMaster = value; }
+        }
+
+        public float[] DataMasterCompSideLUpper
+        {
+            get { return _dataMasterCompSideLUpper; }
+            set { _dataMasterCompSideLUpper = value; }
+        }
+
+        public float[] DataMasterCompSideLLower
+        {
+            get { return _dataMasterCompSideLLower; }
+            set { _dataMasterCompSideLLower = value; }
+        }
+
+        public float[] DataMasterExtnSideLStroke
+        {
+            get { return _dataMasterExtnSideLStroke; }
+            set { _dataMasterExtnSideLStroke = value; }
+        }
+
+        public float[] DataMasterExtnSideLMaster
+        {
+            get { return _dataMasterExtnSideLMaster; }
+            set { _dataMasterExtnSideLMaster = value; }
+        }
+
+        public float[] DataMasterExtnSideLAccMaster
+        {
+            get { return _dataMasterExtnSideLAccMaster; }
+            set { _dataMasterExtnSideLAccMaster = value; }
+        }
+
+        public float[] DataMasterExtnSideLUpper
+        {
+            get { return _dataMasterExtnSideLUpper; }
+            set { _dataMasterExtnSideLUpper = value; }
+        }
+
+        public float[] DataMasterExtnSideLLower
+        {
+            get { return _dataMasterExtnSideLLower; }
+            set { _dataMasterExtnSideLLower = value; }
+        }
+
+        public float[] DataMasterCompSideRStroke
+        {
+            get { return _dataMasterCompSideRStroke; }
+            set { _dataMasterCompSideRStroke = value; }
+        }
+
+        public float[] DataMasterCompSideRMaster
+        {
+            get { return _dataMasterCompSideRMaster; }
+            set { _dataMasterCompSideRMaster = value; }
+        }
+
+        public float[] DataMasterCompSideRAccMaster
+        {
+            get { return _dataMasterCompSideRAccMaster; }
+            set { _dataMasterCompSideRAccMaster = value; }
+        }
+
+        public float[] DataMasterCompSideRUpper
+        {
+            get { return _dataMasterCompSideRUpper; }
+            set { _dataMasterCompSideRUpper = value; }
+        }
+
+        public float[] DataMasterCompSideRLower
+        {
+            get { return _dataMasterCompSideRLower; }
+            set { _dataMasterCompSideRLower = value; }
+        }
+
+        public float[] DataMasterExtnSideRStroke
+        {
+            get { return _dataMasterExtnSideRStroke; }
+            set { _dataMasterExtnSideRStroke = value; }
+        }
+
+        public float[] DataMasterExtnSideRMaster
+        {
+            get { return _dataMasterExtnSideRMaster; }
+            set { _dataMasterExtnSideRMaster = value; }
+        }
+
+        public float[] DataMasterExtnSideRAccMaster
+        {
+            get { return _dataMasterExtnSideRAccMaster; }
+            set { _dataMasterExtnSideRAccMaster = value; }
+        }
+
+        public float[] DataMasterExtnSideRUpper
+        {
+            get { return _dataMasterExtnSideRUpper; }
+            set { _dataMasterExtnSideRUpper = value; }
+        }
+
+        public float[] DataMasterExtnSideRLower
+        {
+            get { return _dataMasterExtnSideRLower; }
+            set { _dataMasterExtnSideRLower = value; }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region UIComponents
         private void InitializeCustomComponents()
         {
             // Create a new Panel to contain the drawing
@@ -99,7 +408,6 @@ namespace KVCOMSERVER
             // Add the drawing panel to the form
             this.Controls.Add(drawingPanel);
         }
-
         private void InitializeBorderComponent()
         {
             drawingBorderUpper = new Panel
@@ -119,15 +427,15 @@ namespace KVCOMSERVER
             drawingBorderLeft = new Panel
             {
                 BackColor = Color.Transparent,
-                Location = new DRW.Point(10, 10),
-                Size = new Size(4, 1080)
+                Location = new DRW.Point(10, 5),
+                Size = new Size(4, 1020)
             };
 
             drawingBorderRight = new Panel
             {
                 BackColor = Color.Transparent,
-                Location = new DRW.Point(1883, 10),
-                Size = new Size(5, 1080)
+                Location = new DRW.Point(1883, 5),
+                Size = new Size(5, 1020)
             };
 
             drawingBorderUpper.Paint += DrawingBorderUpper_Paint;
@@ -180,7 +488,6 @@ namespace KVCOMSERVER
                 }
             }
         }
-
         private void DrawingPanel_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -197,13 +504,11 @@ namespace KVCOMSERVER
             Graphics g = e.Graphics;
             g.FillRectangle(Brushes.DarkCyan, new DRW.Rectangle(0, 0, 1878, 4));
         }
-
         private void DrawingBorderLeft_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.FillRectangle(Brushes.DarkCyan, new DRW.Rectangle(0, 0, 4, 1020));
         }
-
         private void DrawingBorderRight_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -215,7 +520,7 @@ namespace KVCOMSERVER
             tabRealSideR = new CustomTableLayoutPanel()
             {
                 ColumnCount = 5,
-                RowCount = 51,
+                RowCount = 41,
                 Location = new Point(1163, 3),
                 Size = new Size(700, 1000),
                 AutoSize = false,
@@ -384,13 +689,12 @@ namespace KVCOMSERVER
             tabPage7.Controls.Add(tabRealSideR);
             tabRealSideR.BringToFront();
         }
-
         public void defLayoutPanelRealSideL()
         {
             tabRealSideL = new CustomTableLayoutPanel()
             {
                 ColumnCount = 5,
-                RowCount = 51,
+                RowCount = 41,
                 Location = new Point(3, 3),
                 Size = new Size(700, 1000),
                 AutoSize = false,
@@ -560,13 +864,12 @@ namespace KVCOMSERVER
             tabPage7.Controls.Add(tabRealSideL);
             tabRealSideL.BringToFront();
         }
-
         public void defLayoutPanelMasterSideR()
         {
             tabMasterSideR = new CustomTableLayoutPanel()
             {
                 ColumnCount = 5,
-                RowCount = 51,
+                RowCount = 41,
                 Location = new Point(1163, 3),
                 Size = new Size(700, 1000),
                 AutoSize = false,
@@ -696,7 +999,7 @@ namespace KVCOMSERVER
                     Size = new Size(80, 24),
 
                 };
-                tabMasterSideRLower.Add(tbx);
+                tabMasterSideRAccMaster.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 2, row);
             }
             for (int row = 1; row < 41; row++)
@@ -710,7 +1013,7 @@ namespace KVCOMSERVER
                     Size = new Size(80, 24),
 
                 };
-                tabMasterSideRReal.Add(tbx);
+                tabMasterSideRLower.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 3, row);
             }
             for (int row = 1; row < 41; row++)
@@ -731,13 +1034,12 @@ namespace KVCOMSERVER
             tabPage8.Controls.Add(tabMasterSideR);
             tabMasterSideR.BringToFront();
         }
-
         public void defLayoutPanelMasterSideL()
         {
             tabMasterSideL = new CustomTableLayoutPanel()
             {
                 ColumnCount = 5,
-                RowCount = 51,
+                RowCount = 41,
                 Location = new Point(3, 3),
                 Size = new Size(700, 1000),
                 AutoSize = false,
@@ -870,7 +1172,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tabMasterSideLLower.Add(tbx);
+                tabMasterSideLAccMaster.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 2, row);
             }
             for (int row = 1; row < 41; row++)
@@ -885,7 +1187,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tabMasterSideLReal.Add(tbx);
+                tabMasterSideLLower.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 3, row);
             }
             for (int row = 1; row < 41; row++)
@@ -907,6 +1209,270 @@ namespace KVCOMSERVER
             tabPage8.Controls.Add(tabMasterSideL);
             tabMasterSideL.BringToFront();
         }
+
+        #endregion
+
+        #region Table Handler
+
+        #region Real Data
+        public void tabdataRealSideInit()
+        {
+            tabIdxRealSideL = 1;
+            tabIdxRealSideR = 1;
+        }
+        public void tabdataRealCompStep2L()
+        {
+            int tabIndex = tabIdxRealSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabRealSideLStroke[i].Text = _dataRealCompSideLStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabRealSideLMaster[i].Text = _dataRealCompSideLMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabRealSideLLower[i].Text = _dataRealCompSideLLower[i + tabIndex].ToString();
+                #endregion
+
+                #region Realtime
+                tabRealSideLReal[i].Text = _dataRealCompSideLLoad[i + tabIndex].ToString();
+                if (_dataRealCompSideLLoad[i + tabIndex] > _dataRealCompSideLUpper[i + tabIndex] | _dataRealCompSideLLoad[i + tabIndex] < _dataRealCompSideLLower[i + tabIndex])
+                {
+                    tabRealSideLReal[i].BackColor = Color.Red;
+                }
+                else
+                {
+                    tabRealSideLReal[i].BackColor = Color.White;
+                }
+                #endregion
+
+                #region Upper
+                tabRealSideLUpper[i].Text = _dataRealCompSideLUpper[i + tabIndex].ToString();
+                #endregion
+            }
+        }
+        public void tabdataRealExtnStep2L()
+        {
+            int tabIndex = tabIdxRealSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabRealSideLStroke[i].Text = _dataRealExtnSideLStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabRealSideLMaster[i].Text = _dataRealExtnSideLMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabRealSideLLower[i].Text = _dataRealExtnSideLLower[i + tabIndex].ToString();
+                #endregion
+
+                #region Realtime
+                tabRealSideLReal[i].Text = _dataRealExtnSideLLoad[i + tabIndex].ToString();
+                if (_dataRealExtnSideLLoad[i + tabIndex] > _dataRealExtnSideLUpper[i + tabIndex] | _dataRealExtnSideLLoad[i + tabIndex] < _dataRealExtnSideLLower[i + tabIndex])
+                {
+                    tabRealSideLReal[i].BackColor = Color.Red;
+                }
+                else
+                {
+                    tabRealSideLReal[i].BackColor = Color.White;
+                }
+                #endregion
+
+                #region Upper
+                tabRealSideLUpper[i].Text = _dataRealExtnSideLUpper[i + tabIndex].ToString();
+                #endregion
+            }
+        }
+        public void tabdataRealCompStep2R()
+        {
+            int tabIndex = tabIdxRealSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabRealSideRStroke[i].Text = _dataRealCompSideRStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabRealSideRMaster[i].Text = _dataRealCompSideRMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabRealSideRLower[i].Text = _dataRealCompSideRLower[i + tabIndex].ToString();
+                #endregion
+
+                #region Realtime
+                tabRealSideRReal[i].Text = _dataRealCompSideRLoad[i + tabIndex].ToString();
+                if (_dataRealCompSideRLoad[i + tabIndex] > _dataRealCompSideRUpper[i + tabIndex] | _dataRealCompSideRLoad[i + tabIndex] < _dataRealCompSideRLower[i + tabIndex])
+                {
+                    tabRealSideRReal[i].BackColor = Color.Red;
+                }
+                else
+                {
+                    tabRealSideRReal[i].BackColor = Color.White;
+                }
+                #endregion
+
+                #region Upper
+                tabRealSideRUpper[i].Text = _dataRealCompSideRUpper[i + tabIndex].ToString();
+                #endregion
+            }
+        }
+        public void tabdataRealExtnStep2R()
+        {
+            int tabIndex = tabIdxRealSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabRealSideRStroke[i].Text = _dataRealExtnSideRStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabRealSideRMaster[i].Text = _dataRealExtnSideRMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabRealSideRLower[i].Text = _dataRealExtnSideRLower[i + tabIndex].ToString();
+                #endregion
+
+                #region Realtime
+                tabRealSideRReal[i].Text = _dataRealExtnSideRLoad[i + tabIndex].ToString();
+                if (_dataRealExtnSideRLoad[i + tabIndex] > _dataRealExtnSideRUpper[i + tabIndex] | _dataRealExtnSideRLoad[i + tabIndex] < _dataRealExtnSideRLower[i + tabIndex])
+                {
+                    tabRealSideRReal[i].BackColor = Color.Red;
+                }
+                else
+                {
+                    tabRealSideRReal[i].BackColor = Color.White;
+                }
+                #endregion
+
+                #region Upper
+                tabRealSideRUpper[i].Text = _dataRealExtnSideRUpper[i + tabIndex].ToString();
+                #endregion
+            }
+        }
+        #endregion
+
+        #region Master Data
+
+        public void tabdataMasterSideInit()
+        {
+            tabIdxMasterSideL = 1;
+            tabIdxMasterSideR = 1;
+        }
+        public void tabdataMasterCompStep2L()
+        {
+            int tabIndex = tabIdxMasterSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabMasterSideLStroke[i].Text = _dataMasterCompSideLStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabMasterSideLMaster[i].Text = _dataMasterCompSideLMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Master Acc
+                tabMasterSideLAccMaster[i].Text = _dataMasterCompSideLAccMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabMasterSideLLower[i].Text = _dataMasterCompSideLLower[i + tabIndex].ToString();
+                #endregion
+
+                #region Upper
+                tabMasterSideLUpper[i].Text = _dataMasterCompSideLUpper[i + tabIndex].ToString();
+                #endregion
+            }
+        }
+        public void tabdataMasterExtnStep2L()
+        {
+            int tabIndex = tabIdxMasterSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabMasterSideLStroke[i].Text = _dataMasterExtnSideLStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabMasterSideLMaster[i].Text = _dataMasterExtnSideLMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Master Acc
+                tabMasterSideLAccMaster[i].Text = _dataMasterExtnSideLAccMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabMasterSideLLower[i].Text = _dataMasterExtnSideLLower[i + tabIndex].ToString();
+                #endregion
+
+                #region Upper
+                tabMasterSideLUpper[i].Text = _dataRealExtnSideLUpper[i + tabIndex].ToString();
+                #endregion
+            }
+        }
+        public void tabdataMasterCompStep2R()
+        {
+            int tabIndex = tabIdxRealSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabMasterSideRStroke[i].Text = _dataMasterCompSideRStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabMasterSideRMaster[i].Text = _dataMasterCompSideRMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabMasterSideRAccMaster[i].Text = _dataMasterCompSideRAccMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Realtime
+                tabMasterSideRLower[i].Text = _dataMasterCompSideRLower[i + tabIndex].ToString();
+                #endregion
+
+                #region Upper
+                tabMasterSideRUpper[i].Text = _dataRealCompSideRUpper[i + tabIndex].ToString();
+                #endregion
+            }
+        }
+        public void tabdataMasterExtnStep2R()
+        {
+            int tabIndex = tabIdxRealSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabMasterSideRStroke[i].Text = _dataMasterExtnSideRStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabMasterSideRMaster[i].Text = _dataMasterExtnSideRMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabMasterSideRAccMaster[i].Text = _dataMasterExtnSideRAccMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Realtime
+                tabMasterSideRLower[i].Text = _dataMasterExtnSideRLower[i + tabIndex].ToString();
+                #endregion
+
+                #region Upper
+                tabMasterSideRUpper[i].Text = _dataMasterExtnSideRUpper[i + tabIndex].ToString();
+                #endregion
+            }
+        }
+
+        #endregion
+
+        #endregion
 
         public Form1()
         {
@@ -981,102 +1547,14 @@ namespace KVCOMSERVER
         private void Form1_Load(object sender, EventArgs e)
         {
 
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (_connStat != 1)
-                {
-                    _WorkflowHandler.SetConnection();
-                    _connStat = _WorkflowHandler.GetConnState();
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Connection failed. Please check your settings.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            _WorkflowHandler.CloseConnection();
-            _connStat = _WorkflowHandler.GetConnState();
-            Thread.Sleep(100);
-            if (_connStat == 0)
-            {
-                _WorkflowHandler.abortTasks();
-            }
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            settingIpv4 = textBox1.Text;
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            if (int.TryParse(textBox2.Text, out int port))
-            {
-                settingPortIp = port;
-            }
-            else
-            {
-                MessageBox.Show("Please enter a valid port number.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
-            CheckFolderPath(DirRealtime);
-            var psi = new ProcessStartInfo();
-            psi.FileName = @"c:\windows\explorer.exe";
-            psi.Arguments = DirRealtime;
-            Process.Start(psi);
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            string DirMaster = _WorkflowHandler.MasterDir;
-            CheckFolderPath(DirMaster);
-            var psi = new ProcessStartInfo();
-            psi.FileName = @"c:\windows\explorer.exe";
-            psi.Arguments = DirMaster;
-            Process.Start(psi);
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
-            CheckFolderPath(DirRealtime);
-            DataGridViewRow test1 = new DataGridViewRow();
-            test1 = dataGridView1.CurrentRow;
-            string selectedfile = new string(test1.Cells[1].FormattedValue.ToString());
-
-            Excel.Application objExcel = new Excel.Application();
-            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirRealtime}\\{selectedfile}");
-            objExcel.Visible = true;
-        }
-
-        private void button20_Click(object sender, EventArgs e)
-        {
-            string DirMaster = _WorkflowHandler.MasterDir;
-            CheckFolderPath(DirMaster);
-            DataGridViewRow test2 = new DataGridViewRow();
-            test2 = dataGridView2.CurrentRow;
-            string selectedfile = new string(test2.Cells[1].FormattedValue.ToString());
-
-            Excel.Application objExcel = new Excel.Application();
-            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirMaster}\\{selectedfile}");
-            objExcel.Visible = true;
-        }
+        }        
 
         private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
         {
             RealtimeUpdateList();
         }
+
+        
 
         public void RealtimeUpdateList()
         {
@@ -1201,6 +1679,7 @@ namespace KVCOMSERVER
             button6.BackColor = System.Drawing.Color.BlueViolet;
         }
 
+        #region Plotting Graphs
         public void AllPlotReset()
         {
             formsPlot1.Reset();
@@ -1213,7 +1692,6 @@ namespace KVCOMSERVER
             formsPlot3.Refresh();
             formsPlot4.Refresh();
         }
-
         public void Plot1Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot1.Reset();
@@ -1223,7 +1701,6 @@ namespace KVCOMSERVER
             formsPlot1.Plot.Axes.AntiAlias(true);
             formsPlot1.Refresh();
         }
-
         public void Plot1AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
@@ -1232,7 +1709,6 @@ namespace KVCOMSERVER
             formsPlot1.Plot.Axes.AntiAlias(true);
             formsPlot1.Refresh();
         }
-
         public void Plot2Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot2.Reset();
@@ -1242,7 +1718,6 @@ namespace KVCOMSERVER
             formsPlot2.Plot.Axes.AntiAlias(true);
             formsPlot2.Refresh();
         }
-
         public void Plot2AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
@@ -1251,7 +1726,6 @@ namespace KVCOMSERVER
             formsPlot2.Plot.Axes.AntiAlias(true);
             formsPlot2.Refresh();
         }
-
         public void Plot3Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot3.Reset();
@@ -1261,7 +1735,6 @@ namespace KVCOMSERVER
             formsPlot3.Plot.Axes.AntiAlias(true);
             formsPlot3.Refresh();
         }
-
         public void Plot3AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
@@ -1270,7 +1743,6 @@ namespace KVCOMSERVER
             formsPlot3.Plot.Axes.AntiAlias(true);
             formsPlot3.Refresh();
         }
-
         public void Plot4Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot4.Reset();
@@ -1280,7 +1752,6 @@ namespace KVCOMSERVER
             formsPlot4.Plot.Axes.AntiAlias(true);
             formsPlot4.Refresh();
         }
-
         public void Plot4AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
@@ -1289,7 +1760,6 @@ namespace KVCOMSERVER
             formsPlot4.Plot.Axes.AntiAlias(true);
             formsPlot4.Refresh();
         }
-
         public void Plot5Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot5.Reset();
@@ -1298,7 +1768,6 @@ namespace KVCOMSERVER
             formsPlot5.Plot.Axes.AntiAlias(true);
             formsPlot5.Refresh();
         }
-
         public void Plot5AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
@@ -1306,7 +1775,6 @@ namespace KVCOMSERVER
             formsPlot5.Plot.Axes.AntiAlias(true);
             formsPlot5.Refresh();
         }
-
         public void Plot6Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot6.Reset();
@@ -1315,7 +1783,6 @@ namespace KVCOMSERVER
             formsPlot6.Plot.Axes.AntiAlias(true);
             formsPlot6.Refresh();
         }
-
         public void Plot6AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
@@ -1323,7 +1790,6 @@ namespace KVCOMSERVER
             formsPlot6.Plot.Axes.AntiAlias(true);
             formsPlot6.Refresh();
         }
-
         public void Plot7Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot7.Reset();
@@ -1332,7 +1798,6 @@ namespace KVCOMSERVER
             formsPlot7.Plot.Axes.AntiAlias(true);
             formsPlot7.Refresh();
         }
-
         public void Plot7AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
@@ -1340,7 +1805,6 @@ namespace KVCOMSERVER
             formsPlot7.Plot.Axes.AntiAlias(true);
             formsPlot7.Refresh();
         }
-
         public void Plot8Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             formsPlot8.Reset();
@@ -1349,7 +1813,6 @@ namespace KVCOMSERVER
             formsPlot8.Plot.Axes.AntiAlias(true);
             formsPlot8.Refresh();
         }
-
         public void Plot8AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
         {
             var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
@@ -1357,7 +1820,7 @@ namespace KVCOMSERVER
             formsPlot8.Plot.Axes.AntiAlias(true);
             formsPlot8.Refresh();
         }
-
+        #endregion
         private void label5_Click(object sender, EventArgs e)
         {
 
@@ -1396,6 +1859,96 @@ namespace KVCOMSERVER
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            settingIpv4 = textBox1.Text;
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(textBox2.Text, out int port))
+            {
+                settingPortIp = port;
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid port number.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_connStat != 1)
+                {
+                    _WorkflowHandler.SetConnection();
+                    _connStat = _WorkflowHandler.GetConnState();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Connection failed. Please check your settings.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            _WorkflowHandler.CloseConnection();
+            _connStat = _WorkflowHandler.GetConnState();
+            Thread.Sleep(100);
+            if (_connStat == 0)
+            {
+                _WorkflowHandler.abortTasks();
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            CheckFolderPath(DirRealtime);
+            var psi = new ProcessStartInfo();
+            psi.FileName = @"c:\windows\explorer.exe";
+            psi.Arguments = DirRealtime;
+            Process.Start(psi);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string DirMaster = _WorkflowHandler.MasterDir;
+            CheckFolderPath(DirMaster);
+            var psi = new ProcessStartInfo();
+            psi.FileName = @"c:\windows\explorer.exe";
+            psi.Arguments = DirMaster;
+            Process.Start(psi);
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            CheckFolderPath(DirRealtime);
+            DataGridViewRow test1 = new DataGridViewRow();
+            test1 = dataGridView1.CurrentRow;
+            string selectedfile = new string(test1.Cells[1].FormattedValue.ToString());
+
+            Excel.Application objExcel = new Excel.Application();
+            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirRealtime}\\{selectedfile}");
+            objExcel.Visible = true;
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            string DirMaster = _WorkflowHandler.MasterDir;
+            CheckFolderPath(DirMaster);
+            DataGridViewRow test2 = new DataGridViewRow();
+            test2 = dataGridView2.CurrentRow;
+            string selectedfile = new string(test2.Cells[1].FormattedValue.ToString());
+
+            Excel.Application objExcel = new Excel.Application();
+            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirMaster}\\{selectedfile}");
+            objExcel.Visible = true;
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -1504,6 +2057,7 @@ namespace KVCOMSERVER
         }
     }
 
+    #region supporting classes
     public class CustomTableLayoutPanel : TableLayoutPanel
     {
         public Color CellBorderColor { get; set; }
@@ -1555,5 +2109,5 @@ namespace KVCOMSERVER
 
         
     }
-
+    #endregion
 }
