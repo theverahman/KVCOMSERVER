@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
 
+using Control = System.Windows.Forms.Control;
+
 using ScottPlot;
 using static OpenTK.Graphics.OpenGL.GL;
 using DocumentFormat.OpenXml.Bibliography;
@@ -95,6 +97,12 @@ namespace KVCOMSERVER
         float[] _dataRealExtnSideLUpper = new float[200];
         float[] _dataRealExtnSideLLower = new float[200];
 
+        float[] _dataRealSideLDiffStroke = new float[200];
+        float[] _dataRealSideLDiffLoad = new float[200];
+        float[] _dataRealSideLDiffMaster = new float[200];
+        float[] _dataRealSideLDiffUpper = new float[200];
+        float[] _dataRealSideLDiffLower = new float[200];
+
         float[] _dataRealCompSideRStroke = new float[200];
         float[] _dataRealCompSideRLoad = new float[200];
         float[] _dataRealCompSideRMaster = new float[200];
@@ -106,6 +114,12 @@ namespace KVCOMSERVER
         float[] _dataRealExtnSideRMaster = new float[200];
         float[] _dataRealExtnSideRUpper = new float[200];
         float[] _dataRealExtnSideRLower = new float[200];
+
+        float[] _dataRealSideRDiffStroke = new float[200];
+        float[] _dataRealSideRDiffLoad = new float[200];
+        float[] _dataRealSideRDiffMaster = new float[200];
+        float[] _dataRealSideRDiffUpper = new float[200];
+        float[] _dataRealSideRDiffLower = new float[200];
 
         public float[] DataRealCompSideLStroke
         {
@@ -226,6 +240,65 @@ namespace KVCOMSERVER
             get { return _dataRealExtnSideRLower; }
             set { _dataRealExtnSideRLower = value; }
         }
+        public float[] DataRealSideLDiffStroke
+        {
+            get { return _dataRealSideLDiffStroke; }
+            set { _dataRealSideLDiffStroke = value; }
+        }
+
+        public float[] DataRealSideLDiffLoad
+        {
+            get { return _dataRealSideLDiffLoad; }
+            set { _dataRealSideLDiffLoad = value; }
+        }
+
+        public float[] DataRealSideLDiffMaster
+        {
+            get { return _dataRealSideLDiffMaster; }
+            set { _dataRealSideLDiffMaster = value; }
+        }
+
+        public float[] DataRealSideLDiffUpper
+        {
+            get { return _dataRealSideLDiffUpper; }
+            set { _dataRealSideLDiffUpper = value; }
+        }
+
+        public float[] DataRealSideLDiffLower
+        {
+            get { return _dataRealSideLDiffLower; }
+            set { _dataRealSideLDiffLower = value; }
+        }
+
+        public float[] DataRealSideRDiffStroke
+        {
+            get { return _dataRealSideRDiffStroke; }
+            set { _dataRealSideRDiffStroke = value; }
+        }
+
+        public float[] DataRealSideRDiffLoad
+        {
+            get { return _dataRealSideRDiffLoad; }
+            set { _dataRealSideRDiffLoad = value; }
+        }
+
+        public float[] DataRealSideRDiffMaster
+        {
+            get { return _dataRealSideRDiffMaster; }
+            set { _dataRealSideRDiffMaster = value; }
+        }
+
+        public float[] DataRealSideRDiffUpper
+        {
+            get { return _dataRealSideRDiffUpper; }
+            set { _dataRealSideRDiffUpper = value; }
+        }
+
+        public float[] DataRealSideRDiffLower
+        {
+            get { return _dataRealSideRDiffLower; }
+            set { _dataRealSideRDiffLower = value; }
+        }
 
         #endregion
 
@@ -256,6 +329,11 @@ namespace KVCOMSERVER
         float[] _dataMasterExtnSideLUpper = new float[200];
         float[] _dataMasterExtnSideLLower = new float[200];
 
+        float[] _dataMasterSideLDiffStroke = new float[200];
+        float[] _dataMasterSideLDiffMaster = new float[200];
+        float[] _dataMasterSideLDiffUpper = new float[200];
+        float[] _dataMasterSideLDiffLower = new float[200];
+
         float[] _dataMasterCompSideRStroke = new float[200];
         float[] _dataMasterCompSideRMaster = new float[200];
         float[] _dataMasterCompSideRAccMaster = new float[200];
@@ -267,6 +345,11 @@ namespace KVCOMSERVER
         float[] _dataMasterExtnSideRAccMaster = new float[200];
         float[] _dataMasterExtnSideRUpper = new float[200];
         float[] _dataMasterExtnSideRLower = new float[200];
+
+        float[] _dataMasterSideRDiffStroke = new float[200];
+        float[] _dataMasterSideRDiffMaster = new float[200];
+        float[] _dataMasterSideRDiffUpper = new float[200];
+        float[] _dataMasterSideRDiffLower = new float[200];
 
 
         public float[] DataMasterCompSideLStroke
@@ -387,6 +470,52 @@ namespace KVCOMSERVER
         {
             get { return _dataMasterExtnSideRLower; }
             set { _dataMasterExtnSideRLower = value; }
+        }
+
+        public float[] DataMasterSideLDiffStroke
+        {
+            get { return _dataMasterSideLDiffStroke; }
+            set { _dataMasterSideLDiffStroke = value; }
+        }
+        public float[] DataMasterSideLDiffMaster
+        {
+            get { return _dataMasterSideLDiffMaster; }
+            set { _dataMasterSideLDiffMaster = value; }
+        }
+
+        public float[] DataMasterSideLDiffLower
+        {
+            get { return _dataMasterSideLDiffLower; }
+            set { _dataMasterSideLDiffLower = value; }
+        }
+
+        public float[] DataMasterSideLDiffUpper
+        {
+            get { return _dataMasterSideLDiffUpper; }
+            set { _dataMasterSideLDiffUpper = value; }
+        }
+
+        public float[] DataMasterSideRDiffStroke
+        {
+            get { return _dataMasterSideRDiffStroke; }
+            set { _dataMasterSideRDiffStroke = value; }
+        }
+        public float[] DataMasterSideRDiffMaster
+        {
+            get { return _dataMasterSideRDiffMaster; }
+            set { _dataMasterSideRDiffMaster = value; }
+        }
+
+        public float[] DataMasterSideRDiffLower
+        {
+            get { return _dataMasterSideRDiffLower; }
+            set { _dataMasterSideRDiffLower = value; }
+        }
+
+        public float[] DataMasterSideRDiffUpper
+        {
+            get { return _dataMasterSideRDiffUpper; }
+            set { _dataMasterSideRDiffUpper = value; }
         }
 
         #endregion
@@ -618,9 +747,10 @@ namespace KVCOMSERVER
                         Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
                         Size = new Size(80, 24),
                         ReadOnly = true,
-                        BackColor = Color.LightGray
+                        BackColor = Color.LightGray,
 
                     };
+                    tbx.Click += new EventHandler(InputTextBox_Click);
                     tabRealSideRStroke.Add(tbx);
                     tabRealSideR.Controls.Add(tbx, col, row);
                 }
@@ -637,6 +767,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideRMaster.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 1, row);
             }
@@ -652,6 +783,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideRLower.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 2, row);
             }
@@ -667,6 +799,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideRReal.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 3, row);
             }
@@ -682,6 +815,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideRUpper.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 4, row);
             }
@@ -795,6 +929,7 @@ namespace KVCOMSERVER
                         BackColor = Color.LightGray
 
                     };
+                    tbx.Click += new EventHandler(InputTextBox_Click);
                     tabRealSideLStroke.Add(tbx);
                     tabRealSideL.Controls.Add(tbx, col, row);
                 }
@@ -812,6 +947,7 @@ namespace KVCOMSERVER
 
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideLMaster.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 1, row);
             }
@@ -827,6 +963,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideLLower.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 2, row);
             }
@@ -842,6 +979,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideLReal.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 3, row);
             }
@@ -857,6 +995,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideLUpper.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 4, row);
             }
@@ -970,6 +1109,7 @@ namespace KVCOMSERVER
                         BackColor = Color.LightGray
 
                     };
+                    tbx.Click += new EventHandler(InputTextBox_Click);
                     tabMasterSideRStroke.Add(tbx);
                     tabMasterSideR.Controls.Add(tbx, col, row);
                 }
@@ -985,6 +1125,7 @@ namespace KVCOMSERVER
                     Size = new Size(80, 24),
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideRMaster.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 1, row);
             }
@@ -999,6 +1140,7 @@ namespace KVCOMSERVER
                     Size = new Size(80, 24),
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideRAccMaster.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 2, row);
             }
@@ -1013,6 +1155,7 @@ namespace KVCOMSERVER
                     Size = new Size(80, 24),
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideRLower.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 3, row);
             }
@@ -1027,6 +1170,7 @@ namespace KVCOMSERVER
                     Size = new Size(80, 24),
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideRUpper.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 4, row);
             }
@@ -1140,6 +1284,7 @@ namespace KVCOMSERVER
                         BackColor = Color.LightGray
 
                     };
+                    tbx.Click += new EventHandler(InputTextBox_Click);
                     tabMasterSideLStroke.Add(tbx);
                     tabMasterSideL.Controls.Add(tbx, col, row);
                 }
@@ -1157,6 +1302,7 @@ namespace KVCOMSERVER
 
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideLMaster.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 1, row);
             }
@@ -1172,6 +1318,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideLAccMaster.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 2, row);
             }
@@ -1187,6 +1334,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideLLower.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 3, row);
             }
@@ -1202,6 +1350,7 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
+                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideLUpper.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 4, row);
             }
@@ -1477,6 +1626,9 @@ namespace KVCOMSERVER
         public Form1()
         {
             InitializeComponent();
+            InitializeCustomComponents();
+            InitializeBorderComponent();
+
             _WorkflowHandler = new WORKFLOWHANDLER(this);
             textBox1.Text = settingIpv4;
             textBox2.Text = settingPortIp.ToString();
@@ -1493,9 +1645,8 @@ namespace KVCOMSERVER
             }
             catch
             { }
+
             InitializeUI();
-            InitializeCustomComponents();
-            InitializeBorderComponent();
             drawingBorderUpper.BringToFront();
             drawingBorderLower.BringToFront();
             drawingBorderLeft.BringToFront();
@@ -1503,9 +1654,12 @@ namespace KVCOMSERVER
             drawingPanel.BringToFront();
 
         }
-
         private void InitializeUI()
         {
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
             // Set form properties
             this.Text = "Damping Force Function Tester";
             //this.BackColor = Color.White;
@@ -1523,38 +1677,95 @@ namespace KVCOMSERVER
             //dateTimePicker1.Font = new Font("Arial", 12);
             dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged_1;
 
+            EnableDoubleBuffering(tabControl1);
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.DrawItem += TabControl_DrawItem;
             tabControl1.Selected += TabControl_Selected;
 
-            defLayoutPanelRealSideR();
-            defLayoutPanelRealSideL();
-            defLayoutPanelMasterSideR();
-            defLayoutPanelMasterSideL();
+            PreloadTabPages();
         }
-
         private void TabControl_Selected(object sender, TabControlEventArgs e)
         {
             // Refresh the TabControl to apply the drawing changes
             tabControl1.Invalidate();
         }
-
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             // This will hide the tabs by not drawing them
         }
+        private async void PreloadTabPages()
+        {
+            await Task.Run(() => defLayoutPanelRealSideR());
+            await Task.Run(() => defLayoutPanelRealSideL());
+            await Task.Run(() => defLayoutPanelMasterSideR());
+            await Task.Run(() => defLayoutPanelMasterSideL());
+        }
+        private void EnableDoubleBuffering(Control control)
+        {
+            // Enable double buffering for the specified control and its children
+            control.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .SetValue(control, true, null);
 
+            foreach (Control child in control.Controls)
+            {
+                EnableDoubleBuffering(child);
+            }
+        }
+        public string ShowKeypad(string initialValue)
+        {
+            using (KeypadForm keypadForm = new KeypadForm(initialValue))
+            {
+                if (keypadForm.ShowDialog() == DialogResult.OK)
+                {
+                    return keypadForm.EnteredValue;
+                }
+                else if (keypadForm.DialogResult == DialogResult.Cancel)
+                {
+                    return "Cancelled";
+                }
+            }
+            return string.Empty;
+        }
+        private void InputTextBox_Click(object sender, EventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            string initialValue = textBox.Text;
+            string enteredValue = ShowKeypad(initialValue);
+            if (enteredValue != "Cancelled")
+            {
+                textBox.Text = enteredValue;
+            }
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Check the number of monitors
+            if (Screen.AllScreens.Length > 1)
+            {
+                // Get the second monitor
+                Screen secondScreen = Screen.AllScreens[1];
 
-        }        
+                // Set the form's location to the second monitor
+                this.Location = secondScreen.Bounds.Location;
+                // Optional: Maximize the form to fill the second monitor
+                this.WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                // If no second monitor is detected, run on the primary monitor
+                Screen primaryScreen = Screen.PrimaryScreen;
+                this.Location = primaryScreen.Bounds.Location;
+                this.WindowState = FormWindowState.Maximized;
+            }
+        }
+
+        //-----------------------------------------------------------------LaMurallaVerde-----------------------------------------------
+
+
 
         private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
         {
             RealtimeUpdateList();
         }
-
-        
 
         public void RealtimeUpdateList()
         {

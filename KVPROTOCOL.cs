@@ -88,7 +88,7 @@ namespace LIBKVPROTOCOL
             this._recentByteSent = bytesSent;
 
             // handle the completion of the send operation
-            Debug.WriteLine($"Sent {bytesSent} bytes");
+            //Debug.WriteLine($"Sent {bytesSent} bytes");
         }
 
         public void connSend(byte[] contentMsg)
@@ -114,7 +114,7 @@ namespace LIBKVPROTOCOL
             this._recentByteRecv = bytesRecv;
 
             // handle the completion of the send operation
-            Debug.WriteLine($"Sent {bytesRecv} bytes");
+            //Debug.WriteLine($"Sent {bytesRecv} bytes");
         }
 
         public void connRecv()
