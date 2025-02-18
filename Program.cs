@@ -44,6 +44,7 @@ using MethodInvoker = System.Windows.Forms.MethodInvoker;
 using STimer = System.Threading.Timer;
 using DocumentFormat.OpenXml.Vml;
 using System.Data;
+using KVCOMSERVER;
 
 namespace KVCOMSERVER
 {
@@ -104,6 +105,7 @@ namespace WORKFLOW
 
         EXCELSTREAM _copymaster;
         DATAMODEL_MASTER _copydatamaster;
+        DATAMODEL_TEACHING_MASTER _TMaster;
 
         public string HeadDir;
         public string RealLogDir;
@@ -115,6 +117,14 @@ namespace WORKFLOW
         bool _realtimeRead;
         bool _realtimeReadFlag;
         bool _realtimeReadFlagComplete;
+
+        bool _masterSetupConfirm;
+        void MasterSetupConfirmSet() { _masterSetupConfirm = true; }
+        void MasterSetupConfirmReset() { _masterSetupConfirm = false; }
+        
+        bool _masterDataValidation;
+        void MasterDataValidationSet() { _masterDataValidation = true; }
+        void MasterDataValidationReset() { _masterDataValidation = false; }
 
         bool _backgroundProcessOngoing { get; set; }
 
@@ -129,7 +139,6 @@ namespace WORKFLOW
                         "ZF110000",
                         "ZF510000"
                     };
-
         string[] dataLsideStep2addrs = new string[]
                     {
                         "ZF210000",
@@ -139,8 +148,6 @@ namespace WORKFLOW
                         "ZF210000",
                         "ZF510500"
                     };
-
-
         string[] dataMasterRsideStep2addrs = new string[]
                     {
                         "ZF117200",
@@ -156,7 +163,6 @@ namespace WORKFLOW
                         "ZF511800",
                         "ZF512200"
                     };
-
         string[] dataMasterLsideStep2addrs = new string[]
                     {
                         "ZF217200",
@@ -172,7 +178,6 @@ namespace WORKFLOW
                         "ZF515800",
                         "ZF516200"
                     };
-
         string[] dataMasterRsideStep3addrs = new string[]
                     {
                         "ZF120400",
@@ -188,7 +193,6 @@ namespace WORKFLOW
                         "ZF513800",
                         "ZF514200"
                     };
-
         string[] dataMasterLsideStep3addrs = new string[]
                     {
                         "ZF220400",
@@ -204,6 +208,51 @@ namespace WORKFLOW
                         "ZF517800",
                         "ZF518200"
                     };
+
+        string[] RMasteringTeachStep2addrs = new string[]
+        {
+            "ZF117200",//RCOMPSTROKE
+            "ZF117600",//RCOMPLOAD
+            "ZF132500",//RCOMPACCLOAD
+            "ZF118000",//RCOMPLOADLOWER
+            "ZF118400",//RCOMPLOADUPPER
+            "ZF118800",//REXTNSTROKE
+            "ZF119200",//REXTNLOAD
+            "ZF138900",//REXTNACCLOAD
+            "ZF119600",//REXTNLOADLOWER
+            "ZF120000",//REXTNLOADUPPER
+            "ZF511000",//RDIFFSTROKE
+            "ZF511400",//RDIFFLOADMASTER
+            "ZF510000",//RDIFFLOADTEACH
+            "ZF512200",//RDIFFLOADLOWER
+            "ZF511800" //RDIFFLOADUPPER
+        };
+        string[] RMasteringTeachStep3addrs = new string[]
+        {
+
+        };
+        string[] LMasteringTeachStep2addrs = new string[]
+        {
+            "ZF217200",//LCOMPSTROKE
+            "ZF217600",//LCOMPLOAD
+            "ZF232500",//LCOMPACCLOAD
+            "ZF218000",//LCOMPLOADLOWER
+            "ZF218400",//LCOMPLOADUPPER
+            "ZF218800",//LEXTNSTROKE
+            "ZF219200",//LEXTNLOAD
+            "ZF238900",//LEXTNACCLOAD
+            "ZF219600",//LEXTNLOADLOWER
+            "ZF220000",//LEXTNLOADUPPER
+            "ZF515000",//LDIFFSTROKE
+            "ZF515400",//LDIFFLOADMASTER
+            "ZF510500",//LDIFFLOADTEACH
+            "ZF516200",//LDIFFLOADLOWER
+            "ZF515800" //LDIFFLOADUPPER
+        };
+        string[] LMasteringTeachStep3addrs = new string[]
+        {
+
+        };
 
 
         public WORKFLOWHANDLER(KVCOMSERVER.Form1 formobject)
@@ -275,8 +324,6 @@ namespace WORKFLOW
 
         }
 
-
-
         void UpdateUIRealtimeList()
         {
             if (_uiObject.InvokeRequired)
@@ -292,39 +339,32 @@ namespace WORKFLOW
 
 
         void CheckFolderPath(string pathblazer) { if (!Directory.Exists(pathblazer)) { Directory.CreateDirectory(pathblazer); } }
-
         public bool Get_backgroundProcessOngoing()
         {
             return _backgroundProcessOngoing;
         }
-
         public void Set_backgroundProcessOngoing()
         {
             _backgroundProcessOngoing = true;
         }
-
         public void Res_backgroundProcessOngoing()
         {
             _backgroundProcessOngoing = false;
         }
-
         public void SetConnection()
         {
             _kvconnObject.SetConnection(_uiObject.settingIpv4, _uiObject.settingPortIp);
             _eeipObject.RegisterSession();
         }
-
         public void CloseConnection()
         {
             _kvconnObject.CloseConnection();
             _eeipObject.UnRegisterSession();
         }
-
         public int GetConnState()
         {
             return ((int)_eeipObject.SessionStatus());
         }
-
         public void SendMessage(string msgs)
         {
             _kvconnObject.connSend
@@ -332,7 +372,6 @@ namespace WORKFLOW
                     Encoding.ASCII.GetBytes(msgs)
                 );
         }
-
         void _eeipEventHandler_1() //Beacon
         {
             if (this.GetConnState() == 1)
@@ -342,13 +381,12 @@ namespace WORKFLOW
                 byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
                 if ((byte)(TRIG[0] & 0x01) == 0x01)
                 {
-                    _uiPlotClear();
+                    //_uiPlotClear();
                     _kvconnObject.writeDataCommand("W0FE0", "", "0");
                 }
                 //Thread.Sleep(100);
             }
         }
-
         void _eeipEventHandler_2() //Parameter Data Retrieve
         {
             if (this.GetConnState() == 1)
@@ -359,7 +397,6 @@ namespace WORKFLOW
             }
 
         }
-
         void _eeipEventHandler_3() //Realtime Data Retrieve
         {
             if (this.GetConnState() == 1)
@@ -370,20 +407,26 @@ namespace WORKFLOW
             }
 
         }
-
         void _eeipEventHandler_4() //Master Model
         {
             if (this.GetConnState() == 1)
             {
                 byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8F);
+
                 if ((byte)(TRIG[0] & 0x01) == 0x01)
                 {
+                    MasterSetupConfirmReset();
                     byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
                     string MODNAME = ParseByteString(MODEL_NAME_INPUT);
                     Debug.WriteLine(MODNAME);
                     _eeipTrigMasterFetch(MODNAME, ref MasterFileActive, ref _masterData);
                     _eeipTrigMasterFetchModel(ref _masterData);
                     _eeipTrigMasterFetchGraph(ref _masterData);
+                    MasterDataAssignRealPlot();
+                    uiPlotRealMasterUpdate();
+                    uiUPdateRealMasterActiveTable(_masterData);
+                    MasterDataValidationSet();
+                    MasterSetupConfirmSet();
                     _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                     _kvconnObject.writeDataCommand("W0D0", "", "0");
                     //Thread.Sleep(10);
@@ -391,6 +434,7 @@ namespace WORKFLOW
 
                 if ((byte)(TRIG[2] & 0x01) == 0x01)
                 {
+                    MasterSetupConfirmReset();
                     //byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAB);
                     _eeipTrigMasterNewModelParam();
                     _kvconnObject.writeDataCommand("W0D1", "", "0");
@@ -399,6 +443,7 @@ namespace WORKFLOW
 
                 if ((byte)(TRIG[4] & 0x01) == 0x01)
                 {
+                    MasterSetupConfirmReset();
                     byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
                     _editmaster = new EXCELSTREAM("MASTER");
                     _editdatamaster = new DATAMODEL_MASTER();
@@ -428,6 +473,7 @@ namespace WORKFLOW
 
                 if ((byte)(TRIG[8] & 0x01) == 0x01)
                 {
+                    MasterSetupConfirmReset();
                     byte[] MODEL_NAME_INPUT = _eeipObject.AssemblyObject.getInstance(0xAA);
                     _copymaster = new EXCELSTREAM("MASTER");
                     _copydatamaster = new DATAMODEL_MASTER();
@@ -489,12 +535,50 @@ namespace WORKFLOW
             if (this.GetConnState() == 1)
             {
                 byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8F);
+
                 if ((byte)(TRIG[20] & 0x01) == 0x01)
                 {
-                    _updateMasterDatabase();
+                    //_updateMasterDatabase();
+                    MasterDataValidationReset();
                     _kvconnObject.writeDataCommand("W0DA", "", "0");
                     //Thread.Sleep(10);
                 }
+
+                if ((byte)(TRIG[22] & 0x01) == 0x01)
+                {
+                    _kvMasterTeachDataUpload(ref _TMaster.RMasteringTeachStep2, RMasteringTeachStep2addrs, 400);
+                    MasterDataAssignRMasterPlot();
+                    uiPlotRTeachMasterUpdate();
+                    DataPlotRTeachRead();
+                    uiPlotRTeachUpdate();
+                    uiUpdateMasterRTeachTable(_TMaster);
+                    _kvconnObject.writeDataCommand("W0DB", "", "0");
+
+                }
+                if ((byte)(TRIG[24] & 0x01) == 0x01)
+                {
+                    _kvMasterTeachDataUpload(ref _TMaster.LMasteringTeachStep2, LMasteringTeachStep2addrs, 400);
+                    MasterDataAssignLMasterPlot();
+                    uiPlotLTeachMasterUpdate();
+                    DataPlotLTeachRead();
+                    uiPlotLTeachUpdate();
+                    uiUpdateMasterLTeachTable(_TMaster);
+                    _kvconnObject.writeDataCommand("W0DC", "", "0");
+
+                }
+
+                if ((byte)(TRIG[28] & 0x01) == 0x01)
+                {
+                    MasterDataValidationSet();
+                    _kvconnObject.writeDataCommand("W0DE", "", "0");
+                }
+
+                if ((byte)(TRIG[30] & 0x01) == 0x01)
+                {
+                    MasterDataValidationReset();
+                    _kvconnObject.writeDataCommand("W0DF", "", "0");
+                }
+
             }
         }
 
@@ -518,6 +602,15 @@ namespace WORKFLOW
             }
         }
 
+        void _kvMasterConfirm()
+        {
+            if (_masterSetupConfirm) _kvconnObject.writeDataCommand("W01A", "", "1");
+            else _kvconnObject.writeDataCommand("W01A", "", "0");
+
+            if (_masterDataValidation) _kvconnObject.writeDataCommand("W01B", "", "1");
+            else _kvconnObject.writeDataCommand("W01B", "", "0");
+        }
+
         void _eeipTrigMasterFetch(string MODNAME, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
             string[] files = Directory.GetFiles(MasterDir);
@@ -531,10 +624,6 @@ namespace WORKFLOW
                         notfound = false;
                         _excelReadMasterData(file, ref filemaster, ref datamaster);
                         break;
-                        //_kvMasterGraphDownload(ref datamaster.RMasteringStep2, dataMasterRsideStep2addrs, 400);
-                        //_kvMasterGraphDownload(ref datamaster.LMasteringStep2, dataMasterLsideStep2addrs, 400);
-                        //_kvMasterGraphDownload(ref datamaster.RMasteringStep3, dataMasterRsideStep3addrs, 400);
-                        //_kvMasterGraphDownload(ref datamaster.LMasteringStep3, dataMasterLsideStep3addrs, 400);
                     }
                     else
                     {
@@ -562,7 +651,6 @@ namespace WORKFLOW
                                                                  //MessageBox.Show("Master File for this model is not found. Please initiate setting.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
         void _eeipTrigMasterFetchModel(ref DATAMODEL_MASTER datamaster)
         {
             _kvMasterModelDownload(ref datamaster);
@@ -570,7 +658,6 @@ namespace WORKFLOW
             _kvMasterParam1Download(ref datamaster);
             _kvMasterParam2345Download(ref datamaster);
         }
-
         void _eeipTrigMasterFetchGraph(ref DATAMODEL_MASTER datamaster)
         {
             _kvMasterGraphDownload(ref datamaster.RMasteringStep2, dataMasterRsideStep2addrs, 400);
@@ -580,7 +667,6 @@ namespace WORKFLOW
 
             //_kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
         }
-
         void _eeipTrigMasterNewModelParam(/*byte[] MODNAME_VAR*/)
         {
             DATAMODEL_MASTER _NEWMODEL = new DATAMODEL_MASTER();
@@ -617,7 +703,6 @@ namespace WORKFLOW
             }
             */
         }
-
         void _eeipTrigMasterEditModelParam(ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
             _eeipMasterModelUpload(ref datamaster);
@@ -635,7 +720,6 @@ namespace WORKFLOW
             _kvconnObject.writeDataCommand("W0F2", "", "1");
             //>confirm if complete edit new model (only initiate master file and parameter, give warning to continue teaching)
         }
-
         void _eeipTrigMasterCopyModel(string MODNAME, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
             //_eeipMasterModelUpload(ref datamaster);
@@ -652,7 +736,6 @@ namespace WORKFLOW
             _kvconnObject.writeDataCommand("W0F3", "", "1");
             //>confirm if complete edit new model (only initiate master file and parameter, give warning to continue teaching)
         }
-
         void _eeipTrigMasterDeleteModel(string MODNAME)
         {
             foreach (string files in Directory.GetFiles(MasterDir))
@@ -669,7 +752,6 @@ namespace WORKFLOW
                 }
             }
         }
-
         void _eeipTriggerReadParameter(byte[] STAT_INPUT)
         {
             if ((byte)(STAT_INPUT[2] & 0x01) == 0x01)
@@ -697,7 +779,6 @@ namespace WORKFLOW
 
                     Thread.Sleep(1);
                 }
-
             }
             if ((byte)(STAT_INPUT[2] & 0x01) == 0x00)
             {
@@ -709,7 +790,6 @@ namespace WORKFLOW
                 }
             }
         }
-
         void _eeipTriggerReadRealtime(byte[] STAT_INPUT)
         {
             if ((byte)(STAT_INPUT[4] & 0x01) == 0x01)
@@ -789,6 +869,22 @@ namespace WORKFLOW
                     {
                         D4Col = System.Drawing.Color.LimeGreen;
                     }
+                    if (_Rdata._Step2DiffGraph_NG == 1)
+                    {
+                        D5Col = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        D5Col = System.Drawing.Color.LimeGreen;
+                    }
+                    if (_Ldata._Step2DiffGraph_NG == 1)
+                    {
+                        D6Col = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        D6Col = System.Drawing.Color.LimeGreen;
+                    }
 
                     _excelStoreRealtimeData(ref _data, ref _Rdata, ref RealtimeFileR1, "R");
                     _excelStoreRealtimeData(ref _data, ref _Ldata, ref RealtimeFileL1, "L");
@@ -801,6 +897,18 @@ namespace WORKFLOW
                     _uiPlot3Update();
                     _backgroundDataPlot4Read();
                     _uiPlot4Update();
+                    _backgroundDataPlot9Read();
+                    _uiPlot9Update();
+                    _backgroundDataPlot10Read();
+                    _uiPlot10Update();
+                    uiUPdateRealDataTable(_Rdata, _Ldata);
+
+                    uiPlotSignalLineHide(ref _uiObject.Plot1_MASTER);
+                    uiPlotSignalLineHide(ref _uiObject.Plot2_MASTER);
+                    uiPlotSignalLineHide(ref _uiObject.Plot3_MASTER);
+                    uiPlotSignalLineHide(ref _uiObject.Plot4_MASTER);
+                    uiPlotSignalLineHide(ref _uiObject.Plot9_MASTER);
+                    uiPlotSignalLineHide(ref _uiObject.Plot10_MASTER);
 
                     _kvconnObject.writeDataCommand("W0C2", "", "0");
                     Thread.Sleep(1);
@@ -817,7 +925,6 @@ namespace WORKFLOW
                 }
             }
         }
-
         void _excelReadMasterData(string modfile, ref EXCELSTREAM masterfile, ref DATAMODEL_MASTER masterdata)
         {
             masterfile.FileReadMaster(modfile);
@@ -832,22 +939,12 @@ namespace WORKFLOW
             masterdata.RMasteringStep3 = masterfile.getRsideMasterStep3();
             masterdata.LMasteringStep3 = masterfile.getLsideMasterStep3();
         }
-
         void _excelInitMasterData(ref DATAMODEL_MASTER feeddata)
         {
             EXCELSTREAM newmasterfile = new EXCELSTREAM("MASTER");
             _excelStoreMasterParamData(ref feeddata, ref newmasterfile);
             _excelPrintMasterData(ref feeddata, ref newmasterfile);
         }
-
-        void _excelStoreMasterParamData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM excelmaster)
-        {
-            excelmaster.setModelName(feeddata._activeModelName);
-            excelmaster.setKYBNUM(feeddata._activeKayabaNumber);
-            excelmaster.setParameterStep1(feeddata.Step1Param);
-            excelmaster.setParameterStep2345(feeddata.Step2345Param);
-        }
-
         void _excelStoreMasterGraphData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM excelmaster)
         {
             excelmaster.setRsideMasterStep2(feeddata.RMasteringStep2);
@@ -855,13 +952,18 @@ namespace WORKFLOW
             //excelmaster.setRsideMasterStep3(feeddata.RMasteringStep3);
             //excelmaster.setLsideMasterStep3(feeddata.LMasteringStep3);
         }
-
+        void _excelStoreMasterParamData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM excelmaster)
+        {
+            excelmaster.setModelName(feeddata._activeModelName);
+            excelmaster.setKYBNUM(feeddata._activeKayabaNumber);
+            excelmaster.setParameterStep1(feeddata.Step1Param);
+            excelmaster.setParameterStep2345(feeddata.Step2345Param);
+        }
         void _excelPrintMasterData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM exceldata)
         {
             string _filename = ($"{MasterDir}\\{feeddata._activeModelName}.xlsx");
             exceldata.FilePrint(_filename);
         }
-
         void _excelStoreParameterData(ref DATAMODEL_COMMON feeddata, ref EXCELSTREAM exceldata)
         {
             exceldata.setModelName(feeddata._activeModelName);
@@ -869,7 +971,6 @@ namespace WORKFLOW
             exceldata.setParameterStep1(feeddata.Step1Param);
             exceldata.setParameterStep2345(feeddata.Step2345Param);
         }
-
         void _excelStoreRealtimeData(ref DATAMODEL_COMMON datacm, ref DATAMODEL_RL datarl, ref EXCELSTREAM exceldata, string side)
         {
             string DirRealtime = RealLogDir + $"YEAR_{datacm.DTM[0]}\\MONTH_{datacm.DTM[1]}\\DAY_{datacm.DTM[2]}";
@@ -936,7 +1037,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipreadActiveModelData(ref DATAMODEL_COMMON data)
         {
             try
@@ -1016,7 +1116,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipreadDateTime(ref DATAMODEL_COMMON data)
         {
             try
@@ -1061,7 +1160,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipreadStep1Param(ref DATAMODEL_COMMON data)
         {
             try
@@ -1127,7 +1225,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipreadStep2345Param(ref DATAMODEL_COMMON data)
         {
             try
@@ -1191,7 +1288,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipreadJudgement(ref List<float> judgementresult, Int16 addr)
         {
             try
@@ -1247,7 +1343,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipreadRealtime(ref List<List<object>> realtimeresult, Int16 addr)
         {
             try
@@ -1256,7 +1351,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _kvreadRealtime(ref List<List<float>> realtimeresult, string[] addrs, int count)
         {
             try
@@ -1270,9 +1364,18 @@ namespace WORKFLOW
 
                 for (int iv = 0; iv < addrs.Length; iv++)
                 {
-                    List<byte[]> masterDataList = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[iv], count));
-                    realtimeresult.Add(hex16tofloat32(masterDataList));
+                    List<byte[]> DataList = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[iv], count));
+                    realtimeresult.Add(hex16tofloat32(DataList));
                 }
+            }
+            catch { }
+        }
+        void _kvreadComponent(ref List<float> datacomponents, string addrs, int count)
+        {
+            try
+            {
+                List<byte[]> DataList = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs, count));
+                datacomponents = hex16tofloat32(DataList);
             }
             catch { }
         }
@@ -1354,7 +1457,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _kvMasterModelDownload(ref DATAMODEL_MASTER master)
         {
             try
@@ -1368,7 +1470,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipMasterParamSizeUpload(ref DATAMODEL_MASTER masterparam1)
         {
             try
@@ -1414,8 +1515,7 @@ namespace WORKFLOW
             }
             catch { }
         }
-
-        void _kvMasterParamSizeDownload(ref DATAMODEL_MASTER masterparam1)
+        void _kvMasterParamSizeDownload(ref DATAMODEL_MASTER masterparam1) //not-yet confirmed, need excelstream format update
         {
             string[] tfdata = new string[] { };
             try
@@ -1436,7 +1536,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipMasterParam1Upload(ref DATAMODEL_MASTER masterparam1)
         {
             try
@@ -1501,7 +1600,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _kvMasterParam1Download(ref DATAMODEL_MASTER masterparam1)
         {
             string[] tfdata = new string[] { };
@@ -1521,7 +1619,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _eeipMasterParam2345Upload(ref DATAMODEL_MASTER masterparam2345)
         {
             try
@@ -1587,7 +1684,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _kvMasterParam2345Download(ref DATAMODEL_MASTER masterparam2345)
         {
             string[] tfdata = new string[] { };
@@ -1609,7 +1705,6 @@ namespace WORKFLOW
             catch { }
 
         }
-
         void _kvMasterGraphUpload(ref List<List<float>> masterdata, string[] addrs, int count)
         {
             try
@@ -1629,7 +1724,6 @@ namespace WORKFLOW
             }
             catch { }
         }
-
         void _kvMasterGraphDownload(ref List<List<float>> masterdata, string[] addrs, int count)
         {
             //try
@@ -1654,6 +1748,24 @@ namespace WORKFLOW
             }
             //catch { }
         }
+        void _kvMasterTeachDataUpload(ref List<List<float>> MTeachData, string[] addrs, int count)
+        {
+            try
+            {
+                MTeachData.Clear();
+                if (addrs.Length != MTeachData.Count)
+                {
+                    throw new ArgumentException("address and data list length mismatch");
+                }
+
+                for (int iv = 0; iv < MTeachData.Count; iv++)
+                {
+                    List<byte[]> DataList = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex(addrs[iv], count));
+                    MTeachData.Add(hex16tofloat32(DataList));
+                }
+            }
+            catch { }
+        }
 
         void _updateMasterDatabase()
         {
@@ -1664,7 +1776,7 @@ namespace WORKFLOW
             _excelStoreMasterGraphData(ref _masterData, ref MasterFileActive);
             _excelPrintMasterData(ref _masterData, ref MasterFileActive);
 
-            _kvconnObject.writeDataCommand("W0FA", "", "1");
+            //_kvconnObject.writeDataCommand("W0FA", "", "1");
         }
 
         string ParseByteString(byte[] MODNAME_BYTE)
@@ -2136,18 +2248,6 @@ namespace WORKFLOW
             await Task.Run(() => action(), cancellationToken);
         }
 
-        public async Task BackgroundWorkAsync(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                await _eeipEventHandler_1Async(cancellationToken);
-                await _eeipEventHandler_2Async(cancellationToken);
-                await _eeipEventHandler_3Async(cancellationToken);
-                await _uibeaconnUpdateAsync(cancellationToken);
-                await Task.Delay(10, cancellationToken);
-            }
-        }
-
         public async void BackgroundWork()
         {
             int counter = 0;
@@ -2163,11 +2263,13 @@ namespace WORKFLOW
                 while (!_cts.Token.IsCancellationRequested)
                 {
                     await _uibeaconnUpdateAsync(_cts.Token);
+                    await _kvMasterConfirmAsync(_cts.Token);
                     await _eeipEventHandler_1Async(_cts.Token);
                     await _eeipEventHandler_2Async(_cts.Token);
                     await _eeipEventHandler_3Async(_cts.Token);
                     await _eeipEventHandler_4Async(_cts.Token);
                     await _eeipEventHandler_5Async(_cts.Token);
+                    
 
                     //await _uiPlot1UpdateAsync(_cts.Token);
                     //await _backgroundDataPlot1ReadAsync(_cts.Token);
@@ -2189,83 +2291,70 @@ namespace WORKFLOW
         {
             _cts.Cancel();
         }
-
         private async Task _eeipEventHandler_1Async(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _eeipEventHandler_1(), cancellationToken);
         }
-
         private async Task _eeipEventHandler_2Async(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _eeipEventHandler_2(), cancellationToken);
         }
-
         private async Task _eeipEventHandler_3Async(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _eeipEventHandler_3(), cancellationToken);
         }
-
         private async Task _eeipEventHandler_4Async(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _eeipEventHandler_4(), cancellationToken);
         }
-
         private async Task _eeipEventHandler_5Async(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _eeipEventHandler_5(), cancellationToken);
         }
-
         private async Task _uibeaconnUpdateAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _uibeaconnUpdate(), cancellationToken);
         }
-
+        private async Task _kvMasterConfirmAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _kvMasterConfirm(), cancellationToken);
+        }
         private async Task _backgroundMessageRecvAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _backgroundMessageRecv(), cancellationToken);
         }
-
         private async Task _uiPlot1UpdateAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _uiPlot1Update(), cancellationToken);
         }
-
         private async Task _backgroundDataPlot1ReadAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _backgroundDataPlot1Read(), cancellationToken);
         }
-
         private async Task _uiPlot2UpdateAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _uiPlot2Update(), cancellationToken);
         }
-
         private async Task _backgroundDataPlot2ReadAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _backgroundDataPlot2Read(), cancellationToken);
         }
-
         private async Task _uiPlot3UpdateAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _uiPlot3Update(), cancellationToken);
         }
-
         private async Task _backgroundDataPlot3ReadAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _backgroundDataPlot3Read(), cancellationToken);
         }
-
         private async Task _uiPlot4UpdateAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _uiPlot4Update(), cancellationToken);
         }
-
         private async Task _backgroundDataPlot4ReadAsync(CancellationToken cancellationToken)
         {
             await InvokeAsync(() => _backgroundDataPlot4Read(), cancellationToken);
         }
-
-
 
         private void _uibeaconnUpdate()
         {
@@ -2302,34 +2391,211 @@ namespace WORKFLOW
             Thread.Sleep(1);
         }
 
-        //double[] _dXD1;
-        public double[] dXD1;
-        public double[] dXD2;
-        public double[] dXD3;
-        public double[] dXD4;
-
-        //double[] _dYD1;
-        public double[] dYD1;
-        public double[] dYD2;
-        public double[] dYD3;
-        public double[] dYD4;
+        #region PlotDataObject
 
         System.Drawing.Color D1Col;
         System.Drawing.Color D2Col;
         System.Drawing.Color D3Col;
         System.Drawing.Color D4Col;
+        System.Drawing.Color D5Col;
+        System.Drawing.Color D6Col;
+
+        System.Drawing.Color Master_D1Col = System.Drawing.Color.Gold;
+        System.Drawing.Color Master_D2Col = System.Drawing.Color.Gold;
+        System.Drawing.Color Master_D3Col = System.Drawing.Color.Gold;
+        System.Drawing.Color Master_D4Col = System.Drawing.Color.Gold;
+        System.Drawing.Color Master_D5Col = System.Drawing.Color.Gold;
+        System.Drawing.Color Master_D6Col = System.Drawing.Color.Gold;
+
+        System.Drawing.Color LLim_D1Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color LLim_D2Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color LLim_D3Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color LLim_D4Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color LLim_D5Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color LLim_D6Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+
+        System.Drawing.Color HLim_D1Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color HLim_D2Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color HLim_D3Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color HLim_D4Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color HLim_D5Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color HLim_D6Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+
+        //RealX
+        public double[] dXD1;
+        public double[] dXD2;
+        public double[] dXD3;
+        public double[] dXD4;
+        public double[] dXD5;
+        public double[] dXD6;
+        //RealY
+        public double[] dYD1;
+        public double[] dYD2;
+        public double[] dYD3;
+        public double[] dYD4;
+        public double[] dYD5;
+        public double[] dYD6;
+
+        //MasterX
+        public double[] Master_dXD1;
+        public double[] Master_dXD2;
+        public double[] Master_dXD3;
+        public double[] Master_dXD4;
+        public double[] Master_dXD5;
+        public double[] Master_dXD6;
+        //MasterY
+        public double[] Master_dYD1;
+        public double[] Master_dYD2;
+        public double[] Master_dYD3;
+        public double[] Master_dYD4;
+        public double[] Master_dYD5;
+        public double[] Master_dYD6;
+
+        //UpperX
+        public double[] Upper_dXD1;
+        public double[] Upper_dXD2;
+        public double[] Upper_dXD3;
+        public double[] Upper_dXD4;
+        public double[] Upper_dXD5;
+        public double[] Upper_dXD6;
+        //UpperY
+        public double[] Upper_dYD1;
+        public double[] Upper_dYD2;
+        public double[] Upper_dYD3;
+        public double[] Upper_dYD4;
+        public double[] Upper_dYD5;
+        public double[] Upper_dYD6;
+
+        //LowerX
+        public double[] Lower_dXD1;
+        public double[] Lower_dXD2;
+        public double[] Lower_dXD3;
+        public double[] Lower_dXD4;
+        public double[] Lower_dXD5;
+        public double[] Lower_dXD6;
+        //LowerY
+        public double[] Lower_dYD1;
+        public double[] Lower_dYD2;
+        public double[] Lower_dYD3;
+        public double[] Lower_dYD4;
+        public double[] Lower_dYD5;
+        public double[] Lower_dYD6;
+
+        System.Drawing.Color MMaster_D1Col = System.Drawing.Color.Gold;
+        System.Drawing.Color MMaster_D2Col = System.Drawing.Color.Gold;
+        System.Drawing.Color MMaster_D3Col = System.Drawing.Color.Gold;
+        System.Drawing.Color MMaster_D4Col = System.Drawing.Color.Gold;
+        System.Drawing.Color MMaster_D5Col = System.Drawing.Color.Gold;
+        System.Drawing.Color MMaster_D6Col = System.Drawing.Color.Gold;
+
+        System.Drawing.Color MTeach_D1Col = System.Drawing.Color.LimeGreen;
+        System.Drawing.Color MTeach_D2Col = System.Drawing.Color.LimeGreen;
+        System.Drawing.Color MTeach_D3Col = System.Drawing.Color.LimeGreen;
+        System.Drawing.Color MTeach_D4Col = System.Drawing.Color.LimeGreen;
+        System.Drawing.Color MTeach_D5Col = System.Drawing.Color.LimeGreen;
+        System.Drawing.Color MTeach_D6Col = System.Drawing.Color.LimeGreen;
+
+        System.Drawing.Color MLLim_D1Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MLLim_D2Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MLLim_D3Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MLLim_D4Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MLLim_D5Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MLLim_D6Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+
+        System.Drawing.Color MHLim_D1Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MHLim_D2Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MHLim_D3Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MHLim_D4Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MHLim_D5Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+        System.Drawing.Color MHLim_D6Col = System.Drawing.ColorTranslator.FromHtml("#ff6700");
+
+        //Master Data X
+        public double[] MMaster_dXD1;
+        public double[] MMaster_dXD2;
+        public double[] MMaster_dXD3;
+        public double[] MMaster_dXD4;
+        public double[] MMaster_dXD5;
+        public double[] MMaster_dXD6;
+        //Master Data Y
+        public double[] MMaster_dYD1;
+        public double[] MMaster_dYD2;
+        public double[] MMaster_dYD3;
+        public double[] MMaster_dYD4;
+        public double[] MMaster_dYD5;
+        public double[] MMaster_dYD6;
+
+        //Master Teach X
+        public double[] MTeach_dXD1;
+        public double[] MTeach_dXD2;
+        public double[] MTeach_dXD3;
+        public double[] MTeach_dXD4;
+        public double[] MTeach_dXD5;
+        public double[] MTeach_dXD6;
+        //Master Teach Y
+        public double[] MTeach_dYD1;
+        public double[] MTeach_dYD2;
+        public double[] MTeach_dYD3;
+        public double[] MTeach_dYD4;
+        public double[] MTeach_dYD5;
+        public double[] MTeach_dYD6;
+
+        //Master Upper X
+        public double[] MUpper_dXD1;
+        public double[] MUpper_dXD2;
+        public double[] MUpper_dXD3;
+        public double[] MUpper_dXD4;
+        public double[] MUpper_dXD5;
+        public double[] MUpper_dXD6;
+        //Master Upper Y
+        public double[] MUpper_dYD1;
+        public double[] MUpper_dYD2;
+        public double[] MUpper_dYD3;
+        public double[] MUpper_dYD4;
+        public double[] MUpper_dYD5;
+        public double[] MUpper_dYD6;
+
+        //Master Lower X
+        public double[] MLower_dXD1;
+        public double[] MLower_dXD2;
+        public double[] MLower_dXD3;
+        public double[] MLower_dXD4;
+        public double[] MLower_dXD5;
+        public double[] MLower_dXD6;
+        //Master Lower Y
+        public double[] MLower_dYD1;
+        public double[] MLower_dYD2;
+        public double[] MLower_dYD3;
+        public double[] MLower_dYD4;
+        public double[] MLower_dYD5;
+        public double[] MLower_dYD6;
 
         bool _uiPlot1UpdateFlag;
         bool _uiPlot2UpdateFlag;
         bool _uiPlot3UpdateFlag;
         bool _uiPlot4UpdateFlag;
+        bool _uiPlot5UpdateFlag;
+        bool _uiPlot6UpdateFlag;
+        bool _uiPlot7UpdateFlag;
+        bool _uiPlot8UpdateFlag;
+        bool _uiPlot9UpdateFlag;
+        bool _uiPlot10UpdateFlag;
+        bool _uiPlot11UpdateFlag;
+        bool _uiPlot12UpdateFlag;
 
         bool _uiPlot1ResetFlag;
         bool _uiPlot2ResetFlag;
         bool _uiPlot3ResetFlag;
         bool _uiPlot4ResetFlag;
+        bool _uiPlot5ResetFlag;
+        bool _uiPlot6ResetFlag;
+        bool _uiPlot7ResetFlag;
+        bool _uiPlot8ResetFlag;
+        bool _uiPlot9ResetFlag;
+        bool _uiPlot10ResetFlag;
+        bool _uiPlot11ResetFlag;
+        bool _uiPlot12ResetFlag;
 
-
+        #endregion
 
         private void _uiPlotClear()
         {
@@ -2343,7 +2609,7 @@ namespace WORKFLOW
             }
         }
 
-        private void _uiPlot1Update()
+        void _uiPlot1Update()
         {
             if (_uiPlot1UpdateFlag)
             {
@@ -2355,11 +2621,20 @@ namespace WORKFLOW
 
                 if (_uiObject.InvokeRequired)
                 {
-                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot1Update(xd, yd, D1Col)));
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot1AddPlot(xd, yd, D1Col)));
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot1().Reset()));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot1_PRESENT, D1Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot1().Refresh()));
                 }
                 else
                 {
-                    _uiObject.Plot1Update(xd, yd, D1Col);
+                    //_uiObject.Plot1Update(xd, yd, D1Col);
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_PRESENT, xd, yd); 
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot1_PRESENT, D1Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_PRESENT);
+                    _uiObject.FormPlot1().Refresh();
                 }
 
                 _uiPlot1UpdateFlag = false;
@@ -2367,8 +2642,7 @@ namespace WORKFLOW
                 //Thread.Sleep(10);
             }
         }
-
-        private void _uiPlot2Update()
+        void _uiPlot2Update()
         {
             if (_uiPlot2UpdateFlag)
             {
@@ -2380,11 +2654,19 @@ namespace WORKFLOW
 
                 if (_uiObject.InvokeRequired)
                 {
-                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot2Update(xd, yd, D2Col)));
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot2Update(xd, yd, D2Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot2_PRESENT, D2Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot2().Refresh()));
                 }
                 else
                 {
-                    _uiObject.Plot2Update(xd, yd, D2Col);
+                    //_uiObject.Plot2Update(xd, yd, D2Col);
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_PRESENT, xd, yd); 
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot2_PRESENT, D2Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_PRESENT);
+                    _uiObject.FormPlot2().Refresh();
                 }
 
                 _uiPlot2UpdateFlag = false;
@@ -2392,8 +2674,7 @@ namespace WORKFLOW
                 //Thread.Sleep(10);
             }
         }
-
-        private void _uiPlot3Update()
+        void _uiPlot3Update()
         {
             if (_uiPlot3UpdateFlag)
             {
@@ -2405,11 +2686,20 @@ namespace WORKFLOW
 
                 if (_uiObject.InvokeRequired)
                 {
-                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot3Update(xd, yd, D3Col)));
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot3Update(xd, yd, D3Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot3_PRESENT, D3Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot3().Refresh()));
+
                 }
                 else
                 {
-                    _uiObject.Plot3Update(xd, yd, D3Col);
+                    //_uiObject.Plot3Update(xd, yd, D3Col);
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_PRESENT, xd, yd); 
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot3_PRESENT, D3Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_PRESENT);
+                    _uiObject.FormPlot3().Refresh();
                 }
 
                 _uiPlot3UpdateFlag = false;
@@ -2417,8 +2707,7 @@ namespace WORKFLOW
                 //Thread.Sleep(10);
             }
         }
-
-        private void _uiPlot4Update()
+        void _uiPlot4Update()
         {
             if (_uiPlot4UpdateFlag)
             {
@@ -2430,11 +2719,19 @@ namespace WORKFLOW
 
                 if (_uiObject.InvokeRequired)
                 {
-                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot4Update(xd, yd, D4Col)));
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot4Update(xd, yd, D4Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot4_PRESENT, D4Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot4().Refresh()));
                 }
                 else
                 {
-                    _uiObject.Plot4Update(xd, yd, D4Col);
+                    //_uiObject.Plot4Update(xd, yd, D4Col);
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot4_PRESENT, D4Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_PRESENT);
+                    _uiObject.FormPlot4().Refresh();
                 }
 
                 _uiPlot4UpdateFlag = false;
@@ -2442,24 +2739,742 @@ namespace WORKFLOW
                 //Thread.Sleep(10);
             }
         }
+        void _uiPlot9Update()
+        {
+            if (_uiPlot9UpdateFlag)
+            {
+                double[] xd = new double[dXD5.Length];
+                Array.Copy(dXD5, xd, dXD5.Length);
 
-        int parse1_idx;
-        private void _backgroundDataPlot1Read()
+                double[] yd = new double[dYD5.Length];
+                Array.Copy(dYD5, yd, dYD5.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot9_PRESENT, D5Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot9().Refresh()));
+                }
+                else
+                {
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot9_PRESENT, D5Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_PRESENT);
+                    _uiObject.FormPlot9().Refresh();
+                }
+
+                _uiPlot9UpdateFlag = false;
+
+                //Thread.Sleep(10);
+            }
+        }
+        void _uiPlot10Update()
+        {
+            if (_uiPlot10UpdateFlag)
+            {
+                double[] xd = new double[dXD6.Length];
+                Array.Copy(dXD6, xd, dXD6.Length);
+
+                double[] yd = new double[dYD6.Length];
+                Array.Copy(dYD6, yd, dYD6.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot10_PRESENT, D6Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot10().Refresh()));
+                }
+                else
+                {
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot10_PRESENT, D6Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_PRESENT);
+                    _uiObject.FormPlot10().Refresh();
+                }
+
+                _uiPlot10UpdateFlag = false;
+
+                //Thread.Sleep(10);
+            }
+        }
+        void _uiPlot5TeachUpdate()
+        {
+            if (_uiPlot5UpdateFlag)
+            {
+                double[] xd = new double[MTeach_dXD1.Length];
+                Array.Copy(MTeach_dXD1, xd, MTeach_dXD1.Length);
+
+                double[] yd = new double[MTeach_dYD1.Length];
+                Array.Copy(MTeach_dYD1, yd, MTeach_dYD1.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot1AddPlot(xd, yd, D1Col)));
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot1().Reset()));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot5_PRESENT, MTeach_D1Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot5().Refresh()));
+                }
+                else
+                {
+                    //_uiObject.Plot1Update(xd, yd, D1Col);
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot5_PRESENT, MTeach_D1Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_PRESENT);
+                    _uiObject.FormPlot5().Refresh();
+                }
+                _uiPlot5UpdateFlag = false;
+                //Thread.Sleep(10);
+            }
+        }
+        void _uiPlot6TeachUpdate()
+        {
+            if (_uiPlot6UpdateFlag)
+            {
+                double[] xd = new double[MTeach_dXD2.Length];
+                Array.Copy(MTeach_dXD2, xd, MTeach_dXD2.Length);
+
+                double[] yd = new double[MTeach_dYD2.Length];
+                Array.Copy(MTeach_dYD2, yd, MTeach_dYD2.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot2Update(xd, yd, D2Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot6_PRESENT, MTeach_D2Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot6().Refresh()));
+                }
+                else
+                {
+                    //_uiObject.Plot2Update(xd, yd, D2Col);
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot6_PRESENT, MTeach_D2Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_PRESENT);
+                    _uiObject.FormPlot6().Refresh();
+                }
+                _uiPlot6UpdateFlag = false;
+                //Thread.Sleep(10);
+            }
+        }
+        void _uiPlot7TeachUpdate()
+        {
+            if (_uiPlot7UpdateFlag)
+            {
+                double[] xd = new double[MTeach_dXD3.Length];
+                Array.Copy(MTeach_dXD3, xd, MTeach_dXD3.Length);
+
+                double[] yd = new double[MTeach_dYD3.Length];
+                Array.Copy(MTeach_dYD3, yd, MTeach_dYD3.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot3Update(xd, yd, D3Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot7_PRESENT, MTeach_D3Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot7().Refresh()));
+
+                }
+                else
+                {
+                    //_uiObject.Plot3Update(xd, yd, D3Col);
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot7_PRESENT, MTeach_D3Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_PRESENT);
+                    _uiObject.FormPlot7().Refresh();
+                }
+
+                _uiPlot7UpdateFlag = false;
+                //Thread.Sleep(10);
+            }
+        }
+        void _uiPlot8TeachUpdate()
+        {
+            if (_uiPlot8UpdateFlag)
+            {
+                double[] xd = new double[MTeach_dXD4.Length];
+                Array.Copy(MTeach_dXD4, xd, MTeach_dXD4.Length);
+
+                double[] yd = new double[MTeach_dYD4.Length];
+                Array.Copy(MTeach_dYD4, yd, MTeach_dYD4.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    //_uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.Plot4Update(xd, yd, D4Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot8_PRESENT, MTeach_D4Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot8().Refresh()));
+                }
+                else
+                {
+                    //_uiObject.Plot4Update(xd, yd, D4Col);
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot8_PRESENT, MTeach_D4Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_PRESENT);
+                    _uiObject.FormPlot8().Refresh();
+                }
+                _uiPlot8UpdateFlag = false;
+                //Thread.Sleep(10);
+            }
+        }
+        void _uiPlot11TeachUpdate()
+        {
+            if (_uiPlot11UpdateFlag)
+            {
+                double[] xd = new double[MTeach_dXD5.Length];
+                Array.Copy(MTeach_dXD5, xd, MTeach_dXD5.Length);
+
+                double[] yd = new double[MTeach_dYD5.Length];
+                Array.Copy(MTeach_dYD5, yd, MTeach_dYD5.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot11_PRESENT, MTeach_D5Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot11().Refresh()));
+                }
+                else
+                {
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot11_PRESENT, MTeach_D5Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_PRESENT);
+                    _uiObject.FormPlot11().Refresh();
+                }
+                _uiPlot11UpdateFlag = false;
+                //Thread.Sleep(10);
+            }
+        }
+        void _uiPlot12TeachUpdate()
+        {
+            if (_uiPlot12UpdateFlag)
+            {
+                double[] xd = new double[MTeach_dXD6.Length];
+                Array.Copy(MTeach_dXD6, xd, MTeach_dXD6.Length);
+
+                double[] yd = new double[MTeach_dYD6.Length];
+                Array.Copy(MTeach_dYD6, yd, MTeach_dYD6.Length);
+
+                if (_uiObject.InvokeRequired)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_PRESENT, xd, yd)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot12_PRESENT, MTeach_D6Col)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot12().Refresh()));
+                }
+                else
+                {
+                    _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_PRESENT, xd, yd);
+                    _uiObject.PlotChangeColor(ref _uiObject.Plot12_PRESENT, MTeach_D6Col);
+                    _uiObject.PlotBringToFront(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_PRESENT);
+                    _uiObject.FormPlot12().Refresh();
+                }
+                _uiPlot12UpdateFlag = false;
+                //Thread.Sleep(10);
+            }
+        }
+        void uiPlotLTeachUpdate()
+        {
+            _uiPlot5TeachUpdate();
+            _uiPlot6TeachUpdate();
+            _uiPlot11TeachUpdate();
+        }
+        void uiPlotRTeachUpdate()
+        {
+            _uiPlot7TeachUpdate();
+            _uiPlot8TeachUpdate();
+            _uiPlot12TeachUpdate();
+        }
+
+        void _uiPlot1MasterUpdate()
+        {
+            double[] xdA = new double[Master_dXD1.Length];
+            Array.Copy(Master_dXD1, xdA, Master_dXD1.Length);
+            double[] ydA = new double[Master_dYD1.Length];
+            Array.Copy(Master_dYD1, ydA, Master_dYD1.Length);
+
+            double[] xdB = new double[Upper_dXD1.Length];
+            Array.Copy(Upper_dXD1, xdB, Upper_dXD1.Length);
+            double[] ydB = new double[Upper_dYD1.Length];
+            Array.Copy(Upper_dYD1, ydB, Upper_dYD1.Length);
+
+            double[] xdC = new double[Lower_dXD1.Length];
+            Array.Copy(Lower_dXD1, xdC, Lower_dXD1.Length);
+            double[] ydC = new double[Lower_dYD1.Length];
+            Array.Copy(Lower_dYD1, ydC, Lower_dYD1.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot1_MASTER, Master_D1Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot1_UPPER, HLim_D1Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot1_LOWER, LLim_D1Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot1().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot1_MASTER, Master_D1Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot1_UPPER, HLim_D1Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot1_LOWER, LLim_D1Col);
+                _uiObject.FormPlot1().Refresh();
+            }
+        }
+        void _uiPlot2MasterUpdate()
+        {
+            double[] xdA = new double[Master_dXD2.Length];
+            Array.Copy(Master_dXD2, xdA, Master_dXD2.Length);
+            double[] ydA = new double[Master_dYD2.Length];
+            Array.Copy(Master_dYD2, ydA, Master_dYD2.Length);
+
+            double[] xdB = new double[Upper_dXD2.Length];
+            Array.Copy(Upper_dXD2, xdB, Upper_dXD2.Length);
+            double[] ydB = new double[Upper_dYD2.Length];
+            Array.Copy(Upper_dYD2, ydB, Upper_dYD2.Length);
+
+            double[] xdC = new double[Lower_dXD2.Length];
+            Array.Copy(Lower_dXD2, xdC, Lower_dXD2.Length);
+            double[] ydC = new double[Lower_dYD2.Length];
+            Array.Copy(Lower_dYD2, ydC, Lower_dYD2.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot2_MASTER, Master_D2Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot2_UPPER, HLim_D2Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot2_LOWER, LLim_D2Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot2().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot2_MASTER, Master_D2Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot2_UPPER, HLim_D2Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot2_LOWER, LLim_D2Col);
+                _uiObject.FormPlot2().Refresh();
+            }
+        }
+        void _uiPlot3MasterUpdate()
+        {
+            double[] xdA = new double[Master_dXD3.Length];
+            Array.Copy(Master_dXD3, xdA, Master_dXD3.Length);
+            double[] ydA = new double[Master_dYD3.Length];
+            Array.Copy(Master_dYD3, ydA, Master_dYD3.Length);
+
+            double[] xdB = new double[Upper_dXD3.Length];
+            Array.Copy(Upper_dXD3, xdB, Upper_dXD3.Length);
+            double[] ydB = new double[Upper_dYD3.Length];
+            Array.Copy(Upper_dYD3, ydB, Upper_dYD3.Length);
+
+            double[] xdC = new double[Lower_dXD3.Length];
+            Array.Copy(Lower_dXD3, xdC, Lower_dXD3.Length);
+            double[] ydC = new double[Lower_dYD3.Length];
+            Array.Copy(Lower_dYD3, ydC, Lower_dYD3.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot3_MASTER, Master_D3Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot3_UPPER, HLim_D3Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot3_LOWER, LLim_D3Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot3().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot3_MASTER, Master_D3Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot3_UPPER, HLim_D3Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot3_LOWER, LLim_D3Col);
+                _uiObject.FormPlot3().Refresh();
+            }
+        }
+        void _uiPlot4MasterUpdate()
+        {
+            double[] xdA = new double[Master_dXD4.Length];
+            Array.Copy(Master_dXD4, xdA, Master_dXD4.Length);
+            double[] ydA = new double[Master_dYD4.Length];
+            Array.Copy(Master_dYD4, ydA, Master_dYD4.Length);
+
+            double[] xdB = new double[Upper_dXD4.Length];
+            Array.Copy(Upper_dXD4, xdB, Upper_dXD4.Length);
+            double[] ydB = new double[Upper_dYD4.Length];
+            Array.Copy(Upper_dYD4, ydB, Upper_dYD4.Length);
+
+            double[] xdC = new double[Lower_dXD4.Length];
+            Array.Copy(Lower_dXD4, xdC, Lower_dXD4.Length);
+            double[] ydC = new double[Lower_dYD4.Length];
+            Array.Copy(Lower_dYD4, ydC, Lower_dYD4.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot4_MASTER, Master_D4Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot4_UPPER, HLim_D4Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot4_LOWER, LLim_D4Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot4().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot4_MASTER, Master_D4Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot4_UPPER, HLim_D4Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot4_LOWER, LLim_D4Col);
+                _uiObject.FormPlot4().Refresh();
+            }
+        }
+        void _uiPlot9MasterUpdate()
+        {
+            double[] xdA = new double[Master_dXD5.Length];
+            Array.Copy(Master_dXD5, xdA, Master_dXD5.Length);
+            double[] ydA = new double[Master_dYD5.Length];
+            Array.Copy(Master_dYD5, ydA, Master_dYD5.Length);
+
+            double[] xdB = new double[Upper_dXD5.Length];
+            Array.Copy(Upper_dXD5, xdB, Upper_dXD5.Length);
+            double[] ydB = new double[Upper_dYD5.Length];
+            Array.Copy(Upper_dYD5, ydB, Upper_dYD5.Length);
+
+            double[] xdC = new double[Lower_dXD5.Length];
+            Array.Copy(Lower_dXD5, xdC, Lower_dXD5.Length);
+            double[] ydC = new double[Lower_dYD5.Length];
+            Array.Copy(Lower_dYD5, ydC, Lower_dYD5.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot9_MASTER, Master_D5Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot9_UPPER, HLim_D5Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot9_LOWER, LLim_D5Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot9().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot9_MASTER, Master_D5Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot9_UPPER, HLim_D5Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot9_LOWER, LLim_D5Col);
+                _uiObject.FormPlot9().Refresh();
+            }
+        }
+        void _uiPlot10MasterUpdate()
+        {
+            double[] xdA = new double[Master_dXD6.Length];
+            Array.Copy(Master_dXD6, xdA, Master_dXD6.Length);
+            double[] ydA = new double[Master_dYD6.Length];
+            Array.Copy(Master_dYD6, ydA, Master_dYD6.Length);
+
+            double[] xdB = new double[Upper_dXD6.Length];
+            Array.Copy(Upper_dXD6, xdB, Upper_dXD6.Length);
+            double[] ydB = new double[Upper_dYD6.Length];
+            Array.Copy(Upper_dYD6, ydB, Upper_dYD6.Length);
+
+            double[] xdC = new double[Lower_dXD6.Length];
+            Array.Copy(Lower_dXD6, xdC, Lower_dXD6.Length);
+            double[] ydC = new double[Lower_dYD6.Length];
+            Array.Copy(Lower_dYD6, ydC, Lower_dYD6.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot10_MASTER, Master_D6Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot10_UPPER, HLim_D6Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot10_LOWER, LLim_D6Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot10().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot10_MASTER, Master_D6Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot10_UPPER, HLim_D6Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot10_LOWER, LLim_D6Col);
+                _uiObject.FormPlot10().Refresh();
+            }
+        }
+        void _uiPlot5MasterUpdate()
+        {
+            double[] xdA = new double[MMaster_dXD1.Length];
+            Array.Copy(MMaster_dXD1, xdA, MMaster_dXD1.Length);
+            double[] ydA = new double[MMaster_dYD1.Length];
+            Array.Copy(MMaster_dYD1, ydA, MMaster_dYD1.Length);
+
+            double[] xdB = new double[MUpper_dXD1.Length];
+            Array.Copy(MUpper_dXD1, xdB, MUpper_dXD1.Length);
+            double[] ydB = new double[MUpper_dYD1.Length];
+            Array.Copy(MUpper_dYD1, ydB, MUpper_dYD1.Length);
+
+            double[] xdC = new double[MLower_dXD1.Length];
+            Array.Copy(MLower_dXD1, xdC, MLower_dXD1.Length);
+            double[] ydC = new double[MLower_dYD1.Length];
+            Array.Copy(MLower_dYD1, ydC, MLower_dYD1.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot5_MASTER, MMaster_D1Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot5_UPPER, MHLim_D1Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot5_LOWER, MLLim_D1Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot5().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot5_MASTER, MMaster_D1Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot5_UPPER, MHLim_D1Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot5_LOWER, MLLim_D1Col);
+                _uiObject.FormPlot5().Refresh();
+            }
+        }
+        void _uiPlot6MasterUpdate()
+        {
+            double[] xdA = new double[MMaster_dXD2.Length];
+            Array.Copy(MMaster_dXD2, xdA, MMaster_dXD2.Length);
+            double[] ydA = new double[MMaster_dYD2.Length];
+            Array.Copy(MMaster_dYD2, ydA, MMaster_dYD2.Length);
+
+            double[] xdB = new double[MUpper_dXD2.Length];
+            Array.Copy(MUpper_dXD2, xdB, MUpper_dXD2.Length);
+            double[] ydB = new double[MUpper_dYD2.Length];
+            Array.Copy(MUpper_dYD2, ydB, MUpper_dYD2.Length);
+
+            double[] xdC = new double[MLower_dXD2.Length];
+            Array.Copy(MLower_dXD2, xdC, MLower_dXD2.Length);
+            double[] ydC = new double[MLower_dYD2.Length];
+            Array.Copy(MLower_dYD2, ydC, MLower_dYD2.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot6_MASTER, MMaster_D2Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot6_UPPER, MHLim_D2Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot6_LOWER, MLLim_D2Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot6().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot6_MASTER, MMaster_D2Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot6_UPPER, MHLim_D2Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot6_LOWER, MLLim_D2Col);
+                _uiObject.FormPlot6().Refresh();
+            }
+        }
+        void _uiPlot7MasterUpdate()
+        {
+            double[] xdA = new double[MMaster_dXD3.Length];
+            Array.Copy(MMaster_dXD3, xdA, MMaster_dXD3.Length);
+            double[] ydA = new double[MMaster_dYD3.Length];
+            Array.Copy(MMaster_dYD3, ydA, MMaster_dYD3.Length);
+
+            double[] xdB = new double[MUpper_dXD3.Length];
+            Array.Copy(MUpper_dXD3, xdB, MUpper_dXD3.Length);
+            double[] ydB = new double[MUpper_dYD3.Length];
+            Array.Copy(MUpper_dYD3, ydB, MUpper_dYD3.Length);
+
+            double[] xdC = new double[MLower_dXD3.Length];
+            Array.Copy(MLower_dXD3, xdC, MLower_dXD3.Length);
+            double[] ydC = new double[MLower_dYD3.Length];
+            Array.Copy(MLower_dYD3, ydC, MLower_dYD3.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot7_MASTER, MMaster_D3Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot7_UPPER, MHLim_D3Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot7_LOWER, MLLim_D3Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot7().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot7_MASTER, MMaster_D3Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot7_UPPER, MHLim_D3Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot7_LOWER, MLLim_D3Col);
+                _uiObject.FormPlot7().Refresh();
+            }
+        }
+        void _uiPlot8MasterUpdate()
+        {
+            double[] xdA = new double[MMaster_dXD4.Length];
+            Array.Copy(MMaster_dXD4, xdA, MMaster_dXD4.Length);
+            double[] ydA = new double[MMaster_dYD4.Length];
+            Array.Copy(MMaster_dYD4, ydA, MMaster_dYD4.Length);
+
+            double[] xdB = new double[MUpper_dXD4.Length];
+            Array.Copy(MUpper_dXD4, xdB, MUpper_dXD4.Length);
+            double[] ydB = new double[MUpper_dYD4.Length];
+            Array.Copy(MUpper_dYD4, ydB, MUpper_dYD4.Length);
+
+            double[] xdC = new double[MLower_dXD4.Length];
+            Array.Copy(MLower_dXD4, xdC, MLower_dXD4.Length);
+            double[] ydC = new double[MLower_dYD4.Length];
+            Array.Copy(MLower_dYD4, ydC, MLower_dYD4.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot8_MASTER, MMaster_D4Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot8_UPPER, MHLim_D4Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot8_LOWER, MLLim_D4Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot8().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot8_MASTER, MMaster_D4Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot8_UPPER, MHLim_D4Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot8_LOWER, MLLim_D4Col);
+                _uiObject.FormPlot8().Refresh();
+            }
+        }
+        void _uiPlot11MasterUpdate()
+        {
+            double[] xdA = new double[MMaster_dXD5.Length];
+            Array.Copy(MMaster_dXD5, xdA, MMaster_dXD5.Length);
+            double[] ydA = new double[MMaster_dYD5.Length];
+            Array.Copy(MMaster_dYD5, ydA, MMaster_dYD5.Length);
+
+            double[] xdB = new double[MUpper_dXD5.Length];
+            Array.Copy(MUpper_dXD5, xdB, MUpper_dXD5.Length);
+            double[] ydB = new double[MUpper_dYD5.Length];
+            Array.Copy(MUpper_dYD5, ydB, MUpper_dYD5.Length);
+
+            double[] xdC = new double[MLower_dXD5.Length];
+            Array.Copy(MLower_dXD5, xdC, MLower_dXD5.Length);
+            double[] ydC = new double[MLower_dYD5.Length];
+            Array.Copy(MLower_dYD5, ydC, MLower_dYD5.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot11_MASTER, MMaster_D5Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot11_UPPER, MHLim_D5Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot11_LOWER, MLLim_D5Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot11().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot11_MASTER, MMaster_D5Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot11_UPPER, MHLim_D5Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot11_LOWER, MLLim_D5Col);
+                _uiObject.FormPlot11().Refresh();
+            }
+        }
+        void _uiPlot12MasterUpdate()
+        {
+            double[] xdA = new double[MMaster_dXD6.Length];
+            Array.Copy(MMaster_dXD6, xdA, MMaster_dXD6.Length);
+            double[] ydA = new double[MMaster_dYD6.Length];
+            Array.Copy(MMaster_dYD6, ydA, MMaster_dYD6.Length);
+
+            double[] xdB = new double[MUpper_dXD6.Length];
+            Array.Copy(MUpper_dXD6, xdB, MUpper_dXD6.Length);
+            double[] ydB = new double[MUpper_dYD6.Length];
+            Array.Copy(MUpper_dYD6, ydB, MUpper_dYD6.Length);
+
+            double[] xdC = new double[MLower_dXD6.Length];
+            Array.Copy(MLower_dXD6, xdC, MLower_dXD6.Length);
+            double[] ydC = new double[MLower_dYD6.Length];
+            Array.Copy(MLower_dYD6, ydC, MLower_dYD6.Length);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_MASTER, xdA, ydA)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot12_MASTER, MMaster_D6Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_UPPER, xdB, ydB)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot12_UPPER, MHLim_D6Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_LOWER, xdC, ydC)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot12_LOWER, MLLim_D6Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot12().Refresh()));
+            }
+            else
+            {
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_MASTER, xdA, ydA);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot12_MASTER, MMaster_D6Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_UPPER, xdB, ydB);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot12_UPPER, MHLim_D6Col);
+                _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_LOWER, xdC, ydC);
+                _uiObject.PlotChangeColor(ref _uiObject.Plot12_LOWER, MLLim_D6Col);
+                _uiObject.FormPlot12().Refresh();
+            }
+        }
+        void uiPlotRealMasterUpdate()
+        {
+            _uiPlot1MasterUpdate();
+            _uiPlot2MasterUpdate();
+            _uiPlot3MasterUpdate();
+            _uiPlot4MasterUpdate();
+            _uiPlot9MasterUpdate();
+            _uiPlot10MasterUpdate();
+        }
+        void uiPlotLTeachMasterUpdate()
+        {
+            _uiPlot5MasterUpdate();
+            _uiPlot6MasterUpdate();
+            _uiPlot11MasterUpdate();
+        }
+        void uiPlotRTeachMasterUpdate()
+        {
+            _uiPlot7MasterUpdate();
+            _uiPlot8MasterUpdate();
+            _uiPlot12MasterUpdate();
+        }
+
+        void _backgroundDataPlot1Read()
         {
             if (this.GetConnState() == 1)
             {
-
-                //List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110000", 400));
-                //List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110400", 400));
-
-                //List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
-                //List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
-
-                //float[] fXD1 = float_comp_stroke.ToArray();
-                //float[] fYD1 = float_comp_load.ToArray();
-
-                float[] fXD1 = _Rdata.RealtimeStep2[0].ToArray();
-                float[] fYD1 = _Rdata.RealtimeStep2[1].ToArray();
+                float[] fXD1 = _Ldata.RealtimeStep2[0].ToArray();
+                float[] fYD1 = _Ldata.RealtimeStep2[1].ToArray();
 
                 int idxx = 0;
                 for (int i = 0; i < fXD1.Length; i++)
@@ -2500,66 +3515,19 @@ namespace WORKFLOW
                 {
                     _uiPlot1UpdateFlag = false;
                 }
-
-                _uiPlot1UpdateFlag = true;
-                /*
-                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
-                if ((byte)(TRIG[0] & 0x02) == 0x02)
+                else
                 {
-                    parse1_idx = 0;
-                    dXD1 = new double[] { };
-                    dYD1 = new double[] { };
-
-                    Array.Resize(ref dXD1, 1);
-                    Array.Resize(ref dYD1, 1);
-
-                    byte[] RH_COMP_STROKE_REALTIME_PARSE = _eeipObject.AssemblyObject.getInstance(0xB4);
-                    dXD1[parse1_idx] = _bytearrayToDoubleXAxis(RH_COMP_STROKE_REALTIME_PARSE)[0];
-
-                    byte[] RH_COMP_LOAD_REALTIME_PARSE = _eeipObject.AssemblyObject.getInstance(0xB5);
-                    dYD1[parse1_idx] = _bytearrayToDoubleYAxis(RH_COMP_LOAD_REALTIME_PARSE)[0];
-
-                    _kvconnObject.writeDataCommand("W0FE0", "", "3");
-
                     _uiPlot1UpdateFlag = true;
                 }
-                else if ((byte)(TRIG[0] & 0x01) == 0x01)
-                {
-                    parse1_idx += 1;
-                    Array.Resize(ref dXD1, dXD1.Length + 1);
-                    Array.Resize(ref dYD1, dYD1.Length + 1);
-
-                    byte[] RH_COMP_STROKE_REALTIME_PARSE = _eeipObject.AssemblyObject.getInstance(0xB4);
-                    dXD1[parse1_idx] = _bytearrayToDoubleXAxis(RH_COMP_STROKE_REALTIME_PARSE)[0];
-
-                    byte[] RH_COMP_LOAD_REALTIME_PARSE = _eeipObject.AssemblyObject.getInstance(0xB5);
-                    dYD1[parse1_idx] = _bytearrayToDoubleYAxis(RH_COMP_LOAD_REALTIME_PARSE)[0];
-
-                    _kvconnObject.writeDataCommand("W0FE0", "", "3");
-
-                    _uiPlot1UpdateFlag = true;
-                }
-                */
             }
         }
-
-        int parse2_idx;
-        private void _backgroundDataPlot2Read()
+        void _backgroundDataPlot2Read()
         {
             if (this.GetConnState() == 1)
             {
-                //List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF110800", 400));
-                //List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF111200", 400));
-
-                //List<float> float_extn_stroke = new List<float>(hex16tofloat32_InvertedList(extn_stroke));
-                //List<float> float_extn_load = new List<float>(hex16tofloat32_InvertedList(extn_load));
-
-                //float[] fXD2 = float_extn_stroke.ToArray();
-                //float[] fYD2 = float_extn_load.ToArray();
-
-                float[] fXD2 = _Rdata.RealtimeStep2[2].ToArray();
+                float[] fXD2 = _Ldata.RealtimeStep2[2].ToArray();
                 Array.Reverse(fXD2);
-                float[] fYD2 = _Rdata.RealtimeStep2[3].ToArray();
+                float[] fYD2 = _Ldata.RealtimeStep2[3].ToArray();
                 Array.Reverse(fYD2);
                 //int idxx = 0;
                 //int idxy = 0;
@@ -2581,63 +3549,18 @@ namespace WORKFLOW
                 {
                     _uiPlot2UpdateFlag = false;
                 }
-
-                _uiPlot2UpdateFlag = true;
-                /*
-                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
-                if ((byte)(TRIG[2] & 0x02) == 0x02)
+                else
                 {
-                    parse2_idx = 0;
-                    dXD2 = new double[] { };
-                    dYD2 = new double[] { };
-
-                    Array.Resize(ref dXD2, 1);
-                    Array.Resize(ref dYD2, 1);
-
-                    byte[] RH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB6);
-                    dXD2[parse2_idx] = _bytearrayToDoubleXAxis(RH_EXTN_STROKE_REALTIME)[0];
-
-                    byte[] RH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB7);
-                    dYD2[parse2_idx] = _bytearrayToDoubleYAxis(RH_EXTN_LOAD_REALTIME)[0];
-
-                    _kvconnObject.writeDataCommand("W0FE1", "", "3");
                     _uiPlot2UpdateFlag = true;
                 }
-                else if ((byte)(TRIG[2] & 0x01) == 0x01)
-                {
-                    parse2_idx += 1;
-                    Array.Resize(ref dXD2, dXD2.Length + 1);
-                    Array.Resize(ref dYD2, dYD2.Length + 1);
-
-                    byte[] RH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB6);
-                    dXD2[parse2_idx] = _bytearrayToDoubleXAxis(RH_EXTN_STROKE_REALTIME)[0];
-
-                    byte[] RH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB7);
-                    dYD2[parse2_idx] = _bytearrayToDoubleYAxis(RH_EXTN_LOAD_REALTIME)[0];
-
-                    _kvconnObject.writeDataCommand("W0FE1", "", "3");
-                    _uiPlot2UpdateFlag = true;
-                }
-                */
             }
         }
-
-        int parse3_idx;
-        private void _backgroundDataPlot3Read()
+        void _backgroundDataPlot3Read()
         {
             if (this.GetConnState() == 1)
             {
-                //List<byte[]> comp_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210000", 400));
-                //List<byte[]> comp_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210400", 400));
-
-                //List<float> float_comp_stroke = new List<float>(hex16tofloat32(comp_stroke));
-                //List<float> float_comp_load = new List<float>(hex16tofloat32(comp_load));
-
-                //float[] fXD3 = float_comp_stroke.ToArray();
-                //float[] fYD3 = float_comp_load.ToArray();
-
-                float[] fXD3 = _Ldata.RealtimeStep2[0].ToArray();
-                float[] fYD3 = _Ldata.RealtimeStep2[1].ToArray();
+                float[] fXD3 = _Rdata.RealtimeStep2[0].ToArray();
+                float[] fYD3 = _Rdata.RealtimeStep2[1].ToArray();
 
                 int idxx = 0;
                 int idxy = 0;
@@ -2678,64 +3601,19 @@ namespace WORKFLOW
                 {
                     _uiPlot3UpdateFlag = false;
                 }
-
-                _uiPlot3UpdateFlag = true;
-                /*
-                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
-                if ((byte)(TRIG[4] & 0x02) == 0x02)
+                else
                 {
-                    parse3_idx = 0;
-                    dXD3 = new double[] { };
-                    dYD3 = new double[] { };
-
-                    Array.Resize(ref dXD3, 1);
-                    Array.Resize(ref dYD3, 1);
-
-                    byte[] LH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB8);
-                    dXD3[parse3_idx] = _bytearrayToDoubleXAxis(LH_COMP_STROKE_REALTIME)[0];
-
-                    byte[] LH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB9);
-                    dYD3[parse3_idx] = _bytearrayToDoubleYAxis(LH_COMP_LOAD_REALTIME)[0];
-
-                    _kvconnObject.writeDataCommand("W0FE2", "", "3");
                     _uiPlot3UpdateFlag = true;
                 }
-                else if ((byte)(TRIG[4] & 0x01) == 0x01)
-                {
-                    parse3_idx += 1;
-                    Array.Resize(ref dXD3, dXD3.Length + 1);
-                    Array.Resize(ref dYD3, dYD3.Length + 1);
-
-                    byte[] LH_COMP_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB8);
-                    dXD3[parse3_idx] = _bytearrayToDoubleXAxis(LH_COMP_STROKE_REALTIME)[0];
-
-                    byte[] LH_COMP_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xB9);
-                    dYD3[parse3_idx] = _bytearrayToDoubleYAxis(LH_COMP_LOAD_REALTIME)[0];
-
-                    _kvconnObject.writeDataCommand("W0FE2", "", "3");
-                    _uiPlot3UpdateFlag = true;
-                }
-                */
             }
         }
-
-        int parse4_idx;
-        private void _backgroundDataPlot4Read()
+        void _backgroundDataPlot4Read()
         {
             if (this.GetConnState() == 1)
             {
-                //List<byte[]> extn_stroke = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF210800", 400));
-                //List<byte[]> extn_load = new List<byte[]>(_kvconnObject.batchreadDataCommandInHex("ZF211200", 400));
-
-                //List<float> float_extn_stroke = new List<float>(hex16tofloat32_InvertedList(extn_stroke));
-                //List<float> float_extn_load = new List<float>(hex16tofloat32_InvertedList(extn_load));
-
-                //float[] fXD4 = float_extn_stroke.ToArray();
-                //float[] fYD4 = float_extn_load.ToArray();
-
-                float[] fXD4 = _Ldata.RealtimeStep2[2].ToArray();
+                float[] fXD4 = _Rdata.RealtimeStep2[2].ToArray();
                 Array.Reverse(fXD4);
-                float[] fYD4 = _Ldata.RealtimeStep2[3].ToArray();
+                float[] fYD4 = _Rdata.RealtimeStep2[3].ToArray();
                 Array.Reverse(fYD4);
 
                 //int idxx = 0;
@@ -2758,48 +3636,978 @@ namespace WORKFLOW
                 {
                     _uiPlot4UpdateFlag = false;
                 }
+                else
+                {
+                    _uiPlot4UpdateFlag = true;
+                }
+            }
+        }
+        void _backgroundDataPlot9Read()
+        {
+            if (this.GetConnState() == 1)
+            {
+                float[] fXD5 = _Ldata.RealtimeStep2[4].ToArray();
+                float[] fYD5 = _Ldata.RealtimeStep2[5].ToArray();
 
+                int idxx = 0;
+                for (int i = 0; i < fXD5.Length; i++)
+                {
+                    if (fXD5[i] != 0 && i != 0)
+                    {
+                        Array.Resize(ref dXD5, idxx + 1);
+                        if ((double)fXD5[i] == dXD5[idxx - 1])
+                        {
+                            dXD5[idxx] = (double)fXD5[i] + 1;
+                        }
+                        else
+                        {
+                            dXD5[idxx] = (double)fXD5[i];
+                        }
+                        idxx++;
+                    }
+                    else if (i == 0)
+                    {
+                        Array.Resize(ref dXD5, idxx + 1);
+                        dXD5[idxx] = (double)fXD5[i];
+                        idxx++;
+                    }
+                }
+
+                int idxy = 0;
+                for (int i = 0; i < dXD5.Length; i++)
+                {
+                    Array.Resize(ref dYD5, idxy + 1);
+                    dYD5[idxy] = (double)fYD5[i];
+                    idxy++;
+                }
+
+                //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
+                //dYD1 = Array.ConvertAll(fYD1, x => (x != 0) ? (double)x);
+
+                if (dXD5.Count() != dYD5.Count())
+                {
+                    _uiPlot9UpdateFlag = false;
+                }
+                else
+                {
+                    _uiPlot9UpdateFlag = true;
+                }
+            }
+        }
+        void _backgroundDataPlot10Read()
+        {
+            if (this.GetConnState() == 1)
+            {
+                float[] fXD6 = _Rdata.RealtimeStep2[4].ToArray();
+                float[] fYD6 = _Rdata.RealtimeStep2[5].ToArray();
+
+                int idxx = 0;
+                for (int i = 0; i < fXD6.Length; i++)
+                {
+                    if (fXD6[i] != 0 && i != 0)
+                    {
+                        Array.Resize(ref dXD6, idxx + 1);
+                        if ((double)fXD6[i] == dXD6[idxx - 1])
+                        {
+                            dXD6[idxx] = (double)fXD6[i] + 1;
+                        }
+                        else
+                        {
+                            dXD6[idxx] = (double)fXD6[i];
+                        }
+                        idxx++;
+                    }
+                    else if (i == 0)
+                    {
+                        Array.Resize(ref dXD6, idxx + 1);
+                        dXD6[idxx] = (double)fXD6[i];
+                        idxx++;
+                    }
+                }
+
+                int idxy = 0;
+                for (int i = 0; i < dXD6.Length; i++)
+                {
+                    Array.Resize(ref dYD6, idxy + 1);
+                    dXD6[idxy] = (double)fXD6[i];
+                    idxy++;
+                }
+
+                //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
+                //dYD1 = Array.ConvertAll(fYD1, x => (x != 0) ? (double)x);
+
+                if (dXD6.Count() != dYD6.Count())
+                {
+                    _uiPlot10UpdateFlag = false;
+                }
+                else
+                {
+                    _uiPlot10UpdateFlag = true;
+                }
+            }
+        }
+        void _DataPlot5Read()
+        {
+            float[] fXD = _TMaster.LMasteringTeachStep2[0].ToArray();
+            float[] fYD = _TMaster.LMasteringTeachStep2[2].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref MTeach_dXD1, idxx + 1);
+                    if ((double)fXD[i] == MTeach_dXD1[idxx - 1])
+                    {
+                        MTeach_dXD1[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        MTeach_dXD1[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref MTeach_dXD1, idxx + 1);
+                    MTeach_dXD1[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < MTeach_dXD1.Length; i++)
+            {
+                Array.Resize(ref MTeach_dYD1, idxy + 1);
+                MTeach_dYD1[idxy] = (double)fYD[i];
+                idxy++;
+            }
+
+            //MTeach_dXD1 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
+            //MTeach_dYD1 = Array.ConvertAll(fYD, x => (x != 0) ? (double)x);
+
+            if (MTeach_dXD1.Count() != MTeach_dYD1.Count())
+            {
+                _uiPlot5UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot5UpdateFlag = true;
+            }
+
+        }
+        void _DataPlot6Read()
+        {
+            float[] fXD = _TMaster.LMasteringTeachStep2[5].ToArray();
+            Array.Reverse(fXD);
+            float[] fYD = _TMaster.LMasteringTeachStep2[7].ToArray();
+            Array.Reverse(fYD);
+
+            MTeach_dXD2 = Array.ConvertAll(fXD, x => (double)x);
+            MTeach_dYD2 = Array.ConvertAll(fYD, x => (double)x);
+
+            if (MTeach_dXD2.Count() != MTeach_dYD2.Count())
+            {
+                _uiPlot6UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot6UpdateFlag = true;
+            }
+        }
+        void _DataPlot7Read()
+        {
+            float[] fXD = _TMaster.RMasteringTeachStep2[0].ToArray();
+            float[] fYD = _TMaster.RMasteringTeachStep2[2].ToArray();
+
+            int idxx = 0;
+            int idxy = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref MTeach_dXD3, idxx + 1);
+                    if ((double)fXD[i] == MTeach_dXD3[idxx - 1])
+                    {
+                        MTeach_dXD3[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        MTeach_dXD3[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref MTeach_dXD3, idxx + 1);
+                    MTeach_dXD3[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            for (int i = 0; i < MTeach_dXD3.Length; i++)
+            {
+                Array.Resize(ref MTeach_dYD3, idxy + 1);
+                MTeach_dYD3[idxy] = (double)fYD[i];
+                idxy++;
+            }
+
+            //MTeach_dXD3 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
+            //MTeach_MTeach_dYD3 = Array.ConvertAll(fYD, x => (x != 0) ? (double)x);
+
+            if (MTeach_dXD3.Count() != MTeach_dYD3.Count())
+            {
+                _uiPlot7UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot7UpdateFlag = true;
+            }
+        }
+        void _DataPlot8Read()
+        {
+            float[] fXD = _TMaster.RMasteringTeachStep2[5].ToArray();
+            Array.Reverse(fXD);
+            float[] fYD = _TMaster.RMasteringTeachStep2[7].ToArray();
+            Array.Reverse(fYD);
+
+            MTeach_dXD4 = Array.ConvertAll(fXD, x => (double)x);
+            MTeach_dYD4 = Array.ConvertAll(fYD, x => (double)x);
+
+            if (MTeach_dXD4.Count() != MTeach_dYD4.Count())
+            {
+                _uiPlot4UpdateFlag = false;
+            }
+            else
+            {
                 _uiPlot4UpdateFlag = true;
-                /*
-                byte[] TRIG = _eeipObject.AssemblyObject.getInstance(0x8E);
-                if ((byte)(TRIG[6] & 0x02) == 0x02)
+            }
+        }
+        void _DataPlot11Read()
+        {
+            float[] fXD5 = _TMaster.LMasteringTeachStep2[10].ToArray();
+            float[] fYD5 = _TMaster.LMasteringTeachStep2[12].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD5.Length; i++)
+            {
+                if (fXD5[i] != 0 && i != 0)
                 {
-                    parse4_idx = 0;
-                    dXD4 = new double[] { };
-                    dYD4 = new double[] { };
-
-                    Array.Resize(ref dXD4, 1);
-                    Array.Resize(ref dYD4, 1);
-
-                    byte[] LH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBA);
-                    dXD4[parse4_idx] = _bytearrayToDoubleXAxis(LH_EXTN_STROKE_REALTIME)[0];
-
-                    byte[] LH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBB);
-                    dYD4[parse4_idx] = _bytearrayToDoubleYAxis(LH_EXTN_LOAD_REALTIME)[0];
-
-                    _kvconnObject.writeDataCommand("W0FE3", "", "3");
-                    _uiPlot4UpdateFlag = true;
+                    Array.Resize(ref MTeach_dXD5, idxx + 1);
+                    if ((double)fXD5[i] == MTeach_dXD5[idxx - 1])
+                    {
+                        MTeach_dXD5[idxx] = (double)fXD5[i] + 1;
+                    }
+                    else
+                    {
+                        MTeach_dXD5[idxx] = (double)fXD5[i];
+                    }
+                    idxx++;
                 }
-                else if ((byte)(TRIG[6] & 0x01) == 0x01)
+                else if (i == 0)
                 {
-                    parse4_idx += 1;
-                    Array.Resize(ref dXD4, dXD4.Length + 1);
-                    Array.Resize(ref dYD4, dYD4.Length + 1);
-
-                    byte[] LH_EXTN_STROKE_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBA);
-                    dXD4[parse4_idx] = _bytearrayToDoubleXAxis(LH_EXTN_STROKE_REALTIME)[0];
-
-                    byte[] LH_EXTN_LOAD_REALTIME = _eeipObject.AssemblyObject.getInstance(0xBB);
-                    dYD4[parse4_idx] = _bytearrayToDoubleYAxis(LH_EXTN_LOAD_REALTIME)[0];
-
-                    _kvconnObject.writeDataCommand("W0FE3", "", "3");
-                    _uiPlot4UpdateFlag = true;
+                    Array.Resize(ref MTeach_dXD5, idxx + 1);
+                    MTeach_dXD5[idxx] = (double)fXD5[i];
+                    idxx++;
                 }
-                */
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < MTeach_dXD5.Length; i++)
+            {
+                Array.Resize(ref MTeach_dYD5, idxy + 1);
+                MTeach_dYD5[idxy] = (double)fYD5[i];
+                idxy++;
+            }
+
+            //MTeach_dXD1 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
+            //MTeach_dYD1 = Array.ConvertAll(fYD, x => (x != 0) ? (double)x);
+
+            if (MTeach_dXD5.Count() != MTeach_dYD5.Count())
+            {
+                _uiPlot11UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot11UpdateFlag = true;
+            }
+        }
+        void _DataPlot12Read()
+        {
+            float[] fXD6 = _TMaster.RMasteringTeachStep2[10].ToArray();
+            float[] fYD6 = _TMaster.RMasteringTeachStep2[12].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD6.Length; i++)
+            {
+                if (fXD6[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref MTeach_dXD6, idxx + 1);
+                    if ((double)fXD6[i] == MTeach_dXD6[idxx - 1])
+                    {
+                        MTeach_dXD6[idxx] = (double)fXD6[i] + 1;
+                    }
+                    else
+                    {
+                        MTeach_dXD6[idxx] = (double)fXD6[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref MTeach_dXD6, idxx + 1);
+                    MTeach_dXD6[idxx] = (double)fXD6[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < MTeach_dXD6.Length; i++)
+            {
+                Array.Resize(ref MTeach_dYD6, idxy + 1);
+                MTeach_dXD6[idxy] = (double)fXD6[i];
+                idxy++;
+            }
+
+            //MTeach_dXD1 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
+            //MTeach_dYD1 = Array.ConvertAll(fYD, x => (x != 0) ? (double)x);
+
+            if (MTeach_dXD6.Count() != MTeach_dYD6.Count())
+            {
+                _uiPlot12UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot12UpdateFlag = true;
+            }
+        }
+        void DataPlotLTeachRead()
+        {
+            _DataPlot5Read();
+            _DataPlot6Read();
+            _DataPlot11Read();
+        }
+        void DataPlotRTeachRead()
+        {
+            _DataPlot7Read();
+            _DataPlot8Read();
+            _DataPlot12Read();
+        }
+
+        void MasterDataAssignPlot1()
+        {
+            float[] fXD = _masterData.LMasteringStep2[0].ToArray();
+            float[] fYD1 = _masterData.LMasteringStep2[1].ToArray();
+            float[] fYD2 = _masterData.LMasteringStep2[2].ToArray();
+            float[] fYD3 = _masterData.LMasteringStep2[3].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref Master_dXD1, idxx + 1);
+                    Array.Resize(ref Upper_dXD1, idxx + 1);
+                    Array.Resize(ref Lower_dXD1, idxx + 1);
+                    if (((double)fXD[i] == Master_dXD1[idxx - 1]) && ((double)fXD[i] == Upper_dXD1[idxx - 1]) && ((double)fXD[i] == Lower_dXD1[idxx - 1]))
+                    {
+                        Master_dXD1[idxx] = (double)fXD[i] + 1;
+                        Upper_dXD1[idxx] = (double)fXD[i] + 1;
+                        Lower_dXD1[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        Master_dXD1[idxx] = (double)fXD[i];
+                        Upper_dXD1[idxx] = (double)fXD[i];
+                        Lower_dXD1[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref Master_dXD1, idxx + 1);
+                    Array.Resize(ref Upper_dXD1, idxx + 1);
+                    Array.Resize(ref Lower_dXD1, idxx + 1);
+                    Master_dXD1[idxx] = (double)fXD[i];
+                    Upper_dXD1[idxx] = (double)fXD[i];
+                    Lower_dXD1[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < Master_dXD1.Length; i++)
+            {
+                Array.Resize(ref Master_dYD1, idxy + 1);
+                Array.Resize(ref Upper_dYD1, idxy + 1);
+                Array.Resize(ref Lower_dYD1, idxy + 1);
+                Master_dYD1[idxy] = (double)fYD1[i];
+                Upper_dYD1[idxy] = (double)fYD2[i];
+                Lower_dYD1[idxy] = (double)fYD3[i];
+                idxy++;
+            }
+        }
+        void MasterDataAssignPlot2()
+        {
+            float[] fXD = _masterData.LMasteringStep2[4].ToArray();
+            Array.Reverse(fXD);
+            float[] fYD1 = _masterData.LMasteringStep2[5].ToArray();
+            Array.Reverse(fYD1);
+            float[] fYD2 = _masterData.LMasteringStep2[6].ToArray();
+            Array.Reverse(fYD2);
+            float[] fYD3 = _masterData.LMasteringStep2[7].ToArray();
+            Array.Reverse(fYD3);
+
+            Master_dXD2 = Array.ConvertAll(fXD, x => (double)x);
+            Upper_dXD2 = Array.ConvertAll(fXD, x => (double)x);
+            Lower_dXD2 = Array.ConvertAll(fXD, x => (double)x);
+
+            Master_dYD2 = Array.ConvertAll(fYD1, x => (double)x);
+            Upper_dYD2 = Array.ConvertAll(fYD2, x => (double)x);
+            Lower_dYD2 = Array.ConvertAll(fYD3, x => (double)x);
+        }
+        void MasterDataAssignPlot3()
+        {
+            float[] fXD = _masterData.RMasteringStep2[0].ToArray();
+            float[] fYD1 = _masterData.RMasteringStep2[1].ToArray();
+            float[] fYD2 = _masterData.RMasteringStep2[2].ToArray();
+            float[] fYD3 = _masterData.RMasteringStep2[3].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref Master_dXD3, idxx + 1);
+                    Array.Resize(ref Upper_dXD3, idxx + 1);
+                    Array.Resize(ref Lower_dXD3, idxx + 1);
+                    if (((double)fXD[i] == Master_dXD3[idxx - 1]) && ((double)fXD[i] == Upper_dXD3[idxx - 1]) && ((double)fXD[i] == Lower_dXD3[idxx - 1]))
+                    {
+                        Master_dXD3[idxx] = (double)fXD[i] + 1;
+                        Upper_dXD3[idxx] = (double)fXD[i] + 1;
+                        Lower_dXD3[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        Master_dXD3[idxx] = (double)fXD[i];
+                        Upper_dXD3[idxx] = (double)fXD[i];
+                        Lower_dXD3[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref Master_dXD3, idxx + 1);
+                    Array.Resize(ref Upper_dXD3, idxx + 1);
+                    Array.Resize(ref Lower_dXD3, idxx + 1);
+                    Master_dXD3[idxx] = (double)fXD[i];
+                    Upper_dXD3[idxx] = (double)fXD[i];
+                    Lower_dXD3[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < Master_dXD3.Length; i++)
+            {
+                Array.Resize(ref Master_dYD3, idxy + 1);
+                Array.Resize(ref Upper_dYD3, idxy + 1);
+                Array.Resize(ref Lower_dYD3, idxy + 1);
+                Master_dYD3[idxy] = (double)fYD1[i];
+                Upper_dYD3[idxy] = (double)fYD2[i];
+                Lower_dYD3[idxy] = (double)fYD3[i];
+                idxy++;
+            }
+        }
+        void MasterDataAssignPlot4()
+        {
+            float[] fXD = _masterData.RMasteringStep2[4].ToArray();
+            Array.Reverse(fXD);
+            float[] fYD1 = _masterData.RMasteringStep2[5].ToArray();
+            Array.Reverse(fYD1);
+            float[] fYD2 = _masterData.RMasteringStep2[6].ToArray();
+            Array.Reverse(fYD2);
+            float[] fYD3 = _masterData.RMasteringStep2[7].ToArray();
+            Array.Reverse(fYD3);
+
+            Master_dXD4 = Array.ConvertAll(fXD, x => (double)x);
+            Upper_dXD4 = Array.ConvertAll(fXD, x => (double)x);
+            Lower_dXD4 = Array.ConvertAll(fXD, x => (double)x);
+
+            Master_dYD4 = Array.ConvertAll(fYD1, x => (double)x);
+            Upper_dYD4 = Array.ConvertAll(fYD2, x => (double)x);
+            Lower_dYD4 = Array.ConvertAll(fYD3, x => (double)x);
+        }
+        void MasterDataAssignPlot9()
+        {
+            float[] fXD = _masterData.LMasteringStep2[8].ToArray();
+            float[] fYD1 = _masterData.LMasteringStep2[9].ToArray();
+            float[] fYD2 = _masterData.LMasteringStep2[10].ToArray();
+            float[] fYD3 = _masterData.LMasteringStep2[11].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref Master_dXD5, idxx + 1);
+                    Array.Resize(ref Upper_dXD5, idxx + 1);
+                    Array.Resize(ref Lower_dXD5, idxx + 1);
+                    if (((double)fXD[i] == Master_dXD5[idxx - 1]) && ((double)fXD[i] == Upper_dXD5[idxx - 1]) && ((double)fXD[i] == Lower_dXD5[idxx - 1]))
+                    {
+                        Master_dXD5[idxx] = (double)fXD[i] + 1;
+                        Upper_dXD5[idxx] = (double)fXD[i] + 1;
+                        Lower_dXD5[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        Master_dXD5[idxx] = (double)fXD[i];
+                        Upper_dXD5[idxx] = (double)fXD[i];
+                        Lower_dXD5[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref Master_dXD5, idxx + 1);
+                    Array.Resize(ref Upper_dXD5, idxx + 1);
+                    Array.Resize(ref Lower_dXD5, idxx + 1);
+                    Master_dXD5[idxx] = (double)fXD[i];
+                    Upper_dXD5[idxx] = (double)fXD[i];
+                    Lower_dXD5[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < Master_dXD5.Length; i++)
+            {
+                Array.Resize(ref Master_dYD5, idxy + 1);
+                Array.Resize(ref Upper_dYD5, idxy + 1);
+                Array.Resize(ref Lower_dYD5, idxy + 1);
+                Master_dYD5[idxy] = (double)fYD1[i];
+                Upper_dYD5[idxy] = (double)fYD2[i];
+                Lower_dYD5[idxy] = (double)fYD3[i];
+                idxy++;
+            }
+        }
+        void MasterDataAssignPlot10()
+        {
+            float[] fXD = _masterData.RMasteringStep2[8].ToArray();
+            float[] fYD1 = _masterData.RMasteringStep2[9].ToArray();
+            float[] fYD2 = _masterData.RMasteringStep2[10].ToArray();
+            float[] fYD3 = _masterData.RMasteringStep2[11].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref Master_dXD6, idxx + 1);
+                    Array.Resize(ref Upper_dXD6, idxx + 1);
+                    Array.Resize(ref Lower_dXD6, idxx + 1);
+                    if (((double)fXD[i] == Master_dXD6[idxx - 1]) && ((double)fXD[i] == Upper_dXD6[idxx - 1]) && ((double)fXD[i] == Lower_dXD6[idxx - 1]))
+                    {
+                        Master_dXD6[idxx] = (double)fXD[i] + 1;
+                        Upper_dXD6[idxx] = (double)fXD[i] + 1;
+                        Lower_dXD6[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        Master_dXD6[idxx] = (double)fXD[i];
+                        Upper_dXD6[idxx] = (double)fXD[i];
+                        Lower_dXD6[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref Master_dXD6, idxx + 1);
+                    Array.Resize(ref Upper_dXD6, idxx + 1);
+                    Array.Resize(ref Lower_dXD6, idxx + 1);
+                    Master_dXD6[idxx] = (double)fXD[i];
+                    Upper_dXD6[idxx] = (double)fXD[i];
+                    Lower_dXD6[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < Master_dXD6.Length; i++)
+            {
+                Array.Resize(ref Master_dYD6, idxy + 1);
+                Array.Resize(ref Upper_dYD6, idxy + 1);
+                Array.Resize(ref Lower_dYD6, idxy + 1);
+                Master_dYD6[idxy] = (double)fYD1[i];
+                Upper_dYD6[idxy] = (double)fYD2[i];
+                Lower_dYD6[idxy] = (double)fYD3[i];
+                idxy++;
+            }
+        }
+        void MasterDataAssignPlot5()
+        {
+            float[] fXD = _TMaster.LMasteringTeachStep2[0].ToArray();
+            float[] fYD1 = _TMaster.LMasteringTeachStep2[1].ToArray();
+            float[] fYD2 = _TMaster.LMasteringTeachStep2[3].ToArray();
+            float[] fYD3 = _TMaster.LMasteringTeachStep2[4].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref MMaster_dXD1, idxx + 1);
+                    Array.Resize(ref MUpper_dXD1, idxx + 1);
+                    Array.Resize(ref MLower_dXD1, idxx + 1);
+                    if (((double)fXD[i] == MMaster_dXD1[idxx - 1]) && ((double)fXD[i] == MUpper_dXD1[idxx - 1]) && ((double)fXD[i] == MLower_dXD1[idxx - 1]))
+                    {
+                        MMaster_dXD1[idxx] = (double)fXD[i] + 1;
+                        MUpper_dXD1[idxx] = (double)fXD[i] + 1;
+                        MLower_dXD1[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        MMaster_dXD1[idxx] = (double)fXD[i];
+                        MUpper_dXD1[idxx] = (double)fXD[i];
+                        MLower_dXD1[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref MMaster_dXD1, idxx + 1);
+                    Array.Resize(ref MUpper_dXD1, idxx + 1);
+                    Array.Resize(ref MLower_dXD1, idxx + 1);
+                    MMaster_dXD1[idxx] = (double)fXD[i];
+                    MUpper_dXD1[idxx] = (double)fXD[i];
+                    MLower_dXD1[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < MMaster_dXD1.Length; i++)
+            {
+                Array.Resize(ref MMaster_dYD1, idxy + 1);
+                Array.Resize(ref MUpper_dYD1, idxy + 1);
+                Array.Resize(ref MLower_dYD1, idxy + 1);
+                MMaster_dYD1[idxy] = (double)fYD1[i];
+                MUpper_dYD1[idxy] = (double)fYD2[i];
+                MLower_dYD1[idxy] = (double)fYD3[i];
+                idxy++;
+            }
+
+            if ((MMaster_dXD1.Count() != MMaster_dYD1.Count()) || (MLower_dXD1.Count() != MLower_dYD1.Count()) || (MUpper_dXD1.Count() != MUpper_dYD1.Count()))
+            {
+                _uiPlot5UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot5UpdateFlag = true;
+            }
+        }
+        void MasterDataAssignPlot6()
+        {
+            float[] fXD = _TMaster.LMasteringTeachStep2[5].ToArray();
+            Array.Reverse(fXD);
+            float[] fYD1 = _TMaster.LMasteringTeachStep2[6].ToArray();
+            Array.Reverse(fYD1);
+            float[] fYD2 = _TMaster.LMasteringTeachStep2[8].ToArray();
+            Array.Reverse(fYD2);
+            float[] fYD3 = _TMaster.LMasteringTeachStep2[9].ToArray();
+            Array.Reverse(fYD3);
+
+            MMaster_dXD2 = Array.ConvertAll(fXD, x => (double)x);
+            MUpper_dXD2 = Array.ConvertAll(fXD, x => (double)x);
+            MLower_dXD2 = Array.ConvertAll(fXD, x => (double)x);
+
+            MMaster_dYD2 = Array.ConvertAll(fYD1, x => (double)x);
+            MUpper_dYD2 = Array.ConvertAll(fYD2, x => (double)x);
+            MLower_dYD2 = Array.ConvertAll(fYD3, x => (double)x);
+
+            if ((MMaster_dXD2.Count() != MMaster_dYD2.Count()) || (MUpper_dXD2.Count() != MUpper_dYD2.Count()) || (MLower_dXD2.Count() != MLower_dYD2.Count()))
+            {
+                _uiPlot6UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot6UpdateFlag = true;
+            }
+        }
+        void MasterDataAssignPlot7()
+        {
+            float[] fXD = _TMaster.RMasteringTeachStep2[0].ToArray();
+            float[] fYD1 = _TMaster.RMasteringTeachStep2[1].ToArray();
+            float[] fYD2 = _TMaster.RMasteringTeachStep2[3].ToArray();
+            float[] fYD3 = _TMaster.RMasteringTeachStep2[4].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref MMaster_dXD3, idxx + 1);
+                    Array.Resize(ref MUpper_dXD3, idxx + 1);
+                    Array.Resize(ref MLower_dXD3, idxx + 1);
+                    if (((double)fXD[i] == MMaster_dXD3[idxx - 1]) && ((double)fXD[i] == MUpper_dXD3[idxx - 1]) && ((double)fXD[i] == MLower_dXD3[idxx - 1]))
+                    {
+                        MMaster_dXD3[idxx] = (double)fXD[i] + 1;
+                        MUpper_dXD3[idxx] = (double)fXD[i] + 1;
+                        MLower_dXD3[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        MMaster_dXD3[idxx] = (double)fXD[i];
+                        MUpper_dXD3[idxx] = (double)fXD[i];
+                        MLower_dXD3[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref MMaster_dXD3, idxx + 1);
+                    Array.Resize(ref MUpper_dXD3, idxx + 1);
+                    Array.Resize(ref MLower_dXD3, idxx + 1);
+                    MMaster_dXD3[idxx] = (double)fXD[i];
+                    MUpper_dXD3[idxx] = (double)fXD[i];
+                    MLower_dXD3[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < MMaster_dXD3.Length; i++)
+            {
+                Array.Resize(ref MMaster_dYD3, idxy + 1);
+                Array.Resize(ref MUpper_dYD3, idxy + 1);
+                Array.Resize(ref MLower_dYD3, idxy + 1);
+                MMaster_dYD3[idxy] = (double)fYD1[i];
+                MUpper_dYD3[idxy] = (double)fYD2[i];
+                MLower_dYD3[idxy] = (double)fYD3[i];
+                idxy++;
+            }
+
+            if ((MMaster_dXD3.Count() != MMaster_dYD3.Count()) || (MLower_dXD3.Count() != MLower_dYD3.Count()) || (MUpper_dXD3.Count() != MUpper_dYD3.Count()))
+            {
+                _uiPlot7UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot7UpdateFlag = true;
+            }
+        }
+        void MasterDataAssignPlot8()
+        {
+            float[] fXD = _TMaster.RMasteringTeachStep2[5].ToArray();
+            Array.Reverse(fXD);
+            float[] fYD1 = _TMaster.RMasteringTeachStep2[6].ToArray();
+            Array.Reverse(fYD1);
+            float[] fYD2 = _TMaster.RMasteringTeachStep2[8].ToArray();
+            Array.Reverse(fYD2);
+            float[] fYD3 = _TMaster.RMasteringTeachStep2[9].ToArray();
+            Array.Reverse(fYD3);
+
+            MMaster_dXD4 = Array.ConvertAll(fXD, x => (double)x);
+            MUpper_dXD4 = Array.ConvertAll(fXD, x => (double)x);
+            MLower_dXD4 = Array.ConvertAll(fXD, x => (double)x);
+
+            MMaster_dYD4 = Array.ConvertAll(fYD1, x => (double)x);
+            MUpper_dYD4 = Array.ConvertAll(fYD2, x => (double)x);
+            MLower_dYD4 = Array.ConvertAll(fYD3, x => (double)x);
+
+            if ((MMaster_dXD4.Count() != MMaster_dYD4.Count()) || (MUpper_dXD4.Count() != MUpper_dYD4.Count()) || (MLower_dXD4.Count() != MLower_dYD4.Count()))
+            {
+                _uiPlot8UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot8UpdateFlag = true;
+            }
+        }
+        void MasterDataAssignPlot11()
+        {
+            float[] fXD = _TMaster.LMasteringTeachStep2[10].ToArray();
+            float[] fYD1 = _TMaster.LMasteringTeachStep2[11].ToArray();
+            float[] fYD2 = _TMaster.LMasteringTeachStep2[13].ToArray();
+            float[] fYD3 = _TMaster.LMasteringTeachStep2[14].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref MMaster_dXD5, idxx + 1);
+                    Array.Resize(ref MUpper_dXD5, idxx + 1);
+                    Array.Resize(ref MLower_dXD5, idxx + 1);
+                    if (((double)fXD[i] == MMaster_dXD5[idxx - 1]) && ((double)fXD[i] == MUpper_dXD5[idxx - 1]) && ((double)fXD[i] == MLower_dXD5[idxx - 1]))
+                    {
+                        MMaster_dXD5[idxx] = (double)fXD[i] + 1;
+                        MUpper_dXD5[idxx] = (double)fXD[i] + 1;
+                        MLower_dXD5[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        MMaster_dXD5[idxx] = (double)fXD[i];
+                        MUpper_dXD5[idxx] = (double)fXD[i];
+                        MLower_dXD5[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref MMaster_dXD5, idxx + 1);
+                    Array.Resize(ref MUpper_dXD5, idxx + 1);
+                    Array.Resize(ref MLower_dXD5, idxx + 1);
+                    MMaster_dXD5[idxx] = (double)fXD[i];
+                    MUpper_dXD5[idxx] = (double)fXD[i];
+                    MLower_dXD5[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < MMaster_dXD5.Length; i++)
+            {
+                Array.Resize(ref MMaster_dYD5, idxy + 1);
+                Array.Resize(ref MUpper_dYD5, idxy + 1);
+                Array.Resize(ref MLower_dYD5, idxy + 1);
+                MMaster_dYD5[idxy] = (double)fYD1[i];
+                MUpper_dYD5[idxy] = (double)fYD2[i];
+                MLower_dYD5[idxy] = (double)fYD3[i];
+                idxy++;
+            }
+
+            if ((MMaster_dXD5.Count() != MMaster_dYD5.Count()) || (MLower_dXD5.Count() != MLower_dYD5.Count()) || (MUpper_dXD5.Count() != MUpper_dYD5.Count()))
+            {
+                _uiPlot11UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot11UpdateFlag = true;
+            }
+        }
+        void MasterDataAssignPlot12()
+        {
+            float[] fXD = _TMaster.RMasteringTeachStep2[10].ToArray();
+            float[] fYD1 = _TMaster.RMasteringTeachStep2[11].ToArray();
+            float[] fYD2 = _TMaster.RMasteringTeachStep2[13].ToArray();
+            float[] fYD3 = _TMaster.RMasteringTeachStep2[14].ToArray();
+
+            int idxx = 0;
+            for (int i = 0; i < fXD.Length; i++)
+            {
+                if (fXD[i] != 0 && i != 0)
+                {
+                    Array.Resize(ref MMaster_dXD6, idxx + 1);
+                    Array.Resize(ref MUpper_dXD6, idxx + 1);
+                    Array.Resize(ref MLower_dXD6, idxx + 1);
+                    if (((double)fXD[i] == MMaster_dXD6[idxx - 1]) && ((double)fXD[i] == MUpper_dXD6[idxx - 1]) && ((double)fXD[i] == MLower_dXD6[idxx - 1]))
+                    {
+                        MMaster_dXD6[idxx] = (double)fXD[i] + 1;
+                        MUpper_dXD6[idxx] = (double)fXD[i] + 1;
+                        MLower_dXD6[idxx] = (double)fXD[i] + 1;
+                    }
+                    else
+                    {
+                        MMaster_dXD6[idxx] = (double)fXD[i];
+                        MUpper_dXD6[idxx] = (double)fXD[i];
+                        MLower_dXD6[idxx] = (double)fXD[i];
+                    }
+                    idxx++;
+                }
+                else if (i == 0)
+                {
+                    Array.Resize(ref MMaster_dXD6, idxx + 1);
+                    Array.Resize(ref MUpper_dXD6, idxx + 1);
+                    Array.Resize(ref MLower_dXD6, idxx + 1);
+                    MMaster_dXD6[idxx] = (double)fXD[i];
+                    MUpper_dXD6[idxx] = (double)fXD[i];
+                    MLower_dXD6[idxx] = (double)fXD[i];
+                    idxx++;
+                }
+            }
+
+            int idxy = 0;
+            for (int i = 0; i < MMaster_dXD6.Length; i++)
+            {
+                Array.Resize(ref MMaster_dYD6, idxy + 1);
+                Array.Resize(ref MUpper_dYD6, idxy + 1);
+                Array.Resize(ref MLower_dYD6, idxy + 1);
+                MMaster_dYD6[idxy] = (double)fYD1[i];
+                MUpper_dYD6[idxy] = (double)fYD2[i];
+                MLower_dYD6[idxy] = (double)fYD3[i];
+                idxy++;
+            }
+
+            if ((MMaster_dXD6.Count() != MMaster_dYD6.Count()) || (MLower_dXD6.Count() != MLower_dYD6.Count()) || (MUpper_dXD6.Count() != MUpper_dYD6.Count()))
+            {
+                _uiPlot12UpdateFlag = false;
+            }
+            else
+            {
+                _uiPlot12UpdateFlag = true;
+            }
+        }
+        void MasterDataAssignRealPlot()
+        {
+            MasterDataAssignPlot1();
+            MasterDataAssignPlot2();
+            MasterDataAssignPlot3();
+            MasterDataAssignPlot4();
+            MasterDataAssignPlot9();
+            MasterDataAssignPlot10();
+        }
+        void MasterDataAssignLMasterPlot()
+        {
+            MasterDataAssignPlot5();
+            MasterDataAssignPlot6();
+            MasterDataAssignPlot11();
+        }
+        void MasterDataAssignRMasterPlot()
+        {
+            MasterDataAssignPlot7();
+            MasterDataAssignPlot8();
+            MasterDataAssignPlot12();
+        }
+
+        void uiPlotSignalLineShow(ref ScottPlot.Plottables.SignalXY plotsig)
+        {
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new PlotSignalLineShowDelegate(InvokePlotSignalLineShow), new object[] { _uiObject, plotsig });
+            }
+            else
+            {
+                _uiObject.PlotSignalLineShow(ref plotsig);
             }
         }
 
-        public void _uiUPdateRealDataTable(DATAMODEL_RL dataR, DATAMODEL_RL dataL) //invoked when realtime update
+        void uiPlotSignalLineHide(ref ScottPlot.Plottables.SignalXY plotsig)
+        {
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new PlotSignalLineHideDelegate(InvokePlotSignalLineHide), new object[] { _uiObject, plotsig });
+            }
+            else
+            {
+                _uiObject.PlotSignalLineHide(ref plotsig);
+            }
+        }
+
+        delegate void PlotSignalLineShowDelegate(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot);
+        static void InvokePlotSignalLineShow(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot)
+        {
+            ui.PlotSignalLineShow(ref plot);
+        }
+
+        delegate void PlotSignalLineHideDelegate(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot);
+        static void InvokePlotSignalLineHide(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot)
+        {
+            ui.PlotSignalLineHide(ref plot);
+        }
+
+
+        public void uiUPdateRealDataTable(DATAMODEL_RL dataR, DATAMODEL_RL dataL) //invoked when realtime update
         {
             if (_uiObject.InvokeRequired)
             {
@@ -2835,8 +4643,7 @@ namespace WORKFLOW
 
             }
         }
-
-        public void _uiUPdateRealMasterActiveTable(DATAMODEL_MASTER dataM) //invoked when select model
+        public void uiUPdateRealMasterActiveTable(DATAMODEL_MASTER dataM) //invoked when select model
         {
             if (_uiObject.InvokeRequired)
             {
@@ -2883,28 +4690,10 @@ namespace WORKFLOW
                 _uiObject.DataRealSideLDiffUpper    = dataM.LMasteringStep2[11].ToArray();
             }
         }
-
-        public void _uiUpdateMasterTeachTable(DATAMODEL_TEACHING_MASTER dataTM) //invoked when teaching mode
+        public void uiUpdateMasterLTeachTable(DATAMODEL_TEACHING_MASTER dataTM) //invoked when teaching mode
         {
             if (_uiObject.InvokeRequired)
             {
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRStroke    = dataTM.RMasteringTeachStep2[0].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRMaster    = dataTM.RMasteringTeachStep2[1].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRAccMaster = dataTM.RMasteringTeachStep2[2].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRLower     = dataTM.RMasteringTeachStep2[3].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRUpper     = dataTM.RMasteringTeachStep2[4].ToArray()));
-
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRStroke    = dataTM.RMasteringTeachStep2[5].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRMaster    = dataTM.RMasteringTeachStep2[6].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRAccMaster = dataTM.RMasteringTeachStep2[7].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRLower     = dataTM.RMasteringTeachStep2[8].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRUpper     = dataTM.RMasteringTeachStep2[9].ToArray()));
-
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffStroke    = dataTM.RMasteringTeachStep2[10].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffMaster    = dataTM.RMasteringTeachStep2[11].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffLower     = dataTM.RMasteringTeachStep2[12].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffUpper     = dataTM.RMasteringTeachStep2[13].ToArray()));
-
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLStroke    = dataTM.LMasteringTeachStep2[0].ToArray()));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLMaster    = dataTM.LMasteringTeachStep2[1].ToArray()));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLAccMaster = dataTM.LMasteringTeachStep2[2].ToArray()));
@@ -2919,8 +4708,52 @@ namespace WORKFLOW
 
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffStroke    = dataTM.LMasteringTeachStep2[10].ToArray()));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffMaster    = dataTM.LMasteringTeachStep2[11].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffLower     = dataTM.LMasteringTeachStep2[12].ToArray()));
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffUpper     = dataTM.LMasteringTeachStep2[13].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffAccMaster = dataTM.LMasteringTeachStep2[12].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffLower     = dataTM.LMasteringTeachStep2[13].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffUpper     = dataTM.LMasteringTeachStep2[14].ToArray()));
+            }
+            else
+            {
+                _uiObject.DataMasterCompSideLStroke     = dataTM.LMasteringTeachStep2[0].ToArray();
+                _uiObject.DataMasterCompSideLMaster     = dataTM.LMasteringTeachStep2[1].ToArray();
+                _uiObject.DataMasterCompSideLAccMaster  = dataTM.LMasteringTeachStep2[2].ToArray();
+                _uiObject.DataMasterCompSideLLower      = dataTM.LMasteringTeachStep2[3].ToArray();
+                _uiObject.DataMasterCompSideLUpper      = dataTM.LMasteringTeachStep2[4].ToArray();
+
+                _uiObject.DataMasterExtnSideLStroke     = dataTM.LMasteringTeachStep2[5].ToArray();
+                _uiObject.DataMasterExtnSideLMaster     = dataTM.LMasteringTeachStep2[6].ToArray();
+                _uiObject.DataMasterExtnSideLAccMaster  = dataTM.LMasteringTeachStep2[7].ToArray();
+                _uiObject.DataMasterExtnSideLLower      = dataTM.LMasteringTeachStep2[8].ToArray();
+                _uiObject.DataMasterExtnSideLUpper      = dataTM.LMasteringTeachStep2[9].ToArray();
+
+                _uiObject.DataMasterSideLDiffStroke     = dataTM.LMasteringTeachStep2[10].ToArray();
+                _uiObject.DataMasterSideLDiffMaster     = dataTM.LMasteringTeachStep2[11].ToArray();
+                _uiObject.DataMasterSideLDiffAccMaster  = dataTM.LMasteringTeachStep2[12].ToArray();
+                _uiObject.DataMasterSideLDiffLower      = dataTM.LMasteringTeachStep2[13].ToArray();
+                _uiObject.DataMasterSideLDiffUpper      = dataTM.LMasteringTeachStep2[14].ToArray();
+            }
+        }
+        public void uiUpdateMasterRTeachTable(DATAMODEL_TEACHING_MASTER dataTM) //invoked when teaching mode
+        {
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRStroke = dataTM.RMasteringTeachStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRMaster = dataTM.RMasteringTeachStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRAccMaster = dataTM.RMasteringTeachStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRLower = dataTM.RMasteringTeachStep2[3].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRUpper = dataTM.RMasteringTeachStep2[4].ToArray()));
+
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRStroke = dataTM.RMasteringTeachStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRMaster = dataTM.RMasteringTeachStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRAccMaster = dataTM.RMasteringTeachStep2[7].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRLower = dataTM.RMasteringTeachStep2[8].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRUpper = dataTM.RMasteringTeachStep2[9].ToArray()));
+
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffStroke = dataTM.RMasteringTeachStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffMaster = dataTM.RMasteringTeachStep2[11].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffAccMaster = dataTM.RMasteringTeachStep2[12].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffLower = dataTM.RMasteringTeachStep2[13].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffUpper = dataTM.RMasteringTeachStep2[14].ToArray()));
             }
             else
             {
@@ -2938,30 +4771,76 @@ namespace WORKFLOW
 
                 _uiObject.DataMasterSideRDiffStroke     = dataTM.RMasteringTeachStep2[10].ToArray();
                 _uiObject.DataMasterSideRDiffMaster     = dataTM.RMasteringTeachStep2[11].ToArray();
-                _uiObject.DataMasterSideRDiffLower      = dataTM.RMasteringTeachStep2[12].ToArray();
-                _uiObject.DataMasterSideRDiffUpper      = dataTM.RMasteringTeachStep2[13].ToArray();
-
-
-                _uiObject.DataMasterCompSideLStroke     = dataTM.LMasteringTeachStep2[0].ToArray();
-                _uiObject.DataMasterCompSideLMaster     = dataTM.LMasteringTeachStep2[1].ToArray();
-                _uiObject.DataMasterCompSideLAccMaster  = dataTM.LMasteringTeachStep2[2].ToArray();
-                _uiObject.DataMasterCompSideLLower      = dataTM.LMasteringTeachStep2[3].ToArray();
-                _uiObject.DataMasterCompSideLUpper      = dataTM.LMasteringTeachStep2[4].ToArray();
-
-                _uiObject.DataMasterExtnSideLStroke     = dataTM.LMasteringTeachStep2[5].ToArray();
-                _uiObject.DataMasterExtnSideLMaster     = dataTM.LMasteringTeachStep2[6].ToArray();
-                _uiObject.DataMasterExtnSideLAccMaster  = dataTM.LMasteringTeachStep2[7].ToArray();
-                _uiObject.DataMasterExtnSideLLower      = dataTM.LMasteringTeachStep2[8].ToArray();
-                _uiObject.DataMasterExtnSideLUpper      = dataTM.LMasteringTeachStep2[9].ToArray();
-
-                _uiObject.DataMasterSideLDiffStroke     = dataTM.LMasteringTeachStep2[10].ToArray();
-                _uiObject.DataMasterSideLDiffMaster     = dataTM.LMasteringTeachStep2[11].ToArray();
-                _uiObject.DataMasterSideLDiffLower      = dataTM.LMasteringTeachStep2[12].ToArray();
-                _uiObject.DataMasterSideLDiffUpper      = dataTM.LMasteringTeachStep2[13].ToArray();
+                _uiObject.DataMasterSideRDiffAccMaster  = dataTM.RMasteringTeachStep2[12].ToArray();
+                _uiObject.DataMasterSideRDiffLower      = dataTM.RMasteringTeachStep2[13].ToArray();
+                _uiObject.DataMasterSideRDiffUpper      = dataTM.RMasteringTeachStep2[14].ToArray();
             }
+        }
+        public void workUpdateMasterData()
+        {
+            _masterData.LMasteringStep2[0 ] = _uiObject.DataMasterCompSideLStroke   .ToList(item => item);
+            _masterData.LMasteringStep2[1 ] = _uiObject.DataMasterCompSideLMaster   .ToList(item => item);
+            _masterData.LMasteringStep2[2 ] = _uiObject.DataMasterCompSideLLower    .ToList(item => item);
+            _masterData.LMasteringStep2[3 ] = _uiObject.DataMasterCompSideLUpper    .ToList(item => item);
+            _masterData.LMasteringStep2[4 ] = _uiObject.DataMasterExtnSideLStroke   .ToList(item => item);
+            _masterData.LMasteringStep2[5 ] = _uiObject.DataMasterExtnSideLMaster   .ToList(item => item);
+            _masterData.LMasteringStep2[6 ] = _uiObject.DataMasterExtnSideLLower    .ToList(item => item);
+            _masterData.LMasteringStep2[7 ] = _uiObject.DataMasterExtnSideLUpper    .ToList(item => item);
+            _masterData.LMasteringStep2[8 ] = _uiObject.DataMasterSideLDiffStroke   .ToList(item => item);
+            _masterData.LMasteringStep2[9 ] = _uiObject.DataMasterSideLDiffMaster   .ToList(item => item);
+            _masterData.LMasteringStep2[10] = _uiObject.DataMasterSideLDiffLower    .ToList(item => item);
+            _masterData.LMasteringStep2[11] = _uiObject.DataMasterSideLDiffUpper    .ToList(item => item);
+
+            _masterData.RMasteringStep2[0 ] = _uiObject.DataMasterCompSideRStroke   .ToList(item => item);
+            _masterData.RMasteringStep2[1 ] = _uiObject.DataMasterCompSideRMaster   .ToList(item => item);
+            _masterData.RMasteringStep2[2 ] = _uiObject.DataMasterCompSideRLower    .ToList(item => item);
+            _masterData.RMasteringStep2[3 ] = _uiObject.DataMasterCompSideRUpper    .ToList(item => item);
+            _masterData.RMasteringStep2[4 ] = _uiObject.DataMasterExtnSideRStroke   .ToList(item => item);
+            _masterData.RMasteringStep2[5 ] = _uiObject.DataMasterExtnSideRMaster   .ToList(item => item);
+            _masterData.RMasteringStep2[6 ] = _uiObject.DataMasterExtnSideRLower    .ToList(item => item);
+            _masterData.RMasteringStep2[7 ] = _uiObject.DataMasterExtnSideRUpper    .ToList(item => item);
+            _masterData.RMasteringStep2[8 ] = _uiObject.DataMasterSideRDiffStroke   .ToList(item => item);
+            _masterData.RMasteringStep2[9 ] = _uiObject.DataMasterSideRDiffMaster   .ToList(item => item);
+            _masterData.RMasteringStep2[10] = _uiObject.DataMasterSideRDiffLower    .ToList(item => item);
+            _masterData.RMasteringStep2[11] = _uiObject.DataMasterSideRDiffUpper    .ToList(item => item);
+        }
+        public void workUpdateMasterDatabase()
+        {
+            _excelStoreMasterGraphData(ref _masterData, ref MasterFileActive);
+            _excelPrintMasterData(ref _masterData, ref MasterFileActive);
+        }
+        public void workMasterValidation()
+        {
+            _eeipTrigMasterFetch(_masterData._activeModelName, ref MasterFileActive, ref _masterData);
+            _eeipTrigMasterFetchModel(ref _masterData);
+            _eeipTrigMasterFetchGraph(ref _masterData);
+            MasterDataAssignRealPlot();
+            uiPlotRealMasterUpdate();
+            uiUPdateRealMasterActiveTable(_masterData);
+            MasterDataValidationSet();
         }
     }
 
+
+    public static class ArrayExtensions
+    {
+        // Extension method to support lambda with index
+        public static void ForEach<T>(this T[] array, Action<T, int> action)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                action(array[i], i);
+            }
+        }
+
+        // Extension method to convert array to list using a lambda expression
+        public static List<T> ToList<T>(this T[] array, Func<T, T> converter)
+        {
+            List<T> list = new List<T>(array.Length);
+            array.ForEach((item, index) => list.Add(converter(item)));
+            return list;
+        }
+    }
     public class DATAMODEL_COMMON
     {
         public string _activeModelName;
@@ -3054,7 +4933,6 @@ namespace WORKFLOW
 
         }
     }
-
     public class DATAMODEL_RL
     {
         public int _Step1MaxLoad_NG;
@@ -3122,9 +5000,9 @@ namespace WORKFLOW
             };
         }
     }
-
     public class DATAMODEL_MASTER
     {
+        public int _Validation;
 
         public string _activeModelName;
         public string _activeKayabaNumber;
@@ -3341,7 +5219,6 @@ namespace WORKFLOW
             };
         }
     }
-
     public class DATAMODEL_TEACHING_MASTER
     {
         public List<List<float>> RMasteringTeachStep2;
@@ -3361,7 +5238,8 @@ namespace WORKFLOW
         List<float> _RsideMasterStep2ExtnLoadLower;
         List<float> _RsideMasterStep2ExtnLoadUpper;
         List<float> _RsideMasterStep2DiffStroke;
-        List<float> _RsideMasterStep2DiffLoad;
+        List<float> _RsideMasterStep2DiffLoadMaster;
+        List<float> _RsideMasterStep2DiffLoadTeach;
         List<float> _RsideMasterStep2DiffLoadLower;
         List<float> _RsideMasterStep2DiffLoadUpper;
 
@@ -3376,7 +5254,8 @@ namespace WORKFLOW
         List<float> _RsideMasterStep3ExtnLoadLower;
         List<float> _RsideMasterStep3ExtnLoadUpper;
         List<float> _RsideMasterStep3DiffStroke;
-        List<float> _RsideMasterStep3DiffLoad;
+        List<float> _RsideMasterStep3DiffLoadMaster;
+        List<float> _RsideMasterStep3DiffLoadTeach;
         List<float> _RsideMasterStep3DiffLoadLower;
         List<float> _RsideMasterStep3DiffLoadUpper;
 
@@ -3391,7 +5270,8 @@ namespace WORKFLOW
         List<float> _LsideMasterStep2ExtnLoadLower;
         List<float> _LsideMasterStep2ExtnLoadUpper;
         List<float> _LsideMasterStep2DiffStroke;
-        List<float> _LsideMasterStep2DiffLoad;
+        List<float> _LsideMasterStep2DiffLoadMaster;
+        List<float> _LsideMasterStep2DiffLoadTeach;
         List<float> _LsideMasterStep2DiffLoadLower;
         List<float> _LsideMasterStep2DiffLoadUpper;
 
@@ -3406,7 +5286,8 @@ namespace WORKFLOW
         List<float> _LsideMasterStep3ExtnLoadLower;
         List<float> _LsideMasterStep3ExtnLoadUpper;
         List<float> _LsideMasterStep3DiffStroke;
-        List<float> _LsideMasterStep3DiffLoad;
+        List<float> _LsideMasterStep3DiffLoadMaster;
+        List<float> _LsideMasterStep3DiffLoadTeach;
         List<float> _LsideMasterStep3DiffLoadLower;
         List<float> _LsideMasterStep3DiffLoadUpper;
 
@@ -3426,7 +5307,8 @@ namespace WORKFLOW
                 _RsideMasterStep2ExtnLoadLower,
                 _RsideMasterStep2ExtnLoadUpper,
                 _RsideMasterStep2DiffStroke,
-                _RsideMasterStep2DiffLoad,
+                _RsideMasterStep2DiffLoadMaster,
+                _RsideMasterStep2DiffLoadTeach,
                 _RsideMasterStep2DiffLoadLower,
                 _RsideMasterStep2DiffLoadUpper
             };
@@ -3444,7 +5326,8 @@ namespace WORKFLOW
                 _RsideMasterStep3ExtnLoadLower,
                 _RsideMasterStep3ExtnLoadUpper,
                 _RsideMasterStep3DiffStroke,
-                _RsideMasterStep3DiffLoad,
+                _RsideMasterStep3DiffLoadMaster,
+                _RsideMasterStep3DiffLoadTeach,
                 _RsideMasterStep3DiffLoadLower,
                 _RsideMasterStep3DiffLoadUpper
             };
@@ -3462,7 +5345,8 @@ namespace WORKFLOW
                 _LsideMasterStep2ExtnLoadLower,
                 _LsideMasterStep2ExtnLoadUpper,
                 _LsideMasterStep2DiffStroke,
-                _LsideMasterStep2DiffLoad,
+                _LsideMasterStep2DiffLoadMaster,
+                _LsideMasterStep2DiffLoadTeach,
                 _LsideMasterStep2DiffLoadLower,
                 _LsideMasterStep2DiffLoadUpper
             };
@@ -3480,12 +5364,11 @@ namespace WORKFLOW
                 _LsideMasterStep3ExtnLoadLower,
                 _LsideMasterStep3ExtnLoadUpper,
                 _LsideMasterStep3DiffStroke,
-                _LsideMasterStep3DiffLoad,
+                _LsideMasterStep3DiffLoadMaster,
+                _LsideMasterStep3DiffLoadTeach,
                 _LsideMasterStep3DiffLoadLower,
                 _LsideMasterStep3DiffLoadUpper
             };
         }
     }
-
-
 }

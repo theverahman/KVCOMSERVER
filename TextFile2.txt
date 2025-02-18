@@ -1,0 +1,60 @@
+string[] RMasteringTeachStep2addrs = new string[]
+        {
+            "ZF117200",//RCOMPSTROKE
+            "ZF117600",//RCOMPLOAD
+            "ZF132500",//RCOMPACCLOAD
+            "ZF118000",//RCOMPLOADLOWER
+            "ZF118400",//RCOMPLOADUPPER
+            "ZF118800",//REXTNSTROKE
+            "ZF119200",//REXTNLOAD
+            "ZF138900",//REXTNACCLOAD
+            "ZF119600",//REXTNLOADLOWER
+            "ZF120000",//REXTNLOADUPPER
+            "ZF511000",//RDIFFSTROKE
+            "ZF511400",//RDIFFLOADMASTER
+            "ZF510000",//RDIFFLOADTEACH
+            "ZF512200",//RDIFFLOADLOWER
+            "ZF511800" //RDIFFLOADUPPER
+        };
+
+        string[] RMasteringTeachStep3addrs = new string[]
+        {
+
+        };
+
+        string[] LMasteringTeachStep2addrs = new string[]
+        {
+            "ZF217200",//LCOMPSTROKE
+            "ZF217600",//LCOMPLOAD
+            "ZF232500",//LCOMPACCLOAD
+            "ZF218000",//LCOMPLOADLOWER
+            "ZF218400",//LCOMPLOADUPPER
+            "ZF218800",//LEXTNSTROKE
+            "ZF219200",//LEXTNLOAD
+            "ZF238900",//LEXTNACCLOAD
+            "ZF219600",//LEXTNLOADLOWER
+            "ZF220000",//LEXTNLOADUPPER
+            "ZF515000",//LDIFFSTROKE
+            "ZF515400",//LDIFFLOADMASTER
+            "ZF510500",//LDIFFLOADTEACH
+            "ZF516200",//LDIFFLOADLOWER
+            "ZF515800" //LDIFFLOADUPPER
+        };
+
+        string[] LMasteringTeachStep3addrs = new string[]
+        {
+            
+        };
+
+        _kvreadMasterTeachData()
+
+        bool _masterSetupConfirm;
+        void MasterSetupConfirmSet() { _masterSetupConfirm = true; }
+        void MasterSetupConfirmReset() { _masterSetupConfirm = false; }
+        
+        bool _masterDataValidation;
+        void MasterDataValidationSet() { _masterDataValidation = true; }
+        void MasterDataValidationReset() { _masterDataValidation = false; }
+
+        _backgroundDataPlot1Read();
+                    _uiPlot1Update();

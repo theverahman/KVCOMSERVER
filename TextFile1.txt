@@ -1,0 +1,71 @@
+RMasteringTeachStep2 = new List<List<float>>()
+            {
+                _RsideMasterStep2CompStroke,
+                _RsideMasterStep2CompLoad,
+                _RsideMasterStep2CompAccLoad,
+                _RsideMasterStep2CompLoadLower,
+                _RsideMasterStep2CompLoadUpper,
+                _RsideMasterStep2ExtnStroke,
+                _RsideMasterStep2ExtnLoad,
+                _RsideMasterStep2ExtnAccLoad,
+                _RsideMasterStep2ExtnLoadLower,
+                _RsideMasterStep2ExtnLoadUpper,
+                _RsideMasterStep2DiffStroke,
+                _RsideMasterStep2DiffLoad,
+                _RsideMasterStep2DiffLoadLower,
+                _RsideMasterStep2DiffLoadUpper
+            };
+
+            RMasteringTeachStep3 = new List<List<float>>()
+            {
+                _RsideMasterStep3CompStroke,
+                _RsideMasterStep3CompLoad,
+                _RsideMasterStep3CompAccLoad,
+                _RsideMasterStep3CompLoadLower,
+                _RsideMasterStep3CompLoadUpper,
+                _RsideMasterStep3ExtnStroke,
+                _RsideMasterStep3ExtnLoad,
+                _RsideMasterStep3ExtnAccLoad,
+                _RsideMasterStep3ExtnLoadLower,
+                _RsideMasterStep3ExtnLoadUpper,
+                _RsideMasterStep3DiffStroke,
+                _RsideMasterStep3DiffLoad,
+                _RsideMasterStep3DiffLoadLower,
+                _RsideMasterStep3DiffLoadUpper
+            };
+
+            LMasteringTeachStep2 = new List<List<float>>()
+            {
+                _LsideMasterStep2CompStroke,
+                _LsideMasterStep2CompLoad,
+                _LsideMasterStep2CompAccLoad,
+                _LsideMasterStep2CompLoadLower,
+                _LsideMasterStep2CompLoadUpper,
+                _LsideMasterStep2ExtnStroke,
+                _LsideMasterStep2ExtnLoad,
+                _LsideMasterStep2ExtnAccLoad,
+                _LsideMasterStep2ExtnLoadLower,
+                _LsideMasterStep2ExtnLoadUpper,
+                _LsideMasterStep2DiffStroke,
+                _LsideMasterStep2DiffLoad,
+                _LsideMasterStep2DiffLoadLower,
+                _LsideMasterStep2DiffLoadUpper
+            };
+
+            LMasteringTeachStep3 = new List<List<float>>()
+            {
+                _LsideMasterStep3CompStroke,
+                _LsideMasterStep3CompLoad,
+                _LsideMasterStep3CompAccLoad,
+                _LsideMasterStep3CompLoadLower,
+                _LsideMasterStep3CompLoadUpper,
+                _LsideMasterStep3ExtnStroke,
+                _LsideMasterStep3ExtnLoad,
+                _LsideMasterStep3ExtnAccLoad,
+                _LsideMasterStep3ExtnLoadLower,
+                _LsideMasterStep3ExtnLoadUpper,
+                _LsideMasterStep3DiffStroke,
+                _LsideMasterStep3DiffLoad,
+                _LsideMasterStep3DiffLoadLower,
+                _LsideMasterStep3DiffLoadUpper
+            };

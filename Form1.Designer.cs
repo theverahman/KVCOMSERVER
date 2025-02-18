@@ -1,4 +1,6 @@
-﻿namespace KVCOMSERVER
+﻿using ScottPlot;
+
+namespace KVCOMSERVER
 {
     partial class Form1
     {
@@ -34,11 +36,40 @@
             timelabel0 = new System.Windows.Forms.Label();
             datelabel0 = new System.Windows.Forms.Label();
             tabPage8 = new System.Windows.Forms.TabPage();
+            label28 = new System.Windows.Forms.Label();
+            label29 = new System.Windows.Forms.Label();
+            textBox5 = new System.Windows.Forms.TextBox();
+            textBox6 = new System.Windows.Forms.TextBox();
             button39 = new System.Windows.Forms.Button();
+            label27 = new System.Windows.Forms.Label();
+            label26 = new System.Windows.Forms.Label();
+            textBox4 = new System.Windows.Forms.TextBox();
+            textBox3 = new System.Windows.Forms.TextBox();
+            button76 = new System.Windows.Forms.Button();
+            button77 = new System.Windows.Forms.Button();
+            button78 = new System.Windows.Forms.Button();
+            button79 = new System.Windows.Forms.Button();
+            button66 = new System.Windows.Forms.Button();
+            button67 = new System.Windows.Forms.Button();
+            button64 = new System.Windows.Forms.Button();
+            button65 = new System.Windows.Forms.Button();
+            button56 = new System.Windows.Forms.Button();
+            button57 = new System.Windows.Forms.Button();
+            button58 = new System.Windows.Forms.Button();
+            button59 = new System.Windows.Forms.Button();
+            button60 = new System.Windows.Forms.Button();
+            button61 = new System.Windows.Forms.Button();
+            button62 = new System.Windows.Forms.Button();
+            button63 = new System.Windows.Forms.Button();
             button31 = new System.Windows.Forms.Button();
-            button30 = new System.Windows.Forms.Button();
             button29 = new System.Windows.Forms.Button();
             tabPage5 = new System.Windows.Forms.TabPage();
+            button80 = new System.Windows.Forms.Button();
+            button30 = new System.Windows.Forms.Button();
+            formsPlot12 = new ScottPlot.WinForms.FormsPlot();
+            formsPlot11 = new ScottPlot.WinForms.FormsPlot();
+            label25 = new System.Windows.Forms.Label();
+            label24 = new System.Windows.Forms.Label();
             button38 = new System.Windows.Forms.Button();
             button28 = new System.Windows.Forms.Button();
             button25 = new System.Windows.Forms.Button();
@@ -66,8 +97,28 @@
             dataGridView2 = new System.Windows.Forms.DataGridView();
             label13 = new System.Windows.Forms.Label();
             tabPage7 = new System.Windows.Forms.TabPage();
+            button74 = new System.Windows.Forms.Button();
+            button75 = new System.Windows.Forms.Button();
+            button73 = new System.Windows.Forms.Button();
+            button72 = new System.Windows.Forms.Button();
+            button68 = new System.Windows.Forms.Button();
+            button69 = new System.Windows.Forms.Button();
+            button70 = new System.Windows.Forms.Button();
+            button71 = new System.Windows.Forms.Button();
+            button52 = new System.Windows.Forms.Button();
+            button53 = new System.Windows.Forms.Button();
+            button54 = new System.Windows.Forms.Button();
+            button55 = new System.Windows.Forms.Button();
+            button50 = new System.Windows.Forms.Button();
+            button51 = new System.Windows.Forms.Button();
+            button49 = new System.Windows.Forms.Button();
+            button34 = new System.Windows.Forms.Button();
             button32 = new System.Windows.Forms.Button();
             tabPage3 = new System.Windows.Forms.TabPage();
+            label23 = new System.Windows.Forms.Label();
+            label22 = new System.Windows.Forms.Label();
+            formsPlot10 = new ScottPlot.WinForms.FormsPlot();
+            formsPlot9 = new ScottPlot.WinForms.FormsPlot();
             button36 = new System.Windows.Forms.Button();
             button33 = new System.Windows.Forms.Button();
             button24 = new System.Windows.Forms.Button();
@@ -124,22 +175,6 @@
             label5 = new System.Windows.Forms.Label();
             tabControl1 = new System.Windows.Forms.TabControl();
             label8 = new System.Windows.Forms.Label();
-            button34 = new System.Windows.Forms.Button();
-            button49 = new System.Windows.Forms.Button();
-            button50 = new System.Windows.Forms.Button();
-            button51 = new System.Windows.Forms.Button();
-            button52 = new System.Windows.Forms.Button();
-            button53 = new System.Windows.Forms.Button();
-            button54 = new System.Windows.Forms.Button();
-            button55 = new System.Windows.Forms.Button();
-            button56 = new System.Windows.Forms.Button();
-            button57 = new System.Windows.Forms.Button();
-            button58 = new System.Windows.Forms.Button();
-            button59 = new System.Windows.Forms.Button();
-            button60 = new System.Windows.Forms.Button();
-            button61 = new System.Windows.Forms.Button();
-            button62 = new System.Windows.Forms.Button();
-            button63 = new System.Windows.Forms.Button();
             tabPage8.SuspendLayout();
             tabPage5.SuspendLayout();
             tabPage6.SuspendLayout();
@@ -201,8 +236,25 @@
             // 
             // tabPage8
             // 
-            tabPage8.BackColor = System.Drawing.Color.LightSlateGray;
+            tabPage8.BackColor = System.Drawing.Color.SlateGray;
             tabPage8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(label28);
+            tabPage8.Controls.Add(label29);
+            tabPage8.Controls.Add(textBox5);
+            tabPage8.Controls.Add(textBox6);
+            tabPage8.Controls.Add(button39);
+            tabPage8.Controls.Add(label27);
+            tabPage8.Controls.Add(label26);
+            tabPage8.Controls.Add(textBox4);
+            tabPage8.Controls.Add(textBox3);
+            tabPage8.Controls.Add(button76);
+            tabPage8.Controls.Add(button77);
+            tabPage8.Controls.Add(button78);
+            tabPage8.Controls.Add(button79);
+            tabPage8.Controls.Add(button66);
+            tabPage8.Controls.Add(button67);
+            tabPage8.Controls.Add(button64);
+            tabPage8.Controls.Add(button65);
             tabPage8.Controls.Add(button56);
             tabPage8.Controls.Add(button57);
             tabPage8.Controls.Add(button58);
@@ -211,9 +263,7 @@
             tabPage8.Controls.Add(button61);
             tabPage8.Controls.Add(button62);
             tabPage8.Controls.Add(button63);
-            tabPage8.Controls.Add(button39);
             tabPage8.Controls.Add(button31);
-            tabPage8.Controls.Add(button30);
             tabPage8.Controls.Add(button29);
             tabPage8.Location = new System.Drawing.Point(4, 4);
             tabPage8.Name = "tabPage8";
@@ -221,41 +271,306 @@
             tabPage8.TabIndex = 7;
             tabPage8.Text = "MASTER TABLE";
             // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label28.ForeColor = System.Drawing.Color.LightCyan;
+            label28.Location = new System.Drawing.Point(979, 676);
+            label28.Name = "label28";
+            label28.Size = new System.Drawing.Size(168, 18);
+            label28.TabIndex = 64;
+            label28.Text = "RH DIFF BATCH OFFSET";
+            label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label29.ForeColor = System.Drawing.Color.LightCyan;
+            label29.Location = new System.Drawing.Point(719, 676);
+            label29.Name = "label29";
+            label29.Size = new System.Drawing.Size(168, 18);
+            label29.TabIndex = 63;
+            label29.Text = "LH DIFF BATCH OFFSET";
+            label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox5
+            // 
+            textBox5.Location = new System.Drawing.Point(1048, 697);
+            textBox5.Name = "textBox5";
+            textBox5.Size = new System.Drawing.Size(100, 24);
+            textBox5.TabIndex = 62;
+            textBox5.TextChanged += textBox5_TextChanged;
+            // 
+            // textBox6
+            // 
+            textBox6.Location = new System.Drawing.Point(719, 697);
+            textBox6.Name = "textBox6";
+            textBox6.Size = new System.Drawing.Size(100, 24);
+            textBox6.TabIndex = 61;
+            textBox6.TextChanged += textBox6_TextChanged;
+            // 
             // button39
             // 
             button39.BackColor = System.Drawing.Color.LightSteelBlue;
-            button39.Location = new System.Drawing.Point(1773, 904);
+            button39.Location = new System.Drawing.Point(877, 774);
             button39.Name = "button39";
-            button39.Size = new System.Drawing.Size(90, 60);
-            button39.TabIndex = 26;
-            button39.Text = "MAIN\r\nMENU";
+            button39.Size = new System.Drawing.Size(116, 60);
+            button39.TabIndex = 60;
+            button39.Text = "TEACHING SET";
             button39.UseVisualStyleBackColor = false;
-            button39.Click += button39_Click;
+            button39.Click += button39_Click_1;
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label27.ForeColor = System.Drawing.Color.LightCyan;
+            label27.Location = new System.Drawing.Point(1019, 625);
+            label27.Name = "label27";
+            label27.Size = new System.Drawing.Size(128, 18);
+            label27.TabIndex = 59;
+            label27.Text = "RH BATCH OFFSET";
+            label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label26.ForeColor = System.Drawing.Color.LightCyan;
+            label26.Location = new System.Drawing.Point(719, 625);
+            label26.Name = "label26";
+            label26.Size = new System.Drawing.Size(128, 18);
+            label26.TabIndex = 58;
+            label26.Text = "LH BATCH OFFSET";
+            label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new System.Drawing.Point(1048, 646);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new System.Drawing.Size(100, 24);
+            textBox4.TabIndex = 57;
+            textBox4.TextChanged += textBox4_TextChanged;
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new System.Drawing.Point(719, 646);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new System.Drawing.Size(100, 24);
+            textBox3.TabIndex = 56;
+            textBox3.TextChanged += textBox3_TextChanged;
+            // 
+            // button76
+            // 
+            button76.BackColor = System.Drawing.Color.LightSteelBlue;
+            button76.Font = new System.Drawing.Font("Sarasa Fixed J", 32F);
+            button76.Location = new System.Drawing.Point(1088, 925);
+            button76.Margin = new System.Windows.Forms.Padding(1);
+            button76.Name = "button76";
+            button76.Size = new System.Drawing.Size(60, 60);
+            button76.TabIndex = 55;
+            button76.Text = "⇓";
+            button76.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            button76.UseVisualStyleBackColor = false;
+            button76.Click += button76_Click;
+            // 
+            // button77
+            // 
+            button77.BackColor = System.Drawing.Color.LightSteelBlue;
+            button77.Font = new System.Drawing.Font("Sarasa Fixed J", 32F);
+            button77.Location = new System.Drawing.Point(1088, 808);
+            button77.Margin = new System.Windows.Forms.Padding(1);
+            button77.Name = "button77";
+            button77.Size = new System.Drawing.Size(60, 60);
+            button77.TabIndex = 54;
+            button77.Text = "⇑";
+            button77.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            button77.UseVisualStyleBackColor = false;
+            button77.Click += button77_Click;
+            // 
+            // button78
+            // 
+            button78.BackColor = System.Drawing.Color.LightSteelBlue;
+            button78.Font = new System.Drawing.Font("Sarasa Fixed J", 32F);
+            button78.Location = new System.Drawing.Point(719, 925);
+            button78.Margin = new System.Windows.Forms.Padding(1);
+            button78.Name = "button78";
+            button78.Size = new System.Drawing.Size(60, 60);
+            button78.TabIndex = 53;
+            button78.Text = "⇓";
+            button78.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            button78.UseVisualStyleBackColor = false;
+            button78.Click += button78_Click;
+            // 
+            // button79
+            // 
+            button79.BackColor = System.Drawing.Color.LightSteelBlue;
+            button79.Font = new System.Drawing.Font("Sarasa Fixed J", 32F);
+            button79.Location = new System.Drawing.Point(719, 808);
+            button79.Margin = new System.Windows.Forms.Padding(1);
+            button79.Name = "button79";
+            button79.Size = new System.Drawing.Size(60, 60);
+            button79.TabIndex = 52;
+            button79.Text = "⇑";
+            button79.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            button79.UseVisualStyleBackColor = false;
+            button79.Click += button79_Click;
+            // 
+            // button66
+            // 
+            button66.BackColor = System.Drawing.Color.LightSteelBlue;
+            button66.Location = new System.Drawing.Point(972, 559);
+            button66.Name = "button66";
+            button66.Size = new System.Drawing.Size(137, 51);
+            button66.TabIndex = 43;
+            button66.Text = "Step 3 R-Side\r\n Difference Data";
+            button66.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button66.UseVisualStyleBackColor = false;
+            // 
+            // button67
+            // 
+            button67.BackColor = System.Drawing.Color.LightSteelBlue;
+            button67.Location = new System.Drawing.Point(758, 559);
+            button67.Name = "button67";
+            button67.Size = new System.Drawing.Size(137, 51);
+            button67.TabIndex = 42;
+            button67.Text = "Step 3 L-Side\r\n Difference Data";
+            button67.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button67.UseVisualStyleBackColor = false;
+            // 
+            // button64
+            // 
+            button64.BackColor = System.Drawing.Color.LightSteelBlue;
+            button64.Location = new System.Drawing.Point(972, 355);
+            button64.Name = "button64";
+            button64.Size = new System.Drawing.Size(137, 51);
+            button64.TabIndex = 41;
+            button64.Text = "Step 2 R-Side\r\n Difference Data";
+            button64.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button64.UseVisualStyleBackColor = false;
+            button64.Click += button64_Click;
+            // 
+            // button65
+            // 
+            button65.BackColor = System.Drawing.Color.LightSteelBlue;
+            button65.Location = new System.Drawing.Point(758, 355);
+            button65.Name = "button65";
+            button65.Size = new System.Drawing.Size(137, 51);
+            button65.TabIndex = 40;
+            button65.Text = "Step 2 L-Side\r\n Difference Data";
+            button65.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button65.UseVisualStyleBackColor = false;
+            button65.Click += button65_Click;
+            // 
+            // button56
+            // 
+            button56.BackColor = System.Drawing.Color.LightSteelBlue;
+            button56.Location = new System.Drawing.Point(972, 297);
+            button56.Name = "button56";
+            button56.Size = new System.Drawing.Size(137, 51);
+            button56.TabIndex = 39;
+            button56.Text = "Step 2 R-Side\r\nExtension Data";
+            button56.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button56.UseVisualStyleBackColor = false;
+            button56.Click += button56_Click;
+            // 
+            // button57
+            // 
+            button57.BackColor = System.Drawing.Color.LightSteelBlue;
+            button57.Location = new System.Drawing.Point(972, 240);
+            button57.Name = "button57";
+            button57.Size = new System.Drawing.Size(137, 51);
+            button57.TabIndex = 38;
+            button57.Text = "Step 2 R-Side\r\nCompression Data";
+            button57.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button57.UseVisualStyleBackColor = false;
+            button57.Click += button57_Click;
+            // 
+            // button58
+            // 
+            button58.BackColor = System.Drawing.Color.LightSteelBlue;
+            button58.Location = new System.Drawing.Point(758, 297);
+            button58.Name = "button58";
+            button58.Size = new System.Drawing.Size(137, 51);
+            button58.TabIndex = 37;
+            button58.Text = "Step 2 L-Side\r\nExtension Data";
+            button58.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button58.UseVisualStyleBackColor = false;
+            button58.Click += button58_Click;
+            // 
+            // button59
+            // 
+            button59.BackColor = System.Drawing.Color.LightSteelBlue;
+            button59.Location = new System.Drawing.Point(758, 240);
+            button59.Name = "button59";
+            button59.Size = new System.Drawing.Size(137, 51);
+            button59.TabIndex = 36;
+            button59.Text = "Step 2 L-Side\r\nCompression Data";
+            button59.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button59.UseVisualStyleBackColor = false;
+            button59.Click += button59_Click;
+            // 
+            // button60
+            // 
+            button60.BackColor = System.Drawing.Color.LightSteelBlue;
+            button60.Location = new System.Drawing.Point(972, 502);
+            button60.Name = "button60";
+            button60.Size = new System.Drawing.Size(137, 51);
+            button60.TabIndex = 35;
+            button60.Text = "Step 3 R-Side\r\nExtension Data";
+            button60.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button60.UseVisualStyleBackColor = false;
+            // 
+            // button61
+            // 
+            button61.BackColor = System.Drawing.Color.LightSteelBlue;
+            button61.Location = new System.Drawing.Point(972, 445);
+            button61.Name = "button61";
+            button61.Size = new System.Drawing.Size(137, 51);
+            button61.TabIndex = 34;
+            button61.Text = "Step 3 R-Side\r\nCompression Data";
+            button61.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button61.UseVisualStyleBackColor = false;
+            // 
+            // button62
+            // 
+            button62.BackColor = System.Drawing.Color.LightSteelBlue;
+            button62.Location = new System.Drawing.Point(758, 502);
+            button62.Name = "button62";
+            button62.Size = new System.Drawing.Size(137, 51);
+            button62.TabIndex = 33;
+            button62.Text = "Step 3 L-Side\r\nExtension Data";
+            button62.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button62.UseVisualStyleBackColor = false;
+            // 
+            // button63
+            // 
+            button63.BackColor = System.Drawing.Color.LightSteelBlue;
+            button63.Location = new System.Drawing.Point(758, 445);
+            button63.Name = "button63";
+            button63.Size = new System.Drawing.Size(137, 51);
+            button63.TabIndex = 32;
+            button63.Text = "Step 3 L-Side\r\nCompression Data";
+            button63.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button63.UseVisualStyleBackColor = false;
             // 
             // button31
             // 
             button31.BackColor = System.Drawing.Color.LightSteelBlue;
-            button31.Location = new System.Drawing.Point(877, 825);
+            button31.Location = new System.Drawing.Point(877, 850);
             button31.Name = "button31";
             button31.Size = new System.Drawing.Size(116, 60);
             button31.TabIndex = 24;
             button31.Text = "CONFIRM EDIT";
             button31.UseVisualStyleBackColor = false;
-            // 
-            // button30
-            // 
-            button30.BackColor = System.Drawing.Color.LightSteelBlue;
-            button30.Location = new System.Drawing.Point(877, 745);
-            button30.Name = "button30";
-            button30.Size = new System.Drawing.Size(116, 60);
-            button30.TabIndex = 23;
-            button30.Text = "CANCEL EDIT";
-            button30.UseVisualStyleBackColor = false;
+            button31.Click += button31_Click;
             // 
             // button29
             // 
             button29.BackColor = System.Drawing.Color.LightSteelBlue;
-            button29.Location = new System.Drawing.Point(877, 905);
+            button29.Location = new System.Drawing.Point(877, 925);
             button29.Name = "button29";
             button29.Size = new System.Drawing.Size(116, 60);
             button29.TabIndex = 22;
@@ -265,8 +580,14 @@
             // 
             // tabPage5
             // 
-            tabPage5.BackColor = System.Drawing.Color.LightSlateGray;
+            tabPage5.BackColor = System.Drawing.Color.SlateGray;
             tabPage5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            tabPage5.Controls.Add(button80);
+            tabPage5.Controls.Add(button30);
+            tabPage5.Controls.Add(formsPlot12);
+            tabPage5.Controls.Add(formsPlot11);
+            tabPage5.Controls.Add(label25);
+            tabPage5.Controls.Add(label24);
             tabPage5.Controls.Add(button38);
             tabPage5.Controls.Add(button28);
             tabPage5.Controls.Add(button25);
@@ -288,6 +609,68 @@
             tabPage5.TabIndex = 4;
             tabPage5.Text = "MASTERING GRAPH";
             // 
+            // button80
+            // 
+            button80.BackColor = System.Drawing.Color.LightSteelBlue;
+            button80.Location = new System.Drawing.Point(870, 859);
+            button80.Name = "button80";
+            button80.Size = new System.Drawing.Size(130, 60);
+            button80.TabIndex = 32;
+            button80.Text = "VALIDATE MASTER DATA";
+            button80.UseVisualStyleBackColor = false;
+            button80.Click += button80_Click;
+            // 
+            // button30
+            // 
+            button30.BackColor = System.Drawing.Color.LightSteelBlue;
+            button30.Location = new System.Drawing.Point(870, 793);
+            button30.Name = "button30";
+            button30.Size = new System.Drawing.Size(130, 60);
+            button30.TabIndex = 31;
+            button30.Text = "UPDATE MASTER DATA";
+            button30.UseVisualStyleBackColor = false;
+            button30.Click += button30_Click;
+            // 
+            // formsPlot12
+            // 
+            formsPlot12.DisplayScale = 1F;
+            formsPlot12.Location = new System.Drawing.Point(1065, 773);
+            formsPlot12.Name = "formsPlot12";
+            formsPlot12.Size = new System.Drawing.Size(800, 166);
+            formsPlot12.TabIndex = 30;
+            // 
+            // formsPlot11
+            // 
+            formsPlot11.DisplayScale = 1F;
+            formsPlot11.Location = new System.Drawing.Point(6, 773);
+            formsPlot11.Name = "formsPlot11";
+            formsPlot11.Size = new System.Drawing.Size(800, 166);
+            formsPlot11.TabIndex = 29;
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label25.ForeColor = System.Drawing.Color.LightCyan;
+            label25.Location = new System.Drawing.Point(1663, 752);
+            label25.Name = "label25";
+            label25.Size = new System.Drawing.Size(200, 18);
+            label25.TabIndex = 28;
+            label25.Text = "RH SIDE DIFFERENCE GRAPH";
+            label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label24.ForeColor = System.Drawing.Color.LightCyan;
+            label24.Location = new System.Drawing.Point(6, 752);
+            label24.Name = "label24";
+            label24.Size = new System.Drawing.Size(200, 18);
+            label24.TabIndex = 27;
+            label24.Text = "LH SIDE DIFFERENCE GRAPH";
+            label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // button38
             // 
             button38.BackColor = System.Drawing.Color.LightSteelBlue;
@@ -302,7 +685,7 @@
             // button28
             // 
             button28.BackColor = System.Drawing.Color.LightSteelBlue;
-            button28.Location = new System.Drawing.Point(940, 945);
+            button28.Location = new System.Drawing.Point(870, 925);
             button28.Name = "button28";
             button28.Size = new System.Drawing.Size(130, 60);
             button28.TabIndex = 21;
@@ -365,7 +748,8 @@
             // 
             label18.AutoSize = true;
             label18.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label18.Location = new System.Drawing.Point(1675, 458);
+            label18.ForeColor = System.Drawing.Color.LightCyan;
+            label18.Location = new System.Drawing.Point(1671, 377);
             label18.Name = "label18";
             label18.Size = new System.Drawing.Size(192, 18);
             label18.TabIndex = 15;
@@ -376,6 +760,7 @@
             // 
             label19.AutoSize = true;
             label19.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label19.ForeColor = System.Drawing.Color.LightCyan;
             label19.Location = new System.Drawing.Point(1659, 3);
             label19.Name = "label19";
             label19.Size = new System.Drawing.Size(208, 18);
@@ -387,7 +772,8 @@
             // 
             label20.AutoSize = true;
             label20.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label20.Location = new System.Drawing.Point(6, 458);
+            label20.ForeColor = System.Drawing.Color.LightCyan;
+            label20.Location = new System.Drawing.Point(6, 377);
             label20.Name = "label20";
             label20.Size = new System.Drawing.Size(192, 18);
             label20.TabIndex = 13;
@@ -398,6 +784,7 @@
             // 
             label21.AutoSize = true;
             label21.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label21.ForeColor = System.Drawing.Color.LightCyan;
             label21.Location = new System.Drawing.Point(6, 3);
             label21.Name = "label21";
             label21.Size = new System.Drawing.Size(208, 18);
@@ -410,36 +797,36 @@
             formsPlot5.DisplayScale = 1F;
             formsPlot5.Location = new System.Drawing.Point(6, 23);
             formsPlot5.Name = "formsPlot5";
-            formsPlot5.Size = new System.Drawing.Size(925, 423);
+            formsPlot5.Size = new System.Drawing.Size(800, 350);
             formsPlot5.TabIndex = 11;
             // 
             // formsPlot6
             // 
             formsPlot6.DisplayScale = 1F;
-            formsPlot6.Location = new System.Drawing.Point(6, 479);
+            formsPlot6.Location = new System.Drawing.Point(6, 399);
             formsPlot6.Name = "formsPlot6";
-            formsPlot6.Size = new System.Drawing.Size(925, 423);
+            formsPlot6.Size = new System.Drawing.Size(800, 350);
             formsPlot6.TabIndex = 10;
             // 
             // formsPlot7
             // 
             formsPlot7.DisplayScale = 1F;
-            formsPlot7.Location = new System.Drawing.Point(940, 23);
+            formsPlot7.Location = new System.Drawing.Point(1065, 23);
             formsPlot7.Name = "formsPlot7";
-            formsPlot7.Size = new System.Drawing.Size(925, 423);
+            formsPlot7.Size = new System.Drawing.Size(800, 350);
             formsPlot7.TabIndex = 9;
             // 
             // formsPlot8
             // 
             formsPlot8.DisplayScale = 1F;
-            formsPlot8.Location = new System.Drawing.Point(940, 479);
+            formsPlot8.Location = new System.Drawing.Point(1065, 399);
             formsPlot8.Name = "formsPlot8";
-            formsPlot8.Size = new System.Drawing.Size(925, 423);
+            formsPlot8.Size = new System.Drawing.Size(800, 350);
             formsPlot8.TabIndex = 8;
             // 
             // tabPage6
             // 
-            tabPage6.BackColor = System.Drawing.Color.LightSlateGray;
+            tabPage6.BackColor = System.Drawing.Color.SlateGray;
             tabPage6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             tabPage6.Controls.Add(button37);
             tabPage6.Controls.Add(button23);
@@ -562,8 +949,16 @@
             // 
             // tabPage7
             // 
-            tabPage7.BackColor = System.Drawing.Color.LightSlateGray;
+            tabPage7.BackColor = System.Drawing.Color.SlateGray;
             tabPage7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            tabPage7.Controls.Add(button74);
+            tabPage7.Controls.Add(button75);
+            tabPage7.Controls.Add(button73);
+            tabPage7.Controls.Add(button72);
+            tabPage7.Controls.Add(button68);
+            tabPage7.Controls.Add(button69);
+            tabPage7.Controls.Add(button70);
+            tabPage7.Controls.Add(button71);
             tabPage7.Controls.Add(button52);
             tabPage7.Controls.Add(button53);
             tabPage7.Controls.Add(button54);
@@ -579,10 +974,204 @@
             tabPage7.TabIndex = 6;
             tabPage7.Text = "REALTIME DATA TABLE";
             // 
+            // button74
+            // 
+            button74.BackColor = System.Drawing.Color.LightSteelBlue;
+            button74.Font = new System.Drawing.Font("Sarasa Fixed J", 32F);
+            button74.Location = new System.Drawing.Point(1088, 925);
+            button74.Margin = new System.Windows.Forms.Padding(1);
+            button74.Name = "button74";
+            button74.Size = new System.Drawing.Size(60, 60);
+            button74.TabIndex = 51;
+            button74.Text = "⇓";
+            button74.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            button74.UseVisualStyleBackColor = false;
+            button74.Click += button74_Click;
+            // 
+            // button75
+            // 
+            button75.BackColor = System.Drawing.Color.LightSteelBlue;
+            button75.Font = new System.Drawing.Font("Sarasa Fixed J", 32F);
+            button75.Location = new System.Drawing.Point(1088, 808);
+            button75.Margin = new System.Windows.Forms.Padding(1);
+            button75.Name = "button75";
+            button75.Size = new System.Drawing.Size(60, 60);
+            button75.TabIndex = 50;
+            button75.Text = "⇑";
+            button75.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            button75.UseVisualStyleBackColor = false;
+            button75.Click += button75_Click;
+            // 
+            // button73
+            // 
+            button73.BackColor = System.Drawing.Color.LightSteelBlue;
+            button73.Font = new System.Drawing.Font("Sarasa Fixed J", 32F);
+            button73.Location = new System.Drawing.Point(719, 925);
+            button73.Margin = new System.Windows.Forms.Padding(1);
+            button73.Name = "button73";
+            button73.Size = new System.Drawing.Size(60, 60);
+            button73.TabIndex = 49;
+            button73.Text = "⇓";
+            button73.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            button73.UseVisualStyleBackColor = false;
+            button73.Click += button73_Click;
+            // 
+            // button72
+            // 
+            button72.BackColor = System.Drawing.Color.LightSteelBlue;
+            button72.Font = new System.Drawing.Font("Sarasa Fixed J", 32F);
+            button72.Location = new System.Drawing.Point(719, 808);
+            button72.Margin = new System.Windows.Forms.Padding(1);
+            button72.Name = "button72";
+            button72.Size = new System.Drawing.Size(60, 60);
+            button72.TabIndex = 48;
+            button72.Text = "⇑";
+            button72.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            button72.UseVisualStyleBackColor = false;
+            button72.Click += button72_Click;
+            // 
+            // button68
+            // 
+            button68.BackColor = System.Drawing.Color.LightSteelBlue;
+            button68.Location = new System.Drawing.Point(972, 618);
+            button68.Name = "button68";
+            button68.Size = new System.Drawing.Size(137, 51);
+            button68.TabIndex = 47;
+            button68.Text = "Step 3 R-Side\r\n Difference Data";
+            button68.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button68.UseVisualStyleBackColor = false;
+            // 
+            // button69
+            // 
+            button69.BackColor = System.Drawing.Color.LightSteelBlue;
+            button69.Location = new System.Drawing.Point(758, 618);
+            button69.Name = "button69";
+            button69.Size = new System.Drawing.Size(137, 51);
+            button69.TabIndex = 46;
+            button69.Text = "Step 3 L-Side\r\n Difference Data";
+            button69.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button69.UseVisualStyleBackColor = false;
+            // 
+            // button70
+            // 
+            button70.BackColor = System.Drawing.Color.LightSteelBlue;
+            button70.Location = new System.Drawing.Point(972, 414);
+            button70.Name = "button70";
+            button70.Size = new System.Drawing.Size(137, 51);
+            button70.TabIndex = 45;
+            button70.Text = "Step 2 R-Side\r\n Difference Data";
+            button70.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button70.UseVisualStyleBackColor = false;
+            button70.Click += button70_Click;
+            // 
+            // button71
+            // 
+            button71.BackColor = System.Drawing.Color.LightSteelBlue;
+            button71.Location = new System.Drawing.Point(758, 414);
+            button71.Name = "button71";
+            button71.Size = new System.Drawing.Size(137, 51);
+            button71.TabIndex = 44;
+            button71.Text = "Step 2 L-Side\r\n Difference Data";
+            button71.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button71.UseVisualStyleBackColor = false;
+            button71.Click += button71_Click;
+            // 
+            // button52
+            // 
+            button52.BackColor = System.Drawing.Color.LightSteelBlue;
+            button52.Location = new System.Drawing.Point(972, 356);
+            button52.Name = "button52";
+            button52.Size = new System.Drawing.Size(137, 51);
+            button52.TabIndex = 31;
+            button52.Text = "Step 2 R-Side\r\nExtension Data";
+            button52.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button52.UseVisualStyleBackColor = false;
+            button52.Click += button52_Click;
+            // 
+            // button53
+            // 
+            button53.BackColor = System.Drawing.Color.LightSteelBlue;
+            button53.Location = new System.Drawing.Point(972, 299);
+            button53.Name = "button53";
+            button53.Size = new System.Drawing.Size(137, 51);
+            button53.TabIndex = 30;
+            button53.Text = "Step 2 R-Side\r\nCompression Data";
+            button53.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button53.UseVisualStyleBackColor = false;
+            button53.Click += button53_Click;
+            // 
+            // button54
+            // 
+            button54.BackColor = System.Drawing.Color.LightSteelBlue;
+            button54.Location = new System.Drawing.Point(758, 356);
+            button54.Name = "button54";
+            button54.Size = new System.Drawing.Size(137, 51);
+            button54.TabIndex = 29;
+            button54.Text = "Step 2 L-Side\r\nExtension Data";
+            button54.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button54.UseVisualStyleBackColor = false;
+            button54.Click += button54_Click;
+            // 
+            // button55
+            // 
+            button55.BackColor = System.Drawing.Color.LightSteelBlue;
+            button55.Location = new System.Drawing.Point(758, 299);
+            button55.Name = "button55";
+            button55.Size = new System.Drawing.Size(137, 51);
+            button55.TabIndex = 28;
+            button55.Text = "Step 2 L-Side\r\nCompression Data";
+            button55.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button55.UseVisualStyleBackColor = false;
+            button55.Click += button55_Click;
+            // 
+            // button50
+            // 
+            button50.BackColor = System.Drawing.Color.LightSteelBlue;
+            button50.Location = new System.Drawing.Point(972, 561);
+            button50.Name = "button50";
+            button50.Size = new System.Drawing.Size(137, 51);
+            button50.TabIndex = 27;
+            button50.Text = "Step 3 R-Side\r\nExtension Data";
+            button50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button50.UseVisualStyleBackColor = false;
+            // 
+            // button51
+            // 
+            button51.BackColor = System.Drawing.Color.LightSteelBlue;
+            button51.Location = new System.Drawing.Point(972, 504);
+            button51.Name = "button51";
+            button51.Size = new System.Drawing.Size(137, 51);
+            button51.TabIndex = 26;
+            button51.Text = "Step 3 R-Side\r\nCompression Data";
+            button51.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button51.UseVisualStyleBackColor = false;
+            // 
+            // button49
+            // 
+            button49.BackColor = System.Drawing.Color.LightSteelBlue;
+            button49.Location = new System.Drawing.Point(758, 561);
+            button49.Name = "button49";
+            button49.Size = new System.Drawing.Size(137, 51);
+            button49.TabIndex = 25;
+            button49.Text = "Step 3 L-Side\r\nExtension Data";
+            button49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button49.UseVisualStyleBackColor = false;
+            // 
+            // button34
+            // 
+            button34.BackColor = System.Drawing.Color.LightSteelBlue;
+            button34.Location = new System.Drawing.Point(758, 504);
+            button34.Name = "button34";
+            button34.Size = new System.Drawing.Size(137, 51);
+            button34.TabIndex = 24;
+            button34.Text = "Step 3 L-Side\r\nCompression Data";
+            button34.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            button34.UseVisualStyleBackColor = false;
+            // 
             // button32
             // 
             button32.BackColor = System.Drawing.Color.LightSteelBlue;
-            button32.Location = new System.Drawing.Point(877, 905);
+            button32.Location = new System.Drawing.Point(877, 925);
             button32.Name = "button32";
             button32.Size = new System.Drawing.Size(116, 60);
             button32.TabIndex = 23;
@@ -592,8 +1181,12 @@
             // 
             // tabPage3
             // 
-            tabPage3.BackColor = System.Drawing.Color.LightSlateGray;
+            tabPage3.BackColor = System.Drawing.Color.SlateGray;
             tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            tabPage3.Controls.Add(label23);
+            tabPage3.Controls.Add(label22);
+            tabPage3.Controls.Add(formsPlot10);
+            tabPage3.Controls.Add(formsPlot9);
             tabPage3.Controls.Add(button36);
             tabPage3.Controls.Add(button33);
             tabPage3.Controls.Add(button24);
@@ -616,6 +1209,46 @@
             tabPage3.TabIndex = 3;
             tabPage3.Text = "REALTIME GRAPH";
             // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label23.ForeColor = System.Drawing.Color.LightCyan;
+            label23.Location = new System.Drawing.Point(1663, 752);
+            label23.Name = "label23";
+            label23.Size = new System.Drawing.Size(200, 18);
+            label23.TabIndex = 29;
+            label23.Text = "RH SIDE DIFFERENCE GRAPH";
+            label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label22.ForeColor = System.Drawing.Color.LightCyan;
+            label22.Location = new System.Drawing.Point(6, 752);
+            label22.Name = "label22";
+            label22.Size = new System.Drawing.Size(200, 18);
+            label22.TabIndex = 28;
+            label22.Text = "LH SIDE DIFFERENCE GRAPH";
+            label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // formsPlot10
+            // 
+            formsPlot10.DisplayScale = 1F;
+            formsPlot10.Location = new System.Drawing.Point(1065, 773);
+            formsPlot10.Name = "formsPlot10";
+            formsPlot10.Size = new System.Drawing.Size(800, 166);
+            formsPlot10.TabIndex = 27;
+            // 
+            // formsPlot9
+            // 
+            formsPlot9.DisplayScale = 1F;
+            formsPlot9.Location = new System.Drawing.Point(6, 773);
+            formsPlot9.Name = "formsPlot9";
+            formsPlot9.Size = new System.Drawing.Size(800, 166);
+            formsPlot9.TabIndex = 26;
+            // 
             // button36
             // 
             button36.BackColor = System.Drawing.Color.LightSteelBlue;
@@ -630,7 +1263,7 @@
             // button33
             // 
             button33.BackColor = System.Drawing.Color.LightSteelBlue;
-            button33.Location = new System.Drawing.Point(940, 945);
+            button33.Location = new System.Drawing.Point(870, 925);
             button33.Name = "button33";
             button33.Size = new System.Drawing.Size(130, 60);
             button33.TabIndex = 22;
@@ -694,7 +1327,8 @@
             // 
             label17.AutoSize = true;
             label17.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label17.Location = new System.Drawing.Point(1675, 458);
+            label17.ForeColor = System.Drawing.Color.LightCyan;
+            label17.Location = new System.Drawing.Point(1671, 377);
             label17.Name = "label17";
             label17.Size = new System.Drawing.Size(192, 18);
             label17.TabIndex = 11;
@@ -705,7 +1339,8 @@
             // 
             label16.AutoSize = true;
             label16.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label16.Location = new System.Drawing.Point(1659, 3);
+            label16.ForeColor = System.Drawing.Color.LightCyan;
+            label16.Location = new System.Drawing.Point(1655, 3);
             label16.Name = "label16";
             label16.Size = new System.Drawing.Size(208, 18);
             label16.TabIndex = 10;
@@ -716,7 +1351,8 @@
             // 
             label15.AutoSize = true;
             label15.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label15.Location = new System.Drawing.Point(6, 458);
+            label15.ForeColor = System.Drawing.Color.LightCyan;
+            label15.Location = new System.Drawing.Point(6, 377);
             label15.Name = "label15";
             label15.Size = new System.Drawing.Size(192, 18);
             label15.TabIndex = 9;
@@ -727,6 +1363,7 @@
             // 
             label14.AutoSize = true;
             label14.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label14.ForeColor = System.Drawing.Color.LightCyan;
             label14.Location = new System.Drawing.Point(6, 3);
             label14.Name = "label14";
             label14.Size = new System.Drawing.Size(208, 18);
@@ -737,25 +1374,26 @@
             // formsPlot4
             // 
             formsPlot4.DisplayScale = 1F;
-            formsPlot4.Location = new System.Drawing.Point(940, 479);
+            formsPlot4.Location = new System.Drawing.Point(1065, 399);
             formsPlot4.Name = "formsPlot4";
-            formsPlot4.Size = new System.Drawing.Size(925, 423);
+            formsPlot4.Size = new System.Drawing.Size(800, 350);
             formsPlot4.TabIndex = 7;
             // 
             // formsPlot3
             // 
+            formsPlot3.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             formsPlot3.DisplayScale = 1F;
-            formsPlot3.Location = new System.Drawing.Point(940, 23);
+            formsPlot3.Location = new System.Drawing.Point(1065, 23);
             formsPlot3.Name = "formsPlot3";
-            formsPlot3.Size = new System.Drawing.Size(925, 423);
+            formsPlot3.Size = new System.Drawing.Size(800, 350);
             formsPlot3.TabIndex = 6;
             // 
             // formsPlot2
             // 
             formsPlot2.DisplayScale = 1F;
-            formsPlot2.Location = new System.Drawing.Point(6, 479);
+            formsPlot2.Location = new System.Drawing.Point(6, 399);
             formsPlot2.Name = "formsPlot2";
-            formsPlot2.Size = new System.Drawing.Size(925, 423);
+            formsPlot2.Size = new System.Drawing.Size(800, 350);
             formsPlot2.TabIndex = 5;
             // 
             // formsPlot1
@@ -763,12 +1401,12 @@
             formsPlot1.DisplayScale = 1F;
             formsPlot1.Location = new System.Drawing.Point(6, 23);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new System.Drawing.Size(925, 423);
+            formsPlot1.Size = new System.Drawing.Size(800, 350);
             formsPlot1.TabIndex = 4;
             // 
             // tabPage1
             // 
-            tabPage1.BackColor = System.Drawing.Color.LightSlateGray;
+            tabPage1.BackColor = System.Drawing.Color.SlateGray;
             tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             tabPage1.Controls.Add(button35);
             tabPage1.Controls.Add(button21);
@@ -873,7 +1511,7 @@
             // 
             // tabPage2
             // 
-            tabPage2.BackColor = System.Drawing.Color.LightSlateGray;
+            tabPage2.BackColor = System.Drawing.Color.SlateGray;
             tabPage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             tabPage2.Controls.Add(button40);
             tabPage2.Controls.Add(button7);
@@ -1030,7 +1668,7 @@
             // 
             // tabPage4
             // 
-            tabPage4.BackColor = System.Drawing.Color.LightSlateGray;
+            tabPage4.BackColor = System.Drawing.Color.SlateGray;
             tabPage4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             tabPage4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             tabPage4.Controls.Add(button47);
@@ -1271,182 +1909,6 @@
             label8.Text = "SELECTED MODEL : XXXXXXXXXXXXXXXXXXXX";
             label8.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // button34
-            // 
-            button34.BackColor = System.Drawing.Color.LightSteelBlue;
-            button34.Location = new System.Drawing.Point(758, 628);
-            button34.Name = "button34";
-            button34.Size = new System.Drawing.Size(137, 51);
-            button34.TabIndex = 24;
-            button34.Text = "Step 3 L-Side\r\nCompression Data";
-            button34.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button34.UseVisualStyleBackColor = false;
-            // 
-            // button49
-            // 
-            button49.BackColor = System.Drawing.Color.LightSteelBlue;
-            button49.Location = new System.Drawing.Point(758, 685);
-            button49.Name = "button49";
-            button49.Size = new System.Drawing.Size(137, 51);
-            button49.TabIndex = 25;
-            button49.Text = "Step 3 L-Side\r\nExtension Data";
-            button49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button49.UseVisualStyleBackColor = false;
-            // 
-            // button50
-            // 
-            button50.BackColor = System.Drawing.Color.LightSteelBlue;
-            button50.Location = new System.Drawing.Point(975, 685);
-            button50.Name = "button50";
-            button50.Size = new System.Drawing.Size(137, 51);
-            button50.TabIndex = 27;
-            button50.Text = "Step 3 R-Side\r\nExtension Data";
-            button50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button50.UseVisualStyleBackColor = false;
-            // 
-            // button51
-            // 
-            button51.BackColor = System.Drawing.Color.LightSteelBlue;
-            button51.Location = new System.Drawing.Point(975, 628);
-            button51.Name = "button51";
-            button51.Size = new System.Drawing.Size(137, 51);
-            button51.TabIndex = 26;
-            button51.Text = "Step 3 R-Side\r\nCompression Data";
-            button51.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button51.UseVisualStyleBackColor = false;
-            // 
-            // button52
-            // 
-            button52.BackColor = System.Drawing.Color.LightSteelBlue;
-            button52.Location = new System.Drawing.Point(973, 545);
-            button52.Name = "button52";
-            button52.Size = new System.Drawing.Size(137, 51);
-            button52.TabIndex = 31;
-            button52.Text = "Step 2 R-Side\r\nExtension Data";
-            button52.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button52.UseVisualStyleBackColor = false;
-            // 
-            // button53
-            // 
-            button53.BackColor = System.Drawing.Color.LightSteelBlue;
-            button53.Location = new System.Drawing.Point(973, 488);
-            button53.Name = "button53";
-            button53.Size = new System.Drawing.Size(137, 51);
-            button53.TabIndex = 30;
-            button53.Text = "Step 2 R-Side\r\nCompression Data";
-            button53.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button53.UseVisualStyleBackColor = false;
-            // 
-            // button54
-            // 
-            button54.BackColor = System.Drawing.Color.LightSteelBlue;
-            button54.Location = new System.Drawing.Point(756, 545);
-            button54.Name = "button54";
-            button54.Size = new System.Drawing.Size(137, 51);
-            button54.TabIndex = 29;
-            button54.Text = "Step 2 L-Side\r\nExtension Data";
-            button54.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button54.UseVisualStyleBackColor = false;
-            // 
-            // button55
-            // 
-            button55.BackColor = System.Drawing.Color.LightSteelBlue;
-            button55.Location = new System.Drawing.Point(756, 488);
-            button55.Name = "button55";
-            button55.Size = new System.Drawing.Size(137, 51);
-            button55.TabIndex = 28;
-            button55.Text = "Step 2 L-Side\r\nCompression Data";
-            button55.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button55.UseVisualStyleBackColor = false;
-            // 
-            // button56
-            // 
-            button56.BackColor = System.Drawing.Color.LightSteelBlue;
-            button56.Location = new System.Drawing.Point(972, 442);
-            button56.Name = "button56";
-            button56.Size = new System.Drawing.Size(137, 51);
-            button56.TabIndex = 39;
-            button56.Text = "Step 2 R-Side\r\nExtension Data";
-            button56.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button56.UseVisualStyleBackColor = false;
-            // 
-            // button57
-            // 
-            button57.BackColor = System.Drawing.Color.LightSteelBlue;
-            button57.Location = new System.Drawing.Point(972, 385);
-            button57.Name = "button57";
-            button57.Size = new System.Drawing.Size(137, 51);
-            button57.TabIndex = 38;
-            button57.Text = "Step 2 R-Side\r\nCompression Data";
-            button57.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button57.UseVisualStyleBackColor = false;
-            // 
-            // button58
-            // 
-            button58.BackColor = System.Drawing.Color.LightSteelBlue;
-            button58.Location = new System.Drawing.Point(758, 442);
-            button58.Name = "button58";
-            button58.Size = new System.Drawing.Size(137, 51);
-            button58.TabIndex = 37;
-            button58.Text = "Step 2 L-Side\r\nExtension Data";
-            button58.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button58.UseVisualStyleBackColor = false;
-            // 
-            // button59
-            // 
-            button59.BackColor = System.Drawing.Color.LightSteelBlue;
-            button59.Location = new System.Drawing.Point(758, 385);
-            button59.Name = "button59";
-            button59.Size = new System.Drawing.Size(137, 51);
-            button59.TabIndex = 36;
-            button59.Text = "Step 2 L-Side\r\nCompression Data";
-            button59.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button59.UseVisualStyleBackColor = false;
-            // 
-            // button60
-            // 
-            button60.BackColor = System.Drawing.Color.LightSteelBlue;
-            button60.Location = new System.Drawing.Point(972, 582);
-            button60.Name = "button60";
-            button60.Size = new System.Drawing.Size(137, 51);
-            button60.TabIndex = 35;
-            button60.Text = "Step 3 R-Side\r\nExtension Data";
-            button60.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button60.UseVisualStyleBackColor = false;
-            // 
-            // button61
-            // 
-            button61.BackColor = System.Drawing.Color.LightSteelBlue;
-            button61.Location = new System.Drawing.Point(972, 525);
-            button61.Name = "button61";
-            button61.Size = new System.Drawing.Size(137, 51);
-            button61.TabIndex = 34;
-            button61.Text = "Step 3 R-Side\r\nCompression Data";
-            button61.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button61.UseVisualStyleBackColor = false;
-            // 
-            // button62
-            // 
-            button62.BackColor = System.Drawing.Color.LightSteelBlue;
-            button62.Location = new System.Drawing.Point(758, 582);
-            button62.Name = "button62";
-            button62.Size = new System.Drawing.Size(137, 51);
-            button62.TabIndex = 33;
-            button62.Text = "Step 3 L-Side\r\nExtension Data";
-            button62.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button62.UseVisualStyleBackColor = false;
-            // 
-            // button63
-            // 
-            button63.BackColor = System.Drawing.Color.LightSteelBlue;
-            button63.Location = new System.Drawing.Point(758, 525);
-            button63.Name = "button63";
-            button63.Size = new System.Drawing.Size(137, 51);
-            button63.TabIndex = 32;
-            button63.Text = "Step 3 L-Side\r\nCompression Data";
-            button63.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button63.UseVisualStyleBackColor = false;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1467,6 +1929,7 @@
             WindowState = System.Windows.Forms.FormWindowState.Maximized;
             Load += Form1_Load;
             tabPage8.ResumeLayout(false);
+            tabPage8.PerformLayout();
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
             tabPage6.ResumeLayout(false);
@@ -1497,9 +1960,7 @@
         private System.Windows.Forms.Label timelabel0;
         private System.Windows.Forms.Label datelabel0;
         private System.Windows.Forms.TabPage tabPage8;
-        private System.Windows.Forms.Button button39;
         private System.Windows.Forms.Button button31;
-        private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button29;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Button button38;
@@ -1603,6 +2064,41 @@
         private System.Windows.Forms.Button button61;
         private System.Windows.Forms.Button button62;
         private System.Windows.Forms.Button button63;
+        private ScottPlot.WinForms.FormsPlot formsPlot10;
+        private ScottPlot.WinForms.FormsPlot formsPlot9;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private ScottPlot.WinForms.FormsPlot formsPlot11;
+        private ScottPlot.WinForms.FormsPlot formsPlot12;
+        private System.Windows.Forms.Button button66;
+        private System.Windows.Forms.Button button67;
+        private System.Windows.Forms.Button button64;
+        private System.Windows.Forms.Button button65;
+        private System.Windows.Forms.Button button68;
+        private System.Windows.Forms.Button button69;
+        private System.Windows.Forms.Button button70;
+        private System.Windows.Forms.Button button71;
+        private System.Windows.Forms.Button button72;
+        private System.Windows.Forms.Button button73;
+        private System.Windows.Forms.Button button76;
+        private System.Windows.Forms.Button button77;
+        private System.Windows.Forms.Button button78;
+        private System.Windows.Forms.Button button79;
+        private System.Windows.Forms.Button button74;
+        private System.Windows.Forms.Button button75;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Button button39;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.Button button80;
+        private System.Windows.Forms.Button button30;
     }
 }
 

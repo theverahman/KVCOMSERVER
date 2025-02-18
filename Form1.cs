@@ -31,13 +31,21 @@ using FontStyle = System.Drawing.FontStyle;
 using SFontStyle = ScottPlot.FontStyle;
 
 using DRW = System.Drawing;
+using Size = System.Drawing.Size;
 using Point = System.Drawing.Point;
 using Label = System.Windows.Forms.Label;
+using DataTable = System.Data.DataTable;
 
 using LIBKVPROTOCOL;
 using WORKFLOW;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using ScottPlot.DataSources;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using ScottPlot.WinForms;
+using System.Reflection.Emit;
+using ClosedXML.Report.Utils;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace KVCOMSERVER
 {
@@ -57,11 +65,33 @@ namespace KVCOMSERVER
         public int _connStat;
         public int _beaconn;
 
-        int tabIdxRealSideL = 1;
-        int tabIdxRealSideR = 1;
+        int tabIdxRealSideL = 0;
+        int tabIdxRealSideR = 0;
 
-        int tabIdxMasterSideL = 1;
-        int tabIdxMasterSideR = 1;
+        int tabIdxMasterSideL = 0;
+        int tabIdxMasterSideR = 0;
+
+        int ActiveRealTableLeftData = 0;
+        int ActiveRealTableRightData = 0;
+
+        int ActiveMasterTableLeftData = 0;
+        int ActiveMasterTableRightData = 0;
+
+        float MasterTeachOffsetBatchL = 0;
+        float MasterTeachOffsetBatchR = 0;
+
+        float MasterTeachDiffOffsetBatchL = 0;
+        float MasterTeachDiffOffsetBatchR = 0;
+
+        bool MasterTeachSetConfirm = false;
+        public void MasterTeachSetConfirmSet()
+        {
+            MasterTeachSetConfirm = true;
+        }
+        public void MasterTeachSetConfirmReset()
+        {
+            MasterTeachSetConfirm = false;
+        }
 
         #region Table Data Def 
         #region Real Data
@@ -331,6 +361,7 @@ namespace KVCOMSERVER
 
         float[] _dataMasterSideLDiffStroke = new float[200];
         float[] _dataMasterSideLDiffMaster = new float[200];
+        float[] _dataMasterSideLDiffAccMaster = new float[200];
         float[] _dataMasterSideLDiffUpper = new float[200];
         float[] _dataMasterSideLDiffLower = new float[200];
 
@@ -348,6 +379,7 @@ namespace KVCOMSERVER
 
         float[] _dataMasterSideRDiffStroke = new float[200];
         float[] _dataMasterSideRDiffMaster = new float[200];
+        float[] _dataMasterSideRDiffAccMaster = new float[200];
         float[] _dataMasterSideRDiffUpper = new float[200];
         float[] _dataMasterSideRDiffLower = new float[200];
 
@@ -516,6 +548,17 @@ namespace KVCOMSERVER
         {
             get { return _dataMasterSideRDiffUpper; }
             set { _dataMasterSideRDiffUpper = value; }
+        }
+
+        public float[] DataMasterSideRDiffAccMaster
+        {
+            get { return _dataMasterSideRDiffAccMaster; }
+            set { _dataMasterSideRDiffAccMaster = value; }
+        }
+        public float[] DataMasterSideLDiffAccMaster
+        {
+            get { return _dataMasterSideLDiffAccMaster; }
+            set { _dataMasterSideLDiffAccMaster = value; }
         }
 
         #endregion
@@ -750,7 +793,6 @@ namespace KVCOMSERVER
                         BackColor = Color.LightGray,
 
                     };
-                    tbx.Click += new EventHandler(InputTextBox_Click);
                     tabRealSideRStroke.Add(tbx);
                     tabRealSideR.Controls.Add(tbx, col, row);
                 }
@@ -767,7 +809,6 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideRMaster.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 1, row);
             }
@@ -783,7 +824,6 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideRLower.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 2, row);
             }
@@ -799,7 +839,6 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideRReal.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 3, row);
             }
@@ -815,7 +854,6 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideRUpper.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 4, row);
             }
@@ -929,7 +967,6 @@ namespace KVCOMSERVER
                         BackColor = Color.LightGray
 
                     };
-                    tbx.Click += new EventHandler(InputTextBox_Click);
                     tabRealSideLStroke.Add(tbx);
                     tabRealSideL.Controls.Add(tbx, col, row);
                 }
@@ -947,7 +984,6 @@ namespace KVCOMSERVER
 
 
                 };
-                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideLMaster.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 1, row);
             }
@@ -963,7 +999,6 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideLLower.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 2, row);
             }
@@ -979,7 +1014,6 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideLReal.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 3, row);
             }
@@ -995,7 +1029,6 @@ namespace KVCOMSERVER
                     ReadOnly = true,
 
                 };
-                tbx.Click += new EventHandler(InputTextBox_Click);
                 tabRealSideLUpper.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 4, row);
             }
@@ -1109,7 +1142,6 @@ namespace KVCOMSERVER
                         BackColor = Color.LightGray
 
                     };
-                    tbx.Click += new EventHandler(InputTextBox_Click);
                     tabMasterSideRStroke.Add(tbx);
                     tabMasterSideR.Controls.Add(tbx, col, row);
                 }
@@ -1284,7 +1316,6 @@ namespace KVCOMSERVER
                         BackColor = Color.LightGray
 
                     };
-                    tbx.Click += new EventHandler(InputTextBox_Click);
                     tabMasterSideLStroke.Add(tbx);
                     tabMasterSideL.Controls.Add(tbx, col, row);
                 }
@@ -1366,8 +1397,10 @@ namespace KVCOMSERVER
         #region Real Data
         public void tabdataRealSideInit()
         {
-            tabIdxRealSideL = 1;
-            tabIdxRealSideR = 1;
+            tabIdxRealSideL = 0;
+            tabIdxRealSideR = 0;
+            ActiveRealTableLeftData = 0;
+            ActiveRealTableRightData = 0;
         }
         public void tabdataRealCompStep2L()
         {
@@ -1383,7 +1416,7 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Lower
-                tabRealSideLLower[i].Text = _dataRealCompSideLLower[i + tabIndex].ToString();
+                tabRealSideLLower[i].Text = (_dataRealCompSideLLower[i + tabIndex]).ToString();
                 #endregion
 
                 #region Realtime
@@ -1399,9 +1432,10 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Upper
-                tabRealSideLUpper[i].Text = _dataRealCompSideLUpper[i + tabIndex].ToString();
+                tabRealSideLUpper[i].Text = (_dataRealCompSideLUpper[i + tabIndex]).ToString();
                 #endregion
             }
+            ActiveRealTableLeftData = 1;
         }
         public void tabdataRealExtnStep2L()
         {
@@ -1417,12 +1451,12 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Lower
-                tabRealSideLLower[i].Text = _dataRealExtnSideLLower[i + tabIndex].ToString();
+                tabRealSideLLower[i].Text = (_dataRealExtnSideLLower[i + tabIndex]).ToString();
                 #endregion
 
                 #region Realtime
                 tabRealSideLReal[i].Text = _dataRealExtnSideLLoad[i + tabIndex].ToString();
-                if (_dataRealExtnSideLLoad[i + tabIndex] > _dataRealExtnSideLUpper[i + tabIndex] | _dataRealExtnSideLLoad[i + tabIndex] < _dataRealExtnSideLLower[i + tabIndex])
+                if (_dataRealExtnSideLLoad[i + tabIndex] > _dataRealExtnSideLUpper[i + tabIndex] || _dataRealExtnSideLLoad[i + tabIndex] < _dataRealExtnSideLLower[i + tabIndex])
                 {
                     tabRealSideLReal[i].BackColor = Color.Red;
                 }
@@ -1433,9 +1467,45 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Upper
-                tabRealSideLUpper[i].Text = _dataRealExtnSideLUpper[i + tabIndex].ToString();
+                tabRealSideLUpper[i].Text = (_dataRealExtnSideLUpper[i + tabIndex]).ToString();
                 #endregion
             }
+            ActiveRealTableLeftData = 2;
+        }
+        public void tabdataRealDiffStep2L()
+        {
+            int tabIndex = tabIdxRealSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabRealSideLStroke[i].Text = _dataRealSideLDiffStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabRealSideLMaster[i].Text = _dataRealSideLDiffMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabRealSideLLower[i].Text = (_dataRealSideLDiffLower[i + tabIndex]).ToString();
+                #endregion
+
+                #region Realtime
+                tabRealSideLReal[i].Text = _dataRealSideLDiffLoad[i + tabIndex].ToString();
+                if (_dataRealSideLDiffLoad[i + tabIndex] > _dataRealSideLDiffUpper[i + tabIndex] || _dataRealSideLDiffLoad[i + tabIndex] < _dataRealSideLDiffLower[i + tabIndex])
+                {
+                    tabRealSideLReal[i].BackColor = Color.Red;
+                }
+                else
+                {
+                    tabRealSideLReal[i].BackColor = Color.White;
+                }
+                #endregion
+
+                #region Upper
+                tabRealSideLUpper[i].Text = (_dataRealSideLDiffUpper[i + tabIndex]).ToString();
+                #endregion
+            }
+            ActiveRealTableLeftData = 3;
         }
         public void tabdataRealCompStep2R()
         {
@@ -1451,12 +1521,12 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Lower
-                tabRealSideRLower[i].Text = _dataRealCompSideRLower[i + tabIndex].ToString();
+                tabRealSideRLower[i].Text = (_dataRealCompSideRLower[i + tabIndex]).ToString();
                 #endregion
 
                 #region Realtime
                 tabRealSideRReal[i].Text = _dataRealCompSideRLoad[i + tabIndex].ToString();
-                if (_dataRealCompSideRLoad[i + tabIndex] > _dataRealCompSideRUpper[i + tabIndex] | _dataRealCompSideRLoad[i + tabIndex] < _dataRealCompSideRLower[i + tabIndex])
+                if (_dataRealCompSideRLoad[i + tabIndex] > _dataRealCompSideRUpper[i + tabIndex] || _dataRealCompSideRLoad[i + tabIndex] < _dataRealCompSideRLower[i + tabIndex])
                 {
                     tabRealSideRReal[i].BackColor = Color.Red;
                 }
@@ -1467,9 +1537,10 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Upper
-                tabRealSideRUpper[i].Text = _dataRealCompSideRUpper[i + tabIndex].ToString();
+                tabRealSideRUpper[i].Text = (_dataRealCompSideRUpper[i + tabIndex]).ToString();
                 #endregion
             }
+            ActiveRealTableRightData = 1;
         }
         public void tabdataRealExtnStep2R()
         {
@@ -1485,12 +1556,12 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Lower
-                tabRealSideRLower[i].Text = _dataRealExtnSideRLower[i + tabIndex].ToString();
+                tabRealSideRLower[i].Text = (_dataRealExtnSideRLower[i + tabIndex]).ToString();
                 #endregion
 
                 #region Realtime
                 tabRealSideRReal[i].Text = _dataRealExtnSideRLoad[i + tabIndex].ToString();
-                if (_dataRealExtnSideRLoad[i + tabIndex] > _dataRealExtnSideRUpper[i + tabIndex] | _dataRealExtnSideRLoad[i + tabIndex] < _dataRealExtnSideRLower[i + tabIndex])
+                if (_dataRealExtnSideRLoad[i + tabIndex] > _dataRealExtnSideRUpper[i + tabIndex] || _dataRealExtnSideRLoad[i + tabIndex] < _dataRealExtnSideRLower[i + tabIndex])
                 {
                     tabRealSideRReal[i].BackColor = Color.Red;
                 }
@@ -1501,9 +1572,45 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Upper
-                tabRealSideRUpper[i].Text = _dataRealExtnSideRUpper[i + tabIndex].ToString();
+                tabRealSideRUpper[i].Text = (_dataRealExtnSideRUpper[i + tabIndex]).ToString();
                 #endregion
             }
+            ActiveRealTableRightData = 2;
+        }
+        public void tabdataRealDiffStep2R()
+        {
+            int tabIndex = tabIdxRealSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabRealSideRStroke[i].Text = _dataRealSideRDiffStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabRealSideRMaster[i].Text = _dataRealSideRDiffMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabRealSideRLower[i].Text = (_dataRealSideRDiffLower[i + tabIndex]).ToString();
+                #endregion
+
+                #region Realtime
+                tabRealSideRReal[i].Text = _dataRealSideRDiffLoad[i + tabIndex].ToString();
+                if (_dataRealSideRDiffLoad[i + tabIndex] > _dataRealSideRDiffUpper[i + tabIndex] || _dataRealSideRDiffLoad[i + tabIndex] < _dataRealSideRDiffLower[i + tabIndex])
+                {
+                    tabRealSideRReal[i].BackColor = Color.Red;
+                }
+                else
+                {
+                    tabRealSideRReal[i].BackColor = Color.White;
+                }
+                #endregion
+
+                #region Upper
+                tabRealSideRUpper[i].Text = (_dataRealSideRDiffUpper[i + tabIndex]).ToString();
+                #endregion
+            }
+            ActiveRealTableRightData = 3;
         }
         #endregion
 
@@ -1511,8 +1618,10 @@ namespace KVCOMSERVER
 
         public void tabdataMasterSideInit()
         {
-            tabIdxMasterSideL = 1;
-            tabIdxMasterSideR = 1;
+            tabIdxMasterSideL = 0;
+            tabIdxMasterSideR = 0;
+            ActiveMasterTableLeftData = 0;
+            ActiveMasterTableRightData = 0;
         }
         public void tabdataMasterCompStep2L()
         {
@@ -1532,13 +1641,14 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Lower
-                tabMasterSideLLower[i].Text = _dataMasterCompSideLLower[i + tabIndex].ToString();
+                tabMasterSideLLower[i].Text = (_dataMasterCompSideLMaster[i + tabIndex] - _dataMasterCompSideLLower[i + tabIndex]).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideLUpper[i].Text = _dataMasterCompSideLUpper[i + tabIndex].ToString();
+                tabMasterSideLUpper[i].Text = (_dataMasterCompSideLUpper[i + tabIndex] - _dataMasterCompSideLMaster[i + tabIndex]).ToString();
                 #endregion
             }
+            ActiveMasterTableLeftData = 1;
         }
         public void tabdataMasterExtnStep2L()
         {
@@ -1558,13 +1668,41 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Lower
-                tabMasterSideLLower[i].Text = _dataMasterExtnSideLLower[i + tabIndex].ToString();
+                tabMasterSideLLower[i].Text = (_dataMasterExtnSideLMaster[i + tabIndex] - _dataMasterExtnSideLLower[i + tabIndex]).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideLUpper[i].Text = _dataRealExtnSideLUpper[i + tabIndex].ToString();
+                tabMasterSideLUpper[i].Text = (_dataMasterExtnSideLUpper[i + tabIndex] - _dataMasterExtnSideLMaster[i + tabIndex]).ToString();
                 #endregion
             }
+            ActiveMasterTableLeftData = 2;
+        }
+        public void tabdataMasterDiffStep2L()
+        {
+            int tabIndex = tabIdxMasterSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabMasterSideLStroke[i].Text = _dataMasterSideLDiffStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabMasterSideLMaster[i].Text = _dataMasterSideLDiffMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Master Acc
+                tabMasterSideLAccMaster[i].Text = _dataMasterSideLDiffAccMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabMasterSideLLower[i].Text = (_dataMasterSideLDiffMaster[i + tabIndex] - _dataMasterSideLDiffLower[i + tabIndex]).ToString();
+                #endregion
+
+                #region Upper
+                tabMasterSideLUpper[i].Text = (_dataMasterSideLDiffUpper[i + tabIndex] - _dataMasterSideLDiffMaster[i + tabIndex]).ToString();
+                #endregion
+            }
+            ActiveMasterTableLeftData = 3;
         }
         public void tabdataMasterCompStep2R()
         {
@@ -1579,16 +1717,16 @@ namespace KVCOMSERVER
                 tabMasterSideRMaster[i].Text = _dataMasterCompSideRMaster[i + tabIndex].ToString();
                 #endregion
 
-                #region Lower
+                #region Master Acc
                 tabMasterSideRAccMaster[i].Text = _dataMasterCompSideRAccMaster[i + tabIndex].ToString();
                 #endregion
 
-                #region Realtime
-                tabMasterSideRLower[i].Text = _dataMasterCompSideRLower[i + tabIndex].ToString();
+                #region Lower
+                tabMasterSideRLower[i].Text = (_dataMasterCompSideRMaster[i + tabIndex] - _dataMasterCompSideRLower[i + tabIndex]).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideRUpper[i].Text = _dataRealCompSideRUpper[i + tabIndex].ToString();
+                tabMasterSideRUpper[i].Text = (_dataMasterCompSideRUpper[i + tabIndex] - _dataMasterCompSideRMaster[i + tabIndex]).ToString();
                 #endregion
             }
         }
@@ -1605,27 +1743,280 @@ namespace KVCOMSERVER
                 tabMasterSideRMaster[i].Text = _dataMasterExtnSideRMaster[i + tabIndex].ToString();
                 #endregion
 
-                #region Lower
+                #region Master Acc
                 tabMasterSideRAccMaster[i].Text = _dataMasterExtnSideRAccMaster[i + tabIndex].ToString();
                 #endregion
 
-                #region Realtime
-                tabMasterSideRLower[i].Text = _dataMasterExtnSideRLower[i + tabIndex].ToString();
+                #region Lower
+                tabMasterSideRLower[i].Text = (_dataMasterExtnSideRMaster[i + tabIndex] - _dataMasterExtnSideRLower[i + tabIndex]).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideRUpper[i].Text = _dataMasterExtnSideRUpper[i + tabIndex].ToString();
+                tabMasterSideRUpper[i].Text = (_dataMasterExtnSideRUpper[i + tabIndex] - _dataMasterExtnSideRMaster[i + tabIndex]).ToString();
                 #endregion
             }
+        }
+        public void tabdataMasterDiffStep2R()
+        {
+            int tabIndex = tabIdxMasterSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                tabMasterSideRStroke[i].Text = _dataMasterSideRDiffStroke[i + tabIndex].ToString();
+                #endregion
+
+                #region Master 
+                tabMasterSideRMaster[i].Text = _dataMasterSideRDiffMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Master Acc
+                tabMasterSideRAccMaster[i].Text = _dataMasterSideRDiffAccMaster[i + tabIndex].ToString();
+                #endregion
+
+                #region Lower
+                tabMasterSideRLower[i].Text = (_dataMasterSideRDiffMaster[i + tabIndex] - _dataMasterSideRDiffLower[i + tabIndex]).ToString();
+                #endregion
+
+                #region Upper
+                tabMasterSideRUpper[i].Text = (_dataMasterSideRDiffUpper[i + tabIndex] - _dataMasterSideRDiffMaster[i + tabIndex]).ToString();
+                #endregion
+            }
+            ActiveMasterTableRightData = 3;
+        }
+
+        public void tabdataMasterCompStep2LW()
+        {
+            int tabIndex = tabIdxMasterSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                float.TryParse(tabMasterSideLStroke[i].Text, out float num1);
+                _dataMasterCompSideLStroke[i + tabIndex] = num1;
+                #endregion
+
+                #region Master
+                float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
+                _dataMasterCompSideLMaster[i + tabIndex] = num2;
+                #endregion
+
+                #region Master Acc
+                float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
+                _dataMasterCompSideLAccMaster[i + tabIndex] = num3;
+                #endregion
+
+                #region Lower
+                float.TryParse(tabMasterSideLLower[i].Text, out float num4);
+                _dataMasterCompSideLLower[i + tabIndex] = num2 - num4;
+                #endregion
+
+                #region Upper
+                float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
+                _dataMasterCompSideLUpper[i + tabIndex] = num2 + num5;
+                #endregion
+            }
+        }
+        public void tabdataMasterExtnStep2LW()
+        {
+            int tabIndex = tabIdxMasterSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                float.TryParse(tabMasterSideLStroke[i].Text, out float num1);
+                _dataMasterExtnSideLStroke[i + tabIndex] = num1;
+                #endregion
+
+                #region Master
+                float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
+                _dataMasterExtnSideLMaster[i + tabIndex] = num2;
+                #endregion
+
+                #region Master Acc
+                float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
+                _dataMasterExtnSideLAccMaster[i + tabIndex] = num3;
+                #endregion
+
+                #region Lower
+                float.TryParse(tabMasterSideLLower[i].Text, out float num4);
+                _dataMasterExtnSideLLower[i + tabIndex] = num2 - num4;
+                #endregion
+
+                #region Upper
+                float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
+                _dataRealExtnSideLUpper[i + tabIndex] = num2 + num5;
+                #endregion
+            }
+        }
+        public void tabdataMasterDiffStep2LW()
+        {
+            int tabIndex = tabIdxMasterSideL * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                float.TryParse(tabMasterSideLStroke[i].Text, out float num1);
+                _dataMasterSideLDiffStroke[i + tabIndex] = num1;
+                #endregion
+
+                #region Master
+                float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
+                _dataMasterSideLDiffMaster[i + tabIndex] = num2;
+                #endregion
+
+                #region Master Acc
+                float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
+                _dataMasterSideLDiffAccMaster[i + tabIndex] = num3;
+                #endregion
+
+                #region Lower
+                float.TryParse(tabMasterSideLLower[i].Text, out float num4);
+                _dataMasterSideLDiffLower[i + tabIndex] = num2 - num4;
+                #endregion
+
+                #region Upper
+                float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
+                _dataRealSideLDiffUpper[i + tabIndex] = num2 + num5;
+                #endregion
+            }
+        }
+        public void tabdataMasterCompStep2RW()
+        {
+            int tabIndex = tabIdxRealSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                float.TryParse(tabMasterSideRStroke[i].Text, out float num1);
+                _dataMasterCompSideRStroke[i + tabIndex] = num1;
+                #endregion
+
+                #region Master
+                float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
+                _dataMasterCompSideRMaster[i + tabIndex] = num2;
+                #endregion
+
+                #region Lower
+                float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
+                _dataMasterCompSideRAccMaster[i + tabIndex] = num3;
+                #endregion
+
+                #region Realtime
+                float.TryParse(tabMasterSideRLower[i].Text, out float num4);
+                _dataMasterCompSideRLower[i + tabIndex] = num2 - num4;
+                #endregion
+
+                #region Upper
+                float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
+                _dataRealCompSideRUpper[i + tabIndex] = num2 + num5;
+                #endregion
+            }
+        }
+        public void tabdataMasterExtnStep2RW()
+        {
+            int tabIndex = tabIdxRealSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                float.TryParse(tabMasterSideRStroke[i].Text, out float num1);
+                _dataMasterExtnSideRStroke[i + tabIndex] = num1;
+                #endregion
+
+                #region Master
+                float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
+                _dataMasterExtnSideRMaster[i + tabIndex] = num2;
+                #endregion
+
+                #region Lower
+                float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
+                _dataMasterExtnSideRAccMaster[i + tabIndex] = num3;
+                #endregion
+
+                #region Realtime
+                float.TryParse(tabMasterSideRLower[i].Text, out float num4);
+                _dataMasterExtnSideRLower[i + tabIndex] = num2 - num4;
+                #endregion
+
+                #region Upper
+                float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
+                _dataMasterExtnSideRUpper[i + tabIndex] = num2 + num5;
+                #endregion
+            }
+        }
+        public void tabdataMasterDiffStep2RW()
+        {
+            int tabIndex = tabIdxMasterSideR * 40;
+            for (int i = 0; i < 40; i++)
+            {
+                #region Stroke
+                float.TryParse(tabMasterSideRStroke[i].Text, out float num1);
+                _dataMasterSideRDiffStroke[i + tabIndex] = num1;
+                #endregion
+
+                #region Master
+                float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
+                _dataMasterSideRDiffMaster[i + tabIndex] = num2;
+                #endregion
+
+                #region Master Acc
+                float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
+                _dataMasterSideRDiffAccMaster[i + tabIndex] = num3;
+                #endregion
+
+                #region Lower
+                float.TryParse(tabMasterSideRLower[i].Text, out float num4);
+                _dataMasterSideRDiffLower[i + tabIndex] = num2 - num4;
+                #endregion
+
+                #region Upper
+                float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
+                _dataRealSideRDiffUpper[i + tabIndex] = num2 + num5;
+                #endregion
+            }
+        }
+
+
+        public void tabdataMasterTeachSet()
+        {
+            _dataMasterCompSideLAccMaster.ForEach((item, index) => _dataMasterCompSideLMaster[index] = item);
+            tabdataSetMasterTeachLower(ref _dataMasterCompSideLMaster, ref _dataMasterCompSideLLower, MasterTeachOffsetBatchL);
+            tabdataSetMasterTeachUpper(ref _dataMasterCompSideLMaster, ref _dataMasterCompSideLUpper, MasterTeachOffsetBatchL);
+            _dataMasterExtnSideLAccMaster.ForEach((item, index) => _dataMasterExtnSideLMaster[index] = item);
+            tabdataSetMasterTeachLower(ref _dataMasterExtnSideLMaster, ref _dataMasterExtnSideLLower, MasterTeachOffsetBatchL);
+            tabdataSetMasterTeachUpper(ref _dataMasterExtnSideLMaster, ref _dataMasterExtnSideLUpper, MasterTeachOffsetBatchL);
+            _dataMasterSideLDiffAccMaster.ForEach((item, index) => _dataMasterSideLDiffMaster[index] = item);
+            tabdataSetMasterTeachLower(ref _dataMasterSideLDiffMaster, ref _dataMasterSideLDiffLower, MasterTeachDiffOffsetBatchL);
+            tabdataSetMasterTeachUpper(ref _dataMasterSideLDiffMaster, ref _dataMasterSideLDiffUpper, MasterTeachDiffOffsetBatchL);
+
+            _dataMasterCompSideRAccMaster.ForEach((item, index) => _dataMasterCompSideRMaster[index] = item);
+            tabdataSetMasterTeachLower(ref _dataMasterCompSideRMaster, ref _dataMasterCompSideRLower, MasterTeachOffsetBatchR);
+            tabdataSetMasterTeachUpper(ref _dataMasterCompSideRMaster, ref _dataMasterCompSideRUpper, MasterTeachOffsetBatchR);
+            _dataMasterExtnSideRAccMaster.ForEach((item, index) => _dataMasterExtnSideRMaster[index] = item);
+            tabdataSetMasterTeachLower(ref _dataMasterExtnSideRMaster, ref _dataMasterExtnSideRLower, MasterTeachOffsetBatchR);
+            tabdataSetMasterTeachUpper(ref _dataMasterExtnSideRMaster, ref _dataMasterExtnSideRUpper, MasterTeachOffsetBatchR);
+            _dataMasterSideRDiffAccMaster.ForEach((item, index) => _dataMasterSideRDiffMaster[index] = item);
+            tabdataSetMasterTeachLower(ref _dataMasterSideRDiffMaster, ref _dataMasterSideRDiffLower, MasterTeachDiffOffsetBatchR);
+            tabdataSetMasterTeachUpper(ref _dataMasterSideRDiffMaster, ref _dataMasterSideRDiffUpper, MasterTeachDiffOffsetBatchR);
+        }
+        void tabdataSetMasterTeachLower(ref float[] master, ref float[] lower, float batchoffset)
+        {
+            float[] lobuff = new float[lower.Length];
+            master.ForEach((item, index) => lobuff[index] = item - batchoffset);
+            Array.Copy(lobuff, lower, lobuff.Length);
+        }
+        void tabdataSetMasterTeachUpper(ref float[] master, ref float[] upper, float batchoffset)
+        {
+            float[] hibuff = new float[upper.Length];
+            master.ForEach((item, index) => hibuff[index] = item + batchoffset);
+            Array.Copy(hibuff, upper, hibuff.Length);
         }
 
         #endregion
 
         #endregion
 
+        #region FormComponents
+
         public Form1()
         {
             InitializeComponent();
+            InitializePlotStyle();
             InitializeCustomComponents();
             InitializeBorderComponent();
 
@@ -1644,7 +2035,7 @@ namespace KVCOMSERVER
                 //MasteringUpdateList();   
             }
             catch
-            { }
+            { } //init connection
 
             InitializeUI();
             drawingBorderUpper.BringToFront();
@@ -1653,6 +2044,164 @@ namespace KVCOMSERVER
             drawingBorderRight.BringToFront();
             drawingPanel.BringToFront();
 
+        }
+        private void InitializePlotStyle()
+        {
+            formsPlot1.Plot.XLabel("Stroke");
+            formsPlot1.Plot.YLabel("Load");
+            formsPlot1.Plot.ShowLegend();
+            formsPlot1.Plot.Axes.AntiAlias(true);
+            formsPlot1.Plot.Axes.Hairline(true);
+            formsPlot1.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot1.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot1.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot1.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot1.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot1.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot1.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot2.Plot.XLabel("Stroke");
+            formsPlot2.Plot.YLabel("Load");
+            formsPlot2.Plot.ShowLegend();
+            formsPlot2.Plot.Axes.AntiAlias(true);
+            formsPlot2.Plot.Axes.Hairline(true);
+            formsPlot2.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot2.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot2.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot2.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot2.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot2.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot2.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot3.Plot.XLabel("Stroke");
+            formsPlot3.Plot.YLabel("Load");
+            formsPlot3.Plot.ShowLegend();
+            formsPlot3.Plot.Axes.AntiAlias(true);
+            formsPlot3.Plot.Axes.Hairline(true);
+            formsPlot3.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot3.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot3.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot3.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot3.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot3.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot3.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot4.Plot.XLabel("Stroke");
+            formsPlot4.Plot.YLabel("Load");
+            formsPlot4.Plot.ShowLegend();
+            formsPlot4.Plot.Axes.AntiAlias(true);
+            formsPlot4.Plot.Axes.Hairline(true);
+            formsPlot4.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot4.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot4.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot4.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot4.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot4.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot4.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot5.Plot.XLabel("Stroke");
+            formsPlot5.Plot.YLabel("Load");
+            formsPlot5.Plot.ShowLegend();
+            formsPlot5.Plot.Axes.AntiAlias(true);
+            formsPlot5.Plot.Axes.Hairline(true);
+            formsPlot5.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot5.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot5.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot5.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot5.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot5.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot5.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot6.Plot.XLabel("Stroke");
+            formsPlot6.Plot.YLabel("Load");
+            formsPlot6.Plot.ShowLegend();
+            formsPlot6.Plot.Axes.AntiAlias(true);
+            formsPlot6.Plot.Axes.Hairline(true);
+            formsPlot6.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot6.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot6.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot6.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot6.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot6.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot6.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot7.Plot.XLabel("Stroke");
+            formsPlot7.Plot.YLabel("Load");
+            formsPlot7.Plot.ShowLegend();
+            formsPlot7.Plot.Axes.AntiAlias(true);
+            formsPlot7.Plot.Axes.Hairline(true);
+            formsPlot7.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot7.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot7.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot7.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot7.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot7.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot7.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot8.Plot.XLabel("Stroke");
+            formsPlot8.Plot.YLabel("Load");
+            formsPlot8.Plot.ShowLegend();
+            formsPlot8.Plot.Axes.AntiAlias(true);
+            formsPlot8.Plot.Axes.Hairline(true);
+            formsPlot8.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot8.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot8.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot8.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot8.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot8.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot8.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot9.Plot.XLabel("Stroke");
+            formsPlot9.Plot.YLabel("Load");
+            formsPlot9.Plot.ShowLegend();
+            formsPlot9.Plot.Axes.AntiAlias(true);
+            formsPlot9.Plot.Axes.Hairline(true);
+            formsPlot9.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot9.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot9.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot9.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot9.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot9.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot9.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot10.Plot.XLabel("Stroke");
+            formsPlot10.Plot.YLabel("Load");
+            formsPlot10.Plot.ShowLegend();
+            formsPlot10.Plot.Axes.AntiAlias(true);
+            formsPlot10.Plot.Axes.Hairline(true);
+            formsPlot10.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot10.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot10.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot10.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot10.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot10.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot10.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot11.Plot.XLabel("Stroke");
+            formsPlot11.Plot.YLabel("Load");
+            formsPlot11.Plot.ShowLegend();
+            formsPlot11.Plot.Axes.AntiAlias(true);
+            formsPlot11.Plot.Axes.Hairline(true);
+            formsPlot11.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot11.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot11.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot11.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot11.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot11.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot11.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+
+            formsPlot12.Plot.XLabel("Stroke");
+            formsPlot12.Plot.YLabel("Load");
+            formsPlot12.Plot.ShowLegend();
+            formsPlot12.Plot.Axes.AntiAlias(true);
+            formsPlot12.Plot.Axes.Hairline(true);
+            formsPlot12.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
+            formsPlot12.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
+            formsPlot12.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
+            formsPlot12.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot12.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
+            formsPlot12.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
+            formsPlot12.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
         }
         private void InitializeUI()
         {
@@ -1681,6 +2230,12 @@ namespace KVCOMSERVER
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.DrawItem += TabControl_DrawItem;
             tabControl1.Selected += TabControl_Selected;
+            tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
+
+            textBox3.Click += InputTextBox_Click;
+            textBox4.Click += InputTextBox_Click;
+            textBox5.Click += InputTextBox_Click;
+            textBox6.Click += InputTextBox_Click;
 
             PreloadTabPages();
         }
@@ -1688,6 +2243,33 @@ namespace KVCOMSERVER
         {
             // Refresh the TabControl to apply the drawing changes
             tabControl1.Invalidate();
+        }
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 7)
+            {
+                tabdataMasterSideInit();
+                tabdataMasterCompStep2L();
+                button59.BackColor = Color.Cyan;
+                button58.BackColor = Color.LightSteelBlue;
+                button65.BackColor = Color.LightSteelBlue;
+                tabdataMasterCompStep2R();
+                button57.BackColor = Color.Cyan;
+                button56.BackColor = Color.LightSteelBlue;
+                button64.BackColor = Color.LightSteelBlue;
+            }
+            if (tabControl1.SelectedIndex == 4)
+            {
+                tabdataRealSideInit();
+                tabdataRealCompStep2L();
+                button55.BackColor = Color.Cyan;
+                button54.BackColor = Color.LightSteelBlue;
+                button71.BackColor = Color.LightSteelBlue;
+                tabdataRealCompStep2R();
+                button53.BackColor = Color.Cyan;
+                button52.BackColor = Color.LightSteelBlue;
+                button70.BackColor = Color.LightSteelBlue;
+            }
         }
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
@@ -1736,6 +2318,7 @@ namespace KVCOMSERVER
                 textBox.Text = enteredValue;
             }
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // Check the number of monitors
@@ -1758,10 +2341,198 @@ namespace KVCOMSERVER
             }
         }
 
+        #endregion
+
         //-----------------------------------------------------------------LaMurallaVerde-----------------------------------------------
 
+        #region Plotting Graphs
+
+        #region PlotInterface
+        public ref ScottPlot.WinForms.FormsPlot FormPlot1()
+        {
+            return ref this.formsPlot1;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot2()
+        {
+            return ref this.formsPlot2;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot3()
+        {
+            return ref this.formsPlot3;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot4()
+        {
+            return ref this.formsPlot4;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot5()
+        {
+            return ref this.formsPlot5;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot6()
+        {
+            return ref this.formsPlot6;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot7()
+        {
+            return ref this.formsPlot7;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot8()
+        {
+            return ref this.formsPlot8;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot9()
+        {
+            return ref this.formsPlot9;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot10()
+        {
+            return ref this.formsPlot10;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot11()
+        {
+            return ref this.formsPlot11;
+        }
+        public ref ScottPlot.WinForms.FormsPlot FormPlot12()
+        {
+            return ref this.formsPlot12;
+        }
+
+        #endregion
+
+        #region PlotComponents
+
+        public ScottPlot.Plottables.SignalXY Plot1_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot1_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot1_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot1_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot2_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot2_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot2_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot2_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot3_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot3_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot3_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot3_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot4_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot4_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot4_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot4_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot5_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot5_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot5_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot5_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot6_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot6_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot6_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot6_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot7_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot7_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot7_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot7_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot8_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot8_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot8_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot8_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot9_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot9_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot9_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot9_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot10_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot10_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot10_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot10_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot11_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot11_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot11_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot11_UPPER;
+
+        public ScottPlot.Plottables.SignalXY Plot12_PRESENT;
+        public ScottPlot.Plottables.SignalXY Plot12_MASTER;
+        public ScottPlot.Plottables.SignalXY Plot12_LOWER;
+        public ScottPlot.Plottables.SignalXY Plot12_UPPER;
+
+        #endregion
 
 
+        public void AllPlotReset()
+        {
+            formsPlot1.Reset();
+            formsPlot2.Reset();
+            formsPlot3.Reset();
+            formsPlot4.Reset();
+            formsPlot9.Reset();
+            formsPlot10.Reset();
+
+            formsPlot1.Refresh();
+            formsPlot2.Refresh();
+            formsPlot3.Refresh();
+            formsPlot4.Refresh();
+            formsPlot9.Refresh();
+            formsPlot10.Refresh();
+        }
+        public void MasterPlotReset()
+        {
+            formsPlot5.Reset();
+            formsPlot6.Reset();
+            formsPlot7.Reset();
+            formsPlot8.Reset();
+            formsPlot11.Reset();
+            formsPlot12.Reset();
+
+            formsPlot5.Refresh();
+            formsPlot6.Refresh();
+            formsPlot7.Refresh();
+            formsPlot8.Refresh();
+            formsPlot11.Refresh();
+            formsPlot12.Refresh();
+        }
+
+        public void PlotSignalPlotting(ref ScottPlot.WinForms.FormsPlot plotbase, ref ScottPlot.Plottables.SignalXY plotsig, double[] xd, double[] yd)
+        {
+            if (plotsig == null)
+            {
+                plotsig = plotbase.Plot.Add.SignalXY(xd, yd);
+            }
+            else
+            {
+                ISignalXYSource src = new SignalXYSourceDoubleArray(xd, yd);
+                plotsig.Data = src;
+            }
+            plotsig.LineWidth = 2;
+        }
+        public void PlotChangeColor(ref ScottPlot.Plottables.SignalXY plotsig, System.Drawing.Color linecolor)
+        {
+            plotsig.Color = ScottPlot.Color.FromColor(linecolor);
+        }
+
+        public void PlotBringToFront(ref ScottPlot.WinForms.FormsPlot plotbase, ref ScottPlot.Plottables.SignalXY plotsig)
+        {
+            plotbase.Plot.MoveToFront(plotsig);
+        }
+
+        public void PlotSignalLineShow(ref ScottPlot.Plottables.SignalXY plotsig)
+        {
+            plotsig.IsVisible = true;
+        }
+
+        public void PlotSignalLineHide(ref ScottPlot.Plottables.SignalXY plotsig)
+        {
+            plotsig.IsVisible = false;
+        }
+
+        #endregion
+
+        #region UIMethod
         private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
         {
             RealtimeUpdateList();
@@ -1889,149 +2660,10 @@ namespace KVCOMSERVER
             button6.ForeColor = System.Drawing.Color.Black;
             button6.BackColor = System.Drawing.Color.BlueViolet;
         }
-
-        #region Plotting Graphs
-        public void AllPlotReset()
-        {
-            formsPlot1.Reset();
-            formsPlot2.Reset();
-            formsPlot3.Reset();
-            formsPlot4.Reset();
-
-            formsPlot1.Refresh();
-            formsPlot2.Refresh();
-            formsPlot3.Refresh();
-            formsPlot4.Refresh();
-        }
-        public void Plot1Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot1.Reset();
-            var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
-            sp1.Color = ScottPlot.Color.FromColor(linecolor);
-            sp1.LineWidth = 3;
-            formsPlot1.Plot.Axes.AntiAlias(true);
-            formsPlot1.Refresh();
-        }
-        public void Plot1AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp1 = formsPlot1.Plot.Add.SignalXY(xd, yd);
-            sp1.Color = ScottPlot.Color.FromColor(linecolor);
-            sp1.LineWidth = 3;
-            formsPlot1.Plot.Axes.AntiAlias(true);
-            formsPlot1.Refresh();
-        }
-        public void Plot2Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot2.Reset();
-            var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
-            sp2.Color = ScottPlot.Color.FromColor(linecolor);
-            sp2.LineWidth = 3;
-            formsPlot2.Plot.Axes.AntiAlias(true);
-            formsPlot2.Refresh();
-        }
-        public void Plot2AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp2 = formsPlot2.Plot.Add.SignalXY(xd, yd);
-            sp2.Color = ScottPlot.Color.FromColor(linecolor);
-            sp2.LineWidth = 3;
-            formsPlot2.Plot.Axes.AntiAlias(true);
-            formsPlot2.Refresh();
-        }
-        public void Plot3Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot3.Reset();
-            var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
-            sp3.Color = ScottPlot.Color.FromColor(linecolor);
-            sp3.LineWidth = 3;
-            formsPlot3.Plot.Axes.AntiAlias(true);
-            formsPlot3.Refresh();
-        }
-        public void Plot3AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp3 = formsPlot3.Plot.Add.SignalXY(xd, yd);
-            sp3.Color = ScottPlot.Color.FromColor(linecolor);
-            sp3.LineWidth = 3;
-            formsPlot3.Plot.Axes.AntiAlias(true);
-            formsPlot3.Refresh();
-        }
-        public void Plot4Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot4.Reset();
-            var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
-            sp4.Color = ScottPlot.Color.FromColor(linecolor);
-            sp4.LineWidth = 3;
-            formsPlot4.Plot.Axes.AntiAlias(true);
-            formsPlot4.Refresh();
-        }
-        public void Plot4AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp4 = formsPlot4.Plot.Add.SignalXY(xd, yd);
-            sp4.Color = ScottPlot.Color.FromColor(linecolor);
-            sp4.LineWidth = 3;
-            formsPlot4.Plot.Axes.AntiAlias(true);
-            formsPlot4.Refresh();
-        }
-        public void Plot5Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot5.Reset();
-            var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
-            sp5.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot5.Plot.Axes.AntiAlias(true);
-            formsPlot5.Refresh();
-        }
-        public void Plot5AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp5 = formsPlot5.Plot.Add.SignalXY(xd, yd);
-            sp5.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot5.Plot.Axes.AntiAlias(true);
-            formsPlot5.Refresh();
-        }
-        public void Plot6Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot6.Reset();
-            var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
-            sp6.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot6.Plot.Axes.AntiAlias(true);
-            formsPlot6.Refresh();
-        }
-        public void Plot6AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp6 = formsPlot6.Plot.Add.SignalXY(xd, yd);
-            sp6.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot6.Plot.Axes.AntiAlias(true);
-            formsPlot6.Refresh();
-        }
-        public void Plot7Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot7.Reset();
-            var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
-            sp7.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot7.Plot.Axes.AntiAlias(true);
-            formsPlot7.Refresh();
-        }
-        public void Plot7AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp7 = formsPlot7.Plot.Add.SignalXY(xd, yd);
-            sp7.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot7.Plot.Axes.AntiAlias(true);
-            formsPlot7.Refresh();
-        }
-        public void Plot8Update(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            formsPlot8.Reset();
-            var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
-            sp8.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot8.Plot.Axes.AntiAlias(true);
-            formsPlot8.Refresh();
-        }
-        public void Plot8AddPlot(double[] xd, double[] yd, System.Drawing.Color linecolor)
-        {
-            var sp8 = formsPlot8.Plot.Add.SignalXY(xd, yd);
-            sp8.Color = ScottPlot.Color.FromColor(linecolor);
-            formsPlot8.Plot.Axes.AntiAlias(true);
-            formsPlot8.Refresh();
-        }
         #endregion
+
+        #region UI Action
+
         private void label5_Click(object sender, EventArgs e)
         {
 
@@ -2266,6 +2898,376 @@ namespace KVCOMSERVER
         {
             tabControl1.SelectedIndex = 7;
         }
+
+        #endregion
+
+        private void button72_Click(object sender, EventArgs e)
+        {
+            if (tabIdxRealSideL > 0)
+            {
+                tabIdxRealSideL -= 1;
+                if (ActiveRealTableLeftData == 1)
+                {
+                    tabdataRealCompStep2L();
+                }
+                if (ActiveRealTableLeftData == 2)
+                {
+                    tabdataRealExtnStep2L();
+                }
+                if (ActiveRealTableLeftData == 3)
+                {
+                    tabdataRealDiffStep2L();
+                }
+            }
+        }
+
+        private void button73_Click(object sender, EventArgs e)
+        {
+            if (tabIdxRealSideL < 4)
+            {
+                tabIdxRealSideL += 1;
+                if (ActiveRealTableLeftData == 1)
+                {
+                    tabdataRealCompStep2L();
+                }
+                if (ActiveRealTableLeftData == 2)
+                {
+                    tabdataRealExtnStep2L();
+                }
+                if (ActiveRealTableLeftData == 3)
+                {
+                    tabdataRealDiffStep2L();
+                }
+            }
+        }
+
+        private void button75_Click(object sender, EventArgs e)
+        {
+            if (tabIdxRealSideR > 0)
+            {
+                tabIdxRealSideR -= 1;
+                if (ActiveRealTableRightData == 1)
+                {
+                    tabdataRealCompStep2R();
+                }
+                if (ActiveRealTableRightData == 2)
+                {
+                    tabdataRealExtnStep2R();
+                }
+                if (ActiveRealTableRightData == 3)
+                {
+                    tabdataRealDiffStep2R();
+                }
+            }
+        }
+
+        private void button74_Click(object sender, EventArgs e)
+        {
+            if (tabIdxRealSideR < 4)
+            {
+                tabIdxRealSideR += 1;
+                if (ActiveRealTableRightData == 1)
+                {
+                    tabdataRealCompStep2R();
+                }
+                if (ActiveRealTableRightData == 2)
+                {
+                    tabdataRealExtnStep2R();
+                }
+                if (ActiveRealTableRightData == 3)
+                {
+                    tabdataRealDiffStep2R();
+                }
+            }
+        }
+
+        private void button79_Click(object sender, EventArgs e)
+        {
+            if (tabIdxMasterSideL > 0)
+            {
+                tabIdxMasterSideL -= 1;
+                if (ActiveMasterTableLeftData == 1)
+                {
+                    tabdataMasterCompStep2L();
+                }
+                if (ActiveMasterTableLeftData == 2)
+                {
+                    tabdataMasterExtnStep2L();
+                }
+                if (ActiveMasterTableLeftData == 3)
+                {
+                    tabdataMasterDiffStep2L();
+                }
+            }
+        }
+
+        private void button78_Click(object sender, EventArgs e)
+        {
+            if (tabIdxMasterSideL < 4)
+            {
+                tabIdxMasterSideL += 1;
+                if (ActiveMasterTableLeftData == 1)
+                {
+                    tabdataMasterCompStep2L();
+                }
+                if (ActiveMasterTableLeftData == 2)
+                {
+                    tabdataMasterExtnStep2L();
+                }
+                if (ActiveMasterTableLeftData == 3)
+                {
+                    tabdataMasterDiffStep2L();
+                }
+            }
+        }
+
+        private void button77_Click(object sender, EventArgs e)
+        {
+            if (tabIdxMasterSideR > 0)
+            {
+                tabIdxMasterSideR -= 1;
+                if (ActiveMasterTableRightData == 1)
+                {
+                    tabdataMasterCompStep2R();
+                }
+                if (ActiveMasterTableRightData == 2)
+                {
+                    tabdataMasterExtnStep2R();
+                }
+                if (ActiveMasterTableRightData == 3)
+                {
+                    tabdataMasterDiffStep2R();
+                }
+            }
+        }
+
+        private void button76_Click(object sender, EventArgs e)
+        {
+            if (tabIdxMasterSideR < 4)
+            {
+                tabIdxMasterSideR += 1;
+                if (ActiveMasterTableRightData == 1)
+                {
+                    tabdataMasterCompStep2R();
+                }
+                if (ActiveMasterTableRightData == 2)
+                {
+                    tabdataMasterExtnStep2R();
+                }
+                if (ActiveMasterTableRightData == 3)
+                {
+                    tabdataMasterDiffStep2R();
+                }
+            }
+        }
+
+        private void button55_Click(object sender, EventArgs e)
+        {
+            tabdataRealCompStep2L();
+            button55.BackColor = Color.Cyan;
+            button54.BackColor = Color.LightSteelBlue;
+            button71.BackColor = Color.LightSteelBlue;
+        }
+
+        private void button54_Click(object sender, EventArgs e)
+        {
+            tabdataRealExtnStep2L();
+            button55.BackColor = Color.LightSteelBlue;
+            button54.BackColor = Color.Cyan;
+            button71.BackColor = Color.LightSteelBlue;
+        }
+
+        private void button71_Click(object sender, EventArgs e)
+        {
+            tabdataRealDiffStep2L();
+            button55.BackColor = Color.LightSteelBlue;
+            button54.BackColor = Color.LightSteelBlue;
+            button71.BackColor = Color.Cyan;
+        }
+
+        private void button53_Click(object sender, EventArgs e)
+        {
+            tabdataRealCompStep2R();
+            button53.BackColor = Color.Cyan;
+            button52.BackColor = Color.LightSteelBlue;
+            button70.BackColor = Color.LightSteelBlue;
+        }
+
+        private void button52_Click(object sender, EventArgs e)
+        {
+            tabdataRealExtnStep2R();
+            button53.BackColor = Color.LightSteelBlue;
+            button52.BackColor = Color.Cyan;
+            button70.BackColor = Color.LightSteelBlue;
+        }
+
+        private void button70_Click(object sender, EventArgs e)
+        {
+            tabdataRealDiffStep2R();
+            button53.BackColor = Color.LightSteelBlue;
+            button52.BackColor = Color.LightSteelBlue;
+            button70.BackColor = Color.Cyan;
+        }
+
+        private void button59_Click(object sender, EventArgs e)
+        {
+            tabdataMasterCompStep2L();
+            button59.BackColor = Color.Cyan;
+            button58.BackColor = Color.LightSteelBlue;
+            button65.BackColor = Color.LightSteelBlue;
+        }
+
+        private void button58_Click(object sender, EventArgs e)
+        {
+            tabdataMasterExtnStep2L();
+            button59.BackColor = Color.LightSteelBlue;
+            button58.BackColor = Color.Cyan;
+            button65.BackColor = Color.LightSteelBlue;
+        }
+
+        private void button65_Click(object sender, EventArgs e)
+        {
+            tabdataMasterDiffStep2L();
+            button59.BackColor = Color.LightSteelBlue;
+            button58.BackColor = Color.LightSteelBlue;
+            button65.BackColor = Color.Cyan;
+        }
+
+        private void button57_Click(object sender, EventArgs e)
+        {
+            tabdataMasterCompStep2R();
+            button57.BackColor = Color.Cyan;
+            button56.BackColor = Color.LightSteelBlue;
+            button64.BackColor = Color.LightSteelBlue;
+        }
+
+        private void button56_Click(object sender, EventArgs e)
+        {
+            tabdataMasterExtnStep2R();
+            button57.BackColor = Color.LightSteelBlue;
+            button56.BackColor = Color.Cyan;
+            button64.BackColor = Color.LightSteelBlue;
+        }
+
+        private void button64_Click(object sender, EventArgs e)
+        {
+            tabdataMasterDiffStep2R();
+            button57.BackColor = Color.LightSteelBlue;
+            button56.BackColor = Color.LightSteelBlue;
+            button64.BackColor = Color.Cyan;
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            float.TryParse(textBox3.Text, out float value);
+            MasterTeachOffsetBatchL = value;
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+            float.TryParse(textBox4.Text, out float value);
+            MasterTeachOffsetBatchR = value;
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+            float.TryParse(textBox6.Text, out float value);
+            MasterTeachDiffOffsetBatchL = value;
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+            float.TryParse(textBox5.Text, out float value);
+            MasterTeachDiffOffsetBatchR = value;
+        }
+
+        private void button39_Click_1(object sender, EventArgs e)
+        {
+            tabdataMasterTeachSet();
+
+            tabIdxMasterSideL = 0;
+            if (ActiveMasterTableLeftData == 1)
+            {
+                tabdataMasterCompStep2L();
+            }
+            if (ActiveMasterTableLeftData == 2)
+            {
+                tabdataMasterExtnStep2L();
+            }
+            if (ActiveMasterTableLeftData == 3)
+            {
+                tabdataMasterDiffStep2L();
+            }
+            tabIdxMasterSideR = 0;
+            if (ActiveMasterTableRightData == 1)
+            {
+                tabdataMasterCompStep2R();
+            }
+            if (ActiveMasterTableRightData == 2)
+            {
+                tabdataMasterExtnStep2R();
+            }
+            if (ActiveMasterTableRightData == 3)
+            {
+                tabdataMasterDiffStep2R();
+            }
+
+            MasterTeachSetConfirm = true;
+        }
+
+        private void button31_Click(object sender, EventArgs e)
+        {
+            if (ActiveMasterTableLeftData == 1)
+            {
+                tabdataMasterCompStep2LW();
+                tabdataMasterCompStep2L();
+            }
+            if (ActiveMasterTableLeftData == 2)
+            {
+                tabdataMasterExtnStep2LW();
+                tabdataMasterExtnStep2L();
+            }
+            if (ActiveMasterTableLeftData == 3)
+            {
+                tabdataMasterDiffStep2LW();
+                tabdataMasterDiffStep2L();
+            }
+
+            if (ActiveMasterTableRightData == 1)
+            {
+                tabdataMasterCompStep2RW();
+                tabdataMasterCompStep2R();
+            }
+            if (ActiveMasterTableRightData == 2)
+            {
+                tabdataMasterExtnStep2RW();
+                tabdataMasterExtnStep2R();
+            }
+            if (ActiveMasterTableRightData == 3)
+            {
+                tabdataMasterDiffStep2RW();
+                tabdataMasterDiffStep2R();
+            }
+        }
+
+        private void button30_Click(object sender, EventArgs e)
+        {
+            //UPDATE MASTER DATA
+            if (MasterTeachSetConfirm)
+            {
+                _WorkflowHandler.workUpdateMasterData();
+                _WorkflowHandler.workUpdateMasterDatabase();
+                MasterTeachSetConfirm = false;
+            }
+        }
+
+        private void button80_Click(object sender, EventArgs e)
+        {
+            //VALIDATE MASTER DATA
+            _WorkflowHandler.workMasterValidation();
+            MasterTeachSetConfirm = false;
+
+        }
     }
 
     #region supporting classes
@@ -2320,5 +3322,25 @@ namespace KVCOMSERVER
 
         
     }
+    public static class ArrayExtensions
+    {
+        // Extension method to support lambda with index
+        public static void ForEach<T>(this T[] array, Action<T, int> action)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                action(array[i], i);
+            }
+        }
+
+        // Extension method to convert array to list using a lambda expression
+        public static List<T> ToList<T>(this T[] array, Func<T, T> converter)
+        {
+            List<T> list = new List<T>(array.Length);
+            array.ForEach((item, index) => list.Add(converter(item)));
+            return list;
+        }
+    }
+
     #endregion
 }
