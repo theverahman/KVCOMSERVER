@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "KVCOMSERVER": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

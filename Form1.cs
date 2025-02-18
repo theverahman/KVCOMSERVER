@@ -93,6 +93,23 @@ namespace KVCOMSERVER
             MasterTeachSetConfirm = false;
         }
 
+        public void SetModelName(string mod)
+        {
+            label8.Text = ($"SELECTED MODEL: {mod}");
+        }
+        public void UpdateTime()
+        {
+            timelabel0.Text = DateTime.Now.ToString("HH:mm:ss");
+        }
+        public void UpdateDate()
+        {
+            string day = DateTime.Now.ToString("ddd");
+            string date = DateTime.Now.ToString("dd");
+            string month = DateTime.Now.ToString("MMM");
+            string year = DateTime.Now.ToString("yyyy");
+            datelabel0.Text = ($"{day}, {date} {month} {year} ");
+        }
+
         #region Table Data Def 
         #region Real Data
         CustomTableLayoutPanel tabRealSideL;
@@ -1706,7 +1723,7 @@ namespace KVCOMSERVER
         }
         public void tabdataMasterCompStep2R()
         {
-            int tabIndex = tabIdxRealSideR * 40;
+            int tabIndex = tabIdxMasterSideR * 40;
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
@@ -1729,10 +1746,11 @@ namespace KVCOMSERVER
                 tabMasterSideRUpper[i].Text = (_dataMasterCompSideRUpper[i + tabIndex] - _dataMasterCompSideRMaster[i + tabIndex]).ToString();
                 #endregion
             }
+            ActiveMasterTableRightData = 1;
         }
         public void tabdataMasterExtnStep2R()
         {
-            int tabIndex = tabIdxRealSideR * 40;
+            int tabIndex = tabIdxMasterSideR * 40;
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
@@ -1755,6 +1773,7 @@ namespace KVCOMSERVER
                 tabMasterSideRUpper[i].Text = (_dataMasterExtnSideRUpper[i + tabIndex] - _dataMasterExtnSideRMaster[i + tabIndex]).ToString();
                 #endregion
             }
+            ActiveMasterTableRightData = 2;
         }
         public void tabdataMasterDiffStep2R()
         {
@@ -1879,7 +1898,7 @@ namespace KVCOMSERVER
         }
         public void tabdataMasterCompStep2RW()
         {
-            int tabIndex = tabIdxRealSideR * 40;
+            int tabIndex = tabIdxMasterSideR * 40;
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
@@ -1910,7 +1929,7 @@ namespace KVCOMSERVER
         }
         public void tabdataMasterExtnStep2RW()
         {
-            int tabIndex = tabIdxRealSideR * 40;
+            int tabIndex = tabIdxMasterSideR * 40;
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
@@ -2052,6 +2071,7 @@ namespace KVCOMSERVER
             formsPlot1.Plot.ShowLegend();
             formsPlot1.Plot.Axes.AntiAlias(true);
             formsPlot1.Plot.Axes.Hairline(true);
+            formsPlot1.Plot.Axes.AutoScale(true);
             formsPlot1.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot1.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot1.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2065,6 +2085,7 @@ namespace KVCOMSERVER
             formsPlot2.Plot.ShowLegend();
             formsPlot2.Plot.Axes.AntiAlias(true);
             formsPlot2.Plot.Axes.Hairline(true);
+            formsPlot2.Plot.Axes.AutoScale(true);
             formsPlot2.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot2.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot2.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2078,6 +2099,7 @@ namespace KVCOMSERVER
             formsPlot3.Plot.ShowLegend();
             formsPlot3.Plot.Axes.AntiAlias(true);
             formsPlot3.Plot.Axes.Hairline(true);
+            formsPlot3.Plot.Axes.AutoScale(true);
             formsPlot3.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot3.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot3.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2091,6 +2113,7 @@ namespace KVCOMSERVER
             formsPlot4.Plot.ShowLegend();
             formsPlot4.Plot.Axes.AntiAlias(true);
             formsPlot4.Plot.Axes.Hairline(true);
+            formsPlot4.Plot.Axes.AutoScale(true);
             formsPlot4.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot4.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot4.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2104,6 +2127,7 @@ namespace KVCOMSERVER
             formsPlot5.Plot.ShowLegend();
             formsPlot5.Plot.Axes.AntiAlias(true);
             formsPlot5.Plot.Axes.Hairline(true);
+            formsPlot5.Plot.Axes.AutoScale(true);
             formsPlot5.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot5.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot5.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2117,6 +2141,7 @@ namespace KVCOMSERVER
             formsPlot6.Plot.ShowLegend();
             formsPlot6.Plot.Axes.AntiAlias(true);
             formsPlot6.Plot.Axes.Hairline(true);
+            formsPlot6.Plot.Axes.AutoScale(true);
             formsPlot6.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot6.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot6.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2130,6 +2155,7 @@ namespace KVCOMSERVER
             formsPlot7.Plot.ShowLegend();
             formsPlot7.Plot.Axes.AntiAlias(true);
             formsPlot7.Plot.Axes.Hairline(true);
+            formsPlot7.Plot.Axes.AutoScale(true);
             formsPlot7.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot7.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot7.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2143,6 +2169,7 @@ namespace KVCOMSERVER
             formsPlot8.Plot.ShowLegend();
             formsPlot8.Plot.Axes.AntiAlias(true);
             formsPlot8.Plot.Axes.Hairline(true);
+            formsPlot8.Plot.Axes.AutoScale(true);
             formsPlot8.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot8.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot8.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2156,6 +2183,7 @@ namespace KVCOMSERVER
             formsPlot9.Plot.ShowLegend();
             formsPlot9.Plot.Axes.AntiAlias(true);
             formsPlot9.Plot.Axes.Hairline(true);
+            formsPlot9.Plot.Axes.AutoScale(true);
             formsPlot9.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot9.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot9.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2169,6 +2197,7 @@ namespace KVCOMSERVER
             formsPlot10.Plot.ShowLegend();
             formsPlot10.Plot.Axes.AntiAlias(true);
             formsPlot10.Plot.Axes.Hairline(true);
+            formsPlot10.Plot.Axes.AutoScale(true);
             formsPlot10.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot10.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot10.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2182,6 +2211,7 @@ namespace KVCOMSERVER
             formsPlot11.Plot.ShowLegend();
             formsPlot11.Plot.Axes.AntiAlias(true);
             formsPlot11.Plot.Axes.Hairline(true);
+            formsPlot11.Plot.Axes.AutoScale(true);
             formsPlot11.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot11.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot11.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -2195,6 +2225,7 @@ namespace KVCOMSERVER
             formsPlot12.Plot.ShowLegend();
             formsPlot12.Plot.Axes.AntiAlias(true);
             formsPlot12.Plot.Axes.Hairline(true);
+            formsPlot12.Plot.Axes.AutoScale(true);
             formsPlot12.Plot.FigureBackground.Color = ScottPlot.Color.FromHex("#708090");
             formsPlot12.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot12.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
@@ -3268,6 +3299,13 @@ namespace KVCOMSERVER
             MasterTeachSetConfirm = false;
 
         }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 
     #region supporting classes
