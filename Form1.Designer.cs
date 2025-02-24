@@ -64,6 +64,10 @@ namespace KVCOMSERVER
             button31 = new System.Windows.Forms.Button();
             button29 = new System.Windows.Forms.Button();
             tabPage5 = new System.Windows.Forms.TabPage();
+            TXPosR2 = new System.Windows.Forms.Label();
+            TXLoadR2 = new System.Windows.Forms.Label();
+            TXPosL2 = new System.Windows.Forms.Label();
+            TXLoadL2 = new System.Windows.Forms.Label();
             Plot12Coord = new System.Windows.Forms.Label();
             Plot8Coord = new System.Windows.Forms.Label();
             Plot7Coord = new System.Windows.Forms.Label();
@@ -134,6 +138,9 @@ namespace KVCOMSERVER
             button34 = new System.Windows.Forms.Button();
             button32 = new System.Windows.Forms.Button();
             tabPage3 = new System.Windows.Forms.TabPage();
+            TXPosR1 = new System.Windows.Forms.Label();
+            TXLoadR1 = new System.Windows.Forms.Label();
+            TXPosL1 = new System.Windows.Forms.Label();
             TXLoadL1 = new System.Windows.Forms.Label();
             Plot10Coord = new System.Windows.Forms.Label();
             Plot4Coord = new System.Windows.Forms.Label();
@@ -216,13 +223,6 @@ namespace KVCOMSERVER
             label8 = new System.Windows.Forms.Label();
             button83 = new System.Windows.Forms.Button();
             button84 = new System.Windows.Forms.Button();
-            TXPosL1 = new System.Windows.Forms.Label();
-            TXPosR1 = new System.Windows.Forms.Label();
-            TXLoadR1 = new System.Windows.Forms.Label();
-            TXPosR2 = new System.Windows.Forms.Label();
-            TXLoadR2 = new System.Windows.Forms.Label();
-            TXPosL2 = new System.Windows.Forms.Label();
-            TXLoadL2 = new System.Windows.Forms.Label();
             tabPage8.SuspendLayout();
             tabPage5.SuspendLayout();
             tabPage6.SuspendLayout();
@@ -680,14 +680,62 @@ namespace KVCOMSERVER
             tabPage5.TabIndex = 4;
             tabPage5.Text = "MASTERING GRAPH";
             // 
+            // TXPosR2
+            // 
+            TXPosR2.AutoSize = true;
+            TXPosR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosR2.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosR2.Location = new System.Drawing.Point(1001, 925);
+            TXPosR2.Name = "TXPosR2";
+            TXPosR2.Size = new System.Drawing.Size(123, 20);
+            TXPosR2.TabIndex = 79;
+            TXPosR2.Text = "Pos: 1234.56 mm";
+            TXPosR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TXLoadR2
+            // 
+            TXLoadR2.AutoSize = true;
+            TXLoadR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadR2.ForeColor = System.Drawing.Color.LightCyan;
+            TXLoadR2.Location = new System.Drawing.Point(1004, 905);
+            TXLoadR2.Name = "TXLoadR2";
+            TXLoadR2.Size = new System.Drawing.Size(120, 20);
+            TXLoadR2.TabIndex = 78;
+            TXLoadR2.Text = "Load : 1234.56 N";
+            TXLoadR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TXPosL2
+            // 
+            TXPosL2.AutoSize = true;
+            TXPosL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosL2.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosL2.Location = new System.Drawing.Point(745, 925);
+            TXPosL2.Name = "TXPosL2";
+            TXPosL2.Size = new System.Drawing.Size(123, 20);
+            TXPosL2.TabIndex = 77;
+            TXPosL2.Text = "Pos: 1234.56 mm";
+            TXPosL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TXLoadL2
+            // 
+            TXLoadL2.AutoSize = true;
+            TXLoadL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadL2.ForeColor = System.Drawing.Color.LightCyan;
+            TXLoadL2.Location = new System.Drawing.Point(745, 905);
+            TXLoadL2.Name = "TXLoadL2";
+            TXLoadL2.Size = new System.Drawing.Size(120, 20);
+            TXLoadL2.TabIndex = 76;
+            TXLoadL2.Text = "Load : 1234.56 N";
+            TXLoadL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Plot12Coord
             // 
             Plot12Coord.AutoSize = true;
-            Plot12Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot12Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot12Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot12Coord.Location = new System.Drawing.Point(1065, 755);
+            Plot12Coord.Location = new System.Drawing.Point(1070, 750);
             Plot12Coord.Name = "Plot12Coord";
-            Plot12Coord.Size = new System.Drawing.Size(168, 18);
+            Plot12Coord.Size = new System.Drawing.Size(150, 20);
             Plot12Coord.TabIndex = 73;
             Plot12Coord.Text = "X = 000, Y = 0000.00";
             Plot12Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -695,11 +743,11 @@ namespace KVCOMSERVER
             // Plot8Coord
             // 
             Plot8Coord.AutoSize = true;
-            Plot8Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot8Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot8Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot8Coord.Location = new System.Drawing.Point(1065, 381);
+            Plot8Coord.Location = new System.Drawing.Point(1070, 376);
             Plot8Coord.Name = "Plot8Coord";
-            Plot8Coord.Size = new System.Drawing.Size(168, 18);
+            Plot8Coord.Size = new System.Drawing.Size(150, 20);
             Plot8Coord.TabIndex = 72;
             Plot8Coord.Text = "X = 000, Y = 0000.00";
             Plot8Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -707,11 +755,11 @@ namespace KVCOMSERVER
             // Plot7Coord
             // 
             Plot7Coord.AutoSize = true;
-            Plot7Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot7Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot7Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot7Coord.Location = new System.Drawing.Point(1065, 5);
+            Plot7Coord.Location = new System.Drawing.Point(1070, 0);
             Plot7Coord.Name = "Plot7Coord";
-            Plot7Coord.Size = new System.Drawing.Size(168, 18);
+            Plot7Coord.Size = new System.Drawing.Size(150, 20);
             Plot7Coord.TabIndex = 71;
             Plot7Coord.Text = "X = 000, Y = 0000.00";
             Plot7Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -719,11 +767,11 @@ namespace KVCOMSERVER
             // Plot11Coord
             // 
             Plot11Coord.AutoSize = true;
-            Plot11Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot11Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot11Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot11Coord.Location = new System.Drawing.Point(638, 755);
+            Plot11Coord.Location = new System.Drawing.Point(650, 750);
             Plot11Coord.Name = "Plot11Coord";
-            Plot11Coord.Size = new System.Drawing.Size(168, 18);
+            Plot11Coord.Size = new System.Drawing.Size(150, 20);
             Plot11Coord.TabIndex = 70;
             Plot11Coord.Text = "X = 000, Y = 0000.00";
             Plot11Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -731,11 +779,11 @@ namespace KVCOMSERVER
             // Plot6Coord
             // 
             Plot6Coord.AutoSize = true;
-            Plot6Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot6Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot6Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot6Coord.Location = new System.Drawing.Point(638, 381);
+            Plot6Coord.Location = new System.Drawing.Point(650, 376);
             Plot6Coord.Name = "Plot6Coord";
-            Plot6Coord.Size = new System.Drawing.Size(168, 18);
+            Plot6Coord.Size = new System.Drawing.Size(150, 20);
             Plot6Coord.TabIndex = 69;
             Plot6Coord.Text = "X = 000, Y = 0000.00";
             Plot6Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -743,11 +791,11 @@ namespace KVCOMSERVER
             // Plot5Coord
             // 
             Plot5Coord.AutoSize = true;
-            Plot5Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot5Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot5Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot5Coord.Location = new System.Drawing.Point(638, 3);
+            Plot5Coord.Location = new System.Drawing.Point(650, 0);
             Plot5Coord.Name = "Plot5Coord";
-            Plot5Coord.Size = new System.Drawing.Size(168, 18);
+            Plot5Coord.Size = new System.Drawing.Size(150, 20);
             Plot5Coord.TabIndex = 68;
             Plot5Coord.Text = "X = 000, Y = 0000.00";
             Plot5Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1548,14 +1596,50 @@ namespace KVCOMSERVER
             tabPage3.TabIndex = 3;
             tabPage3.Text = "REALTIME GRAPH";
             // 
+            // TXPosR1
+            // 
+            TXPosR1.AutoSize = true;
+            TXPosR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosR1.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosR1.Location = new System.Drawing.Point(1001, 925);
+            TXPosR1.Name = "TXPosR1";
+            TXPosR1.Size = new System.Drawing.Size(123, 20);
+            TXPosR1.TabIndex = 75;
+            TXPosR1.Text = "Pos: 1234.56 mm";
+            TXPosR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TXLoadR1
+            // 
+            TXLoadR1.AutoSize = true;
+            TXLoadR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadR1.ForeColor = System.Drawing.Color.LightCyan;
+            TXLoadR1.Location = new System.Drawing.Point(1004, 905);
+            TXLoadR1.Name = "TXLoadR1";
+            TXLoadR1.Size = new System.Drawing.Size(120, 20);
+            TXLoadR1.TabIndex = 74;
+            TXLoadR1.Text = "Load : 1234.56 N";
+            TXLoadR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TXPosL1
+            // 
+            TXPosL1.AutoSize = true;
+            TXPosL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosL1.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosL1.Location = new System.Drawing.Point(745, 925);
+            TXPosL1.Name = "TXPosL1";
+            TXPosL1.Size = new System.Drawing.Size(123, 20);
+            TXPosL1.TabIndex = 73;
+            TXPosL1.Text = "Pos: 1234.56 mm";
+            TXPosL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // TXLoadL1
             // 
             TXLoadL1.AutoSize = true;
-            TXLoadL1.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             TXLoadL1.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadL1.Location = new System.Drawing.Point(746, 906);
+            TXLoadL1.Location = new System.Drawing.Point(745, 905);
             TXLoadL1.Name = "TXLoadL1";
-            TXLoadL1.Size = new System.Drawing.Size(136, 18);
+            TXLoadL1.Size = new System.Drawing.Size(120, 20);
             TXLoadL1.TabIndex = 72;
             TXLoadL1.Text = "Load : 1234.56 N";
             TXLoadL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1563,11 +1647,11 @@ namespace KVCOMSERVER
             // Plot10Coord
             // 
             Plot10Coord.AutoSize = true;
-            Plot10Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot10Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot10Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot10Coord.Location = new System.Drawing.Point(1065, 755);
+            Plot10Coord.Location = new System.Drawing.Point(1070, 750);
             Plot10Coord.Name = "Plot10Coord";
-            Plot10Coord.Size = new System.Drawing.Size(168, 18);
+            Plot10Coord.Size = new System.Drawing.Size(150, 20);
             Plot10Coord.TabIndex = 71;
             Plot10Coord.Text = "X = 000, Y = 0000.00";
             Plot10Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1575,11 +1659,11 @@ namespace KVCOMSERVER
             // Plot4Coord
             // 
             Plot4Coord.AutoSize = true;
-            Plot4Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot4Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot4Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot4Coord.Location = new System.Drawing.Point(1065, 381);
+            Plot4Coord.Location = new System.Drawing.Point(1070, 376);
             Plot4Coord.Name = "Plot4Coord";
-            Plot4Coord.Size = new System.Drawing.Size(168, 18);
+            Plot4Coord.Size = new System.Drawing.Size(150, 20);
             Plot4Coord.TabIndex = 70;
             Plot4Coord.Text = "X = 000, Y = 0000.00";
             Plot4Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1587,11 +1671,11 @@ namespace KVCOMSERVER
             // Plot3Coord
             // 
             Plot3Coord.AutoSize = true;
-            Plot3Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot3Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot3Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot3Coord.Location = new System.Drawing.Point(1065, 5);
+            Plot3Coord.Location = new System.Drawing.Point(1070, 0);
             Plot3Coord.Name = "Plot3Coord";
-            Plot3Coord.Size = new System.Drawing.Size(168, 18);
+            Plot3Coord.Size = new System.Drawing.Size(150, 20);
             Plot3Coord.TabIndex = 69;
             Plot3Coord.Text = "X = 000, Y = 0000.00";
             Plot3Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1599,11 +1683,11 @@ namespace KVCOMSERVER
             // Plot9Coord
             // 
             Plot9Coord.AutoSize = true;
-            Plot9Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot9Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot9Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot9Coord.Location = new System.Drawing.Point(638, 755);
+            Plot9Coord.Location = new System.Drawing.Point(650, 750);
             Plot9Coord.Name = "Plot9Coord";
-            Plot9Coord.Size = new System.Drawing.Size(168, 18);
+            Plot9Coord.Size = new System.Drawing.Size(150, 20);
             Plot9Coord.TabIndex = 68;
             Plot9Coord.Text = "X = 000, Y = 0000.00";
             Plot9Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1611,11 +1695,11 @@ namespace KVCOMSERVER
             // Plot2Coord
             // 
             Plot2Coord.AutoSize = true;
-            Plot2Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot2Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot2Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot2Coord.Location = new System.Drawing.Point(638, 381);
+            Plot2Coord.Location = new System.Drawing.Point(650, 376);
             Plot2Coord.Name = "Plot2Coord";
-            Plot2Coord.Size = new System.Drawing.Size(168, 18);
+            Plot2Coord.Size = new System.Drawing.Size(150, 20);
             Plot2Coord.TabIndex = 67;
             Plot2Coord.Text = "X = 000, Y = 0000.00";
             Plot2Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1623,11 +1707,11 @@ namespace KVCOMSERVER
             // Plot1Coord
             // 
             Plot1Coord.AutoSize = true;
-            Plot1Coord.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            Plot1Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot1Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot1Coord.Location = new System.Drawing.Point(638, 5);
+            Plot1Coord.Location = new System.Drawing.Point(650, 0);
             Plot1Coord.Name = "Plot1Coord";
-            Plot1Coord.Size = new System.Drawing.Size(168, 18);
+            Plot1Coord.Size = new System.Drawing.Size(150, 20);
             Plot1Coord.TabIndex = 66;
             Plot1Coord.Text = "X = 000, Y = 0000.00";
             Plot1Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2527,90 +2611,6 @@ namespace KVCOMSERVER
             button84.TabIndex = 23;
             button84.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             button84.UseVisualStyleBackColor = true;
-            // 
-            // TXPosL1
-            // 
-            TXPosL1.AutoSize = true;
-            TXPosL1.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            TXPosL1.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosL1.Location = new System.Drawing.Point(746, 924);
-            TXPosL1.Name = "TXPosL1";
-            TXPosL1.Size = new System.Drawing.Size(128, 18);
-            TXPosL1.TabIndex = 73;
-            TXPosL1.Text = "Pos: 1234.56 mm";
-            TXPosL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TXPosR1
-            // 
-            TXPosR1.AutoSize = true;
-            TXPosR1.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            TXPosR1.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosR1.Location = new System.Drawing.Point(997, 924);
-            TXPosR1.Name = "TXPosR1";
-            TXPosR1.Size = new System.Drawing.Size(128, 18);
-            TXPosR1.TabIndex = 75;
-            TXPosR1.Text = "Pos: 1234.56 mm";
-            TXPosR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TXLoadR1
-            // 
-            TXLoadR1.AutoSize = true;
-            TXLoadR1.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            TXLoadR1.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadR1.Location = new System.Drawing.Point(989, 907);
-            TXLoadR1.Name = "TXLoadR1";
-            TXLoadR1.Size = new System.Drawing.Size(136, 18);
-            TXLoadR1.TabIndex = 74;
-            TXLoadR1.Text = "Load : 1234.56 N";
-            TXLoadR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TXPosR2
-            // 
-            TXPosR2.AutoSize = true;
-            TXPosR2.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            TXPosR2.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosR2.Location = new System.Drawing.Point(997, 921);
-            TXPosR2.Name = "TXPosR2";
-            TXPosR2.Size = new System.Drawing.Size(128, 18);
-            TXPosR2.TabIndex = 79;
-            TXPosR2.Text = "Pos: 1234.56 mm";
-            TXPosR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TXLoadR2
-            // 
-            TXLoadR2.AutoSize = true;
-            TXLoadR2.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            TXLoadR2.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadR2.Location = new System.Drawing.Point(989, 904);
-            TXLoadR2.Name = "TXLoadR2";
-            TXLoadR2.Size = new System.Drawing.Size(136, 18);
-            TXLoadR2.TabIndex = 78;
-            TXLoadR2.Text = "Load : 1234.56 N";
-            TXLoadR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TXPosL2
-            // 
-            TXPosL2.AutoSize = true;
-            TXPosL2.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            TXPosL2.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosL2.Location = new System.Drawing.Point(746, 921);
-            TXPosL2.Name = "TXPosL2";
-            TXPosL2.Size = new System.Drawing.Size(128, 18);
-            TXPosL2.TabIndex = 77;
-            TXPosL2.Text = "Pos: 1234.56 mm";
-            TXPosL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TXLoadL2
-            // 
-            TXLoadL2.AutoSize = true;
-            TXLoadL2.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            TXLoadL2.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadL2.Location = new System.Drawing.Point(746, 903);
-            TXLoadL2.Name = "TXLoadL2";
-            TXLoadL2.Size = new System.Drawing.Size(136, 18);
-            TXLoadL2.TabIndex = 76;
-            TXLoadL2.Text = "Load : 1234.56 N";
-            TXLoadL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
