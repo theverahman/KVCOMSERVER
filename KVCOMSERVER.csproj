@@ -14,6 +14,12 @@
     <StartupObject>KVCOMSERVER.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="SarasaFixedJ-Regular.ttf" />
+    <None Remove="SarasaGothicJ-Regular.ttf" />
+    <None Remove="SarasaMonoJ-Regular.ttf" />
+    <None Remove="SarasaTermJ-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
     <COMReference Include="KVCSERVERLib">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
@@ -142,6 +148,27 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="IBMPlexSans-VariableFont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SarasaFixedJ-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SarasaGothicJ-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SarasaMonoJ-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SarasaTermJ-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkSans-VariableFont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Alteridem.WinTouch" Version="0.1.1" />
     <PackageReference Include="ClosedXML" Version="0.102.3" />
     <PackageReference Include="IronXL.Excel" Version="2024.9.3" />
     <PackageReference Include="LiteDB" Version="5.0.21" />

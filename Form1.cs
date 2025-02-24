@@ -1,51 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.Data;
+using System.Drawing;
+
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using DocumentFormat.OpenXml.Vml.Spreadsheet;
-using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.ComponentModel;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Globalization;
 using System.Diagnostics;
+using System.Reflection;
+using System.Threading;
 using System.IO;
 
+using Tasks = System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
+
+using DataTable = System.Data.DataTable;
+using Label = System.Windows.Forms.Label;
 using Control = System.Windows.Forms.Control;
-
-using ScottPlot;
-using static OpenTK.Graphics.OpenGL.GL;
-using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Packaging;
-using Microsoft.Office.Interop;
-using Excel = Microsoft.Office.Interop.Excel;
-
-using Color = System.Drawing.Color;
-using SColor = ScottPlot.Color;
-
-using FontStyle = System.Drawing.FontStyle;
-using SFontStyle = ScottPlot.FontStyle;
+using TextRenderer = System.Windows.Forms.TextRenderer;
 
 using DRW = System.Drawing;
+using Font = System.Drawing.Font;
 using Size = System.Drawing.Size;
 using Point = System.Drawing.Point;
-using Label = System.Windows.Forms.Label;
-using DataTable = System.Data.DataTable;
+using Color = System.Drawing.Color;
+using FontStyle = System.Drawing.FontStyle;
+
+using ScottPlot;
+using Excel = Microsoft.Office.Interop.Excel;
 
 using LIBKVPROTOCOL;
 using WORKFLOW;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using ScottPlot.DataSources;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using ScottPlot.WinForms;
 using System.Reflection.Emit;
 using ClosedXML.Report.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Drawing.Text;
+using ScottPlot.Interactivity;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using ScottPlot.Plottables;
+using SixLabors.Fonts;
+using DocumentFormat.OpenXml.Drawing.Charts;
+
 
 namespace KVCOMSERVER
 {
@@ -57,6 +60,12 @@ namespace KVCOMSERVER
         private Panel drawingBorderRight;
         private Panel drawingBorderUpper;
         private Panel drawingBorderLower;
+
+        private SaveFileDialog saveFileDialog;
+        private OpenFileDialog openFileDialog;
+        private FolderBrowserDialog folderBrowserDialog;
+        private PrivateFontCollection privateFontCollection;
+
         private CancellationTokenSource _cts;
 
         public string settingIpv4;
@@ -111,6 +120,7 @@ namespace KVCOMSERVER
         }
 
         #region Table Data Def 
+
         #region Real Data
         CustomTableLayoutPanel tabRealSideL;
         List<TextBox> tabRealSideLStroke = new List<TextBox>();
@@ -735,7 +745,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(100, 20),
                 BackColor = Color.Cyan
             };
@@ -748,7 +758,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -761,7 +771,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -774,7 +784,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -787,7 +797,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -804,7 +814,7 @@ namespace KVCOMSERVER
                         Dock = DockStyle.Fill,
                         TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                         Margin = new Padding(0),
-                        Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                        Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                         Size = new Size(80, 24),
                         ReadOnly = true,
                         BackColor = Color.LightGray,
@@ -821,11 +831,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tabRealSideRMaster.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 1, row);
             }
@@ -836,11 +847,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tabRealSideRLower.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 2, row);
             }
@@ -851,11 +863,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tabRealSideRReal.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 3, row);
             }
@@ -866,11 +879,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tabRealSideRUpper.Add(tbx);
                 tabRealSideR.Controls.Add(tbx, 4, row);
             }
@@ -909,7 +923,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(100, 20),
                 BackColor = Color.Cyan
             };
@@ -922,7 +936,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -935,7 +949,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -948,7 +962,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -961,7 +975,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -978,7 +992,7 @@ namespace KVCOMSERVER
                         Dock = DockStyle.Fill,
                         TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                         Margin = new Padding(0),
-                        Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                        Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                         Size = new Size(80, 24),
                         ReadOnly = true,
                         BackColor = Color.LightGray
@@ -995,12 +1009,13 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tabRealSideLMaster.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 1, row);
             }
@@ -1011,11 +1026,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tabRealSideLLower.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 2, row);
             }
@@ -1026,11 +1042,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tabRealSideLReal.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 3, row);
             }
@@ -1041,11 +1058,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tabRealSideLUpper.Add(tbx);
                 tabRealSideL.Controls.Add(tbx, 4, row);
             }
@@ -1084,7 +1102,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(100, 20),
                 BackColor = Color.Cyan
             };
@@ -1097,7 +1115,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -1110,7 +1128,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -1123,7 +1141,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -1136,7 +1154,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -1153,7 +1171,7 @@ namespace KVCOMSERVER
                         Dock = DockStyle.Fill,
                         TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                         Margin = new Padding(0),
-                        Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                        Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                         Size = new Size(80, 24),
                         ReadOnly = true,
                         BackColor = Color.LightGray
@@ -1170,10 +1188,11 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideRMaster.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 1, row);
@@ -1185,10 +1204,11 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideRAccMaster.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 2, row);
@@ -1200,10 +1220,11 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideRLower.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 3, row);
@@ -1215,10 +1236,11 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideRUpper.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 4, row);
@@ -1258,7 +1280,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(100, 20),
                 BackColor = Color.Cyan
             };
@@ -1271,7 +1293,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -1284,7 +1306,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -1297,7 +1319,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -1310,7 +1332,7 @@ namespace KVCOMSERVER
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = false,
-                Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                 Size = new Size(80, 20),
                 BackColor = Color.Cyan
             };
@@ -1327,7 +1349,7 @@ namespace KVCOMSERVER
                         Dock = DockStyle.Fill,
                         TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                         Margin = new Padding(0),
-                        Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                        Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                         Size = new Size(80, 24),
                         ReadOnly = true,
                         BackColor = Color.LightGray
@@ -1344,12 +1366,13 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideLMaster.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 1, row);
@@ -1361,11 +1384,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideLAccMaster.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 2, row);
@@ -1377,11 +1401,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideLLower.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 3, row);
@@ -1393,11 +1418,12 @@ namespace KVCOMSERVER
                     Dock = DockStyle.Fill,
                     TextAlign = System.Windows.Forms.HorizontalAlignment.Center,
                     Margin = new Padding(0),
-                    Font = new System.Drawing.Font("Sarasa Fixed J", 10, FontStyle.Bold),
+                    Font = new System.Drawing.Font("Work Sans", 10, FontStyle.Bold),
                     Size = new Size(80, 24),
                     ReadOnly = true,
 
                 };
+                tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
                 tbx.Click += new EventHandler(InputTextBox_Click);
                 tabMasterSideLUpper.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 4, row);
@@ -1429,27 +1455,29 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabRealSideLMaster[i].Text = _dataRealCompSideLMaster[i + tabIndex].ToString();
+                tabRealSideLMaster[i].Text = RoundingEdge(_dataRealCompSideLMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabRealSideLLower[i].Text = (_dataRealCompSideLLower[i + tabIndex]).ToString();
+                tabRealSideLLower[i].Text = RoundingEdge(_dataRealCompSideLLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Realtime
-                tabRealSideLReal[i].Text = _dataRealCompSideLLoad[i + tabIndex].ToString();
-                if (_dataRealCompSideLLoad[i + tabIndex] > _dataRealCompSideLUpper[i + tabIndex] | _dataRealCompSideLLoad[i + tabIndex] < _dataRealCompSideLLower[i + tabIndex])
+                tabRealSideLReal[i].Text = RoundingEdge(_dataRealCompSideLLoad[i + tabIndex], 0.10f).ToString();
+                if ((_dataRealCompSideLLoad[i + tabIndex] > _dataRealCompSideLUpper[i + tabIndex]) || (_dataRealCompSideLLoad[i + tabIndex] < _dataRealCompSideLLower[i + tabIndex]))
                 {
                     tabRealSideLReal[i].BackColor = Color.Red;
+                    tabRealSideLReal[i].ForeColor = Color.Ivory;
                 }
                 else
                 {
                     tabRealSideLReal[i].BackColor = Color.White;
+                    tabRealSideLReal[i].ForeColor = Color.Black;
                 }
                 #endregion
 
                 #region Upper
-                tabRealSideLUpper[i].Text = (_dataRealCompSideLUpper[i + tabIndex]).ToString();
+                tabRealSideLUpper[i].Text = RoundingEdge(_dataRealCompSideLUpper[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveRealTableLeftData = 1;
@@ -1464,27 +1492,29 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabRealSideLMaster[i].Text = _dataRealExtnSideLMaster[i + tabIndex].ToString();
+                tabRealSideLMaster[i].Text = RoundingEdge(_dataRealExtnSideLMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabRealSideLLower[i].Text = (_dataRealExtnSideLLower[i + tabIndex]).ToString();
+                tabRealSideLLower[i].Text = RoundingEdge(_dataRealExtnSideLLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Realtime
-                tabRealSideLReal[i].Text = _dataRealExtnSideLLoad[i + tabIndex].ToString();
-                if (_dataRealExtnSideLLoad[i + tabIndex] > _dataRealExtnSideLUpper[i + tabIndex] || _dataRealExtnSideLLoad[i + tabIndex] < _dataRealExtnSideLLower[i + tabIndex])
+                tabRealSideLReal[i].Text = RoundingEdge(_dataRealExtnSideLLoad[i + tabIndex], 0.10f).ToString();
+                if ((_dataRealExtnSideLLoad[i + tabIndex] > _dataRealExtnSideLUpper[i + tabIndex]) || (_dataRealExtnSideLLoad[i + tabIndex] < _dataRealExtnSideLLower[i + tabIndex]))
                 {
                     tabRealSideLReal[i].BackColor = Color.Red;
+                    tabRealSideLReal[i].ForeColor = Color.Ivory;
                 }
                 else
                 {
                     tabRealSideLReal[i].BackColor = Color.White;
+                    tabRealSideLReal[i].ForeColor = Color.Black;
                 }
                 #endregion
 
                 #region Upper
-                tabRealSideLUpper[i].Text = (_dataRealExtnSideLUpper[i + tabIndex]).ToString();
+                tabRealSideLUpper[i].Text = RoundingEdge(_dataRealExtnSideLUpper[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveRealTableLeftData = 2;
@@ -1499,27 +1529,29 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabRealSideLMaster[i].Text = _dataRealSideLDiffMaster[i + tabIndex].ToString();
+                tabRealSideLMaster[i].Text = RoundingEdge(_dataRealSideLDiffMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabRealSideLLower[i].Text = (_dataRealSideLDiffLower[i + tabIndex]).ToString();
+                tabRealSideLLower[i].Text = RoundingEdge(_dataRealSideLDiffLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Realtime
-                tabRealSideLReal[i].Text = _dataRealSideLDiffLoad[i + tabIndex].ToString();
-                if (_dataRealSideLDiffLoad[i + tabIndex] > _dataRealSideLDiffUpper[i + tabIndex] || _dataRealSideLDiffLoad[i + tabIndex] < _dataRealSideLDiffLower[i + tabIndex])
+                tabRealSideLReal[i].Text = RoundingEdge(_dataRealSideLDiffLoad[i + tabIndex], 0.10f).ToString();
+                if ((_dataRealSideLDiffLoad[i + tabIndex] > _dataRealSideLDiffUpper[i + tabIndex]) || (_dataRealSideLDiffLoad[i + tabIndex] < _dataRealSideLDiffLower[i + tabIndex]))
                 {
                     tabRealSideLReal[i].BackColor = Color.Red;
+                    tabRealSideLReal[i].ForeColor = Color.Ivory;
                 }
                 else
                 {
                     tabRealSideLReal[i].BackColor = Color.White;
+                    tabRealSideLReal[i].ForeColor = Color.Black;
                 }
                 #endregion
 
                 #region Upper
-                tabRealSideLUpper[i].Text = (_dataRealSideLDiffUpper[i + tabIndex]).ToString();
+                tabRealSideLUpper[i].Text = RoundingEdge(_dataRealSideLDiffUpper[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveRealTableLeftData = 3;
@@ -1534,27 +1566,29 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabRealSideRMaster[i].Text = _dataRealCompSideRMaster[i + tabIndex].ToString();
+                tabRealSideRMaster[i].Text = RoundingEdge(_dataRealCompSideRMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabRealSideRLower[i].Text = (_dataRealCompSideRLower[i + tabIndex]).ToString();
+                tabRealSideRLower[i].Text = RoundingEdge(_dataRealCompSideRLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Realtime
-                tabRealSideRReal[i].Text = _dataRealCompSideRLoad[i + tabIndex].ToString();
+                tabRealSideRReal[i].Text = RoundingEdge(_dataRealCompSideRLoad[i + tabIndex], 0.10f).ToString();
                 if (_dataRealCompSideRLoad[i + tabIndex] > _dataRealCompSideRUpper[i + tabIndex] || _dataRealCompSideRLoad[i + tabIndex] < _dataRealCompSideRLower[i + tabIndex])
                 {
                     tabRealSideRReal[i].BackColor = Color.Red;
+                    tabRealSideRReal[i].ForeColor = Color.Ivory;
                 }
                 else
                 {
                     tabRealSideRReal[i].BackColor = Color.White;
+                    tabRealSideRReal[i].ForeColor = Color.Black;
                 }
                 #endregion
 
                 #region Upper
-                tabRealSideRUpper[i].Text = (_dataRealCompSideRUpper[i + tabIndex]).ToString();
+                tabRealSideRUpper[i].Text = RoundingEdge(_dataRealCompSideRUpper[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveRealTableRightData = 1;
@@ -1569,27 +1603,29 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabRealSideRMaster[i].Text = _dataRealExtnSideRMaster[i + tabIndex].ToString();
+                tabRealSideRMaster[i].Text = RoundingEdge(_dataRealExtnSideRMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabRealSideRLower[i].Text = (_dataRealExtnSideRLower[i + tabIndex]).ToString();
+                tabRealSideRLower[i].Text = RoundingEdge(_dataRealExtnSideRLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Realtime
-                tabRealSideRReal[i].Text = _dataRealExtnSideRLoad[i + tabIndex].ToString();
+                tabRealSideRReal[i].Text = RoundingEdge(_dataRealExtnSideRLoad[i + tabIndex], 0.10f).ToString();
                 if (_dataRealExtnSideRLoad[i + tabIndex] > _dataRealExtnSideRUpper[i + tabIndex] || _dataRealExtnSideRLoad[i + tabIndex] < _dataRealExtnSideRLower[i + tabIndex])
                 {
                     tabRealSideRReal[i].BackColor = Color.Red;
+                    tabRealSideRReal[i].ForeColor = Color.Ivory;
                 }
                 else
                 {
                     tabRealSideRReal[i].BackColor = Color.White;
+                    tabRealSideRReal[i].ForeColor = Color.Black;
                 }
                 #endregion
 
                 #region Upper
-                tabRealSideRUpper[i].Text = (_dataRealExtnSideRUpper[i + tabIndex]).ToString();
+                tabRealSideRUpper[i].Text = RoundingEdge(_dataRealExtnSideRUpper[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveRealTableRightData = 2;
@@ -1604,27 +1640,29 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabRealSideRMaster[i].Text = _dataRealSideRDiffMaster[i + tabIndex].ToString();
+                tabRealSideRMaster[i].Text = RoundingEdge(_dataRealSideRDiffMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabRealSideRLower[i].Text = (_dataRealSideRDiffLower[i + tabIndex]).ToString();
+                tabRealSideRLower[i].Text = RoundingEdge(_dataRealSideRDiffLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Realtime
-                tabRealSideRReal[i].Text = _dataRealSideRDiffLoad[i + tabIndex].ToString();
+                tabRealSideRReal[i].Text = RoundingEdge(_dataRealSideRDiffLoad[i + tabIndex], 0.10f).ToString();
                 if (_dataRealSideRDiffLoad[i + tabIndex] > _dataRealSideRDiffUpper[i + tabIndex] || _dataRealSideRDiffLoad[i + tabIndex] < _dataRealSideRDiffLower[i + tabIndex])
                 {
                     tabRealSideRReal[i].BackColor = Color.Red;
+                    tabRealSideRReal[i].ForeColor = Color.Ivory;
                 }
                 else
                 {
                     tabRealSideRReal[i].BackColor = Color.White;
+                    tabRealSideRReal[i].ForeColor = Color.Black;
                 }
                 #endregion
 
                 #region Upper
-                tabRealSideRUpper[i].Text = (_dataRealSideRDiffUpper[i + tabIndex]).ToString();
+                tabRealSideRUpper[i].Text = RoundingEdge(_dataRealSideRDiffUpper[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveRealTableRightData = 3;
@@ -1650,19 +1688,19 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabMasterSideLMaster[i].Text = _dataMasterCompSideLMaster[i + tabIndex].ToString();
+                tabMasterSideLMaster[i].Text = RoundingEdge(_dataMasterCompSideLMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Master Acc
-                tabMasterSideLAccMaster[i].Text = _dataMasterCompSideLAccMaster[i + tabIndex].ToString();
+                tabMasterSideLAccMaster[i].Text = RoundingEdge(_dataMasterCompSideLAccMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabMasterSideLLower[i].Text = (_dataMasterCompSideLMaster[i + tabIndex] - _dataMasterCompSideLLower[i + tabIndex]).ToString();
+                tabMasterSideLLower[i].Text = RoundingEdge(_dataMasterCompSideLMaster[i + tabIndex] - _dataMasterCompSideLLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideLUpper[i].Text = (_dataMasterCompSideLUpper[i + tabIndex] - _dataMasterCompSideLMaster[i + tabIndex]).ToString();
+                tabMasterSideLUpper[i].Text = RoundingEdge(_dataMasterCompSideLUpper[i + tabIndex] - _dataMasterCompSideLMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveMasterTableLeftData = 1;
@@ -1677,19 +1715,19 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabMasterSideLMaster[i].Text = _dataMasterExtnSideLMaster[i + tabIndex].ToString();
+                tabMasterSideLMaster[i].Text = RoundingEdge(_dataMasterExtnSideLMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Master Acc
-                tabMasterSideLAccMaster[i].Text = _dataMasterExtnSideLAccMaster[i + tabIndex].ToString();
+                tabMasterSideLAccMaster[i].Text = RoundingEdge(_dataMasterExtnSideLAccMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabMasterSideLLower[i].Text = (_dataMasterExtnSideLMaster[i + tabIndex] - _dataMasterExtnSideLLower[i + tabIndex]).ToString();
+                tabMasterSideLLower[i].Text = RoundingEdge(_dataMasterExtnSideLMaster[i + tabIndex] - _dataMasterExtnSideLLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideLUpper[i].Text = (_dataMasterExtnSideLUpper[i + tabIndex] - _dataMasterExtnSideLMaster[i + tabIndex]).ToString();
+                tabMasterSideLUpper[i].Text = RoundingEdge(_dataMasterExtnSideLUpper[i + tabIndex] - _dataMasterExtnSideLMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveMasterTableLeftData = 2;
@@ -1704,19 +1742,19 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabMasterSideLMaster[i].Text = _dataMasterSideLDiffMaster[i + tabIndex].ToString();
+                tabMasterSideLMaster[i].Text = RoundingEdge(_dataMasterSideLDiffMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Master Acc
-                tabMasterSideLAccMaster[i].Text = _dataMasterSideLDiffAccMaster[i + tabIndex].ToString();
+                tabMasterSideLAccMaster[i].Text = RoundingEdge(_dataMasterSideLDiffAccMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabMasterSideLLower[i].Text = (_dataMasterSideLDiffMaster[i + tabIndex] - _dataMasterSideLDiffLower[i + tabIndex]).ToString();
+                tabMasterSideLLower[i].Text = RoundingEdge(_dataMasterSideLDiffMaster[i + tabIndex] - _dataMasterSideLDiffLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideLUpper[i].Text = (_dataMasterSideLDiffUpper[i + tabIndex] - _dataMasterSideLDiffMaster[i + tabIndex]).ToString();
+                tabMasterSideLUpper[i].Text = RoundingEdge(_dataMasterSideLDiffUpper[i + tabIndex] - _dataMasterSideLDiffMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveMasterTableLeftData = 3;
@@ -1731,19 +1769,19 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabMasterSideRMaster[i].Text = _dataMasterCompSideRMaster[i + tabIndex].ToString();
+                tabMasterSideRMaster[i].Text = RoundingEdge(_dataMasterCompSideRMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Master Acc
-                tabMasterSideRAccMaster[i].Text = _dataMasterCompSideRAccMaster[i + tabIndex].ToString();
+                tabMasterSideRAccMaster[i].Text = RoundingEdge(_dataMasterCompSideRAccMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabMasterSideRLower[i].Text = (_dataMasterCompSideRMaster[i + tabIndex] - _dataMasterCompSideRLower[i + tabIndex]).ToString();
+                tabMasterSideRLower[i].Text = RoundingEdge(_dataMasterCompSideRMaster[i + tabIndex] - _dataMasterCompSideRLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideRUpper[i].Text = (_dataMasterCompSideRUpper[i + tabIndex] - _dataMasterCompSideRMaster[i + tabIndex]).ToString();
+                tabMasterSideRUpper[i].Text = RoundingEdge(_dataMasterCompSideRUpper[i + tabIndex] - _dataMasterCompSideRMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveMasterTableRightData = 1;
@@ -1758,19 +1796,19 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabMasterSideRMaster[i].Text = _dataMasterExtnSideRMaster[i + tabIndex].ToString();
+                tabMasterSideRMaster[i].Text = RoundingEdge(_dataMasterExtnSideRMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Master Acc
-                tabMasterSideRAccMaster[i].Text = _dataMasterExtnSideRAccMaster[i + tabIndex].ToString();
+                tabMasterSideRAccMaster[i].Text = RoundingEdge(_dataMasterExtnSideRAccMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabMasterSideRLower[i].Text = (_dataMasterExtnSideRMaster[i + tabIndex] - _dataMasterExtnSideRLower[i + tabIndex]).ToString();
+                tabMasterSideRLower[i].Text = RoundingEdge(_dataMasterExtnSideRMaster[i + tabIndex] - _dataMasterExtnSideRLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideRUpper[i].Text = (_dataMasterExtnSideRUpper[i + tabIndex] - _dataMasterExtnSideRMaster[i + tabIndex]).ToString();
+                tabMasterSideRUpper[i].Text = RoundingEdge(_dataMasterExtnSideRUpper[i + tabIndex] - _dataMasterExtnSideRMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveMasterTableRightData = 2;
@@ -1785,19 +1823,19 @@ namespace KVCOMSERVER
                 #endregion
 
                 #region Master 
-                tabMasterSideRMaster[i].Text = _dataMasterSideRDiffMaster[i + tabIndex].ToString();
+                tabMasterSideRMaster[i].Text = RoundingEdge(_dataMasterSideRDiffMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Master Acc
-                tabMasterSideRAccMaster[i].Text = _dataMasterSideRDiffAccMaster[i + tabIndex].ToString();
+                tabMasterSideRAccMaster[i].Text = RoundingEdge(_dataMasterSideRDiffAccMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Lower
-                tabMasterSideRLower[i].Text = (_dataMasterSideRDiffMaster[i + tabIndex] - _dataMasterSideRDiffLower[i + tabIndex]).ToString();
+                tabMasterSideRLower[i].Text = RoundingEdge(_dataMasterSideRDiffMaster[i + tabIndex] - _dataMasterSideRDiffLower[i + tabIndex], 0.10f).ToString();
                 #endregion
 
                 #region Upper
-                tabMasterSideRUpper[i].Text = (_dataMasterSideRDiffUpper[i + tabIndex] - _dataMasterSideRDiffMaster[i + tabIndex]).ToString();
+                tabMasterSideRUpper[i].Text = RoundingEdge(_dataMasterSideRDiffUpper[i + tabIndex] - _dataMasterSideRDiffMaster[i + tabIndex], 0.10f).ToString();
                 #endregion
             }
             ActiveMasterTableRightData = 3;
@@ -1815,22 +1853,22 @@ namespace KVCOMSERVER
 
                 #region Master
                 float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
-                _dataMasterCompSideLMaster[i + tabIndex] = num2;
+                _dataMasterCompSideLMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Master Acc
                 float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
-                _dataMasterCompSideLAccMaster[i + tabIndex] = num3;
+                _dataMasterCompSideLAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Lower
                 float.TryParse(tabMasterSideLLower[i].Text, out float num4);
-                _dataMasterCompSideLLower[i + tabIndex] = num2 - num4;
+                _dataMasterCompSideLLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
                 float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
-                _dataMasterCompSideLUpper[i + tabIndex] = num2 + num5;
+                _dataMasterCompSideLUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
         }
@@ -1846,22 +1884,22 @@ namespace KVCOMSERVER
 
                 #region Master
                 float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
-                _dataMasterExtnSideLMaster[i + tabIndex] = num2;
+                _dataMasterExtnSideLMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Master Acc
                 float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
-                _dataMasterExtnSideLAccMaster[i + tabIndex] = num3;
+                _dataMasterExtnSideLAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Lower
                 float.TryParse(tabMasterSideLLower[i].Text, out float num4);
-                _dataMasterExtnSideLLower[i + tabIndex] = num2 - num4;
+                _dataMasterExtnSideLLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
                 float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
-                _dataRealExtnSideLUpper[i + tabIndex] = num2 + num5;
+                _dataMasterExtnSideLUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
         }
@@ -1877,22 +1915,22 @@ namespace KVCOMSERVER
 
                 #region Master
                 float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
-                _dataMasterSideLDiffMaster[i + tabIndex] = num2;
+                _dataMasterSideLDiffMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Master Acc
                 float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
-                _dataMasterSideLDiffAccMaster[i + tabIndex] = num3;
+                _dataMasterSideLDiffAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Lower
                 float.TryParse(tabMasterSideLLower[i].Text, out float num4);
-                _dataMasterSideLDiffLower[i + tabIndex] = num2 - num4;
+                _dataMasterSideLDiffLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
                 float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
-                _dataRealSideLDiffUpper[i + tabIndex] = num2 + num5;
+                _dataMasterSideLDiffUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
         }
@@ -1908,22 +1946,22 @@ namespace KVCOMSERVER
 
                 #region Master
                 float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
-                _dataMasterCompSideRMaster[i + tabIndex] = num2;
+                _dataMasterCompSideRMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Lower
                 float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
-                _dataMasterCompSideRAccMaster[i + tabIndex] = num3;
+                _dataMasterCompSideRAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Realtime
                 float.TryParse(tabMasterSideRLower[i].Text, out float num4);
-                _dataMasterCompSideRLower[i + tabIndex] = num2 - num4;
+                _dataMasterCompSideRLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
                 float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
-                _dataRealCompSideRUpper[i + tabIndex] = num2 + num5;
+                _dataMasterCompSideRUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
         }
@@ -1939,22 +1977,22 @@ namespace KVCOMSERVER
 
                 #region Master
                 float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
-                _dataMasterExtnSideRMaster[i + tabIndex] = num2;
+                _dataMasterExtnSideRMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Lower
                 float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
-                _dataMasterExtnSideRAccMaster[i + tabIndex] = num3;
+                _dataMasterExtnSideRAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Realtime
                 float.TryParse(tabMasterSideRLower[i].Text, out float num4);
-                _dataMasterExtnSideRLower[i + tabIndex] = num2 - num4;
+                _dataMasterExtnSideRLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
                 float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
-                _dataMasterExtnSideRUpper[i + tabIndex] = num2 + num5;
+                _dataMasterExtnSideRUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
         }
@@ -1970,22 +2008,22 @@ namespace KVCOMSERVER
 
                 #region Master
                 float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
-                _dataMasterSideRDiffMaster[i + tabIndex] = num2;
+                _dataMasterSideRDiffMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Master Acc
                 float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
-                _dataMasterSideRDiffAccMaster[i + tabIndex] = num3;
+                _dataMasterSideRDiffAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Lower
                 float.TryParse(tabMasterSideRLower[i].Text, out float num4);
-                _dataMasterSideRDiffLower[i + tabIndex] = num2 - num4;
+                _dataMasterSideRDiffLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
                 float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
-                _dataRealSideRDiffUpper[i + tabIndex] = num2 + num5;
+                _dataMasterSideRDiffUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
         }
@@ -2034,12 +2072,31 @@ namespace KVCOMSERVER
 
         public Form1()
         {
+            LoadCustomFont("IBMPlexSans-VariableFont.ttf");
+            LoadCustomFont("WorkSans-VariableFont.ttf");
+            LoadCustomFont("SarasaGothicJ-Regular.ttf");
+            LoadCustomFont("SarasaFixedJ-Regular.ttf");
+            LoadCustomFont("SarasaMonoJ-Regular.ttf");
+            LoadCustomFont("SarasaTermJ-Regular.ttf");
+
+            saveFileDialog = new SaveFileDialog();
+            openFileDialog = new OpenFileDialog();
+            folderBrowserDialog = new FolderBrowserDialog();
+
             InitializeComponent();
             InitializePlotStyle();
             InitializeCustomComponents();
             InitializeBorderComponent();
+            InitializeUI();
+
+            drawingBorderUpper.BringToFront();
+            drawingBorderLower.BringToFront();
+            drawingBorderLeft.BringToFront();
+            drawingBorderRight.BringToFront();
+            drawingPanel.BringToFront();
 
             _WorkflowHandler = new WORKFLOWHANDLER(this);
+            _WorkflowHandler._kvMasterConfirm();
             textBox1.Text = settingIpv4;
             textBox2.Text = settingPortIp.ToString();
             _cts = new CancellationTokenSource();
@@ -2055,14 +2112,6 @@ namespace KVCOMSERVER
             }
             catch
             { } //init connection
-
-            InitializeUI();
-            drawingBorderUpper.BringToFront();
-            drawingBorderLower.BringToFront();
-            drawingBorderLeft.BringToFront();
-            drawingBorderRight.BringToFront();
-            drawingPanel.BringToFront();
-
         }
         private void InitializePlotStyle()
         {
@@ -2079,6 +2128,10 @@ namespace KVCOMSERVER
             formsPlot1.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot1.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot1.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot1.MouseDown += OnTouchDown;
+            //formsPlot1.MouseMove += OnTouchMove;
+            //formsPlot1.MouseUp += OnTouchUp;
+
 
             formsPlot2.Plot.XLabel("Stroke");
             formsPlot2.Plot.YLabel("Load");
@@ -2093,6 +2146,9 @@ namespace KVCOMSERVER
             formsPlot2.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot2.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot2.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot2.MouseDown += OnTouchDown;
+            //formsPlot2.MouseMove += OnTouchMove;
+            //formsPlot2.MouseUp += OnTouchUp;
 
             formsPlot3.Plot.XLabel("Stroke");
             formsPlot3.Plot.YLabel("Load");
@@ -2107,6 +2163,9 @@ namespace KVCOMSERVER
             formsPlot3.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot3.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot3.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot3.MouseDown += OnTouchDown;
+            //formsPlot3.MouseMove += OnTouchMove;
+            //formsPlot3.MouseUp += OnTouchUp;
 
             formsPlot4.Plot.XLabel("Stroke");
             formsPlot4.Plot.YLabel("Load");
@@ -2121,6 +2180,9 @@ namespace KVCOMSERVER
             formsPlot4.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot4.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot4.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot4.MouseDown += OnTouchDown;
+            //formsPlot4.MouseMove += OnTouchMove;
+            //formsPlot4.MouseUp += OnTouchUp;
 
             formsPlot5.Plot.XLabel("Stroke");
             formsPlot5.Plot.YLabel("Load");
@@ -2135,6 +2197,9 @@ namespace KVCOMSERVER
             formsPlot5.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot5.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot5.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot5.MouseDown += OnTouchDown;
+            //formsPlot5.MouseMove += OnTouchMove;
+            //formsPlot5.MouseUp += OnTouchUp;
 
             formsPlot6.Plot.XLabel("Stroke");
             formsPlot6.Plot.YLabel("Load");
@@ -2149,6 +2214,9 @@ namespace KVCOMSERVER
             formsPlot6.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot6.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot6.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot6.MouseDown += OnTouchDown;
+            //formsPlot6.MouseMove += OnTouchMove;
+            //formsPlot6.MouseUp += OnTouchUp;
 
             formsPlot7.Plot.XLabel("Stroke");
             formsPlot7.Plot.YLabel("Load");
@@ -2163,6 +2231,9 @@ namespace KVCOMSERVER
             formsPlot7.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot7.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot7.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot7.MouseDown += OnTouchDown;
+            //formsPlot7.MouseMove += OnTouchMove;
+            //formsPlot7.MouseUp += OnTouchUp;
 
             formsPlot8.Plot.XLabel("Stroke");
             formsPlot8.Plot.YLabel("Load");
@@ -2177,6 +2248,9 @@ namespace KVCOMSERVER
             formsPlot8.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot8.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot8.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot8.MouseDown += OnTouchDown;
+            //formsPlot8.MouseMove += OnTouchMove;
+            //formsPlot8.MouseUp += OnTouchUp;
 
             formsPlot9.Plot.XLabel("Stroke");
             formsPlot9.Plot.YLabel("Load");
@@ -2191,6 +2265,9 @@ namespace KVCOMSERVER
             formsPlot9.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot9.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot9.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot9.MouseDown += OnTouchDown;
+            //formsPlot9.MouseMove += OnTouchMove;
+            //formsPlot9.MouseUp += OnTouchUp;
 
             formsPlot10.Plot.XLabel("Stroke");
             formsPlot10.Plot.YLabel("Load");
@@ -2205,6 +2282,9 @@ namespace KVCOMSERVER
             formsPlot10.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot10.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot10.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot10.MouseDown += OnTouchDown;
+            //formsPlot10.MouseMove += OnTouchMove;
+            //formsPlot10.MouseUp += OnTouchUp;
 
             formsPlot11.Plot.XLabel("Stroke");
             formsPlot11.Plot.YLabel("Load");
@@ -2219,6 +2299,9 @@ namespace KVCOMSERVER
             formsPlot11.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot11.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot11.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot11.MouseDown += OnTouchDown;
+            //formsPlot11.MouseMove += OnTouchMove;
+            //formsPlot11.MouseUp += OnTouchUp;
 
             formsPlot12.Plot.XLabel("Stroke");
             formsPlot12.Plot.YLabel("Load");
@@ -2233,6 +2316,11 @@ namespace KVCOMSERVER
             formsPlot12.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot12.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot12.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            //formsPlot12.MouseDown += OnTouchDown;
+            //formsPlot12.MouseMove += OnTouchMove;
+            //formsPlot12.MouseUp += OnTouchUp;
+
+
         }
         private void InitializeUI()
         {
@@ -2268,7 +2356,15 @@ namespace KVCOMSERVER
             textBox5.Click += InputTextBox_Click;
             textBox6.Click += InputTextBox_Click;
 
+            masterValidReset();
+            masterSetupReset();
+            setupPlotCrosshair();
+
             PreloadTabPages();
+        }
+        public void TabPageSelect(int ivy)
+        {
+            tabControl1.SelectedIndex = ivy;
         }
         private void TabControl_Selected(object sender, TabControlEventArgs e)
         {
@@ -2289,7 +2385,11 @@ namespace KVCOMSERVER
                 button56.BackColor = Color.LightSteelBlue;
                 button64.BackColor = Color.LightSteelBlue;
             }
-            if (tabControl1.SelectedIndex == 4)
+            if (tabControl1.SelectedIndex == 5)
+            {
+                MasteringUpdateList();
+            }
+                if (tabControl1.SelectedIndex == 4)
             {
                 tabdataRealSideInit();
                 tabdataRealCompStep2L();
@@ -2300,6 +2400,10 @@ namespace KVCOMSERVER
                 button53.BackColor = Color.Cyan;
                 button52.BackColor = Color.LightSteelBlue;
                 button70.BackColor = Color.LightSteelBlue;
+            }
+            if (tabControl1.SelectedIndex == 2)
+            {
+                RealtimeUpdateList();
             }
         }
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
@@ -2349,9 +2453,100 @@ namespace KVCOMSERVER
                 textBox.Text = enteredValue;
             }
         }
+        private void DecimalTextBox_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                string text = textBox.Text;
+                if (decimal.TryParse(text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out decimal value))
+                {
+                    value = Math.Ceiling(value * 100) / 100;
+                    textBox.TextChanged -= DecimalTextBox_TextChanged;
+                    textBox.Text = value.ToString("F2", CultureInfo.InvariantCulture);
+                    textBox.SelectionStart = textBox.Text.Length;
+                    textBox.TextChanged += DecimalTextBox_TextChanged;
+                }
+                else
+                {
+                    textBox.TextChanged -= DecimalTextBox_TextChanged;
+                    textBox.Text = "";
+                    textBox.TextChanged += DecimalTextBox_TextChanged;
+                }
+            }
+        }
+        private void LoadCustomFont(string sourceFont)
+        {
+            privateFontCollection = new PrivateFontCollection();
+
+            // Load the font from the embedded resource
+            string namespaceName = Assembly.GetExecutingAssembly().GetName().Name;
+            string resource = $"{namespaceName}.{sourceFont}";
+            using (Stream fontStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
+            {
+                if (fontStream == null)
+                {
+                    throw new Exception("Font resource not found.");
+                }
+
+                int fontLength = (int)fontStream.Length;
+                byte[] fontData = new byte[fontLength];
+                fontStream.Read(fontData, 0, fontLength);
+
+                // Create a temporary file to store the font
+                string tempFilePath = Path.Combine(Path.GetTempPath(), sourceFont);
+                File.WriteAllBytes(tempFilePath, fontData);
+
+                // Load the font into the PrivateFontCollection
+                privateFontCollection.AddFontFile(tempFilePath);
+
+                // Apply the font to the form controls
+                Font customFont = new Font(privateFontCollection.Families[0], 12F);
+                foreach (Control control in this.Controls)
+                {
+                    control.Font = customFont;
+                }
+
+                // Delete the temporary font file
+                File.Delete(tempFilePath);
+            }
+        }
+        static string GetVname<T>(ref T myvar, string varName)
+        {
+            return varName;
+        }
+        static float RoundingEdge(float value, float threshold)
+        {
+            float touchthegrass = value - (float)Math.Floor(value);
+            if (touchthegrass > 0.5f)
+            {
+                if (touchthegrass > (1.0f - threshold))
+                {
+                    return (float)Math.Ceiling(value);
+                }
+                else
+                {
+                    return (float)value;
+                }
+            }
+            else
+            {
+                if (touchthegrass < threshold)
+                {
+                    return (float)Math.Floor(value);
+                }
+                else
+                {
+                    return (float)value;
+                }
+            }
+            
+            return value;
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             // Check the number of monitors
             if (Screen.AllScreens.Length > 1)
             {
@@ -2436,64 +2631,106 @@ namespace KVCOMSERVER
         public ScottPlot.Plottables.SignalXY Plot1_MASTER;
         public ScottPlot.Plottables.SignalXY Plot1_LOWER;
         public ScottPlot.Plottables.SignalXY Plot1_UPPER;
+        ScottPlot.Plottables.Crosshair Plot1_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot2_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot2_MASTER;
         public ScottPlot.Plottables.SignalXY Plot2_LOWER;
         public ScottPlot.Plottables.SignalXY Plot2_UPPER;
+        ScottPlot.Plottables.Crosshair Plot2_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot3_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot3_MASTER;
         public ScottPlot.Plottables.SignalXY Plot3_LOWER;
         public ScottPlot.Plottables.SignalXY Plot3_UPPER;
+        ScottPlot.Plottables.Crosshair Plot3_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot4_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot4_MASTER;
         public ScottPlot.Plottables.SignalXY Plot4_LOWER;
         public ScottPlot.Plottables.SignalXY Plot4_UPPER;
+        ScottPlot.Plottables.Crosshair Plot4_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot5_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot5_MASTER;
         public ScottPlot.Plottables.SignalXY Plot5_LOWER;
         public ScottPlot.Plottables.SignalXY Plot5_UPPER;
+        ScottPlot.Plottables.Crosshair Plot5_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot6_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot6_MASTER;
         public ScottPlot.Plottables.SignalXY Plot6_LOWER;
         public ScottPlot.Plottables.SignalXY Plot6_UPPER;
+        ScottPlot.Plottables.Crosshair Plot6_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot7_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot7_MASTER;
         public ScottPlot.Plottables.SignalXY Plot7_LOWER;
         public ScottPlot.Plottables.SignalXY Plot7_UPPER;
+        ScottPlot.Plottables.Crosshair Plot7_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot8_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot8_MASTER;
         public ScottPlot.Plottables.SignalXY Plot8_LOWER;
         public ScottPlot.Plottables.SignalXY Plot8_UPPER;
+        ScottPlot.Plottables.Crosshair Plot8_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot9_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot9_MASTER;
         public ScottPlot.Plottables.SignalXY Plot9_LOWER;
         public ScottPlot.Plottables.SignalXY Plot9_UPPER;
+        ScottPlot.Plottables.Crosshair Plot9_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot10_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot10_MASTER;
         public ScottPlot.Plottables.SignalXY Plot10_LOWER;
         public ScottPlot.Plottables.SignalXY Plot10_UPPER;
+        ScottPlot.Plottables.Crosshair Plot10_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot11_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot11_MASTER;
         public ScottPlot.Plottables.SignalXY Plot11_LOWER;
         public ScottPlot.Plottables.SignalXY Plot11_UPPER;
+        ScottPlot.Plottables.Crosshair Plot11_Crosshair;
 
         public ScottPlot.Plottables.SignalXY Plot12_PRESENT;
         public ScottPlot.Plottables.SignalXY Plot12_MASTER;
         public ScottPlot.Plottables.SignalXY Plot12_LOWER;
         public ScottPlot.Plottables.SignalXY Plot12_UPPER;
+        ScottPlot.Plottables.Crosshair Plot12_Crosshair;
 
         #endregion
 
+        void setupPlotCrosshair()
+        {
+            settingPlotCrosshair(ref FormPlot1(), ref Plot1_Crosshair, ref Plot1Coord);
+            settingPlotCrosshair(ref FormPlot2(), ref Plot2_Crosshair, ref Plot2Coord);
+            settingPlotCrosshair(ref FormPlot3(), ref Plot3_Crosshair, ref Plot3Coord);
+            settingPlotCrosshair(ref FormPlot4(), ref Plot4_Crosshair, ref Plot4Coord);
+            settingPlotCrosshair(ref FormPlot5(), ref Plot5_Crosshair, ref Plot5Coord);
+            settingPlotCrosshair(ref FormPlot6(), ref Plot6_Crosshair, ref Plot6Coord);
+            settingPlotCrosshair(ref FormPlot7(), ref Plot7_Crosshair, ref Plot7Coord);
+            settingPlotCrosshair(ref FormPlot8(), ref Plot8_Crosshair, ref Plot8Coord);
+            settingPlotCrosshair(ref FormPlot9(), ref Plot9_Crosshair, ref Plot9Coord);
+            settingPlotCrosshair(ref FormPlot10(), ref Plot10_Crosshair, ref Plot10Coord);
+            settingPlotCrosshair(ref FormPlot11(), ref Plot11_Crosshair, ref Plot11Coord);
+            settingPlotCrosshair(ref FormPlot12(), ref Plot12_Crosshair, ref Plot12Coord);
+        }
+        void settingPlotCrosshair(ref ScottPlot.WinForms.FormsPlot plotbase, ref ScottPlot.Plottables.Crosshair plotcross, ref Label labeltextout)
+        {
+            plotcross = plotbase.Plot.Add.Crosshair(0, 0);
+            plotcross.IsVisible = false;
+            plotcross.LineColor = ScottPlot.Color.FromColor(System.Drawing.Color.White);
+            plotcross.MarkerShape = MarkerShape.OpenCircle;
+            plotcross.MarkerColor = ScottPlot.Color.FromColor(System.Drawing.Color.White);
+            plotcross.MarkerSize = 5;
+            functionPlotCrosshair(ref plotbase, ref plotcross, ref labeltextout);
+        }
+        void functionPlotCrosshair(ref ScottPlot.WinForms.FormsPlot plotbase, ref ScottPlot.Plottables.Crosshair plotcross, ref Label textout)
+        {
+            var eventHandler = new MouseMoveEventHandler(plotcross, textout);
+            plotbase.MouseMove += eventHandler.OnMouseMove;
+        }
 
         public void AllPlotReset()
         {
@@ -2528,7 +2765,7 @@ namespace KVCOMSERVER
             formsPlot12.Refresh();
         }
 
-        public void PlotSignalPlotting(ref ScottPlot.WinForms.FormsPlot plotbase, ref ScottPlot.Plottables.SignalXY plotsig, double[] xd, double[] yd)
+        public void PlotSignalPlotting(ref ScottPlot.WinForms.FormsPlot plotbase, ref ScottPlot.Plottables.SignalXY plotsig, double[] xd, double[] yd, [CallerArgumentExpression("plotsig")] string varName = null)
         {
             if (plotsig == null)
             {
@@ -2540,30 +2777,630 @@ namespace KVCOMSERVER
                 plotsig.Data = src;
             }
             plotsig.LineWidth = 2;
+
+            string varname = GetVname(ref plotsig, varName);
+            if (varname.Contains("PRESENT"))
+            {
+                plotsig.LegendText = "PRESENT";
+            }
+            else if (varname.Contains("MASTER"))
+            {
+                plotsig.LegendText = "MASTER";
+            }
+            else if (varname.Contains("LOWER"))
+            {
+                plotsig.LegendText = "LOWER";
+            }
+            else if (varname.Contains("UPPER"))
+            {
+                plotsig.LegendText = "UPPER";
+            }
+
         }
         public void PlotChangeColor(ref ScottPlot.Plottables.SignalXY plotsig, System.Drawing.Color linecolor)
         {
             plotsig.Color = ScottPlot.Color.FromColor(linecolor);
         }
-
         public void PlotBringToFront(ref ScottPlot.WinForms.FormsPlot plotbase, ref ScottPlot.Plottables.SignalXY plotsig)
         {
             plotbase.Plot.MoveToFront(plotsig);
         }
-
         public void PlotSignalLineShow(ref ScottPlot.Plottables.SignalXY plotsig)
         {
             plotsig.IsVisible = true;
         }
-
         public void PlotSignalLineHide(ref ScottPlot.Plottables.SignalXY plotsig)
         {
             plotsig.IsVisible = false;
+        }
+        public bool PlotSignalLineVisible(ref ScottPlot.Plottables.SignalXY plotsig)
+        {
+            return plotsig.IsVisible;
+        }
+        public void PlotShowLegend(ref ScottPlot.WinForms.FormsPlot plotbase)
+        {
+            plotbase.Plot.ShowLegend();
+        }
+        public void PlotCheckInverted(ref ScottPlot.WinForms.FormsPlot plotbase)
+        {
+            if (plotbase.Plot.Axes.Bottom.IsInverted())
+            {
+                plotbase.Plot.Axes.RectifyX();
+            }
+        }
+        public void PlotCheckAutoScale(ref ScottPlot.WinForms.FormsPlot plotbase)
+        {
+            plotbase.Plot.Axes.AutoScale();
+        }
+        public void PlotZoomin(ref ScottPlot.WinForms.FormsPlot plotbase, double fX = 1.0, double fY = 1.0)
+        {
+            plotbase.Plot.Axes.ZoomIn(fX, fY);
+        }
+        public void PlotZoomout(ref ScottPlot.WinForms.FormsPlot plotbase, double fX = 1.0, double fY = 1.0)
+        {
+            plotbase.Plot.Axes.ZoomOut(fX, fY);
+        }
+        public void workSumPlotCheck(ref ScottPlot.WinForms.FormsPlot plotbase)
+        {
+            plotbase.Plot.Axes.AutoScale();
+            if (plotbase.Plot.Axes.Bottom.IsInverted())
+            {
+                plotbase.Plot.Axes.RectifyX();
+            }
+            plotbase.Plot.ShowLegend();
+            plotbase.Refresh();
+        }
+
+
+        void RealtimeMasterLineShowHide()
+        {
+            if (Plot1_MASTER != null)
+            {
+                if (!Plot1_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot1_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot1_MASTER);
+                }
+            }
+            if (Plot2_MASTER != null)
+            {
+                if (!Plot2_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot2_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot2_MASTER);
+                }
+            }
+            if (Plot3_MASTER != null)
+            {
+                if (!Plot3_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot3_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot3_MASTER);
+                }
+            }
+            if (Plot4_MASTER != null)
+            {
+                if (!Plot4_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot4_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot4_MASTER);
+                }
+            }
+            if (Plot9_MASTER != null)
+            {
+                if (!Plot9_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot9_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot9_MASTER);
+                }
+            }
+            if (Plot10_MASTER != null)
+            {
+                if (!Plot10_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot10_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot10_MASTER);
+                }
+            }
+            if (Plot1_MASTER != null && Plot2_MASTER != null && Plot3_MASTER != null && Plot4_MASTER != null && Plot9_MASTER != null && Plot10_MASTER != null)
+            {
+                if (Plot1_MASTER.IsVisible && Plot2_MASTER.IsVisible && Plot3_MASTER.IsVisible && Plot4_MASTER.IsVisible && Plot9_MASTER.IsVisible && Plot10_MASTER.IsVisible)
+                {
+
+                }
+                else if (Plot1_MASTER.IsVisible || Plot2_MASTER.IsVisible || Plot3_MASTER.IsVisible || Plot4_MASTER.IsVisible || Plot9_MASTER.IsVisible || Plot10_MASTER.IsVisible)
+                {
+                    PlotSignalLineHide(ref Plot1_MASTER);
+                    PlotSignalLineHide(ref Plot2_MASTER);
+                    PlotSignalLineHide(ref Plot3_MASTER);
+                    PlotSignalLineHide(ref Plot4_MASTER);
+                    PlotSignalLineHide(ref Plot9_MASTER);
+                    PlotSignalLineHide(ref Plot10_MASTER);
+                }
+            }
+
+            formsPlot1.Refresh();
+            formsPlot2.Refresh();
+            formsPlot3.Refresh();
+            formsPlot4.Refresh();
+            formsPlot9.Refresh();
+            formsPlot10.Refresh();
+        }
+        void RealtimeMasterLimitShowHide()
+        {
+            if (Plot1_LOWER != null)
+            {
+                if (!Plot1_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot1_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot1_LOWER);
+                }
+            }
+            if (Plot2_LOWER != null)
+            {
+                if (!Plot2_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot2_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot2_LOWER);
+                }
+            }
+            if (Plot3_LOWER != null)
+            {
+                if (!Plot3_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot3_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot3_LOWER);
+                }
+            }
+            if (Plot4_LOWER != null)
+            {
+                if (!Plot4_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot4_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot4_LOWER);
+                }
+            }
+            if (Plot9_LOWER != null)
+            {
+                if (!Plot9_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot9_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot9_LOWER);
+                }
+            }
+            if (Plot10_LOWER != null)
+            {
+                if (!Plot10_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot10_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot10_LOWER);
+                }
+            }
+
+            if (Plot1_UPPER != null)
+            {
+                if (!Plot1_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot1_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot1_UPPER);
+                }
+            }
+            if (Plot2_UPPER != null)
+            {
+                if (!Plot2_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot2_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot2_UPPER);
+                }
+            }
+            if (Plot3_UPPER != null)
+            {
+                if (!Plot3_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot3_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot3_UPPER);
+                }
+            }
+            if (Plot4_UPPER != null)
+            {
+                if (!Plot4_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot4_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot4_UPPER);
+                }
+            }
+            if (Plot9_UPPER != null)
+            {
+                if (!Plot9_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot9_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot9_UPPER);
+                }
+            }
+            if (Plot10_UPPER != null)
+            {
+                if (!Plot10_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot10_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot10_UPPER);
+                }
+            }
+            if (Plot1_UPPER != null && Plot2_UPPER != null && Plot3_UPPER != null && Plot4_UPPER != null && Plot9_UPPER != null && Plot10_UPPER != null && Plot1_LOWER != null && Plot2_LOWER != null && Plot3_LOWER != null && Plot4_LOWER != null && Plot9_LOWER != null && Plot10_LOWER != null)
+            {
+                if (Plot1_UPPER.IsVisible && Plot2_UPPER.IsVisible && Plot3_UPPER.IsVisible && Plot4_UPPER.IsVisible && Plot9_UPPER.IsVisible && Plot10_UPPER.IsVisible && Plot1_LOWER.IsVisible && Plot2_LOWER.IsVisible && Plot3_LOWER.IsVisible && Plot4_LOWER.IsVisible && Plot9_LOWER.IsVisible && Plot10_LOWER.IsVisible)
+                {
+
+                }
+                else if (Plot1_UPPER.IsVisible || Plot2_UPPER.IsVisible || Plot3_UPPER.IsVisible || Plot4_UPPER.IsVisible || Plot9_UPPER.IsVisible || Plot10_UPPER.IsVisible || Plot1_LOWER.IsVisible || Plot2_LOWER.IsVisible || Plot3_LOWER.IsVisible || Plot4_LOWER.IsVisible || Plot9_LOWER.IsVisible || Plot10_LOWER.IsVisible)
+                {
+                    PlotSignalLineHide(ref Plot1_LOWER);
+                    PlotSignalLineHide(ref Plot2_LOWER);
+                    PlotSignalLineHide(ref Plot3_LOWER);
+                    PlotSignalLineHide(ref Plot4_LOWER);
+                    PlotSignalLineHide(ref Plot9_LOWER);
+                    PlotSignalLineHide(ref Plot10_LOWER);
+
+                    PlotSignalLineHide(ref Plot1_UPPER);
+                    PlotSignalLineHide(ref Plot2_UPPER);
+                    PlotSignalLineHide(ref Plot3_UPPER);
+                    PlotSignalLineHide(ref Plot4_UPPER);
+                    PlotSignalLineHide(ref Plot9_UPPER);
+                    PlotSignalLineHide(ref Plot10_UPPER);
+
+                }
+            }
+
+            formsPlot1.Refresh();
+            formsPlot2.Refresh();
+            formsPlot3.Refresh();
+            formsPlot4.Refresh();
+            formsPlot9.Refresh();
+            formsPlot10.Refresh();
+        }
+
+        void TeachingMasterLineShowHide()
+        {
+            if (Plot5_MASTER != null)
+            {
+                if (!Plot5_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot5_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot5_MASTER);
+                }
+            }
+            if (Plot6_MASTER != null)
+            {
+                if (!Plot6_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot6_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot6_MASTER);
+                }
+            }
+            if (Plot7_MASTER != null)
+            {
+                if (!Plot7_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot7_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot7_MASTER);
+                }
+            }
+            if (Plot8_MASTER != null)
+            {
+                if (!Plot8_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot8_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot8_MASTER);
+                }
+            }
+            if (Plot11_MASTER != null)
+            {
+                if (!Plot11_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot11_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot11_MASTER);
+                }
+            }
+            if (Plot12_MASTER != null)
+            {
+                if (!Plot12_MASTER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot12_MASTER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot12_MASTER);
+                }
+            }
+            if (Plot5_MASTER != null && Plot6_MASTER != null && Plot7_MASTER != null && Plot8_MASTER != null && Plot11_MASTER != null && Plot12_MASTER != null)
+            {
+                if (Plot5_MASTER.IsVisible && Plot6_MASTER.IsVisible && Plot7_MASTER.IsVisible && Plot8_MASTER.IsVisible && Plot11_MASTER.IsVisible && Plot12_MASTER.IsVisible)
+                {
+
+                }
+                else if (Plot5_MASTER.IsVisible || Plot6_MASTER.IsVisible || Plot7_MASTER.IsVisible || Plot8_MASTER.IsVisible || Plot11_MASTER.IsVisible || Plot12_MASTER.IsVisible)
+                {
+                    PlotSignalLineHide(ref Plot5_MASTER);
+                    PlotSignalLineHide(ref Plot6_MASTER);
+                    PlotSignalLineHide(ref Plot7_MASTER);
+                    PlotSignalLineHide(ref Plot8_MASTER);
+                    PlotSignalLineHide(ref Plot11_MASTER);
+                    PlotSignalLineHide(ref Plot12_MASTER);
+                }
+            }
+
+            formsPlot5.Refresh();
+            formsPlot6.Refresh();
+            formsPlot7.Refresh();
+            formsPlot8.Refresh();
+            formsPlot11.Refresh();
+            formsPlot12.Refresh();
+        }
+        void TeachingMasterLimitShowHide()
+        {
+            if (Plot5_LOWER != null)
+            {
+                if (!Plot5_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot5_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot5_LOWER);
+                }
+            }
+            if (Plot6_LOWER != null)
+            {
+                if (!Plot6_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot6_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot6_LOWER);
+                }
+            }
+            if (Plot7_LOWER != null)
+            {
+                if (!Plot7_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot7_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot7_LOWER);
+                }
+            }
+            if (Plot8_LOWER != null)
+            {
+                if (!Plot8_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot8_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot8_LOWER);
+                }
+            }
+            if (Plot11_LOWER != null)
+            {
+                if (!Plot11_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot11_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot11_LOWER);
+                }
+            }
+            if (Plot12_LOWER != null)
+            {
+                if (!Plot12_LOWER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot12_LOWER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot12_LOWER);
+                }
+            }
+
+            if (Plot5_UPPER != null)
+            {
+                if (!Plot5_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot5_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot5_UPPER);
+                }
+            }
+            if (Plot6_UPPER != null)
+            {
+                if (!Plot6_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot6_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot6_UPPER);
+                }
+            }
+            if (Plot7_UPPER != null)
+            {
+                if (!Plot7_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot7_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot7_UPPER);
+                }
+            }
+            if (Plot8_UPPER != null)
+            {
+                if (!Plot8_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot8_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot8_UPPER);
+                }
+            }
+            if (Plot11_UPPER != null)
+            {
+                if (!Plot11_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot11_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot11_UPPER);
+                }
+            }
+            if (Plot12_UPPER != null)
+            {
+                if (!Plot12_UPPER.IsVisible)
+                {
+                    PlotSignalLineShow(ref Plot12_UPPER);
+                }
+                else
+                {
+                    PlotSignalLineHide(ref Plot12_UPPER);
+                }
+            }
+            if (Plot5_UPPER != null && Plot6_UPPER != null && Plot7_UPPER != null && Plot8_UPPER != null && Plot11_UPPER != null && Plot12_UPPER != null && Plot5_LOWER != null && Plot6_LOWER != null && Plot7_LOWER != null && Plot8_LOWER != null && Plot11_LOWER != null && Plot12_LOWER != null)
+            {
+                if (Plot5_UPPER.IsVisible && Plot6_UPPER.IsVisible && Plot7_UPPER.IsVisible && Plot8_UPPER.IsVisible && Plot11_UPPER.IsVisible && Plot12_UPPER.IsVisible && Plot5_LOWER.IsVisible && Plot6_LOWER.IsVisible && Plot7_LOWER.IsVisible && Plot8_LOWER.IsVisible && Plot11_LOWER.IsVisible && Plot12_LOWER.IsVisible)
+                {
+
+                }
+                else if (Plot5_UPPER.IsVisible || Plot6_UPPER.IsVisible || Plot7_UPPER.IsVisible || Plot8_UPPER.IsVisible || Plot11_UPPER.IsVisible || Plot12_UPPER.IsVisible || Plot5_LOWER.IsVisible || Plot6_LOWER.IsVisible || Plot7_LOWER.IsVisible || Plot8_LOWER.IsVisible || Plot11_LOWER.IsVisible || Plot12_LOWER.IsVisible)
+                {
+                    PlotSignalLineHide(ref Plot5_LOWER);
+                    PlotSignalLineHide(ref Plot6_LOWER);
+                    PlotSignalLineHide(ref Plot7_LOWER);
+                    PlotSignalLineHide(ref Plot8_LOWER);
+                    PlotSignalLineHide(ref Plot11_LOWER);
+                    PlotSignalLineHide(ref Plot12_LOWER);
+
+                    PlotSignalLineHide(ref Plot5_UPPER);
+                    PlotSignalLineHide(ref Plot6_UPPER);
+                    PlotSignalLineHide(ref Plot7_UPPER);
+                    PlotSignalLineHide(ref Plot8_UPPER);
+                    PlotSignalLineHide(ref Plot11_UPPER);
+                    PlotSignalLineHide(ref Plot12_UPPER);
+
+                }
+            }
+
+            formsPlot5.Refresh();
+            formsPlot6.Refresh();
+            formsPlot7.Refresh();
+            formsPlot8.Refresh();
+            formsPlot11.Refresh();
+            formsPlot12.Refresh();
         }
 
         #endregion
 
         #region UIMethod
+        private void CopyDirectory(string sourceDir, string destDir)
+        {
+            DirectoryInfo dir = new DirectoryInfo(sourceDir);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDir))
+            {
+                Directory.CreateDirectory(destDir);
+            }
+
+            // Get the files in the source directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string tempPath = Path.Combine(destDir, file.Name);
+                file.CopyTo(tempPath, false);
+            }
+
+            // Copy subdirectories and their contents to the new location.
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                string tempPath = Path.Combine(destDir, subdir.Name);
+                CopyDirectory(subdir.FullName, tempPath);
+            }
+        }
         private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
         {
             RealtimeUpdateList();
@@ -2604,7 +3441,6 @@ namespace KVCOMSERVER
             dataGridView1.DataSource = listtablefile;
             dataGridView1.Update();
         }
-
         public void MasteringUpdateList()
         {
             string DirMaster = _WorkflowHandler.MasterDir;
@@ -2642,7 +3478,6 @@ namespace KVCOMSERVER
         {
             dateTimePicker1.Value = datentime;
         }
-
         public DateTime RealtimeList_GetDate()
         {
             return dateTimePicker1.Value;
@@ -2666,7 +3501,6 @@ namespace KVCOMSERVER
             button48.ForeColor = System.Drawing.Color.Black;
             button48.BackColor = System.Drawing.Color.LimeGreen;
         }
-
         public void connStatLampOff()
         {
             button5.Text = "Disconnected";
@@ -2684,13 +3518,53 @@ namespace KVCOMSERVER
             button6.ForeColor = System.Drawing.Color.Black;
             button6.BackColor = System.Drawing.Color.LimeGreen;
         }
-
         public void beaconnStatLampOff()
         {
             button6.Text = "OFF";
             button6.ForeColor = System.Drawing.Color.Black;
             button6.BackColor = System.Drawing.Color.BlueViolet;
         }
+
+        public void masterSetupSet()
+        {
+            button83.Text = "SETUP OK";
+            button83.ForeColor = System.Drawing.Color.Black;
+            button83.BackColor = System.Drawing.Color.Cyan;
+        }
+        public void masterSetupReset()
+        {
+            button83.Text = "SETUP NG";
+            button83.ForeColor = System.Drawing.Color.Ivory;
+            button83.BackColor = System.Drawing.Color.Maroon;
+        }
+
+        public void masterValidSet()
+        {
+            button84.Text = "MASTER VALID";
+            button84.ForeColor = System.Drawing.Color.Black;
+            button84.BackColor = System.Drawing.Color.DodgerBlue;
+        }
+        public void masterValidReset()
+        {
+            button84.Text = "MASTER INVALID";
+            button84.ForeColor = System.Drawing.Color.Ivory;
+            button84.BackColor = System.Drawing.Color.Indigo;
+        }
+
+        public void uiLoadPosMonitor(float lload, float lpos, float rload, float rpos)
+        {
+            
+            TXLoadL1.Text = $"Load: {lload:0000.##}";
+            TXLoadL2.Text = $"Load: {lload:0000.##}";
+            TXPosL1.Text = $"Pos: {lpos:0000.##}";
+            TXPosL2.Text = $"Pos: {lpos:0000.##}";
+
+            TXLoadR1.Text = $"Load: {rload:0000.##}";
+            TXLoadR2.Text = $"Load: {rload:0000.##}";
+            TXPosR1.Text = $"Pos: {rpos:0000.##}";
+            TXPosR2.Text = $"Pos: {rpos:0000.##}";
+        }
+
         #endregion
 
         #region UI Action
@@ -2801,38 +3675,51 @@ namespace KVCOMSERVER
 
         private void button19_Click(object sender, EventArgs e)
         {
+            
             string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
             CheckFolderPath(DirRealtime);
-            DataGridViewRow test1 = new DataGridViewRow();
-            test1 = dataGridView1.CurrentRow;
-            string selectedfile = new string(test1.Cells[1].FormattedValue.ToString());
+            DataGridViewRow viewRow = new DataGridViewRow();
+            viewRow = dataGridView1.CurrentRow;
+            string selectedfile = new string(viewRow.Cells[1].FormattedValue.ToString());
 
-            Excel.Application objExcel = new Excel.Application();
-            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirRealtime}\\{selectedfile}");
-            objExcel.Visible = true;
+            if (selectedfile != null && viewRow != null)
+            {
+                Excel.Application objExcel = new Excel.Application();
+                Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirRealtime}\\{selectedfile}");
+                objExcel.Visible = true;
+            }
         }
 
         private void button20_Click(object sender, EventArgs e)
         {
             string DirMaster = _WorkflowHandler.MasterDir;
             CheckFolderPath(DirMaster);
-            DataGridViewRow test2 = new DataGridViewRow();
-            test2 = dataGridView2.CurrentRow;
-            string selectedfile = new string(test2.Cells[1].FormattedValue.ToString());
+            DataGridViewRow viewRow = new DataGridViewRow();
+            viewRow = dataGridView2.CurrentRow;
+            string selectedfile = new string(viewRow.Cells[1].FormattedValue.ToString());
 
-            Excel.Application objExcel = new Excel.Application();
-            Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirMaster}\\{selectedfile}");
-            objExcel.Visible = true;
+            if (selectedfile != null && viewRow != null)
+            {
+                Excel.Application objExcel = new Excel.Application();
+                Excel.Workbook excelWorkbook = objExcel.Workbooks.Open($"{DirMaster}\\{selectedfile}");
+                objExcel.Visible = true;
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            //upload data from machine to excel master database
+            _WorkflowHandler.MasterUpdatingDatabaseSet();
+            _WorkflowHandler.workUpdateMasterDatabase();
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-
+            //download to machine from excel master database
+            if (!_WorkflowHandler.MasterIsUpdatingDatabase())
+            {
+                _WorkflowHandler.workMasterValidation();
+            }
         }
 
         private void button28_Click(object sender, EventArgs e)
@@ -2929,8 +3816,6 @@ namespace KVCOMSERVER
         {
             tabControl1.SelectedIndex = 7;
         }
-
-        #endregion
 
         private void button72_Click(object sender, EventArgs e)
         {
@@ -3285,7 +4170,7 @@ namespace KVCOMSERVER
         {
             //UPDATE MASTER DATA
             if (MasterTeachSetConfirm)
-            {
+            {   _WorkflowHandler.MasterUpdatingDatabaseSet();
                 _WorkflowHandler.workUpdateMasterData();
                 _WorkflowHandler.workUpdateMasterDatabase();
                 MasterTeachSetConfirm = false;
@@ -3295,16 +4180,333 @@ namespace KVCOMSERVER
         private void button80_Click(object sender, EventArgs e)
         {
             //VALIDATE MASTER DATA
-            _WorkflowHandler.workMasterValidation();
-            MasterTeachSetConfirm = false;
-
+            if (!_WorkflowHandler.MasterIsUpdatingDatabase())
+            {
+                _WorkflowHandler.workMasterValidation();
+                MasterTeachSetConfirm = false;
+            }
         }
 
         private void label8_Click(object sender, EventArgs e)
         {
 
         }
+        private void button15_Click(object sender, EventArgs e)
+        {
+            RealtimeMasterLineShowHide();
+        }
+        private void button16_Click(object sender, EventArgs e)
+        {
+            RealtimeMasterLimitShowHide();
+        }
+        private void button27_Click(object sender, EventArgs e)
+        {
+            TeachingMasterLineShowHide();
+        }
+        private void button26_Click(object sender, EventArgs e)
+        {
+            TeachingMasterLimitShowHide();
+        }
+        private void button81_Click(object sender, EventArgs e)
+        {
+            _WorkflowHandler.uiReloadTeachingData();
+        }
+        private void button82_Click(object sender, EventArgs e)
+        {
+            _WorkflowHandler.uiReloadRealtimeData();
+        }
+        private void button21_Click_1(object sender, EventArgs e)
+        {
+            string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
+            CheckFolderPath(DirRealtime);
+            string sourceDir = DirRealtime;
 
+            if (string.IsNullOrWhiteSpace(sourceDir))
+            {
+                MessageBox.Show("Please enter a source directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!Directory.Exists(sourceDir))
+            {
+                MessageBox.Show("The source directory does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Show the FolderBrowserDialog to select the target directory
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                string destDir = this.folderBrowserDialog.SelectedPath;
+
+                try
+                {
+                    CopyDirectory(sourceDir, destDir);
+                    MessageBox.Show($"Directory copied successfully from {sourceDir} to {destDir}.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while copying the directory: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            string DirMaster = _WorkflowHandler.MasterDir;
+            CheckFolderPath(DirMaster);
+            string sourceDir = DirMaster;
+
+            if (string.IsNullOrWhiteSpace(sourceDir))
+            {
+                MessageBox.Show("Please enter a source directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!Directory.Exists(sourceDir))
+            {
+                MessageBox.Show("The source directory does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Show the FolderBrowserDialog to select the target directory
+            if (this.folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                string destDir = this.folderBrowserDialog.SelectedPath;
+
+                try
+                {
+                    CopyDirectory(sourceDir, destDir);
+                    MessageBox.Show($"Directory copied successfully from {sourceDir} to {destDir}.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while copying the directory: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            string selectedFile;
+            string DirMaster = _WorkflowHandler.MasterDir;
+            CheckFolderPath(DirMaster);
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                selectedFile = openFileDialog.FileName;
+                if (string.IsNullOrWhiteSpace(selectedFile))
+                {
+                    MessageBox.Show("Please select a file to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (!File.Exists(selectedFile))
+                {
+                    MessageBox.Show("The selected file does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                try
+                {
+                    string fileName = Path.GetFileName(selectedFile);
+                    string destFilePath = Path.Combine(DirMaster, fileName);
+
+                    // Ensure the destination directory exists
+                    if (!Directory.Exists(DirMaster))
+                    {
+                        Directory.CreateDirectory(DirMaster);
+                    }
+
+                    // Copy the file to the destination directory, overwriting if necessary
+                    File.Copy(selectedFile, destFilePath, true);
+
+                    MessageBox.Show($"File saved successfully to {destFilePath}.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while saving the file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void button83_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button86_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot1().Plot, 1.10, 1.10, point, false);
+            FormPlot1().Refresh();
+        }
+
+        private void button85_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot1().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot1().Refresh();
+        }
+
+        private void button88_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot2().Plot, 1.10, 1.10, point, false);
+            FormPlot2().Refresh();
+        }
+
+        private void button87_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot2().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot2().Refresh();
+        }
+
+        private void button90_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot9().Plot, 1.10, 1.10, point, false);
+            FormPlot9().Refresh();
+        }
+
+        private void button89_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot9().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot9().Refresh();
+        }
+
+        private void button92_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot3().Plot, 1.10, 1.10, point, false);
+            FormPlot3().Refresh();
+        }
+
+        private void button91_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot3().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot3().Refresh();
+        }
+
+        private void button94_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot4().Plot, 1.10, 1.10, point, false);
+            FormPlot4().Refresh();
+        }
+
+        private void button93_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot4().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot4().Refresh();
+        }
+
+        private void button96_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot10().Plot, 1.10, 1.10, point, false);
+            FormPlot10().Refresh();
+        }
+
+        private void button95_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot10().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot10().Refresh();
+        }
+
+        private void button98_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot5().Plot, 1.10, 1.10, point, false);
+            FormPlot5().Refresh();
+        }
+
+        private void button97_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot5().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot5().Refresh();
+        }
+
+        private void button100_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot6().Plot, 1.10, 1.10, point, false);
+            FormPlot6().Refresh();
+        }
+
+        private void button99_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot6().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot6().Refresh();
+        }
+
+        private void button102_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot11().Plot, 1.10, 1.10, point, false);
+            FormPlot11().Refresh();
+        }
+
+        private void button101_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot11().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot11().Refresh();
+        }
+
+        private void button104_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot7().Plot, 1.10, 1.10, point, false);
+            FormPlot7().Refresh();
+        }
+
+        private void button103_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot7().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot7().Refresh();
+        }
+
+        private void button106_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot8().Plot, 1.10, 1.10, point, false);
+            FormPlot8().Refresh();
+        }
+
+        private void button105_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot8().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot8().Refresh();
+        }
+
+        private void button108_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot12().Plot, 1.10, 1.10, point, false);
+            FormPlot12().Refresh();
+        }
+
+        private void button107_Click(object sender, EventArgs e)
+        {
+            Pixel point = new Pixel(600, 120);
+            MouseAxisManipulation.MouseWheelZoom(FormPlot12().Plot, (1 / 1.10), (1 / 1.10), point, false);
+            FormPlot12().Refresh();
+        }
+
+        #endregion
 
     }
 
@@ -3379,6 +4581,103 @@ namespace KVCOMSERVER
             return list;
         }
     }
+    public static class MouseEventSimulator
+    {
+        private const int WM_LBUTTONDOWN = 0x0201;
+        private const int WM_LBUTTONUP = 0x0202;
+        private const int WM_MOUSEMOVE = 0x0200;
+        private const int WM_MOUSEWHEEL = 0x020A;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetCursorPos(int X, int Y);
+
+        public static void SimulateMouseClick(Control control, int x, int y)
+        {
+            IntPtr lParam = (IntPtr)((y << 16) | x);
+            SendMessage(control.Handle, WM_LBUTTONDOWN, IntPtr.Zero, lParam);
+            SendMessage(control.Handle, WM_LBUTTONUP, IntPtr.Zero, lParam);
+        }
+
+        public static void SimulateMouseMove(Control control, int x, int y)
+        {
+            IntPtr lParam = (IntPtr)((y << 16) | x);
+            SendMessage(control.Handle, WM_MOUSEMOVE, IntPtr.Zero, lParam);
+        }
+
+        public static void SimulateMouseWheel(Control control, int delta, int x, int y)
+        {
+            IntPtr wParam = (IntPtr)((delta << 16) & 0xFFFF0000);
+            IntPtr lParam = (IntPtr)((y << 16) | x);
+            SendMessage(control.Handle, WM_MOUSEWHEEL, wParam, lParam);
+        }
+
+        public static void SimulateMouseDrag(Control control, int startX, int startY, int endX, int endY)
+        {
+            IntPtr lParamStart = (IntPtr)((startY << 16) | startX);
+            IntPtr lParamEnd = (IntPtr)((endY << 16) | endX);
+
+            // Send the WM_LBUTTONDOWN message to simulate pressing the left mouse button
+            SendMessage(control.Handle, WM_LBUTTONDOWN, IntPtr.Zero, lParamStart);
+
+            // Send the WM_MOUSEMOVE message to simulate moving the mouse to the end position
+            SendMessage(control.Handle, WM_MOUSEMOVE, IntPtr.Zero, lParamEnd);
+
+            // Send the WM_LBUTTONUP message to simulate releasing the left mouse button
+            SendMessage(control.Handle, WM_LBUTTONUP, IntPtr.Zero, lParamEnd);
+        }
+
+        public static void SetMousePosition(int x, int y)
+        {
+            SetCursorPos(x, y);
+        }
+    }
+    class MouseMoveEventHandler
+    {
+        private readonly ScottPlot.Plottables.Crosshair _plotCross;
+        private readonly Label _label;
+
+        public MouseMoveEventHandler(ScottPlot.Plottables.Crosshair plotCross, Label label)
+        {
+            _plotCross = plotCross;
+            _label = label;
+        }
+
+        public void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            var plotBase = sender as FormsPlot;
+            if (plotBase == null) return;
+
+            // Determine where the mouse is and get the nearest point
+            Pixel mousePixel = new(e.Location.X, e.Location.Y);
+            Coordinates mouseLocation = plotBase.Plot.GetCoordinates(mousePixel);
+            AxisLimits limits = plotBase.Plot.Axes.GetLimits();
+            // Place the crosshair over the highlighted point
+            if (mouseLocation.X >= limits.Left && mouseLocation.X <= limits.Right && mouseLocation.Y >= limits.Bottom && mouseLocation.Y <= limits.Top)
+            {
+                _plotCross.IsVisible = true;
+                _plotCross.Position = mouseLocation;
+                plotBase.Refresh();
+                _label.Text = $"X = {mouseLocation.X:0000.##}, Y = {mouseLocation.Y:0000.##}";
+            }
+            else
+            {
+                _plotCross.IsVisible = false;
+                plotBase.Refresh();
+                _label.Text = $"X = 0000, Y = 0000.00";
+            }
+        }
+    }
 
     #endregion
 }
+
+
+namespace ScottPlot.WinForms
+{
+    
+    
+}
+

@@ -45,6 +45,7 @@ using STimer = System.Threading.Timer;
 using DocumentFormat.OpenXml.Vml;
 using System.Data;
 using KVCOMSERVER;
+using ScottPlot;
 
 namespace KVCOMSERVER
 {
@@ -120,13 +121,35 @@ namespace WORKFLOW
         bool _realtimeReadFlag;
         bool _realtimeReadFlagComplete;
 
+        bool _masterIsUpdatingDatabase;
+        public bool MasterIsUpdatingDatabase() { return _masterIsUpdatingDatabase; }
+        public void MasterUpdatingDatabaseSet() { _masterIsUpdatingDatabase = true; }
+        public void MasterUpdatingDatabaseReset() { _masterIsUpdatingDatabase = false; }
+
+        bool _realPresentConfirm;
+        public bool RealPresentConfirm() { return _realPresentConfirm; }
+        public void RealPresentConfirmSet() { _realPresentConfirm = true; }
+        public void RealPresentConfirmReset() { _realPresentConfirm = false; }
+
         bool _masterSetupConfirm;
-        void MasterSetupConfirmSet() { _masterSetupConfirm = true; }
-        void MasterSetupConfirmReset() { _masterSetupConfirm = false; }
+        public bool MasterSetupConfirm() { return _masterSetupConfirm; }
+        public void MasterSetupConfirmSet() { _masterSetupConfirm = true; }
+        public void MasterSetupConfirmReset() { _masterSetupConfirm = false; }
         
         bool _masterDataValidation;
-        void MasterDataValidationSet() { _masterDataValidation = true; }
-        void MasterDataValidationReset() { _masterDataValidation = false; }
+        public bool MasterDataValidation() { return _masterDataValidation; }
+        public void MasterDataValidationSet() { _masterDataValidation = true; }
+        public void MasterDataValidationReset() { _masterDataValidation = false; }
+
+        bool _dataRMasterTeachIsExist;
+        bool DataRMasterTeachIsExist() { return _dataRMasterTeachIsExist; }
+        void DataRMasterTeachIsExistSet() { _dataRMasterTeachIsExist = true; }
+        void DataRMasterTeachIsExistReset() { _dataRMasterTeachIsExist = false; }
+
+        bool _dataLMasterTeachIsExist;
+        bool DataLMasterTeachIsExist() { return _dataLMasterTeachIsExist; }
+        void DataLMasterTeachIsExistSet() { _dataLMasterTeachIsExist = true; }
+        void DataLMasterTeachIsExistReset() { _dataLMasterTeachIsExist = false; }
 
         bool _backgroundProcessOngoing { get; set; }
 
@@ -162,8 +185,8 @@ namespace WORKFLOW
                         "ZF120000",
                         "ZF511000",
                         "ZF511400",
-                        "ZF511800",
-                        "ZF512200"
+                        "ZF512200",
+                        "ZF511800"
                     };
         string[] dataMasterLsideStep2addrs = new string[]
                     {
@@ -177,8 +200,8 @@ namespace WORKFLOW
                         "ZF220000",
                         "ZF515000",
                         "ZF515400",
-                        "ZF515800",
-                        "ZF516200"
+                        "ZF516200",
+                        "ZF515800"
                     };
         string[] dataMasterRsideStep3addrs = new string[]
                     {
@@ -192,8 +215,8 @@ namespace WORKFLOW
                         "ZF123200",
                         "ZF513000",
                         "ZF513400",
-                        "ZF513800",
-                        "ZF514200"
+                        "ZF514200",
+                        "ZF513800"
                     };
         string[] dataMasterLsideStep3addrs = new string[]
                     {
@@ -207,8 +230,8 @@ namespace WORKFLOW
                         "ZF223200",
                         "ZF517000",
                         "ZF517400",
-                        "ZF517800",
-                        "ZF518200"
+                        "ZF518200",
+                        "ZF517800"
                     };
 
         string[] RMasteringTeachStep2addrs = new string[]
@@ -279,7 +302,7 @@ namespace WORKFLOW
 
             backgroundThread = new Thread(BackgroundWork);
             backgroundThread.Start();
-            //SetConnection();
+            SetConnInternal_AtInit();
 
         }
 
@@ -287,14 +310,6 @@ namespace WORKFLOW
         {
             if (cancellationToken.IsCancellationRequested)
                 return;
-            if (_uiObject.InvokeRequired)
-            {
-                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.UpdateDate()));
-            }
-            else
-            {
-                //_uiObject.UpdateDate();
-            }
 
             //await Task.Run(() => UpdateUIRealtimeList(), cancellationToken);
         }
@@ -312,6 +327,7 @@ namespace WORKFLOW
             if (_uiObject.InvokeRequired)
             {
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.UpdateTime()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.UpdateDate()));
             }
             else
             {
@@ -320,19 +336,16 @@ namespace WORKFLOW
 
             //await Task.Run(() => UpdateUIRealtimeList(), cancellationToken);
         }
-
         private async Task Clock1ms(CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested)
                 return;
         }
-
         private async Task Clock10ms(CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested)
                 return;
         }
-
         private async Task Clock100ms(CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested)
@@ -340,6 +353,7 @@ namespace WORKFLOW
 
 
         }
+        
 
         void UpdateUIRealtimeList()
         {
@@ -352,8 +366,12 @@ namespace WORKFLOW
                 _uiObject.RealtimeUpdateList();
             }
         }
-
-
+        
+        void SetConnInternal_AtInit()
+        {
+            SetConnection();
+            _uiObject._connStat = 1;
+        }
 
         void CheckFolderPath(string pathblazer) { if (!Directory.Exists(pathblazer)) { Directory.CreateDirectory(pathblazer); } }
         public bool Get_backgroundProcessOngoing()
@@ -439,9 +457,15 @@ namespace WORKFLOW
                     _eeipTrigMasterFetch(MODNAME, ref MasterFileActive, ref _masterData);
                     _eeipTrigMasterFetchModel(ref _masterData);
                     _eeipTrigMasterFetchGraph(ref _masterData);
-                    //MasterDataAssignRealPlot();
-                    //uiPlotRealMasterUpdate();
-                    //uiUPdateRealMasterActiveTable(_masterData);
+
+                    MasterDataAssignRealPlot();
+                    MasterDataAssignLMasterPlot();
+                    MasterDataAssignRMasterPlot();
+                    uiPlotRealMasterUpdate();
+                    uiPlotLTeachMasterUpdate();
+                    uiPlotRTeachMasterUpdate();
+
+                    uiUPdateRealMasterActiveTable(_masterData);
                     uiSetModelName(_masterData._activeModelName);
                     MasterDataValidationSet();
                     MasterSetupConfirmSet();
@@ -558,6 +582,12 @@ namespace WORKFLOW
                 {
                     //_updateMasterDatabase();
                     MasterDataValidationReset();
+                    DataRMasterTeachIsExistReset();
+                    DataLMasterTeachIsExistReset();
+                    if (_uiObject.InvokeRequired)
+                    {
+                        _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.TabPageSelect(6)));
+                    }
                     _kvconnObject.writeDataCommand("W0DA", "", "0");
                     //Thread.Sleep(10);
                 }
@@ -565,25 +595,39 @@ namespace WORKFLOW
                 if ((byte)(TRIG[22] & 0x01) == 0x01)
                 {
                     _kvMasterTeachDataUpload(ref _TMaster.RMasteringTeachStep2, RMasteringTeachStep2addrs, 400);
-                    //MasterDataAssignRMasterPlot();
-                    //uiPlotRTeachMasterUpdate();
+                    DataRMasterTeachIsExistSet();
+
+                    MasterDataAssignRMasterPlot();
                     DataPlotRTeachRead();
+                    uiPlotRTeachMasterUpdate();
                     uiPlotRTeachUpdate();
                     uiUpdateMasterRTeachTable();
+
                     _kvconnObject.writeDataCommand("W0DB", "", "0");
 
                 }
                 if ((byte)(TRIG[24] & 0x01) == 0x01)
                 {
                     _kvMasterTeachDataUpload(ref _TMaster.LMasteringTeachStep2, LMasteringTeachStep2addrs, 400);
-                    //MasterDataAssignLMasterPlot();
-                    //uiPlotLTeachMasterUpdate();
+                    DataLMasterTeachIsExistSet();
+
+                    MasterDataAssignLMasterPlot();
                     DataPlotLTeachRead();
+                    uiPlotLTeachMasterUpdate();
                     uiPlotLTeachUpdate();
                     uiUpdateMasterLTeachTable();
+
                     _kvconnObject.writeDataCommand("W0DC", "", "0");
 
                 }
+                if ((byte)(TRIG[26] & 0x01) == 0x01)
+                {
+                    DataRMasterTeachIsExistReset();
+                    DataLMasterTeachIsExistReset();
+
+                    _kvconnObject.writeDataCommand("W0DD", "", "0");
+                }
+
 
                 if ((byte)(TRIG[28] & 0x01) == 0x01)
                 {
@@ -619,16 +663,44 @@ namespace WORKFLOW
 
             }
         }
-
-        void _kvMasterConfirm()
+        public void _kvMasterConfirm()
         {
-            if (_masterSetupConfirm) _kvconnObject.writeDataCommand("W01A", "", "1");
-            else _kvconnObject.writeDataCommand("W01A", "", "0");
+            if (_masterSetupConfirm)
+            {
+                if (_uiObject != null && _uiObject.IsHandleCreated)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.masterSetupSet()));
 
-            if (_masterDataValidation) _kvconnObject.writeDataCommand("W01B", "", "1");
-            else _kvconnObject.writeDataCommand("W01B", "", "0");
+                }
+                _kvconnObject.writeDataCommand("W01A", "", "1");
+            }
+            else
+            {
+                if (_uiObject != null && _uiObject.IsHandleCreated)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.masterSetupReset()));
+                }
+                _kvconnObject.writeDataCommand("W01A", "", "0");
+            }
+
+            if (_masterDataValidation)
+            {
+                if (_uiObject != null && _uiObject.IsHandleCreated)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.masterValidSet()));
+                }
+                _kvconnObject.writeDataCommand("W01B", "", "1");
+            }
+            else
+            {
+                if (_uiObject != null && _uiObject.IsHandleCreated)
+                {
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.masterValidReset()));
+                }
+                _kvconnObject.writeDataCommand("W01B", "", "0");
+            }
+
         }
-
         void _eeipTrigMasterFetch(string MODNAME, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
             string[] files = Directory.GetFiles(MasterDir);
@@ -838,6 +910,8 @@ namespace WORKFLOW
                     //_kvreadRealtime(ref _Rdata.RealtimeStep3, "ZF111604", "ZF112004", "ZF112404", "ZF113208", "ZF111604", "ZF510000", 400);
                     _kvreadRealtime(ref _Ldata.RealtimeStep2, dataLsideStep2addrs, 400);
                     //_kvreadRealtime(ref _Ldata.RealtimeStep3, "ZF211604", "ZF212004", "ZF212404", "ZF213208", "ZF211604", "ZF510500", 400);
+
+                    RealPresentConfirmSet();
 
                     _Rdata._Step1MaxLoad_NG = _kvconnObject.readbitCommand("LR201");
                     _Rdata._Step2CompRef_NG = _kvconnObject.readbitCommand("LR203");
@@ -2260,7 +2334,6 @@ namespace WORKFLOW
         {
             await Task.Run(() => action(), cancellationToken);
         }
-
         public async void BackgroundWork()
         {
             int counter = 0;
@@ -2282,7 +2355,9 @@ namespace WORKFLOW
                     await _eeipEventHandler_3Async(_cts.Token);
                     await _eeipEventHandler_4Async(_cts.Token);
                     await _eeipEventHandler_5Async(_cts.Token);
-                    
+
+                    await _dataRefMonitorAsync(_cts.Token);
+
 
                     //await _uiPlot1UpdateAsync(_cts.Token);
                     //await _backgroundDataPlot1ReadAsync(_cts.Token);
@@ -2299,7 +2374,6 @@ namespace WORKFLOW
                 Thread.Sleep(1);
             }
         }
-
         public void abortTasks()
         {
             _cts.Cancel();
@@ -2368,6 +2442,10 @@ namespace WORKFLOW
         {
             await InvokeAsync(() => _backgroundDataPlot4Read(), cancellationToken);
         }
+        private async Task _dataRefMonitorAsync(CancellationToken cancellationToken)
+        {
+            await InvokeAsync(() => _dataRefMonitor(), cancellationToken);
+        }
 
         private void _uibeaconnUpdate()
         {   
@@ -2402,6 +2480,52 @@ namespace WORKFLOW
             }
 
             Thread.Sleep(1);
+        }
+
+        void _dataRefMonitor()
+        {
+            if (this.GetConnState() == 1)
+            {
+                byte[] DATA_INPUT = _eeipObject.AssemblyObject.getInstance(0xB0);
+                Thread.Sleep(1);
+
+                _dataLoadPosMonitor(DATA_INPUT);
+            }
+            
+        }
+
+        void _dataLoadPosMonitor(byte[] DATABytes)
+        {
+            byte[] _buffLLoad = new byte[4];
+            byte[] _buffLPos  = new byte[4];
+            byte[] _buffRLoad = new byte[4];
+            byte[] _buffRPos  = new byte[4];
+            int _buffLLoadIndex = 0;
+            int _buffLPosIndex  = 4;
+            int _buffRLoadIndex = 8;
+            int _buffRPosIndex  = 12;
+            float _LLoad;
+            float _LPos;
+            float _RLoad;
+            float _RPos;
+
+            for (int i = 0; i < 4; i++)
+            {
+                _buffLLoad[i] = DATABytes[_buffLLoadIndex + i];
+                _buffLPos[i]  = DATABytes[_buffLPosIndex + i];
+                _buffRLoad[i] = DATABytes[_buffRLoadIndex + i];
+                _buffRPos[i]  = DATABytes[_buffRPosIndex + i];
+            }
+
+            _LLoad = BitConverter.ToSingle(_buffLLoad, 0);
+            _LPos  = BitConverter.ToSingle(_buffLPos , 0);
+            _RLoad = BitConverter.ToSingle(_buffRLoad, 0);
+            _RPos  = BitConverter.ToSingle(_buffRPos , 0);
+
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.uiLoadPosMonitor(_LLoad, _LPos, _RLoad, _RPos)));
+            }
         }
 
         #region PlotDataObject
@@ -2639,6 +2763,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot1_PRESENT, D1Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot1())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot1().Refresh()));
                 }
                 else
@@ -2647,6 +2772,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_PRESENT, xd, yd); 
                     _uiObject.PlotChangeColor(ref _uiObject.Plot1_PRESENT, D1Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot1());
                     _uiObject.FormPlot1().Refresh();
                 }
 
@@ -2671,6 +2797,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot2_PRESENT, D2Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot2())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot2().Refresh()));
                 }
                 else
@@ -2679,6 +2806,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_PRESENT, xd, yd); 
                     _uiObject.PlotChangeColor(ref _uiObject.Plot2_PRESENT, D2Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot2());
                     _uiObject.FormPlot2().Refresh();
                 }
 
@@ -2703,6 +2831,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot3_PRESENT, D3Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot3())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot3().Refresh()));
 
                 }
@@ -2712,6 +2841,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_PRESENT, xd, yd); 
                     _uiObject.PlotChangeColor(ref _uiObject.Plot3_PRESENT, D3Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot3());
                     _uiObject.FormPlot3().Refresh();
                 }
 
@@ -2736,6 +2866,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot4_PRESENT, D4Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot4())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot4().Refresh()));
                 }
                 else
@@ -2744,6 +2875,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot4_PRESENT, D4Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot4());
                     _uiObject.FormPlot4().Refresh();
                 }
 
@@ -2767,6 +2899,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot9_PRESENT, D5Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot9())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot9().Refresh()));
                 }
                 else
@@ -2774,6 +2907,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot9_PRESENT, D5Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot9());
                     _uiObject.FormPlot9().Refresh();
                 }
 
@@ -2797,6 +2931,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot10_PRESENT, D6Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot10())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot10().Refresh()));
                 }
                 else
@@ -2804,6 +2939,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot10_PRESENT, D6Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot10());
                     _uiObject.FormPlot10().Refresh();
                 }
 
@@ -2829,6 +2965,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot5_PRESENT, MTeach_D1Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot5())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot5().Refresh()));
                 }
                 else
@@ -2837,6 +2974,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot5_PRESENT, MTeach_D1Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot5());
                     _uiObject.FormPlot5().Refresh();
                 }
                 _uiPlot5UpdateFlag = false;
@@ -2859,6 +2997,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot6_PRESENT, MTeach_D2Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot6())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot6().Refresh()));
                 }
                 else
@@ -2867,6 +3006,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot6_PRESENT, MTeach_D2Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot6());
                     _uiObject.FormPlot6().Refresh();
                 }
                 _uiPlot6UpdateFlag = false;
@@ -2889,6 +3029,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot7_PRESENT, MTeach_D3Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot7())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot7().Refresh()));
 
                 }
@@ -2898,6 +3039,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot7_PRESENT, MTeach_D3Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot7());
                     _uiObject.FormPlot7().Refresh();
                 }
 
@@ -2921,6 +3063,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot8_PRESENT, MTeach_D4Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot8())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot8().Refresh()));
                 }
                 else
@@ -2929,6 +3072,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot8_PRESENT, MTeach_D4Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot8());
                     _uiObject.FormPlot8().Refresh();
                 }
                 _uiPlot8UpdateFlag = false;
@@ -2950,6 +3094,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot11_PRESENT, MTeach_D5Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot11())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot11().Refresh()));
                 }
                 else
@@ -2957,6 +3102,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot11_PRESENT, MTeach_D5Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot11());
                     _uiObject.FormPlot11().Refresh();
                 }
                 _uiPlot11UpdateFlag = false;
@@ -2978,6 +3124,7 @@ namespace WORKFLOW
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_PRESENT, xd, yd)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot12_PRESENT, MTeach_D6Col)));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotBringToFront(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_PRESENT)));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot12())));
                     _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot12().Refresh()));
                 }
                 else
@@ -2985,6 +3132,7 @@ namespace WORKFLOW
                     _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_PRESENT, xd, yd);
                     _uiObject.PlotChangeColor(ref _uiObject.Plot12_PRESENT, MTeach_D6Col);
                     _uiObject.PlotBringToFront(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_PRESENT);
+                    _uiObject.workSumPlotCheck(ref _uiObject.FormPlot12());
                     _uiObject.FormPlot12().Refresh();
                 }
                 _uiPlot12UpdateFlag = false;
@@ -3029,6 +3177,7 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot1_UPPER, HLim_D1Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot1_LOWER, LLim_D1Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot1())));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot1().Refresh()));
             }
             else
@@ -3039,6 +3188,7 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot1_UPPER, HLim_D1Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot1(), ref _uiObject.Plot1_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot1_LOWER, LLim_D1Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot1());
                 _uiObject.FormPlot1().Refresh();
             }
         }
@@ -3067,6 +3217,7 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot2_UPPER, HLim_D2Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot2_LOWER, LLim_D2Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot2())));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot2().Refresh()));
             }
             else
@@ -3077,6 +3228,7 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot2_UPPER, HLim_D2Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot2(), ref _uiObject.Plot2_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot2_LOWER, LLim_D2Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot2());
                 _uiObject.FormPlot2().Refresh();
             }
         }
@@ -3105,6 +3257,7 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot3_UPPER, HLim_D3Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot3_LOWER, LLim_D3Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot3())));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot3().Refresh()));
             }
             else
@@ -3115,6 +3268,7 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot3_UPPER, HLim_D3Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot3(), ref _uiObject.Plot3_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot3_LOWER, LLim_D3Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot3());
                 _uiObject.FormPlot3().Refresh();
             }
         }
@@ -3143,6 +3297,7 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot4_UPPER, HLim_D4Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot4_LOWER, LLim_D4Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot4())));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot4().Refresh()));
             }
             else
@@ -3153,6 +3308,7 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot4_UPPER, HLim_D4Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot4(), ref _uiObject.Plot4_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot4_LOWER, LLim_D4Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot4());
                 _uiObject.FormPlot4().Refresh();
             }
         }
@@ -3181,6 +3337,8 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot9_UPPER, HLim_D5Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot9_LOWER, LLim_D5Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot9())));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotZoomout(ref _uiObject.FormPlot9(), 1.3)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot9().Refresh()));
             }
             else
@@ -3191,6 +3349,8 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot9_UPPER, HLim_D5Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot9(), ref _uiObject.Plot9_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot9_LOWER, LLim_D5Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot9());
+                _uiObject.PlotZoomout(ref _uiObject.FormPlot9(), 1.3);
                 _uiObject.FormPlot9().Refresh();
             }
         }
@@ -3219,6 +3379,8 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot10_UPPER, HLim_D6Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot10_LOWER, LLim_D6Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot10())));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotZoomout(ref _uiObject.FormPlot10(), 1.3)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot10().Refresh()));
             }
             else
@@ -3229,6 +3391,8 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot10_UPPER, HLim_D6Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot10(), ref _uiObject.Plot10_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot10_LOWER, LLim_D6Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot10());
+                _uiObject.PlotZoomout(ref _uiObject.FormPlot10(), 1.3);
                 _uiObject.FormPlot10().Refresh();
             }
         }
@@ -3257,6 +3421,7 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot5_UPPER, MHLim_D1Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot5_LOWER, MLLim_D1Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot5())));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot5().Refresh()));
             }
             else
@@ -3267,6 +3432,7 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot5_UPPER, MHLim_D1Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot5(), ref _uiObject.Plot5_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot5_LOWER, MLLim_D1Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot5());
                 _uiObject.FormPlot5().Refresh();
             }
         }
@@ -3295,6 +3461,7 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot6_UPPER, MHLim_D2Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot6_LOWER, MLLim_D2Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot6())));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot6().Refresh()));
             }
             else
@@ -3305,6 +3472,7 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot6_UPPER, MHLim_D2Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot6(), ref _uiObject.Plot6_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot6_LOWER, MLLim_D2Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot6());
                 _uiObject.FormPlot6().Refresh();
             }
         }
@@ -3333,6 +3501,7 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot7_UPPER, MHLim_D3Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot7_LOWER, MLLim_D3Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot7())));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot7().Refresh()));
             }
             else
@@ -3343,6 +3512,7 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot7_UPPER, MHLim_D3Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot7(), ref _uiObject.Plot7_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot7_LOWER, MLLim_D3Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot7());
                 _uiObject.FormPlot7().Refresh();
             }
         }
@@ -3371,6 +3541,7 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot8_UPPER, MHLim_D4Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot8_LOWER, MLLim_D4Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot8())));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot8().Refresh()));
             }
             else
@@ -3381,6 +3552,7 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot8_UPPER, MHLim_D4Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot8(), ref _uiObject.Plot8_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot8_LOWER, MLLim_D4Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot8());
                 _uiObject.FormPlot8().Refresh();
             }
         }
@@ -3409,6 +3581,8 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot11_UPPER, MHLim_D5Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot11_LOWER, MLLim_D5Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot11())));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotZoomout(ref _uiObject.FormPlot11(), 1.3)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot11().Refresh()));
             }
             else
@@ -3419,6 +3593,8 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot11_UPPER, MHLim_D5Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot11(), ref _uiObject.Plot11_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot11_LOWER, MLLim_D5Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot11());
+                _uiObject.PlotZoomout(ref _uiObject.FormPlot11(), 1.3);
                 _uiObject.FormPlot11().Refresh();
             }
         }
@@ -3447,6 +3623,8 @@ namespace WORKFLOW
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot12_UPPER, MHLim_D6Col)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_LOWER, xdC, ydC)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotChangeColor(ref _uiObject.Plot12_LOWER, MLLim_D6Col)));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.workSumPlotCheck(ref _uiObject.FormPlot12())));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.PlotZoomout(ref _uiObject.FormPlot12(), 1.3)));
                 _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.FormPlot12().Refresh()));
             }
             else
@@ -3457,6 +3635,8 @@ namespace WORKFLOW
                 _uiObject.PlotChangeColor(ref _uiObject.Plot12_UPPER, MHLim_D6Col);
                 _uiObject.PlotSignalPlotting(ref _uiObject.FormPlot12(), ref _uiObject.Plot12_LOWER, xdC, ydC);
                 _uiObject.PlotChangeColor(ref _uiObject.Plot12_LOWER, MLLim_D6Col);
+                _uiObject.workSumPlotCheck(ref _uiObject.FormPlot12());
+                _uiObject.PlotZoomout(ref _uiObject.FormPlot12(), 1.3);
                 _uiObject.FormPlot12().Refresh();
             }
         }
@@ -3742,7 +3922,7 @@ namespace WORKFLOW
                 for (int i = 0; i < dXD6.Length; i++)
                 {
                     Array.Resize(ref dYD6, idxy + 1);
-                    dXD6[idxy] = (double)fXD6[i];
+                    dYD6[idxy] = (double)fYD6[i];
                     idxy++;
                 }
 
@@ -3996,15 +4176,21 @@ namespace WORKFLOW
         }
         void DataPlotLTeachRead()
         {
-            _DataPlot5Read();
-            _DataPlot6Read();
-            _DataPlot11Read();
+            if (DataLMasterTeachIsExist())
+            {
+                _DataPlot5Read();
+                _DataPlot6Read();
+                _DataPlot11Read();
+            }
         }
         void DataPlotRTeachRead()
         {
-            _DataPlot7Read();
-            _DataPlot8Read();
-            _DataPlot12Read();
+            if (DataRMasterTeachIsExist())
+            {
+                _DataPlot7Read();
+                _DataPlot8Read();
+                _DataPlot12Read();
+            }
         }
 
         void MasterDataAssignPlot1()
@@ -4787,16 +4973,84 @@ namespace WORKFLOW
         {
             _excelStoreMasterGraphData(ref _masterData, ref MasterFileActive);
             _excelPrintMasterData(ref _masterData, ref MasterFileActive);
+            MasterDataAssignRealPlot();
+            MasterDataAssignLMasterPlot();
+            MasterDataAssignRMasterPlot();
+            uiPlotRealMasterUpdate();
+            uiPlotLTeachMasterUpdate();
+            uiPlotRTeachMasterUpdate();
+            MasterUpdatingDatabaseReset();
         }
         public void workMasterValidation()
         {
-            _eeipTrigMasterFetch(_masterData._activeModelName, ref MasterFileActive, ref _masterData);
-            _eeipTrigMasterFetchModel(ref _masterData);
-            _eeipTrigMasterFetchGraph(ref _masterData);
+            if (!MasterDataValidation())
+            {
+                _eeipTrigMasterFetch(_masterData._activeModelName, ref MasterFileActive, ref _masterData);
+                _eeipTrigMasterFetchModel(ref _masterData);
+                _eeipTrigMasterFetchGraph(ref _masterData);
+                MasterDataAssignRealPlot();
+                MasterDataAssignLMasterPlot();
+                MasterDataAssignRMasterPlot();
+                uiPlotRealMasterUpdate();
+                uiPlotLTeachMasterUpdate();
+                uiPlotRTeachMasterUpdate();
+                uiUPdateRealMasterActiveTable(_masterData);
+                MasterDataValidationSet();
+            }
+        }
+            
+        public void uiReloadRealtimeData()
+        {
             MasterDataAssignRealPlot();
             uiPlotRealMasterUpdate();
             uiUPdateRealMasterActiveTable(_masterData);
-            MasterDataValidationSet();
+            if (RealPresentConfirm())
+            {
+                _backgroundDataPlot1Read();
+                _uiPlot1Update();
+                _backgroundDataPlot2Read();
+                _uiPlot2Update();
+                _backgroundDataPlot3Read();
+                _uiPlot3Update();
+                _backgroundDataPlot4Read();
+                _uiPlot4Update();
+                _backgroundDataPlot9Read();
+                _uiPlot9Update();
+                _backgroundDataPlot10Read();
+                _uiPlot10Update();
+                uiUPdateRealDataTable(_Rdata, _Ldata);
+            }
+        }
+
+        public void uiReloadTeachingData()
+        {
+            if (DataLMasterTeachIsExist())
+            {
+                _DataPlot5Read();
+                _uiPlot5MasterUpdate();
+                _DataPlot6Read();
+                _uiPlot6MasterUpdate();
+                _DataPlot11Read();
+                _uiPlot11MasterUpdate();
+            }
+            if (DataRMasterTeachIsExist())
+            {
+                _DataPlot7Read();
+                _uiPlot7MasterUpdate();
+                _DataPlot8Read();
+                _uiPlot8MasterUpdate();
+                _DataPlot12Read();
+                _uiPlot12MasterUpdate();
+            }
+
+            MasterDataAssignLMasterPlot();
+            MasterDataAssignRMasterPlot();
+
+            uiPlotLTeachMasterUpdate();
+            uiPlotRTeachMasterUpdate();
+
+            uiUpdateMasterLTeachTable();
+            uiUpdateMasterRTeachTable();
         }
     }
 
