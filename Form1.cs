@@ -3548,7 +3548,7 @@ namespace KVCOMSERVER
             button84.BackColor = System.Drawing.Color.DodgerBlue;
         }
 
-        
+
         public void masterValidReset()
         {
             button84.Text = "MASTER INVALID";
@@ -3559,15 +3559,15 @@ namespace KVCOMSERVER
         public void uiLoadPosMonitor(float lload, float lpos, float rload, float rpos)
         {
 
-            TXLoadL1.Text = $"Load: {lload:0000.##}";
-            TXLoadL2.Text = $"Load: {lload:0000.##}";
-            TXPosL1.Text = $"Pos: {lpos:0000.##}";
-            TXPosL2.Text = $"Pos: {lpos:0000.##}";
+            TXLoadL1.Text = $"Load: {lload:0.##} N";
+            TXLoadL2.Text = $"Load: {lload:0.##} mm";
+            TXPosL1.Text = $"Pos: {lpos:0.##} N";
+            TXPosL2.Text = $"Pos: {lpos:0.##} mm";
 
-            TXLoadR1.Text = $"Load: {rload:0000.##}";
-            TXLoadR2.Text = $"Load: {rload:0000.##}";
-            TXPosR1.Text = $"Pos: {rpos:0000.##}";
-            TXPosR2.Text = $"Pos: {rpos:0000.##}";
+            TXLoadR1.Text = $"Load: {rload:0.##} N";
+            TXLoadR2.Text = $"Load: {rload:0.##} mm";
+            TXPosR1.Text = $"Pos: {rpos:0.##} N";
+            TXPosR2.Text = $"Pos: {rpos:0.##} mm";
         }
 
         #endregion
@@ -4171,7 +4171,7 @@ namespace KVCOMSERVER
             }
         }
 
-        
+
 
         private void button30_Click(object sender, EventArgs e)
         {
@@ -4179,7 +4179,7 @@ namespace KVCOMSERVER
             updateMasterProcess = true;
             if (updateMasterProcess)
             {
-                
+
             }
             //UPDATE MASTER DATA
             if (MasterTeachSetConfirm)
@@ -4192,11 +4192,11 @@ namespace KVCOMSERVER
             updateMasterProcess = false;
             if (!updateMasterProcess)
             {
-                
+
             }
             button30.BackColor = Color.LightSteelBlue;
         }
-        
+
 
         private void button80_Click(object sender, EventArgs e)
         {
@@ -4538,8 +4538,6 @@ namespace KVCOMSERVER
         }
 
         #endregion
-
-        
     }
 
     #region supporting classes
