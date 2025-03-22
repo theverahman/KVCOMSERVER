@@ -74,6 +74,9 @@ namespace KVCOMSERVER
         public int _connStat;
         public int _beaconn;
 
+        public bool updateMasterProcess;
+        public bool validationMasterProcess;
+
         int tabIdxRealSideL = 0;
         int tabIdxRealSideR = 0;
 
@@ -2389,7 +2392,7 @@ namespace KVCOMSERVER
             {
                 MasteringUpdateList();
             }
-                if (tabControl1.SelectedIndex == 4)
+            if (tabControl1.SelectedIndex == 4)
             {
                 tabdataRealSideInit();
                 tabdataRealCompStep2L();
@@ -2540,7 +2543,7 @@ namespace KVCOMSERVER
                     return (float)value;
                 }
             }
-            
+
             return value;
         }
 
@@ -3544,6 +3547,8 @@ namespace KVCOMSERVER
             button84.ForeColor = System.Drawing.Color.Black;
             button84.BackColor = System.Drawing.Color.DodgerBlue;
         }
+
+        
         public void masterValidReset()
         {
             button84.Text = "MASTER INVALID";
@@ -3553,7 +3558,7 @@ namespace KVCOMSERVER
 
         public void uiLoadPosMonitor(float lload, float lpos, float rload, float rpos)
         {
-            
+
             TXLoadL1.Text = $"Load: {lload:0000.##}";
             TXLoadL2.Text = $"Load: {lload:0000.##}";
             TXPosL1.Text = $"Pos: {lpos:0000.##}";
@@ -3675,7 +3680,7 @@ namespace KVCOMSERVER
 
         private void button19_Click(object sender, EventArgs e)
         {
-            
+
             string DirRealtime = _WorkflowHandler.RealLogDir + $"YEAR_{dateTimePicker1.Value.Year}\\MONTH_{dateTimePicker1.Value.Month}\\DAY_{dateTimePicker1.Value.Day}";
             CheckFolderPath(DirRealtime);
             DataGridViewRow viewRow = new DataGridViewRow();
@@ -4166,24 +4171,50 @@ namespace KVCOMSERVER
             }
         }
 
+        
+
         private void button30_Click(object sender, EventArgs e)
         {
+            button30.BackColor = Color.Tomato;
+            updateMasterProcess = true;
+            if (updateMasterProcess)
+            {
+                
+            }
             //UPDATE MASTER DATA
             if (MasterTeachSetConfirm)
-            {   _WorkflowHandler.MasterUpdatingDatabaseSet();
+            {
+                _WorkflowHandler.MasterUpdatingDatabaseSet();
                 _WorkflowHandler.workUpdateMasterData();
                 _WorkflowHandler.workUpdateMasterDatabase();
                 MasterTeachSetConfirm = false;
             }
+            updateMasterProcess = false;
+            if (!updateMasterProcess)
+            {
+                
+            }
+            button30.BackColor = Color.LightSteelBlue;
         }
+        
 
         private void button80_Click(object sender, EventArgs e)
         {
+            validationMasterProcess = true;
+            if (validationMasterProcess)
+            {
+                button80.BackColor = Color.Tomato;
+            }
             //VALIDATE MASTER DATA
             if (!_WorkflowHandler.MasterIsUpdatingDatabase())
             {
                 _WorkflowHandler.workMasterValidation();
                 MasterTeachSetConfirm = false;
+            }
+            validationMasterProcess = false;
+            if (!validationMasterProcess)
+            {
+                button80.BackColor = Color.LightSteelBlue;
             }
         }
 
@@ -4508,6 +4539,7 @@ namespace KVCOMSERVER
 
         #endregion
 
+        
     }
 
     #region supporting classes

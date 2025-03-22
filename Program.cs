@@ -461,14 +461,19 @@ namespace WORKFLOW
                     MasterDataAssignRealPlot();
                     MasterDataAssignLMasterPlot();
                     MasterDataAssignRMasterPlot();
-                    uiPlotRealMasterUpdate();
-                    uiPlotLTeachMasterUpdate();
-                    uiPlotRTeachMasterUpdate();
-
+                    if (isnotNull(_masterData.RMasteringStep2) & isnotNull(_masterData.LMasteringStep2))
+                    {
+                        uiPlotRealMasterUpdate();
+                        uiPlotLTeachMasterUpdate();
+                        uiPlotRTeachMasterUpdate();
+                    }
                     uiUPdateRealMasterActiveTable(_masterData);
                     uiSetModelName(_masterData._activeModelName);
-                    MasterDataValidationSet();
                     MasterSetupConfirmSet();
+                    if (isnotNull(_masterData.RMasteringStep2) & isnotNull(_masterData.LMasteringStep2))
+                    {
+                        MasterDataValidationSet();
+                    }
                     _kvconnObject.writeDataCommand("W0F0", "", "1"); //>confirm if read file complete
                     _kvconnObject.writeDataCommand("W0D0", "", "0");
                     //Thread.Sleep(10);
@@ -594,7 +599,7 @@ namespace WORKFLOW
 
                 if ((byte)(TRIG[22] & 0x01) == 0x01)
                 {
-                    _kvMasterTeachDataUpload(ref _TMaster.RMasteringTeachStep2, RMasteringTeachStep2addrs, 400);
+                    _kvMasterTeachDataUpload(ref _TMaster.RMasteringTeachStep2, RMasteringTeachStep2addrs, 404);
                     DataRMasterTeachIsExistSet();
 
                     MasterDataAssignRMasterPlot();
@@ -608,7 +613,7 @@ namespace WORKFLOW
                 }
                 if ((byte)(TRIG[24] & 0x01) == 0x01)
                 {
-                    _kvMasterTeachDataUpload(ref _TMaster.LMasteringTeachStep2, LMasteringTeachStep2addrs, 400);
+                    _kvMasterTeachDataUpload(ref _TMaster.LMasteringTeachStep2, LMasteringTeachStep2addrs, 404);
                     DataLMasterTeachIsExistSet();
 
                     MasterDataAssignLMasterPlot();
@@ -855,6 +860,7 @@ namespace WORKFLOW
 
                     _eeipreadActiveModelData(ref _data);
                     _eeipreadStep1Param(ref _data);
+                    _eeipreadParamSizeUpload(ref _data);
                     _eeipreadStep2345Param(ref _data);
 
                     _excelStoreParameterData(ref _data, ref RealtimeFileR1);
@@ -1022,6 +1028,10 @@ namespace WORKFLOW
             masterfile.FileReadMaster(modfile);
             masterdata._activeModelName = masterfile.getModelName();
             masterdata._activeKayabaNumber = masterfile.getKYBNUM();
+
+            masterdata._MaxLoadLimit = (float)masterfile.getParameterMaxLoad();
+            masterdata._ProdLen = (float)masterfile.getParameterProdLength();
+
             masterdata.Step1Param = ParamStep1toObject(masterfile.getParameterStep1());
             masterdata.Step2345Param = ParamStep2345toObject(masterfile.getParameterStep2345());
 
@@ -1050,6 +1060,9 @@ namespace WORKFLOW
             excelmaster.setKYBNUM(feeddata._activeKayabaNumber);
             excelmaster.setParameterStep1(feeddata.Step1Param);
             excelmaster.setParameterStep2345(feeddata.Step2345Param);
+
+            excelmaster.setParameterMaxLoad(feeddata._MaxLoadLimit);
+            excelmaster.setParameterProdLength(feeddata._ProdLen);
         }
         void _excelPrintMasterData(ref DATAMODEL_MASTER feeddata, ref EXCELSTREAM exceldata)
         {
@@ -1062,6 +1075,9 @@ namespace WORKFLOW
             exceldata.setKYBNUM(feeddata._activeKayabaNumber);
             exceldata.setParameterStep1(feeddata.Step1Param);
             exceldata.setParameterStep2345(feeddata.Step2345Param);
+
+            exceldata.setParameterMaxLoad(feeddata._MaxLoadLimit);
+            exceldata.setParameterProdLength(feeddata._ProdLen);
         }
         void _excelStoreRealtimeData(ref DATAMODEL_COMMON datacm, ref DATAMODEL_RL datarl, ref EXCELSTREAM exceldata, string side)
         {
@@ -1070,6 +1086,10 @@ namespace WORKFLOW
 
             exceldata.RESET_LABEL_NG();
             exceldata.setDateTime(datacm.DTM);
+
+            exceldata.setParameterMaxLoad(datacm._MaxLoadLimit);
+            exceldata.setParameterProdLength(datacm._ProdLen);
+
             exceldata.setRealtimeJudgement(datarl.Judgement);
             exceldata.setRealtimeStep2(datarl.RealtimeStep2);
 
@@ -1252,6 +1272,53 @@ namespace WORKFLOW
             }
             catch { }
         }
+        //----
+        void _eeipreadParamSizeUpload(ref DATAMODEL_COMMON datacommon)
+        {
+            try
+            {
+                byte[] _INPUT;
+                List<byte[]> _buffPARAM1 = new List<byte[]>();
+                _INPUT = _eeipObject.AssemblyObject.getInstance(0xB1);
+                Thread.Sleep(1);
+
+                byte[] buff = new byte[4];
+                int iv = 0;
+                for (int i = 0; i < _INPUT.Length; i++)
+                {
+                    if (i % 4 != 0 && i != (_INPUT.Length - 1))
+                    {
+                        buff[iv] = _INPUT[i];
+                        iv++;
+                    }
+                    else if (i % 4 == 0)
+                    {
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffPARAM1.Add(sbuff);
+                        iv = 0;
+                        buff[iv] = _INPUT[i];
+                        iv++;
+                    }
+                    else if (i == (_INPUT.Length - 1))
+                    {
+                        buff[iv] = _INPUT[i];
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffPARAM1.Add(sbuff);
+                    }
+
+                }
+                Debug.WriteLine(BitConverter.ToSingle(_buffPARAM1[1], 0));
+                datacommon._MaxLoadLimit = BitConverter.ToSingle(_buffPARAM1[1], 0);
+                Debug.WriteLine(BitConverter.ToSingle(_buffPARAM1[2], 0));
+                datacommon._ProdLen = BitConverter.ToSingle(_buffPARAM1[2], 0);
+            }
+            catch { }
+        }
+        //----
         void _eeipreadStep1Param(ref DATAMODEL_COMMON data)
         {
             try
@@ -1549,12 +1616,28 @@ namespace WORKFLOW
             }
             catch { }
         }
+
         void _kvMasterModelDownload(ref DATAMODEL_MASTER master)
         {
             try
             {
                 string[] hexModelBuff = StringToHex(SplitString2C(master._activeModelName));
+                Array.Resize(ref hexModelBuff, 10);
                 string[] hexNumBuff = StringToHex(SplitString2C(master._activeKayabaNumber));
+                Array.Resize(ref hexNumBuff, 10);
+
+                for (int i = 0; i < (hexModelBuff.Length); i++)
+                {
+                    if (hexModelBuff[i] == null)
+                        hexModelBuff[i] = ("0000");
+                }
+                
+                for (int i = 0; i < (hexNumBuff.Length); i++)
+                {
+                    if(hexNumBuff[i] == null)
+                        hexNumBuff[i] = ("0000");
+                }
+
                 _kvconnObject.batchwriteDataCommand("W300", ".H", hexModelBuff.Length, hexModelBuff);
                 Thread.Sleep(1);
                 _kvconnObject.batchwriteDataCommand("W310", ".H", hexNumBuff.Length, hexNumBuff);
@@ -1617,7 +1700,7 @@ namespace WORKFLOW
                     AppendToArray(ref tfdata, FloatToHexArray((float)value1));
                     Debug.WriteLine((float)value1);
                 }
-                else if (masterparam1._ProdLen is float value2)
+                if (masterparam1._ProdLen is float value2)
                 {
                     AppendToArray(ref tfdata, FloatToHexArray(value2));
                     Debug.WriteLine((float)value2);
@@ -2328,6 +2411,52 @@ namespace WORKFLOW
                 unsignedInt16StringArray[i] = ushorts[i].ToString();
             }
             return unsignedInt16StringArray;
+        }
+
+        static bool isnotNull(float[] arraydata)
+        {
+            float buffer = arraydata.Sum();
+            return buffer != 0;
+        }
+
+        static bool isnotNull(double[] arraydata)
+        {
+            double buffer = arraydata.Sum();
+            return buffer != 0;
+        }
+
+        static bool isnotNull(List<float> arraydata)
+        {
+            float buffer = arraydata.Sum();
+            return buffer != 0;
+        }
+
+        static bool isnotNull(List<double> arraydata)
+        {
+            double buffer = arraydata.Sum();
+            return buffer != 0;
+        }
+
+        static bool isnotNull(List<List<float>> arraydata)
+        {
+            bool bbuff = true;
+            foreach (List<float> sublist in arraydata)
+            {
+                float buffer = sublist.Sum();
+                bbuff = bbuff & (buffer != 0);
+            }
+            return bbuff;
+        }
+
+        static bool isnotNull(List<List<double>> arraydata)
+        {
+            bool bbuff = true;
+            foreach (List<double> sublist in arraydata)
+            {
+                double buffer = sublist.Sum();
+                bbuff = bbuff & (buffer != 0);
+            }
+            return bbuff;
         }
 
         private async Task InvokeAsync(Action action, CancellationToken cancellationToken)
@@ -4976,9 +5105,12 @@ namespace WORKFLOW
             MasterDataAssignRealPlot();
             MasterDataAssignLMasterPlot();
             MasterDataAssignRMasterPlot();
-            uiPlotRealMasterUpdate();
-            uiPlotLTeachMasterUpdate();
-            uiPlotRTeachMasterUpdate();
+            if (isnotNull(_masterData.RMasteringStep2) & isnotNull(_masterData.LMasteringStep2))
+            {
+                uiPlotRealMasterUpdate();
+                uiPlotLTeachMasterUpdate();
+                uiPlotRTeachMasterUpdate();
+            }
             MasterUpdatingDatabaseReset();
         }
         public void workMasterValidation()
@@ -4991,9 +5123,12 @@ namespace WORKFLOW
                 MasterDataAssignRealPlot();
                 MasterDataAssignLMasterPlot();
                 MasterDataAssignRMasterPlot();
-                uiPlotRealMasterUpdate();
-                uiPlotLTeachMasterUpdate();
-                uiPlotRTeachMasterUpdate();
+                if (isnotNull(_masterData.RMasteringStep2) & isnotNull(_masterData.LMasteringStep2))
+                {
+                    uiPlotRealMasterUpdate();
+                    uiPlotLTeachMasterUpdate();
+                    uiPlotRTeachMasterUpdate();
+                }
                 uiUPdateRealMasterActiveTable(_masterData);
                 MasterDataValidationSet();
             }
@@ -5001,24 +5136,27 @@ namespace WORKFLOW
             
         public void uiReloadRealtimeData()
         {
-            MasterDataAssignRealPlot();
-            uiPlotRealMasterUpdate();
-            uiUPdateRealMasterActiveTable(_masterData);
-            if (RealPresentConfirm())
+            if (MasterDataValidation())
             {
-                _backgroundDataPlot1Read();
-                _uiPlot1Update();
-                _backgroundDataPlot2Read();
-                _uiPlot2Update();
-                _backgroundDataPlot3Read();
-                _uiPlot3Update();
-                _backgroundDataPlot4Read();
-                _uiPlot4Update();
-                _backgroundDataPlot9Read();
-                _uiPlot9Update();
-                _backgroundDataPlot10Read();
-                _uiPlot10Update();
-                uiUPdateRealDataTable(_Rdata, _Ldata);
+                MasterDataAssignRealPlot();
+                uiPlotRealMasterUpdate();
+                uiUPdateRealMasterActiveTable(_masterData);
+                if (RealPresentConfirm())
+                {
+                    _backgroundDataPlot1Read();
+                    _uiPlot1Update();
+                    _backgroundDataPlot2Read();
+                    _uiPlot2Update();
+                    _backgroundDataPlot3Read();
+                    _uiPlot3Update();
+                    _backgroundDataPlot4Read();
+                    _uiPlot4Update();
+                    _backgroundDataPlot9Read();
+                    _uiPlot9Update();
+                    _backgroundDataPlot10Read();
+                    _uiPlot10Update();
+                    uiUPdateRealDataTable(_Rdata, _Ldata);
+                }
             }
         }
 
@@ -5084,6 +5222,9 @@ namespace WORKFLOW
         public string _activeHour;
         public string _activeMinute;
         public string _activeSecond;
+
+        public float _MaxLoadLimit;
+        public float _ProdLen;
 
         public int _step1Enable;
         public float _step1Stroke;

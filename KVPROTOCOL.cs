@@ -432,7 +432,16 @@ namespace LIBKVPROTOCOL
 
                     for (int ix = 0; ix < recvData.Length; ix++)
                     {
-                        if (recvData[ix] == (byte)0x0D)
+                        int ichk = 0;
+                        if (ix > 0)
+                        {
+                            ichk = ix - 1;
+                        }
+                        else
+                        {
+                            ichk = 0;
+                        }
+                        if (recvData[ichk] == (byte)0x0D)
                         {
                             break;
                         }
