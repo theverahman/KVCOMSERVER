@@ -2,7 +2,9 @@
   "profiles": {
     "KVCOMSERVER": {
       "commandName": "Project",
-      "nativeDebugging": true
+      "nativeDebugging": false,
+      "remoteDebugEnabled": true,
+      "remoteDebugMachine": "DESKTOP-NNHHO4J:4030"
     }
   }
 }

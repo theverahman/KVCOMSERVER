@@ -64,7 +64,10 @@ namespace KVCOMSERVER
             button31 = new System.Windows.Forms.Button();
             button29 = new System.Windows.Forms.Button();
             tabPage5 = new System.Windows.Forms.TabPage();
+            button27 = new System.Windows.Forms.Button();
+            panel4 = new System.Windows.Forms.Panel();
             TXPosR2 = new System.Windows.Forms.Label();
+            panel5 = new System.Windows.Forms.Panel();
             TXLoadR2 = new System.Windows.Forms.Label();
             TXPosL2 = new System.Windows.Forms.Label();
             TXLoadL2 = new System.Windows.Forms.Label();
@@ -97,7 +100,6 @@ namespace KVCOMSERVER
             button28 = new System.Windows.Forms.Button();
             button25 = new System.Windows.Forms.Button();
             button26 = new System.Windows.Forms.Button();
-            button27 = new System.Windows.Forms.Button();
             button17 = new System.Windows.Forms.Button();
             button18 = new System.Windows.Forms.Button();
             label18 = new System.Windows.Forms.Label();
@@ -227,6 +229,8 @@ namespace KVCOMSERVER
             button84 = new System.Windows.Forms.Button();
             tabPage8.SuspendLayout();
             tabPage5.SuspendLayout();
+            panel4.SuspendLayout();
+            panel5.SuspendLayout();
             tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabPage7.SuspendLayout();
@@ -634,8 +638,9 @@ namespace KVCOMSERVER
             // 
             tabPage5.BackColor = System.Drawing.Color.SlateGray;
             tabPage5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            tabPage5.Controls.Add(TXPosR2);
-            tabPage5.Controls.Add(TXLoadR2);
+            tabPage5.Controls.Add(button27);
+            tabPage5.Controls.Add(panel4);
+            tabPage5.Controls.Add(panel5);
             tabPage5.Controls.Add(TXPosL2);
             tabPage5.Controls.Add(TXLoadL2);
             tabPage5.Controls.Add(Plot12Coord);
@@ -667,7 +672,6 @@ namespace KVCOMSERVER
             tabPage5.Controls.Add(button28);
             tabPage5.Controls.Add(button25);
             tabPage5.Controls.Add(button26);
-            tabPage5.Controls.Add(button27);
             tabPage5.Controls.Add(button17);
             tabPage5.Controls.Add(button18);
             tabPage5.Controls.Add(label18);
@@ -684,27 +688,56 @@ namespace KVCOMSERVER
             tabPage5.TabIndex = 4;
             tabPage5.Text = "MASTERING GRAPH";
             // 
+            // button27
+            // 
+            button27.BackColor = System.Drawing.Color.LightSteelBlue;
+            button27.Location = new System.Drawing.Point(1065, 945);
+            button27.Name = "button27";
+            button27.Size = new System.Drawing.Size(130, 60);
+            button27.TabIndex = 18;
+            button27.Text = "SHOW/HIDE\r\nMASTER LINE";
+            button27.UseVisualStyleBackColor = false;
+            button27.Click += button27_Click;
+            // 
+            // panel4
+            // 
+            panel4.Controls.Add(TXPosR2);
+            panel4.Location = new System.Drawing.Point(925, 925);
+            panel4.Name = "panel4";
+            panel4.Size = new System.Drawing.Size(200, 20);
+            panel4.TabIndex = 79;
+            // 
             // TXPosR2
             // 
             TXPosR2.AutoSize = true;
+            TXPosR2.Dock = System.Windows.Forms.DockStyle.Right;
             TXPosR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             TXPosR2.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosR2.Location = new System.Drawing.Point(1001, 925);
+            TXPosR2.Location = new System.Drawing.Point(77, 0);
             TXPosR2.Name = "TXPosR2";
             TXPosR2.Size = new System.Drawing.Size(123, 20);
-            TXPosR2.TabIndex = 79;
+            TXPosR2.TabIndex = 75;
             TXPosR2.Text = "Pos: 1234.56 mm";
             TXPosR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel5
+            // 
+            panel5.Controls.Add(TXLoadR2);
+            panel5.Location = new System.Drawing.Point(924, 905);
+            panel5.Name = "panel5";
+            panel5.Size = new System.Drawing.Size(201, 18);
+            panel5.TabIndex = 78;
             // 
             // TXLoadR2
             // 
             TXLoadR2.AutoSize = true;
+            TXLoadR2.Dock = System.Windows.Forms.DockStyle.Right;
             TXLoadR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             TXLoadR2.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadR2.Location = new System.Drawing.Point(1004, 905);
+            TXLoadR2.Location = new System.Drawing.Point(81, 0);
             TXLoadR2.Name = "TXLoadR2";
             TXLoadR2.Size = new System.Drawing.Size(120, 20);
-            TXLoadR2.TabIndex = 78;
+            TXLoadR2.TabIndex = 74;
             TXLoadR2.Text = "Load : 1234.56 N";
             TXLoadR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -1077,17 +1110,6 @@ namespace KVCOMSERVER
             button26.Text = "SHOW/HIDE\r\nMASTER LIMIT";
             button26.UseVisualStyleBackColor = false;
             button26.Click += button26_Click;
-            // 
-            // button27
-            // 
-            button27.BackColor = System.Drawing.Color.LightSteelBlue;
-            button27.Location = new System.Drawing.Point(1065, 945);
-            button27.Name = "button27";
-            button27.Size = new System.Drawing.Size(130, 60);
-            button27.TabIndex = 18;
-            button27.Text = "SHOW/HIDE\r\nMASTER LINE";
-            button27.UseVisualStyleBackColor = false;
-            button27.Click += button27_Click;
             // 
             // button17
             // 
@@ -2659,6 +2681,10 @@ namespace KVCOMSERVER
             tabPage8.PerformLayout();
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
@@ -2874,12 +2900,14 @@ namespace KVCOMSERVER
         private System.Windows.Forms.Label TXPosR1;
         private System.Windows.Forms.Label TXLoadR1;
         private System.Windows.Forms.Label TXPosL1;
-        private System.Windows.Forms.Label TXPosR2;
-        private System.Windows.Forms.Label TXLoadR2;
         private System.Windows.Forms.Label TXPosL2;
         private System.Windows.Forms.Label TXLoadL2;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label TXPosR2;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label TXLoadR2;
     }
 }
 

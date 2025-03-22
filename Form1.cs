@@ -2075,12 +2075,12 @@ namespace KVCOMSERVER
 
         public Form1()
         {
-            LoadCustomFont("IBMPlexSans-VariableFont.ttf");
-            LoadCustomFont("WorkSans-VariableFont.ttf");
-            LoadCustomFont("SarasaGothicJ-Regular.ttf");
-            LoadCustomFont("SarasaFixedJ-Regular.ttf");
-            LoadCustomFont("SarasaMonoJ-Regular.ttf");
-            LoadCustomFont("SarasaTermJ-Regular.ttf");
+            //LoadCustomFont("IBMPlexSans-VariableFont.ttf");
+            //LoadCustomFont("WorkSans-VariableFont.ttf");
+            //LoadCustomFont("SarasaGothicJ-Regular.ttf");
+            //LoadCustomFont("SarasaFixedJ-Regular.ttf");
+            //LoadCustomFont("SarasaMonoJ-Regular.ttf");
+            //LoadCustomFont("SarasaTermJ-Regular.ttf");
 
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
@@ -3558,16 +3558,19 @@ namespace KVCOMSERVER
 
         public void uiLoadPosMonitor(float lload, float lpos, float rload, float rpos)
         {
-
             TXLoadL1.Text = $"Load: {lload:0.##} N";
-            TXLoadL2.Text = $"Load: {lload:0.##} mm";
-            TXPosL1.Text = $"Pos: {lpos:0.##} N";
+            TXLoadL2.Text = $"Load: {lload:0.##} N";
+            TXPosL1.Text = $"Pos: {lpos:0.##} mm";
             TXPosL2.Text = $"Pos: {lpos:0.##} mm";
 
             TXLoadR1.Text = $"Load: {rload:0.##} N";
-            TXLoadR2.Text = $"Load: {rload:0.##} mm";
-            TXPosR1.Text = $"Pos: {rpos:0.##} N";
+            TXLoadR1.TextAlign = ContentAlignment.MiddleRight;
+            TXLoadR2.Text = $"Load: {rload:0.##} N";
+            TXLoadR2.TextAlign = ContentAlignment.MiddleRight;
+            TXPosR1.Text = $"Pos: {rpos:0.##} mm";
+            TXPosR1.TextAlign = ContentAlignment.MiddleRight;
             TXPosR2.Text = $"Pos: {rpos:0.##} mm";
+            TXPosR2.TextAlign = ContentAlignment.MiddleRight;
         }
 
         #endregion
