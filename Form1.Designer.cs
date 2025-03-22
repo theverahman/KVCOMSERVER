@@ -138,9 +138,10 @@ namespace KVCOMSERVER
             button34 = new System.Windows.Forms.Button();
             button32 = new System.Windows.Forms.Button();
             tabPage3 = new System.Windows.Forms.TabPage();
+            panel3 = new System.Windows.Forms.Panel();
+            TXPosR1 = new System.Windows.Forms.Label();
             panel2 = new System.Windows.Forms.Panel();
             TXLoadR1 = new System.Windows.Forms.Label();
-            TXPosR1 = new System.Windows.Forms.Label();
             TXPosL1 = new System.Windows.Forms.Label();
             TXLoadL1 = new System.Windows.Forms.Label();
             Plot10Coord = new System.Windows.Forms.Label();
@@ -224,13 +225,13 @@ namespace KVCOMSERVER
             label8 = new System.Windows.Forms.Label();
             button83 = new System.Windows.Forms.Button();
             button84 = new System.Windows.Forms.Button();
-            panel3 = new System.Windows.Forms.Panel();
             tabPage8.SuspendLayout();
             tabPage5.SuspendLayout();
             tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabPage7.SuspendLayout();
             tabPage3.SuspendLayout();
+            panel3.SuspendLayout();
             panel2.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -240,7 +241,6 @@ namespace KVCOMSERVER
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabControl1.SuspendLayout();
-            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // label4
@@ -1600,6 +1600,27 @@ namespace KVCOMSERVER
             tabPage3.TabIndex = 3;
             tabPage3.Text = "REALTIME GRAPH";
             // 
+            // panel3
+            // 
+            panel3.Controls.Add(TXPosR1);
+            panel3.Location = new System.Drawing.Point(925, 925);
+            panel3.Name = "panel3";
+            panel3.Size = new System.Drawing.Size(200, 20);
+            panel3.TabIndex = 77;
+            // 
+            // TXPosR1
+            // 
+            TXPosR1.AutoSize = true;
+            TXPosR1.Dock = System.Windows.Forms.DockStyle.Right;
+            TXPosR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosR1.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosR1.Location = new System.Drawing.Point(77, 0);
+            TXPosR1.Name = "TXPosR1";
+            TXPosR1.Size = new System.Drawing.Size(123, 20);
+            TXPosR1.TabIndex = 75;
+            TXPosR1.Text = "Pos: 1234.56 mm";
+            TXPosR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // panel2
             // 
             panel2.Controls.Add(TXLoadR1);
@@ -1620,18 +1641,6 @@ namespace KVCOMSERVER
             TXLoadR1.TabIndex = 74;
             TXLoadR1.Text = "Load : 1234.56 N";
             TXLoadR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TXPosR1
-            // 
-            TXPosR1.AutoSize = true;
-            TXPosR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXPosR1.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosR1.Location = new System.Drawing.Point(77, 0);
-            TXPosR1.Name = "TXPosR1";
-            TXPosR1.Size = new System.Drawing.Size(123, 20);
-            TXPosR1.TabIndex = 75;
-            TXPosR1.Text = "Pos: 1234.56 mm";
-            TXPosR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TXPosL1
             // 
@@ -2625,14 +2634,6 @@ namespace KVCOMSERVER
             button84.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             button84.UseVisualStyleBackColor = true;
             // 
-            // panel3
-            // 
-            panel3.Controls.Add(TXPosR1);
-            panel3.Location = new System.Drawing.Point(925, 925);
-            panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(200, 20);
-            panel3.TabIndex = 77;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -2664,6 +2665,8 @@ namespace KVCOMSERVER
             tabPage7.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             tabPage1.ResumeLayout(false);
@@ -2678,8 +2681,6 @@ namespace KVCOMSERVER
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabControl1.ResumeLayout(false);
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
