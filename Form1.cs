@@ -48,6 +48,7 @@ using System.Runtime.CompilerServices;
 using ScottPlot.Plottables;
 using SixLabors.Fonts;
 using DocumentFormat.OpenXml.Drawing.Charts;
+using ScottPlot.Interactivity.UserActionResponses;
 
 
 namespace KVCOMSERVER
@@ -2323,6 +2324,18 @@ namespace KVCOMSERVER
             //formsPlot12.MouseMove += OnTouchMove;
             //formsPlot12.MouseUp += OnTouchUp;
 
+            DisableZoomActions(ref formsPlot1);
+            DisableZoomActions(ref formsPlot2);
+            DisableZoomActions(ref formsPlot3);
+            DisableZoomActions(ref formsPlot4);
+            DisableZoomActions(ref formsPlot5);
+            DisableZoomActions(ref formsPlot6);
+            DisableZoomActions(ref formsPlot7);
+            DisableZoomActions(ref formsPlot8);
+            DisableZoomActions(ref formsPlot9);
+            DisableZoomActions(ref formsPlot10);
+            DisableZoomActions(ref formsPlot11);
+            DisableZoomActions(ref formsPlot12);
 
         }
         private void InitializeUI()
@@ -2545,6 +2558,25 @@ namespace KVCOMSERVER
             }
 
             return value;
+        }
+
+        private void DisableZoomActions(ref FormsPlot formplot)
+        {
+            // Remove the MouseDragZoomRectangle action
+            var zoomRectangleAction = formplot.UserInputProcessor.UserActionResponses
+                .FirstOrDefault(response => response is MouseDragZoomRectangle);
+            if (zoomRectangleAction != null)
+            {
+                formplot.UserInputProcessor.UserActionResponses.Remove(zoomRectangleAction);
+            }
+
+            // Remove the MouseDragZoom action
+            var zoomAction = formplot.UserInputProcessor.UserActionResponses
+                .FirstOrDefault(response => response is MouseDragZoom);
+            if (zoomAction != null)
+            {
+                formplot.UserInputProcessor.UserActionResponses.Remove(zoomAction);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)

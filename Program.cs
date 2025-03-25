@@ -933,7 +933,7 @@ namespace WORKFLOW
                     _Ldata._Step2ExtnGraph_NG = _kvconnObject.readbitCommand("LR609");
                     _Ldata._Step2DiffGraph_NG = _kvconnObject.readbitCommand("LR611");
 
-                    if (_Rdata._Step2CompGraph_NG == 1)
+                    if (_Ldata._Step2CompGraph_NG == 1)
                     {
                         D1Col = System.Drawing.Color.Red;
                     }
@@ -942,7 +942,7 @@ namespace WORKFLOW
                         D1Col = System.Drawing.Color.LimeGreen;
                     }
 
-                    if (_Rdata._Step2ExtnGraph_NG == 1)
+                    if (_Ldata._Step2ExtnGraph_NG == 1)
                     {
                         D2Col = System.Drawing.Color.Red;
                     }
@@ -951,7 +951,7 @@ namespace WORKFLOW
                         D2Col = System.Drawing.Color.LimeGreen;
                     }
 
-                    if (_Ldata._Step2CompGraph_NG == 1)
+                    if (_Rdata._Step2CompGraph_NG == 1)
                     {
                         D3Col = System.Drawing.Color.Red;
                     }
@@ -959,7 +959,7 @@ namespace WORKFLOW
                     {
                         D3Col = System.Drawing.Color.LimeGreen;
                     }
-                    if (_Ldata._Step2ExtnGraph_NG == 1)
+                    if (_Rdata._Step2ExtnGraph_NG == 1)
                     {
                         D4Col = System.Drawing.Color.Red;
                     }
@@ -967,7 +967,7 @@ namespace WORKFLOW
                     {
                         D4Col = System.Drawing.Color.LimeGreen;
                     }
-                    if (_Rdata._Step2DiffGraph_NG == 1)
+                    if (_Ldata._Step2DiffGraph_NG == 1)
                     {
                         D5Col = System.Drawing.Color.Red;
                     }
@@ -975,7 +975,7 @@ namespace WORKFLOW
                     {
                         D5Col = System.Drawing.Color.LimeGreen;
                     }
-                    if (_Ldata._Step2DiffGraph_NG == 1)
+                    if (_Rdata._Step2DiffGraph_NG == 1)
                     {
                         D6Col = System.Drawing.Color.Red;
                     }
