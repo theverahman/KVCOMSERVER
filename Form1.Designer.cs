@@ -1284,6 +1284,7 @@ namespace KVCOMSERVER
             button12.TabIndex = 13;
             button12.Text = "CURRENT MODEL\r\nDATA : IPC -> MC";
             button12.UseVisualStyleBackColor = false;
+            button12.Visible = false;
             button12.Click += button12_Click;
             // 
             // button11
@@ -1295,6 +1296,7 @@ namespace KVCOMSERVER
             button11.TabIndex = 12;
             button11.Text = "CURRENT MODEL\r\nDATA : MC -> IPC";
             button11.UseVisualStyleBackColor = false;
+            button11.Visible = false;
             button11.Click += button11_Click;
             // 
             // button9
@@ -1317,6 +1319,7 @@ namespace KVCOMSERVER
             button10.TabIndex = 10;
             button10.Text = "DISPLAY TO GRAPH";
             button10.UseVisualStyleBackColor = false;
+            button10.Visible = false;
             // 
             // dataGridView2
             // 
@@ -2198,6 +2201,7 @@ namespace KVCOMSERVER
             button3.TabIndex = 7;
             button3.Text = "DISPLAY TO GRAPH";
             button3.UseVisualStyleBackColor = false;
+            button3.Visible = false;
             // 
             // label3
             // 

@@ -1851,27 +1851,27 @@ namespace KVCOMSERVER
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
-                float.TryParse(tabMasterSideLStroke[i].Text, out float num1);
+                float.TryParse(tabMasterSideLStroke[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num1);
                 _dataMasterCompSideLStroke[i + tabIndex] = num1;
                 #endregion
 
                 #region Master
-                float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
+                float.TryParse(tabMasterSideLMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num2);
                 _dataMasterCompSideLMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Master Acc
-                float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
+                float.TryParse(tabMasterSideLAccMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num3);
                 _dataMasterCompSideLAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Lower
-                float.TryParse(tabMasterSideLLower[i].Text, out float num4);
+                float.TryParse(tabMasterSideLLower[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num4);
                 _dataMasterCompSideLLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
-                float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
+                float.TryParse(tabMasterSideLUpper[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num5);
                 _dataMasterCompSideLUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
@@ -1882,58 +1882,58 @@ namespace KVCOMSERVER
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
-                float.TryParse(tabMasterSideLStroke[i].Text, out float num1);
+                float.TryParse(tabMasterSideLStroke[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num1);
                 _dataMasterExtnSideLStroke[i + tabIndex] = num1;
                 #endregion
 
                 #region Master
-                float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
+                float.TryParse(tabMasterSideLMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num2);
                 _dataMasterExtnSideLMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Master Acc
-                float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
+                float.TryParse(tabMasterSideLAccMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num3);
                 _dataMasterExtnSideLAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Lower
-                float.TryParse(tabMasterSideLLower[i].Text, out float num4);
+                float.TryParse(tabMasterSideLLower[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num4);
                 _dataMasterExtnSideLLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
-                float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
+                float.TryParse(tabMasterSideLUpper[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num5);
                 _dataMasterExtnSideLUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
         }
-        public void tabdataMasterDiffStep2LW()
+        public void tabdataMasterDiffStep2LW()  
         {
             int tabIndex = tabIdxMasterSideL * 40;
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
-                float.TryParse(tabMasterSideLStroke[i].Text, out float num1);
+                float.TryParse(tabMasterSideLStroke[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num1);
                 _dataMasterSideLDiffStroke[i + tabIndex] = num1;
                 #endregion
 
                 #region Master
-                float.TryParse(tabMasterSideLMaster[i].Text, out float num2);
+                float.TryParse(tabMasterSideLMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num2);
                 _dataMasterSideLDiffMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Master Acc
-                float.TryParse(tabMasterSideLAccMaster[i].Text, out float num3);
+                float.TryParse(tabMasterSideLAccMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num3);
                 _dataMasterSideLDiffAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Lower
-                float.TryParse(tabMasterSideLLower[i].Text, out float num4);
+                float.TryParse(tabMasterSideLLower[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num4);
                 _dataMasterSideLDiffLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
-                float.TryParse(tabMasterSideLUpper[i].Text, out float num5);
+                float.TryParse(tabMasterSideLUpper[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num5);
                 _dataMasterSideLDiffUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
@@ -1944,27 +1944,27 @@ namespace KVCOMSERVER
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
-                float.TryParse(tabMasterSideRStroke[i].Text, out float num1);
+                float.TryParse(tabMasterSideRStroke[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num1);
                 _dataMasterCompSideRStroke[i + tabIndex] = num1;
                 #endregion
 
                 #region Master
-                float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
+                float.TryParse(tabMasterSideRMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num2);
                 _dataMasterCompSideRMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Lower
-                float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
+                float.TryParse(tabMasterSideRAccMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num3);
                 _dataMasterCompSideRAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Realtime
-                float.TryParse(tabMasterSideRLower[i].Text, out float num4);
+                float.TryParse(tabMasterSideRLower[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num4);
                 _dataMasterCompSideRLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
-                float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
+                float.TryParse(tabMasterSideRUpper[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num5);
                 _dataMasterCompSideRUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
@@ -1975,27 +1975,27 @@ namespace KVCOMSERVER
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
-                float.TryParse(tabMasterSideRStroke[i].Text, out float num1);
+                float.TryParse(tabMasterSideRStroke[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num1);
                 _dataMasterExtnSideRStroke[i + tabIndex] = num1;
                 #endregion
 
                 #region Master
-                float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
+                float.TryParse(tabMasterSideRMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num2);
                 _dataMasterExtnSideRMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Lower
-                float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
+                float.TryParse(tabMasterSideRAccMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num3);
                 _dataMasterExtnSideRAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Realtime
-                float.TryParse(tabMasterSideRLower[i].Text, out float num4);
+                float.TryParse(tabMasterSideRLower[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num4);
                 _dataMasterExtnSideRLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
-                float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
+                float.TryParse(tabMasterSideRUpper[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num5);
                 _dataMasterExtnSideRUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
@@ -2006,27 +2006,27 @@ namespace KVCOMSERVER
             for (int i = 0; i < 40; i++)
             {
                 #region Stroke
-                float.TryParse(tabMasterSideRStroke[i].Text, out float num1);
+                float.TryParse(tabMasterSideRStroke[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num1);
                 _dataMasterSideRDiffStroke[i + tabIndex] = num1;
                 #endregion
 
                 #region Master
-                float.TryParse(tabMasterSideRMaster[i].Text, out float num2);
+                float.TryParse(tabMasterSideRMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num2);
                 _dataMasterSideRDiffMaster[i + tabIndex] = RoundingEdge(num2, 0.10f);
                 #endregion
 
                 #region Master Acc
-                float.TryParse(tabMasterSideRAccMaster[i].Text, out float num3);
+                float.TryParse(tabMasterSideRAccMaster[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num3);
                 _dataMasterSideRDiffAccMaster[i + tabIndex] = RoundingEdge(num3, 0.10f);
                 #endregion
 
                 #region Lower
-                float.TryParse(tabMasterSideRLower[i].Text, out float num4);
+                float.TryParse(tabMasterSideRLower[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num4);
                 _dataMasterSideRDiffLower[i + tabIndex] = RoundingEdge((num2 - num4), 0.10f);
                 #endregion
 
                 #region Upper
-                float.TryParse(tabMasterSideRUpper[i].Text, out float num5);
+                float.TryParse(tabMasterSideRUpper[i].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float num5);
                 _dataMasterSideRDiffUpper[i + tabIndex] = RoundingEdge((num2 + num5), 0.10f);
                 #endregion
             }
@@ -3495,13 +3495,13 @@ namespace KVCOMSERVER
             }
 
             DataTable listtablefile = new DataTable();
-            listtablefile.Columns.Add("Time");
+            //listtablefile.Columns.Add("Time");
             listtablefile.Columns.Add("File Name");
 
             for (int i = 0; i < idx2; i++)
             {
                 DataRow newRow = listtablefile.NewRow();
-                newRow["Time"] = listfiles_date[i];
+                //newRow["Time"] = listfiles_date[i];
                 newRow["File Name"] = listfiles[i];
                 listtablefile.Rows.Add(newRow);
             }
