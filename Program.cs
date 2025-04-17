@@ -3801,7 +3801,7 @@ namespace WORKFLOW
                 int idxx = 0;
                 for (int i = 0; i < fXD1.Length; i++)
                 {
-                    if (fXD1[i] != 0 && i != 0)
+                    if (fXD1[i] > 0 && i != 0)
                     {
                         Array.Resize(ref dXD1, idxx + 1);
                         if ((double)fXD1[i] == dXD1[idxx - 1])
@@ -3888,7 +3888,7 @@ namespace WORKFLOW
                 int idxy = 0;
                 for (int i = 0; i < fXD3.Length; i++)
                 {
-                    if (fXD3[i] != 0 && i != 0)
+                    if (fXD3[i] > 0 && i != 0)
                     {
                         Array.Resize(ref dXD3, idxx + 1);
                         if ((double)fXD3[i] == dXD3[idxx - 1])
@@ -3974,7 +3974,7 @@ namespace WORKFLOW
                 int idxx = 0;
                 for (int i = 0; i < fXD5.Length; i++)
                 {
-                    if (fXD5[i] != 0 && i != 0)
+                    if (fXD5[i] > 0 && i != 0)
                     {
                         Array.Resize(ref dXD5, idxx + 1);
                         if ((double)fXD5[i] == dXD5[idxx - 1])
@@ -4026,7 +4026,7 @@ namespace WORKFLOW
                 int idxx = 0;
                 for (int i = 0; i < fXD6.Length; i++)
                 {
-                    if (fXD6[i] != 0 && i != 0)
+                    if (fXD6[i] > 0 && i != 0)
                     {
                         Array.Resize(ref dXD6, idxx + 1);
                         if ((double)fXD6[i] == dXD6[idxx - 1])
@@ -4076,7 +4076,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref MTeach_dXD1, idxx + 1);
                     if ((double)fXD[i] == MTeach_dXD1[idxx - 1])
@@ -4146,7 +4146,7 @@ namespace WORKFLOW
             int idxy = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref MTeach_dXD3, idxx + 1);
                     if ((double)fXD[i] == MTeach_dXD3[idxx - 1])
@@ -4213,7 +4213,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD5.Length; i++)
             {
-                if (fXD5[i] != 0 && i != 0)
+                if (fXD5[i] > 0 && i != 0)
                 {
                     Array.Resize(ref MTeach_dXD5, idxx + 1);
                     if ((double)fXD5[i] == MTeach_dXD5[idxx - 1])
@@ -4262,7 +4262,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD6.Length; i++)
             {
-                if (fXD6[i] != 0 && i != 0)
+                if (fXD6[i] > 0 && i != 0)
                 {
                     Array.Resize(ref MTeach_dXD6, idxx + 1);
                     if ((double)fXD6[i] == MTeach_dXD6[idxx - 1])
