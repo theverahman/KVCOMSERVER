@@ -752,6 +752,7 @@ namespace WORKFLOW
             _kvMasterParamSizeDownload(ref datamaster);
             _kvMasterParam1Download(ref datamaster);
             _kvMasterParam2345Download(ref datamaster);
+            _kvMasterParamDiffDownload(ref datamaster);
         }
         void _eeipTrigMasterFetchGraph(ref DATAMODEL_MASTER datamaster)
         {
@@ -769,6 +770,7 @@ namespace WORKFLOW
             _eeipMasterParamSizeUpload(ref _NEWMODEL);
             _eeipMasterParam1Upload(ref _NEWMODEL);
             _eeipMasterParam2345Upload(ref _NEWMODEL);
+            _eeipMasterDiffParamUpload(ref _NEWMODEL);
             _excelInitMasterData(ref _NEWMODEL);
 
             _kvconnObject.writeDataCommand("W0F1", "", "1");
@@ -804,6 +806,7 @@ namespace WORKFLOW
             _eeipMasterParamSizeUpload(ref datamaster);
             _eeipMasterParam1Upload(ref datamaster);
             _eeipMasterParam2345Upload(ref datamaster);
+            _eeipMasterDiffParamUpload(ref datamaster);
             //test if need to reassign/reupload graph data or not, if need from which entity
 
             _excelStoreMasterParamData(ref datamaster, ref filemaster);
@@ -862,6 +865,7 @@ namespace WORKFLOW
                     _eeipreadStep1Param(ref _data);
                     _eeipreadParamSizeUpload(ref _data);
                     _eeipreadStep2345Param(ref _data);
+                    _eeipreadDiffParam(ref _data);
 
                     _excelStoreParameterData(ref _data, ref RealtimeFileR1);
                     _excelStoreParameterData(ref _data, ref RealtimeFileL1);
@@ -1034,6 +1038,7 @@ namespace WORKFLOW
 
             masterdata.Step1Param = ParamStep1toObject(masterfile.getParameterStep1());
             masterdata.Step2345Param = ParamStep2345toObject(masterfile.getParameterStep2345());
+            masterdata.DiffParam = ParamDifftoObject(masterfile.getParameterStep2345_2());
 
             masterdata.RMasteringStep2 = masterfile.getRsideMasterStep2();
             masterdata.LMasteringStep2 = masterfile.getLsideMasterStep2();
@@ -1060,6 +1065,7 @@ namespace WORKFLOW
             excelmaster.setKYBNUM(feeddata._activeKayabaNumber);
             excelmaster.setParameterStep1(feeddata.Step1Param);
             excelmaster.setParameterStep2345(feeddata.Step2345Param);
+            excelmaster.setParameterStep2345_2(feeddata.DiffParam);
 
             excelmaster.setParameterMaxLoad(feeddata._MaxLoadLimit);
             excelmaster.setParameterProdLength(feeddata._ProdLen);
@@ -1075,6 +1081,7 @@ namespace WORKFLOW
             exceldata.setKYBNUM(feeddata._activeKayabaNumber);
             exceldata.setParameterStep1(feeddata.Step1Param);
             exceldata.setParameterStep2345(feeddata.Step2345Param);
+            exceldata.setParameterStep2345_2(feeddata.DiffParam);
 
             exceldata.setParameterMaxLoad(feeddata._MaxLoadLimit);
             exceldata.setParameterProdLength(feeddata._ProdLen);
@@ -1258,7 +1265,7 @@ namespace WORKFLOW
                     }
                 }
 
-                for (int i = 0; i < data.DTM.Count(); i++)
+                for (int i = 0; i < data.DTM.Count; i++)
                 {
                     if (i == 0)
                     {
@@ -1370,7 +1377,7 @@ namespace WORKFLOW
                 }
 
 
-                for (int i = 0; i < data.Step1Param.Count(); i++)
+                for (int i = 0; i < data.Step1Param.Count; i++)
                 {
                     if (i == 0 | i == 4)
                     {
@@ -1433,7 +1440,7 @@ namespace WORKFLOW
                     }
                 }
 
-                for (int i = 0; i < data.Step2345Param.Count(); i++)
+                for (int i = 0; i < data.Step2345Param.Count; i++)
                 {
                     if (i == 0 | i == 9 | i == 10 | i == 19)
                     {
@@ -1447,6 +1454,64 @@ namespace WORKFLOW
             }
             catch { }
         }
+
+        void _eeipreadDiffParam(ref DATAMODEL_COMMON data)
+        {
+            try
+            {
+                byte[] _INPUT;
+                List<byte[]> _buffDiffPARAM = new List<byte[]>();
+                _INPUT = _eeipObject.AssemblyObject.getInstance(0xA9);
+                Thread.Sleep(1);
+
+                byte[] buff = new byte[4];
+                int iv = 0;
+
+                for (int i = 0; i < _INPUT.Length; i++)
+                {
+                    if (i < 1)
+                    {
+                        buff[iv] = _INPUT[i];
+                        iv++;
+                    }
+                    else if (i == _INPUT.Length - 1)
+                    {
+                        buff[iv] = _INPUT[i];
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffDiffPARAM.Add(sbuff);
+                    }
+                    else
+                    {
+                        if (i % 4 != 0)
+                        {
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                        else if (i % 4 == 0)
+                        {
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, buff.Length);
+                            Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+
+                            _buffDiffPARAM.Add(sbuff);
+                            iv = 0;
+
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < data.DiffParam.Count; i++)
+                {
+                    data.DiffParam[i] = BitConverter.ToSingle(_buffDiffPARAM[i], 0);
+                }
+            }
+            catch { }
+        }
+
         void _eeipreadJudgement(ref List<float> judgementresult, Int16 addr)
         {
             try
@@ -1759,7 +1824,7 @@ namespace WORKFLOW
                         }
                     }
                 }
-                for (int i = 0; i < masterparam1.Step1Param.Count(); i++)
+                for (int i = 0; i < masterparam1.Step1Param.Count; i++)
                 {
                     if (i == 0 | i == 4)
                     {
@@ -1780,7 +1845,7 @@ namespace WORKFLOW
             string[] tfdata = new string[] { };
             try
             {
-                for (int i = 0; i < masterparam1.Step1Param.Count(); i++)
+                for (int i = 0; i < masterparam1.Step1Param.Count; i++)
                 {
                     if (masterparam1.Step1Param[i] is short value1)
                     { AppendToArray(ref tfdata, IntToHex((int)value1));
@@ -1794,7 +1859,8 @@ namespace WORKFLOW
             }
             catch { }
         }
-        void _eeipMasterParam2345Upload(ref DATAMODEL_MASTER masterparam2345)
+
+        void _eeipMasterParam2345Upload(ref DATAMODEL_MASTER masterparam)
         {
             try
             {
@@ -1843,34 +1909,93 @@ namespace WORKFLOW
                     }
                 }
 
-                for (int i = 0; i < masterparam2345.Step2345Param.Count(); i++)
+                for (int i = 0; i < masterparam.Step2345Param.Count; i++)
                 {
                     if (i == 0 | i == 9 | i == 10 | i == 19)
                     {
                         Debug.WriteLine(BitConverter.ToInt16(_buffPARAM2345[i], 0));
-                        masterparam2345.Step2345Param[i] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
+                        masterparam.Step2345Param[i] = BitConverter.ToInt16(_buffPARAM2345[i], 0);
                     }
                     else
                     {
                         Debug.WriteLine(BitConverter.ToSingle(_buffPARAM2345[i], 0));
-                        masterparam2345.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0);
+                        masterparam.Step2345Param[i] = BitConverter.ToSingle(_buffPARAM2345[i], 0);
                     }
                 }
             }
             catch { }
         }
-        void _kvMasterParam2345Download(ref DATAMODEL_MASTER masterparam2345)
+
+        void _eeipMasterDiffParamUpload(ref DATAMODEL_MASTER masterparam)
+        {
+            try
+            {
+                byte[] _INPUT;
+                List<byte[]> _buffDiffPARAM = new List<byte[]>();
+                _INPUT = _eeipObject.AssemblyObject.getInstance(0xA8);
+                Thread.Sleep(1);
+
+                byte[] buff = new byte[4];
+                int iv = 0;
+
+                for (int i = 0; i < _INPUT.Length; i++)
+                {
+                    if (i < 1)
+                    {
+                        buff[iv] = _INPUT[i];
+                        iv++;
+                    }
+                    else if (i == _INPUT.Length - 1)
+                    {
+                        buff[iv] = _INPUT[i];
+                        byte[] sbuff = new byte[] { };
+                        Array.Resize(ref sbuff, buff.Length);
+                        Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+                        _buffDiffPARAM.Add(sbuff);
+                    }
+                    else
+                    {
+                        if (i % 4 != 0)
+                        {
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                        else if (i % 4 == 0)
+                        {
+                            byte[] sbuff = new byte[] { };
+                            Array.Resize(ref sbuff, buff.Length);
+                            Buffer.BlockCopy(buff, 0, sbuff, 0, sbuff.Length);
+
+                            _buffDiffPARAM.Add(sbuff);
+                            iv = 0;
+
+                            buff[iv] = _INPUT[i];
+                            iv++;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < masterparam.DiffParam.Count; i++)
+                {
+                    Debug.WriteLine(BitConverter.ToSingle(_buffDiffPARAM[i], 0));
+                    masterparam.DiffParam[i] = BitConverter.ToSingle(_buffDiffPARAM[i], 0);
+                }
+            }
+            catch { }
+        }
+
+        void _kvMasterParam2345Download(ref DATAMODEL_MASTER masterparam)
         {
             string[] tfdata = new string[] { };
             try
             {
-                for (int i = 0; i < masterparam2345.Step2345Param.Count(); i++)
+                for (int i = 0; i < masterparam.Step2345Param.Count; i++)
                 {
                     //Debug.WriteLine((float)masterparam2345.Step2345Param[i]);
-                    if (masterparam2345.Step2345Param[i] is short value1)
+                    if (masterparam.Step2345Param[i] is short value1)
                     { AppendToArray(ref tfdata, IntToHex((int)value1));
                         Debug.WriteLine(value1); }
-                    else if (masterparam2345.Step2345Param[i] is float value2)
+                    else if (masterparam.Step2345Param[i] is float value2)
                     { AppendToArray(ref tfdata, FloatToHexArray(value2));
                         Debug.WriteLine((float)value2); }
                 }
@@ -1878,8 +2003,27 @@ namespace WORKFLOW
                 Thread.Sleep(1);
             }
             catch { }
-
         }
+
+        void _kvMasterParamDiffDownload(ref DATAMODEL_MASTER masterparam)
+        {
+            string[] tfdata = new string[] { };
+            try
+            {
+                for (int i = 0; i < masterparam.DiffParam.Count; i++)
+                {
+                    if (masterparam.DiffParam[i] is float value)
+                    {
+                        AppendToArray(ref tfdata, FloatToHexArray(value));
+                        Debug.WriteLine((float)value);
+                    }
+                }
+                _kvconnObject.batchwriteDataCommand("W380", ".H", tfdata.Length, tfdata);
+                Thread.Sleep(1);
+            }
+            catch { }
+        }
+
         void _kvMasterGraphUpload(ref List<List<float>> masterdata, string[] addrs, int count)
         {
             try
@@ -1913,7 +2057,7 @@ namespace WORKFLOW
                 for (int iv = 0; iv < masterdata.Count; iv++)
                 {
                     string[] masterdatalist = new string[] { };
-                    for (int ivy = 0; ivy < masterdata[iv].Count(); ivy++)
+                    for (int ivy = 0; ivy < masterdata[iv].Count; ivy++)
                     {
                         if (masterdata[iv][ivy] is float value) AppendToArray(ref masterdatalist, FloatToHexArray(value));
                     }
@@ -2025,6 +2169,16 @@ namespace WORKFLOW
                 {
                     dataobject.Add(Convert.ToSingle(dataread[i]));
                 }
+            }
+            return dataobject;
+        }
+
+        List<object> ParamDifftoObject<T>(List<T> dataread)
+        {
+            List<object> dataobject = new List<object>();
+            for (int i = 0; i < dataread.Count; i++)
+            {
+                dataobject.Add(Convert.ToSingle(dataread[i]));
             }
             return dataobject;
         }
@@ -3833,7 +3987,7 @@ namespace WORKFLOW
                 //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
                 //dYD1 = Array.ConvertAll(fYD1, x => (x != 0) ? (double)x);
 
-                if (dXD1.Count() != dYD1.Count())
+                if (dXD1.Length != dYD1.Length)
                 {
                     _uiPlot1UpdateFlag = false;
                 }
@@ -3867,7 +4021,7 @@ namespace WORKFLOW
                 dXD2 = Array.ConvertAll(fXD2, x => (double)x);
                 dYD2 = Array.ConvertAll(fYD2, x => (double)x);
 
-                if (dXD2.Count() != dYD2.Count())
+                if (dXD2.Length != dYD2.Length)
                 {
                     _uiPlot2UpdateFlag = false;
                 }
@@ -3919,7 +4073,7 @@ namespace WORKFLOW
                 //dXD3 = Array.ConvertAll(fXD3, x => (x != 0) ? (double)x);
                 //dYD3 = Array.ConvertAll(fYD3, x => (x != 0) ? (double)x);
 
-                if (dXD3.Count() != dYD3.Count())
+                if (dXD3.Length != dYD3.Length)
                 {
                     _uiPlot3UpdateFlag = false;
                 }
@@ -3954,7 +4108,7 @@ namespace WORKFLOW
                 dXD4 = Array.ConvertAll(fXD4, x => (double)x);
                 dYD4 = Array.ConvertAll(fYD4, x => (double)x);
 
-                if (dXD4.Count() != dYD4.Count())
+                if (dXD4.Length != dYD4.Length)
                 {
                     _uiPlot4UpdateFlag = false;
                 }
@@ -4006,7 +4160,7 @@ namespace WORKFLOW
                 //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
                 //dYD1 = Array.ConvertAll(fYD1, x => (x != 0) ? (double)x);
 
-                if (dXD5.Count() != dYD5.Count())
+                if (dXD5.Length != dYD5.Length)
                 {
                     _uiPlot9UpdateFlag = false;
                 }
@@ -4058,7 +4212,7 @@ namespace WORKFLOW
                 //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
                 //dYD1 = Array.ConvertAll(fYD1, x => (x != 0) ? (double)x);
 
-                if (dXD6.Count() != dYD6.Count())
+                if (dXD6.Length != dYD6.Length)
                 {
                     _uiPlot10UpdateFlag = false;
                 }
@@ -4108,7 +4262,7 @@ namespace WORKFLOW
             //MTeach_dXD1 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
             //MTeach_dYD1 = Array.ConvertAll(fYD, x => (x != 0) ? (double)x);
 
-            if (MTeach_dXD1.Count() != MTeach_dYD1.Count())
+            if (MTeach_dXD1.Length != MTeach_dYD1.Length)
             {
                 _uiPlot5UpdateFlag = false;
             }
@@ -4128,7 +4282,7 @@ namespace WORKFLOW
             MTeach_dXD2 = Array.ConvertAll(fXD, x => (double)x);
             MTeach_dYD2 = Array.ConvertAll(fYD, x => (double)x);
 
-            if (MTeach_dXD2.Count() != MTeach_dYD2.Count())
+            if (MTeach_dXD2.Length != MTeach_dYD2.Length)
             {
                 _uiPlot6UpdateFlag = false;
             }
@@ -4177,7 +4331,7 @@ namespace WORKFLOW
             //MTeach_dXD3 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
             //MTeach_MTeach_dYD3 = Array.ConvertAll(fYD, x => (x != 0) ? (double)x);
 
-            if (MTeach_dXD3.Count() != MTeach_dYD3.Count())
+            if (MTeach_dXD3.Length != MTeach_dYD3.Length)
             {
                 _uiPlot7UpdateFlag = false;
             }
@@ -4196,7 +4350,7 @@ namespace WORKFLOW
             MTeach_dXD4 = Array.ConvertAll(fXD, x => (double)x);
             MTeach_dYD4 = Array.ConvertAll(fYD, x => (double)x);
 
-            if (MTeach_dXD4.Count() != MTeach_dYD4.Count())
+            if (MTeach_dXD4.Length != MTeach_dYD4.Length)
             {
                 _uiPlot8UpdateFlag = false;
             }
@@ -4245,7 +4399,7 @@ namespace WORKFLOW
             //MTeach_dXD1 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
             //MTeach_dYD1 = Array.ConvertAll(fYD, x => (x != 0) ? (double)x);
 
-            if (MTeach_dXD5.Count() != MTeach_dYD5.Count())
+            if (MTeach_dXD5.Length != MTeach_dYD5.Length)
             {
                 _uiPlot11UpdateFlag = false;
             }
@@ -4294,7 +4448,7 @@ namespace WORKFLOW
             //MTeach_dXD1 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
             //MTeach_dYD1 = Array.ConvertAll(fYD, x => (x != 0) ? (double)x);
 
-            if (MTeach_dXD6.Count() != MTeach_dYD6.Count())
+            if (MTeach_dXD6.Length != MTeach_dYD6.Length)
             {
                 _uiPlot12UpdateFlag = false;
             }
@@ -4332,7 +4486,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref Master_dXD1, idxx + 1);
                     Array.Resize(ref Upper_dXD1, idxx + 1);
@@ -4404,7 +4558,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref Master_dXD3, idxx + 1);
                     Array.Resize(ref Upper_dXD3, idxx + 1);
@@ -4476,7 +4630,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref Master_dXD5, idxx + 1);
                     Array.Resize(ref Upper_dXD5, idxx + 1);
@@ -4529,7 +4683,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref Master_dXD6, idxx + 1);
                     Array.Resize(ref Upper_dXD6, idxx + 1);
@@ -4582,7 +4736,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref MMaster_dXD1, idxx + 1);
                     Array.Resize(ref MUpper_dXD1, idxx + 1);
@@ -4625,7 +4779,7 @@ namespace WORKFLOW
                 idxy++;
             }
 
-            if ((MMaster_dXD1.Count() != MMaster_dYD1.Count()) || (MLower_dXD1.Count() != MLower_dYD1.Count()) || (MUpper_dXD1.Count() != MUpper_dYD1.Count()))
+            if ((MMaster_dXD1.Length != MMaster_dYD1.Length) || (MLower_dXD1.Length != MLower_dYD1.Length) || (MUpper_dXD1.Length != MUpper_dYD1.Length))
             {
                 _uiPlot5UpdateFlag = false;
             }
@@ -4653,7 +4807,7 @@ namespace WORKFLOW
             MUpper_dYD2 = Array.ConvertAll(fYD2, x => (double)x);
             MLower_dYD2 = Array.ConvertAll(fYD3, x => (double)x);
 
-            if ((MMaster_dXD2.Count() != MMaster_dYD2.Count()) || (MUpper_dXD2.Count() != MUpper_dYD2.Count()) || (MLower_dXD2.Count() != MLower_dYD2.Count()))
+            if ((MMaster_dXD2.Length != MMaster_dYD2.Length) || (MUpper_dXD2.Length != MUpper_dYD2.Length) || (MLower_dXD2.Length != MLower_dYD2.Length))
             {
                 _uiPlot6UpdateFlag = false;
             }
@@ -4672,7 +4826,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref MMaster_dXD3, idxx + 1);
                     Array.Resize(ref MUpper_dXD3, idxx + 1);
@@ -4715,7 +4869,7 @@ namespace WORKFLOW
                 idxy++;
             }
 
-            if ((MMaster_dXD3.Count() != MMaster_dYD3.Count()) || (MLower_dXD3.Count() != MLower_dYD3.Count()) || (MUpper_dXD3.Count() != MUpper_dYD3.Count()))
+            if ((MMaster_dXD3.Length != MMaster_dYD3.Length) || (MLower_dXD3.Length != MLower_dYD3.Length) || (MUpper_dXD3.Length != MUpper_dYD3.Length))
             {
                 _uiPlot7UpdateFlag = false;
             }
@@ -4743,7 +4897,7 @@ namespace WORKFLOW
             MUpper_dYD4 = Array.ConvertAll(fYD2, x => (double)x);
             MLower_dYD4 = Array.ConvertAll(fYD3, x => (double)x);
 
-            if ((MMaster_dXD4.Count() != MMaster_dYD4.Count()) || (MUpper_dXD4.Count() != MUpper_dYD4.Count()) || (MLower_dXD4.Count() != MLower_dYD4.Count()))
+            if ((MMaster_dXD4.Length != MMaster_dYD4.Length) || (MUpper_dXD4.Length != MUpper_dYD4.Length) || (MLower_dXD4.Length != MLower_dYD4.Length))
             {
                 _uiPlot8UpdateFlag = false;
             }
@@ -4762,7 +4916,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref MMaster_dXD5, idxx + 1);
                     Array.Resize(ref MUpper_dXD5, idxx + 1);
@@ -4805,7 +4959,7 @@ namespace WORKFLOW
                 idxy++;
             }
 
-            if ((MMaster_dXD5.Count() != MMaster_dYD5.Count()) || (MLower_dXD5.Count() != MLower_dYD5.Count()) || (MUpper_dXD5.Count() != MUpper_dYD5.Count()))
+            if ((MMaster_dXD5.Length != MMaster_dYD5.Length) || (MLower_dXD5.Length != MLower_dYD5.Length) || (MUpper_dXD5.Length != MUpper_dYD5.Length))
             {
                 _uiPlot11UpdateFlag = false;
             }
@@ -4824,7 +4978,7 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] != 0 && i != 0)
+                if (fXD[i] > 0 && i != 0)
                 {
                     Array.Resize(ref MMaster_dXD6, idxx + 1);
                     Array.Resize(ref MUpper_dXD6, idxx + 1);
@@ -4867,7 +5021,7 @@ namespace WORKFLOW
                 idxy++;
             }
 
-            if ((MMaster_dXD6.Count() != MMaster_dYD6.Count()) || (MLower_dXD6.Count() != MLower_dYD6.Count()) || (MUpper_dXD6.Count() != MUpper_dYD6.Count()))
+            if ((MMaster_dXD6.Length != MMaster_dYD6.Length) || (MLower_dXD6.Length != MLower_dYD6.Length) || (MUpper_dXD6.Length != MUpper_dYD6.Length))
             {
                 _uiPlot12UpdateFlag = false;
             }
@@ -5244,6 +5398,9 @@ namespace WORKFLOW
         public float _step2ExtendLoadRef;
         public int _step2LoadRefTolerance;
 
+        public float _step2DiffPosMin;
+        public float _step2DiffPosMax;
+
         public int _step3Enable;
         public float _step3CompresSpeed;
         public float _step3CompressJudgeMin;
@@ -5255,9 +5412,13 @@ namespace WORKFLOW
         public float _step3ExtendLoadRef;
         public int _step3LoadRefTolerance;
 
+        public float _step3DiffPosMin;
+        public float _step3DiffPosMax;
+
         public List<string> DTM;
         public List<object> Step1Param;
         public List<object> Step2345Param;
+        public List<object> DiffParam;
 
         public DATAMODEL_COMMON()
         {
@@ -5304,6 +5465,14 @@ namespace WORKFLOW
                     _step3ExtendLoadRef,
                     _step3LoadRefTolerance
                 };
+
+            DiffParam = new List<object>()
+            {
+                _step2DiffPosMin,
+                _step2DiffPosMax,
+                _step3DiffPosMin,
+                _step3DiffPosMax
+            };
 
         }
     }
@@ -5408,6 +5577,9 @@ namespace WORKFLOW
         public float _step2ExtendLoadRef;
         public int _step2LoadRefTolerance;
 
+        public float _step2DiffPosMin;
+        public float _step2DiffPosMax;
+
         public int _step3Enable;
         public float _step3CompresSpeed;
         public float _step3CompressJudgeMin;
@@ -5419,9 +5591,13 @@ namespace WORKFLOW
         public float _step3ExtendLoadRef;
         public int _step3LoadRefTolerance;
 
+        public float _step3DiffPosMin;
+        public float _step3DiffPosMax;
+
         public List<string> DTM;
         public List<object> Step1Param;
         public List<object> Step2345Param;
+        public List<object> DiffParam;
 
         public List<List<float>> RMasteringStep2;
         public List<List<float>> RMasteringStep3;
@@ -5526,6 +5702,14 @@ namespace WORKFLOW
                 _step3ExtendJudgeMax,
                 _step3ExtendLoadRef,
                 _step3LoadRefTolerance
+            };
+
+            DiffParam = new List<object>()
+            {
+                _step2DiffPosMin,
+                _step2DiffPosMax,
+                _step3DiffPosMin,
+                _step3DiffPosMax
             };
 
             RMasteringStep2 = new List<List<float>>()
