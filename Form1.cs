@@ -4219,16 +4219,23 @@ namespace KVCOMSERVER
             //UPDATE MASTER DATA
             if (MasterTeachSetConfirm)
             {
-                _WorkflowHandler.MasterUpdatingDatabaseSet();
-                _WorkflowHandler.workUpdateMasterData();
-                _WorkflowHandler.workUpdateMasterDatabase();
-                MasterTeachSetConfirm = false;
+                
+                //MasterTeachSetConfirm = false;
             }
+
+            _WorkflowHandler.MasterUpdatingDatabaseSet();
+            _WorkflowHandler.workUpdateMasterData();
+            _WorkflowHandler.workUpdateMasterDatabase();
+
             updateMasterProcess = false;
+
+            Thread.Sleep(500);
+
             if (!updateMasterProcess)
             {
 
             }
+
             button30.BackColor = Color.LightSteelBlue;
         }
 
@@ -4240,6 +4247,7 @@ namespace KVCOMSERVER
             {
                 button80.BackColor = Color.Tomato;
             }
+
             //VALIDATE MASTER DATA
             if (!_WorkflowHandler.MasterIsUpdatingDatabase())
             {
@@ -4247,6 +4255,9 @@ namespace KVCOMSERVER
                 MasterTeachSetConfirm = false;
             }
             validationMasterProcess = false;
+
+            Thread.Sleep(500);
+
             if (!validationMasterProcess)
             {
                 button80.BackColor = Color.LightSteelBlue;
