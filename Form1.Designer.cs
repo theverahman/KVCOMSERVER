@@ -2540,9 +2540,9 @@ namespace KVCOMSERVER
             label12.AutoSize = true;
             label12.Location = new System.Drawing.Point(1512, 944);
             label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(197, 18);
+            label12.Size = new System.Drawing.Size(274, 18);
             label12.TabIndex = 24;
-            label12.Text = "PROJECT NUMBER : NSI - 0196";
+            label12.Text = "PROJECT NUMBER : NSI - 0196/NSI - 0203";
             // 
             // label11
             // 
@@ -2589,9 +2589,9 @@ namespace KVCOMSERVER
             label7.Font = new System.Drawing.Font("IBM Plex Sans SemiBold", 18F);
             label7.Location = new System.Drawing.Point(378, 37);
             label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(308, 34);
+            label7.Size = new System.Drawing.Size(228, 34);
             label7.TabIndex = 19;
-            label7.Text = "FRONT FORK ASSY LINE 5";
+            label7.Text = "FRONT FORK ASSY";
             // 
             // label5
             // 
@@ -2599,9 +2599,9 @@ namespace KVCOMSERVER
             label5.Font = new System.Drawing.Font("IBM Plex Sans SemiBold", 18F);
             label5.Location = new System.Drawing.Point(378, 5);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(534, 34);
+            label5.Size = new System.Drawing.Size(334, 34);
             label5.TabIndex = 12;
-            label5.Text = "DAMPING FORCE FUNCTION TESTER STATION";
+            label5.Text = "FUNCTION TESTER STATION";
             // 
             // tabControl1
             // 
