@@ -64,13 +64,19 @@ namespace KVCOMSERVER
             button31 = new System.Windows.Forms.Button();
             button29 = new System.Windows.Forms.Button();
             tabPage5 = new System.Windows.Forms.TabPage();
-            button27 = new System.Windows.Forms.Button();
-            panel4 = new System.Windows.Forms.Panel();
-            TXPosR2 = new System.Windows.Forms.Label();
+            panel6 = new System.Windows.Forms.Panel();
+            label32 = new System.Windows.Forms.Label();
+            label31 = new System.Windows.Forms.Label();
+            label30 = new System.Windows.Forms.Label();
+            panel8 = new System.Windows.Forms.Panel();
+            TXPosL2 = new System.Windows.Forms.Label();
+            panel7 = new System.Windows.Forms.Panel();
+            TXLoadL2 = new System.Windows.Forms.Label();
             panel5 = new System.Windows.Forms.Panel();
             TXLoadR2 = new System.Windows.Forms.Label();
-            TXPosL2 = new System.Windows.Forms.Label();
-            TXLoadL2 = new System.Windows.Forms.Label();
+            panel4 = new System.Windows.Forms.Panel();
+            TXPosR2 = new System.Windows.Forms.Label();
+            button27 = new System.Windows.Forms.Button();
             Plot12Coord = new System.Windows.Forms.Label();
             Plot8Coord = new System.Windows.Forms.Label();
             Plot7Coord = new System.Windows.Forms.Label();
@@ -140,12 +146,18 @@ namespace KVCOMSERVER
             button34 = new System.Windows.Forms.Button();
             button32 = new System.Windows.Forms.Button();
             tabPage3 = new System.Windows.Forms.TabPage();
-            panel3 = new System.Windows.Forms.Panel();
-            TXPosR1 = new System.Windows.Forms.Label();
-            panel2 = new System.Windows.Forms.Panel();
-            TXLoadR1 = new System.Windows.Forms.Label();
+            panel9 = new System.Windows.Forms.Panel();
+            label33 = new System.Windows.Forms.Label();
+            label34 = new System.Windows.Forms.Label();
+            label35 = new System.Windows.Forms.Label();
+            panel10 = new System.Windows.Forms.Panel();
             TXPosL1 = new System.Windows.Forms.Label();
+            panel11 = new System.Windows.Forms.Panel();
             TXLoadL1 = new System.Windows.Forms.Label();
+            panel12 = new System.Windows.Forms.Panel();
+            TXLoadR1 = new System.Windows.Forms.Label();
+            panel13 = new System.Windows.Forms.Panel();
+            TXPosR1 = new System.Windows.Forms.Label();
             Plot10Coord = new System.Windows.Forms.Label();
             Plot4Coord = new System.Windows.Forms.Label();
             Plot3Coord = new System.Windows.Forms.Label();
@@ -229,14 +241,20 @@ namespace KVCOMSERVER
             button84 = new System.Windows.Forms.Button();
             tabPage8.SuspendLayout();
             tabPage5.SuspendLayout();
-            panel4.SuspendLayout();
+            panel6.SuspendLayout();
+            panel8.SuspendLayout();
+            panel7.SuspendLayout();
             panel5.SuspendLayout();
+            panel4.SuspendLayout();
             tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabPage7.SuspendLayout();
             tabPage3.SuspendLayout();
-            panel3.SuspendLayout();
-            panel2.SuspendLayout();
+            panel9.SuspendLayout();
+            panel10.SuspendLayout();
+            panel11.SuspendLayout();
+            panel12.SuspendLayout();
+            panel13.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tabPage2.SuspendLayout();
@@ -638,11 +656,8 @@ namespace KVCOMSERVER
             // 
             tabPage5.BackColor = System.Drawing.Color.SlateGray;
             tabPage5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            tabPage5.Controls.Add(panel6);
             tabPage5.Controls.Add(button27);
-            tabPage5.Controls.Add(panel4);
-            tabPage5.Controls.Add(panel5);
-            tabPage5.Controls.Add(TXPosL2);
-            tabPage5.Controls.Add(TXLoadL2);
             tabPage5.Controls.Add(Plot12Coord);
             tabPage5.Controls.Add(Plot8Coord);
             tabPage5.Controls.Add(Plot7Coord);
@@ -687,45 +702,104 @@ namespace KVCOMSERVER
             tabPage5.Size = new System.Drawing.Size(1870, 1014);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "MASTERING GRAPH";
+            tabPage5.Click += tabPage5_Click;
             // 
-            // button27
+            // panel6
             // 
-            button27.BackColor = System.Drawing.Color.LightSteelBlue;
-            button27.Location = new System.Drawing.Point(1065, 945);
-            button27.Name = "button27";
-            button27.Size = new System.Drawing.Size(130, 60);
-            button27.TabIndex = 18;
-            button27.Text = "SHOW/HIDE\r\nMASTER LINE";
-            button27.UseVisualStyleBackColor = false;
-            button27.Click += button27_Click;
+            panel6.Controls.Add(label32);
+            panel6.Controls.Add(label31);
+            panel6.Controls.Add(label30);
+            panel6.Controls.Add(panel8);
+            panel6.Controls.Add(panel7);
+            panel6.Controls.Add(panel5);
+            panel6.Controls.Add(panel4);
+            panel6.Location = new System.Drawing.Point(749, 26);
+            panel6.Name = "panel6";
+            panel6.Size = new System.Drawing.Size(373, 116);
+            panel6.TabIndex = 80;
             // 
-            // panel4
+            // label32
             // 
-            panel4.Controls.Add(TXPosR2);
-            panel4.Location = new System.Drawing.Point(925, 925);
-            panel4.Name = "panel4";
-            panel4.Size = new System.Drawing.Size(200, 20);
-            panel4.TabIndex = 79;
+            label32.AutoSize = true;
+            label32.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label32.ForeColor = System.Drawing.Color.LightCyan;
+            label32.Location = new System.Drawing.Point(306, 38);
+            label32.Name = "label32";
+            label32.Size = new System.Drawing.Size(64, 18);
+            label32.TabIndex = 82;
+            label32.Text = "RH SIDE";
+            label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // TXPosR2
+            // label31
             // 
-            TXPosR2.AutoSize = true;
-            TXPosR2.Dock = System.Windows.Forms.DockStyle.Right;
-            TXPosR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXPosR2.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosR2.Location = new System.Drawing.Point(77, 0);
-            TXPosR2.Name = "TXPosR2";
-            TXPosR2.Size = new System.Drawing.Size(123, 20);
-            TXPosR2.TabIndex = 75;
-            TXPosR2.Text = "Pos: 1234.56 mm";
-            TXPosR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label31.AutoSize = true;
+            label31.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label31.ForeColor = System.Drawing.Color.LightCyan;
+            label31.Location = new System.Drawing.Point(8, 38);
+            label31.Name = "label31";
+            label31.Size = new System.Drawing.Size(64, 18);
+            label31.TabIndex = 81;
+            label31.Text = "LH SIDE";
+            label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Font = new System.Drawing.Font("Sarasa Fixed J", 16F, System.Drawing.FontStyle.Bold);
+            label30.ForeColor = System.Drawing.Color.LightCyan;
+            label30.Location = new System.Drawing.Point(66, 5);
+            label30.Name = "label30";
+            label30.Size = new System.Drawing.Size(240, 27);
+            label30.TabIndex = 81;
+            label30.Text = "REAL-TIME TELEMETRY";
+            label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel8
+            // 
+            panel8.Controls.Add(TXPosL2);
+            panel8.Location = new System.Drawing.Point(9, 76);
+            panel8.Name = "panel8";
+            panel8.Size = new System.Drawing.Size(175, 18);
+            panel8.TabIndex = 81;
+            // 
+            // TXPosL2
+            // 
+            TXPosL2.AutoSize = true;
+            TXPosL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosL2.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosL2.Location = new System.Drawing.Point(-1, 0);
+            TXPosL2.Name = "TXPosL2";
+            TXPosL2.Size = new System.Drawing.Size(123, 20);
+            TXPosL2.TabIndex = 77;
+            TXPosL2.Text = "Pos: 1234.56 mm";
+            TXPosL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel7
+            // 
+            panel7.Controls.Add(TXLoadL2);
+            panel7.Location = new System.Drawing.Point(9, 56);
+            panel7.Name = "panel7";
+            panel7.Size = new System.Drawing.Size(175, 18);
+            panel7.TabIndex = 80;
+            // 
+            // TXLoadL2
+            // 
+            TXLoadL2.AutoSize = true;
+            TXLoadL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadL2.ForeColor = System.Drawing.Color.LightCyan;
+            TXLoadL2.Location = new System.Drawing.Point(-1, 0);
+            TXLoadL2.Name = "TXLoadL2";
+            TXLoadL2.Size = new System.Drawing.Size(120, 20);
+            TXLoadL2.TabIndex = 76;
+            TXLoadL2.Text = "Load : 1234.56 N";
+            TXLoadL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel5
             // 
             panel5.Controls.Add(TXLoadR2);
-            panel5.Location = new System.Drawing.Point(924, 905);
+            panel5.Location = new System.Drawing.Point(197, 56);
             panel5.Name = "panel5";
-            panel5.Size = new System.Drawing.Size(201, 18);
+            panel5.Size = new System.Drawing.Size(175, 18);
             panel5.TabIndex = 78;
             // 
             // TXLoadR2
@@ -734,43 +808,51 @@ namespace KVCOMSERVER
             TXLoadR2.Dock = System.Windows.Forms.DockStyle.Right;
             TXLoadR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             TXLoadR2.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadR2.Location = new System.Drawing.Point(81, 0);
+            TXLoadR2.Location = new System.Drawing.Point(55, 0);
             TXLoadR2.Name = "TXLoadR2";
             TXLoadR2.Size = new System.Drawing.Size(120, 20);
             TXLoadR2.TabIndex = 74;
             TXLoadR2.Text = "Load : 1234.56 N";
             TXLoadR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // TXPosL2
+            // panel4
             // 
-            TXPosL2.AutoSize = true;
-            TXPosL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXPosL2.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosL2.Location = new System.Drawing.Point(745, 925);
-            TXPosL2.Name = "TXPosL2";
-            TXPosL2.Size = new System.Drawing.Size(123, 20);
-            TXPosL2.TabIndex = 77;
-            TXPosL2.Text = "Pos: 1234.56 mm";
-            TXPosL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panel4.Controls.Add(TXPosR2);
+            panel4.Location = new System.Drawing.Point(197, 76);
+            panel4.Name = "panel4";
+            panel4.Size = new System.Drawing.Size(175, 18);
+            panel4.TabIndex = 79;
             // 
-            // TXLoadL2
+            // TXPosR2
             // 
-            TXLoadL2.AutoSize = true;
-            TXLoadL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXLoadL2.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadL2.Location = new System.Drawing.Point(745, 905);
-            TXLoadL2.Name = "TXLoadL2";
-            TXLoadL2.Size = new System.Drawing.Size(120, 20);
-            TXLoadL2.TabIndex = 76;
-            TXLoadL2.Text = "Load : 1234.56 N";
-            TXLoadL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            TXPosR2.AutoSize = true;
+            TXPosR2.Dock = System.Windows.Forms.DockStyle.Right;
+            TXPosR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosR2.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosR2.Location = new System.Drawing.Point(52, 0);
+            TXPosR2.Name = "TXPosR2";
+            TXPosR2.Size = new System.Drawing.Size(123, 20);
+            TXPosR2.TabIndex = 75;
+            TXPosR2.Text = "Pos: 1234.56 mm";
+            TXPosR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // button27
+            // 
+            button27.BackColor = System.Drawing.Color.LightSteelBlue;
+            button27.Location = new System.Drawing.Point(1128, 945);
+            button27.Name = "button27";
+            button27.Size = new System.Drawing.Size(130, 60);
+            button27.TabIndex = 18;
+            button27.Text = "SHOW/HIDE\r\nMASTER LINE";
+            button27.UseVisualStyleBackColor = false;
+            button27.Click += button27_Click;
             // 
             // Plot12Coord
             // 
             Plot12Coord.AutoSize = true;
             Plot12Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot12Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot12Coord.Location = new System.Drawing.Point(1070, 750);
+            Plot12Coord.Location = new System.Drawing.Point(1130, 750);
             Plot12Coord.Name = "Plot12Coord";
             Plot12Coord.Size = new System.Drawing.Size(150, 20);
             Plot12Coord.TabIndex = 73;
@@ -782,7 +864,7 @@ namespace KVCOMSERVER
             Plot8Coord.AutoSize = true;
             Plot8Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot8Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot8Coord.Location = new System.Drawing.Point(1070, 376);
+            Plot8Coord.Location = new System.Drawing.Point(1130, 376);
             Plot8Coord.Name = "Plot8Coord";
             Plot8Coord.Size = new System.Drawing.Size(150, 20);
             Plot8Coord.TabIndex = 72;
@@ -794,7 +876,7 @@ namespace KVCOMSERVER
             Plot7Coord.AutoSize = true;
             Plot7Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot7Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot7Coord.Location = new System.Drawing.Point(1070, 0);
+            Plot7Coord.Location = new System.Drawing.Point(1130, 0);
             Plot7Coord.Name = "Plot7Coord";
             Plot7Coord.Size = new System.Drawing.Size(150, 20);
             Plot7Coord.TabIndex = 71;
@@ -806,7 +888,7 @@ namespace KVCOMSERVER
             Plot11Coord.AutoSize = true;
             Plot11Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot11Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot11Coord.Location = new System.Drawing.Point(650, 750);
+            Plot11Coord.Location = new System.Drawing.Point(591, 750);
             Plot11Coord.Name = "Plot11Coord";
             Plot11Coord.Size = new System.Drawing.Size(150, 20);
             Plot11Coord.TabIndex = 70;
@@ -818,7 +900,7 @@ namespace KVCOMSERVER
             Plot6Coord.AutoSize = true;
             Plot6Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot6Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot6Coord.Location = new System.Drawing.Point(650, 376);
+            Plot6Coord.Location = new System.Drawing.Point(591, 376);
             Plot6Coord.Name = "Plot6Coord";
             Plot6Coord.Size = new System.Drawing.Size(150, 20);
             Plot6Coord.TabIndex = 69;
@@ -830,7 +912,7 @@ namespace KVCOMSERVER
             Plot5Coord.AutoSize = true;
             Plot5Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot5Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot5Coord.Location = new System.Drawing.Point(650, 0);
+            Plot5Coord.Location = new System.Drawing.Point(591, 0);
             Plot5Coord.Name = "Plot5Coord";
             Plot5Coord.Size = new System.Drawing.Size(150, 20);
             Plot5Coord.TabIndex = 68;
@@ -841,7 +923,7 @@ namespace KVCOMSERVER
             // 
             button107.BackColor = System.Drawing.Color.LightSteelBlue;
             button107.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button107.Location = new System.Drawing.Point(1065, 833);
+            button107.Location = new System.Drawing.Point(1065, 880);
             button107.Margin = new System.Windows.Forms.Padding(0);
             button107.Name = "button107";
             button107.Size = new System.Drawing.Size(60, 60);
@@ -854,7 +936,7 @@ namespace KVCOMSERVER
             // 
             button108.BackColor = System.Drawing.Color.LightSteelBlue;
             button108.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button108.Location = new System.Drawing.Point(1065, 773);
+            button108.Location = new System.Drawing.Point(1065, 820);
             button108.Margin = new System.Windows.Forms.Padding(0);
             button108.Name = "button108";
             button108.Size = new System.Drawing.Size(60, 60);
@@ -867,7 +949,7 @@ namespace KVCOMSERVER
             // 
             button105.BackColor = System.Drawing.Color.LightSteelBlue;
             button105.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button105.Location = new System.Drawing.Point(1065, 459);
+            button105.Location = new System.Drawing.Point(1065, 690);
             button105.Margin = new System.Windows.Forms.Padding(0);
             button105.Name = "button105";
             button105.Size = new System.Drawing.Size(60, 60);
@@ -880,7 +962,7 @@ namespace KVCOMSERVER
             // 
             button106.BackColor = System.Drawing.Color.LightSteelBlue;
             button106.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button106.Location = new System.Drawing.Point(1065, 399);
+            button106.Location = new System.Drawing.Point(1065, 630);
             button106.Margin = new System.Windows.Forms.Padding(0);
             button106.Name = "button106";
             button106.Size = new System.Drawing.Size(60, 60);
@@ -893,7 +975,7 @@ namespace KVCOMSERVER
             // 
             button103.BackColor = System.Drawing.Color.LightSteelBlue;
             button103.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button103.Location = new System.Drawing.Point(1065, 83);
+            button103.Location = new System.Drawing.Point(1065, 313);
             button103.Margin = new System.Windows.Forms.Padding(0);
             button103.Name = "button103";
             button103.Size = new System.Drawing.Size(60, 60);
@@ -906,7 +988,7 @@ namespace KVCOMSERVER
             // 
             button104.BackColor = System.Drawing.Color.LightSteelBlue;
             button104.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button104.Location = new System.Drawing.Point(1065, 23);
+            button104.Location = new System.Drawing.Point(1065, 253);
             button104.Margin = new System.Windows.Forms.Padding(0);
             button104.Name = "button104";
             button104.Size = new System.Drawing.Size(60, 60);
@@ -919,7 +1001,7 @@ namespace KVCOMSERVER
             // 
             button101.BackColor = System.Drawing.Color.LightSteelBlue;
             button101.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button101.Location = new System.Drawing.Point(746, 833);
+            button101.Location = new System.Drawing.Point(746, 880);
             button101.Margin = new System.Windows.Forms.Padding(0);
             button101.Name = "button101";
             button101.Size = new System.Drawing.Size(60, 60);
@@ -932,7 +1014,7 @@ namespace KVCOMSERVER
             // 
             button102.BackColor = System.Drawing.Color.LightSteelBlue;
             button102.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button102.Location = new System.Drawing.Point(746, 773);
+            button102.Location = new System.Drawing.Point(746, 820);
             button102.Margin = new System.Windows.Forms.Padding(0);
             button102.Name = "button102";
             button102.Size = new System.Drawing.Size(60, 60);
@@ -945,7 +1027,7 @@ namespace KVCOMSERVER
             // 
             button99.BackColor = System.Drawing.Color.LightSteelBlue;
             button99.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button99.Location = new System.Drawing.Point(746, 459);
+            button99.Location = new System.Drawing.Point(746, 690);
             button99.Margin = new System.Windows.Forms.Padding(0);
             button99.Name = "button99";
             button99.Size = new System.Drawing.Size(60, 60);
@@ -958,7 +1040,7 @@ namespace KVCOMSERVER
             // 
             button100.BackColor = System.Drawing.Color.LightSteelBlue;
             button100.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button100.Location = new System.Drawing.Point(746, 399);
+            button100.Location = new System.Drawing.Point(746, 630);
             button100.Margin = new System.Windows.Forms.Padding(0);
             button100.Name = "button100";
             button100.Size = new System.Drawing.Size(60, 60);
@@ -971,7 +1053,7 @@ namespace KVCOMSERVER
             // 
             button97.BackColor = System.Drawing.Color.LightSteelBlue;
             button97.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button97.Location = new System.Drawing.Point(746, 83);
+            button97.Location = new System.Drawing.Point(746, 313);
             button97.Margin = new System.Windows.Forms.Padding(0);
             button97.Name = "button97";
             button97.Size = new System.Drawing.Size(60, 60);
@@ -984,7 +1066,7 @@ namespace KVCOMSERVER
             // 
             button98.BackColor = System.Drawing.Color.LightSteelBlue;
             button98.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button98.Location = new System.Drawing.Point(746, 23);
+            button98.Location = new System.Drawing.Point(746, 253);
             button98.Margin = new System.Windows.Forms.Padding(0);
             button98.Name = "button98";
             button98.Size = new System.Drawing.Size(60, 60);
@@ -996,7 +1078,7 @@ namespace KVCOMSERVER
             // button81
             // 
             button81.BackColor = System.Drawing.Color.LightSteelBlue;
-            button81.Location = new System.Drawing.Point(729, 945);
+            button81.Location = new System.Drawing.Point(669, 945);
             button81.Name = "button81";
             button81.Size = new System.Drawing.Size(77, 60);
             button81.TabIndex = 33;
@@ -1007,7 +1089,7 @@ namespace KVCOMSERVER
             // button80
             // 
             button80.BackColor = System.Drawing.Color.LightSteelBlue;
-            button80.Location = new System.Drawing.Point(1620, 945);
+            button80.Location = new System.Drawing.Point(870, 716);
             button80.Name = "button80";
             button80.Size = new System.Drawing.Size(130, 60);
             button80.TabIndex = 32;
@@ -1018,7 +1100,7 @@ namespace KVCOMSERVER
             // button30
             // 
             button30.BackColor = System.Drawing.Color.LightSteelBlue;
-            button30.Location = new System.Drawing.Point(1484, 945);
+            button30.Location = new System.Drawing.Point(870, 650);
             button30.Name = "button30";
             button30.Size = new System.Drawing.Size(130, 60);
             button30.TabIndex = 31;
@@ -1092,7 +1174,7 @@ namespace KVCOMSERVER
             // 
             button25.BackColor = System.Drawing.Color.LightSteelBlue;
             button25.Font = new System.Drawing.Font("Sarasa Fixed J", 10F);
-            button25.Location = new System.Drawing.Point(1337, 945);
+            button25.Location = new System.Drawing.Point(1400, 945);
             button25.Name = "button25";
             button25.Size = new System.Drawing.Size(130, 60);
             button25.TabIndex = 20;
@@ -1103,7 +1185,7 @@ namespace KVCOMSERVER
             // button26
             // 
             button26.BackColor = System.Drawing.Color.LightSteelBlue;
-            button26.Location = new System.Drawing.Point(1201, 945);
+            button26.Location = new System.Drawing.Point(1264, 945);
             button26.Name = "button26";
             button26.Size = new System.Drawing.Size(130, 60);
             button26.TabIndex = 19;
@@ -1576,10 +1658,7 @@ namespace KVCOMSERVER
             // 
             tabPage3.BackColor = System.Drawing.Color.SlateGray;
             tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            tabPage3.Controls.Add(panel3);
-            tabPage3.Controls.Add(panel2);
-            tabPage3.Controls.Add(TXPosL1);
-            tabPage3.Controls.Add(TXLoadL1);
+            tabPage3.Controls.Add(panel9);
             tabPage3.Controls.Add(Plot10Coord);
             tabPage3.Controls.Add(Plot4Coord);
             tabPage3.Controls.Add(Plot3Coord);
@@ -1625,34 +1704,103 @@ namespace KVCOMSERVER
             tabPage3.TabIndex = 3;
             tabPage3.Text = "REALTIME GRAPH";
             // 
-            // panel3
+            // panel9
             // 
-            panel3.Controls.Add(TXPosR1);
-            panel3.Location = new System.Drawing.Point(925, 925);
-            panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(200, 20);
-            panel3.TabIndex = 77;
+            panel9.Controls.Add(label33);
+            panel9.Controls.Add(label34);
+            panel9.Controls.Add(label35);
+            panel9.Controls.Add(panel10);
+            panel9.Controls.Add(panel11);
+            panel9.Controls.Add(panel12);
+            panel9.Controls.Add(panel13);
+            panel9.Location = new System.Drawing.Point(747, 23);
+            panel9.Name = "panel9";
+            panel9.Size = new System.Drawing.Size(373, 116);
+            panel9.TabIndex = 81;
             // 
-            // TXPosR1
+            // label33
             // 
-            TXPosR1.AutoSize = true;
-            TXPosR1.Dock = System.Windows.Forms.DockStyle.Right;
-            TXPosR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXPosR1.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosR1.Location = new System.Drawing.Point(77, 0);
-            TXPosR1.Name = "TXPosR1";
-            TXPosR1.Size = new System.Drawing.Size(123, 20);
-            TXPosR1.TabIndex = 75;
-            TXPosR1.Text = "Pos: 1234.56 mm";
-            TXPosR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label33.AutoSize = true;
+            label33.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label33.ForeColor = System.Drawing.Color.LightCyan;
+            label33.Location = new System.Drawing.Point(306, 38);
+            label33.Name = "label33";
+            label33.Size = new System.Drawing.Size(64, 18);
+            label33.TabIndex = 82;
+            label33.Text = "RH SIDE";
+            label33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel2
+            // label34
             // 
-            panel2.Controls.Add(TXLoadR1);
-            panel2.Location = new System.Drawing.Point(924, 905);
-            panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(201, 18);
-            panel2.TabIndex = 76;
+            label34.AutoSize = true;
+            label34.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            label34.ForeColor = System.Drawing.Color.LightCyan;
+            label34.Location = new System.Drawing.Point(8, 38);
+            label34.Name = "label34";
+            label34.Size = new System.Drawing.Size(64, 18);
+            label34.TabIndex = 81;
+            label34.Text = "LH SIDE";
+            label34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label35
+            // 
+            label35.AutoSize = true;
+            label35.Font = new System.Drawing.Font("Sarasa Fixed J", 16F, System.Drawing.FontStyle.Bold);
+            label35.ForeColor = System.Drawing.Color.LightCyan;
+            label35.Location = new System.Drawing.Point(66, 5);
+            label35.Name = "label35";
+            label35.Size = new System.Drawing.Size(240, 27);
+            label35.TabIndex = 81;
+            label35.Text = "REAL-TIME TELEMETRY";
+            label35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel10
+            // 
+            panel10.Controls.Add(TXPosL1);
+            panel10.Location = new System.Drawing.Point(9, 76);
+            panel10.Name = "panel10";
+            panel10.Size = new System.Drawing.Size(175, 18);
+            panel10.TabIndex = 81;
+            // 
+            // TXPosL1
+            // 
+            TXPosL1.AutoSize = true;
+            TXPosL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosL1.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosL1.Location = new System.Drawing.Point(0, 0);
+            TXPosL1.Name = "TXPosL1";
+            TXPosL1.Size = new System.Drawing.Size(123, 20);
+            TXPosL1.TabIndex = 73;
+            TXPosL1.Text = "Pos: 1234.56 mm";
+            TXPosL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel11
+            // 
+            panel11.Controls.Add(TXLoadL1);
+            panel11.Location = new System.Drawing.Point(9, 56);
+            panel11.Name = "panel11";
+            panel11.Size = new System.Drawing.Size(175, 18);
+            panel11.TabIndex = 80;
+            // 
+            // TXLoadL1
+            // 
+            TXLoadL1.AutoSize = true;
+            TXLoadL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadL1.ForeColor = System.Drawing.Color.LightCyan;
+            TXLoadL1.Location = new System.Drawing.Point(0, 0);
+            TXLoadL1.Name = "TXLoadL1";
+            TXLoadL1.Size = new System.Drawing.Size(120, 20);
+            TXLoadL1.TabIndex = 72;
+            TXLoadL1.Text = "Load : 1234.56 N";
+            TXLoadL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel12
+            // 
+            panel12.Controls.Add(TXLoadR1);
+            panel12.Location = new System.Drawing.Point(197, 56);
+            panel12.Name = "panel12";
+            panel12.Size = new System.Drawing.Size(175, 18);
+            panel12.TabIndex = 78;
             // 
             // TXLoadR1
             // 
@@ -1660,43 +1808,40 @@ namespace KVCOMSERVER
             TXLoadR1.Dock = System.Windows.Forms.DockStyle.Right;
             TXLoadR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             TXLoadR1.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadR1.Location = new System.Drawing.Point(81, 0);
+            TXLoadR1.Location = new System.Drawing.Point(55, 0);
             TXLoadR1.Name = "TXLoadR1";
             TXLoadR1.Size = new System.Drawing.Size(120, 20);
-            TXLoadR1.TabIndex = 74;
+            TXLoadR1.TabIndex = 75;
             TXLoadR1.Text = "Load : 1234.56 N";
             TXLoadR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // TXPosL1
+            // panel13
             // 
-            TXPosL1.AutoSize = true;
-            TXPosL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXPosL1.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosL1.Location = new System.Drawing.Point(745, 925);
-            TXPosL1.Name = "TXPosL1";
-            TXPosL1.Size = new System.Drawing.Size(123, 20);
-            TXPosL1.TabIndex = 73;
-            TXPosL1.Text = "Pos: 1234.56 mm";
-            TXPosL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panel13.Controls.Add(TXPosR1);
+            panel13.Location = new System.Drawing.Point(197, 76);
+            panel13.Name = "panel13";
+            panel13.Size = new System.Drawing.Size(175, 18);
+            panel13.TabIndex = 79;
             // 
-            // TXLoadL1
+            // TXPosR1
             // 
-            TXLoadL1.AutoSize = true;
-            TXLoadL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXLoadL1.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadL1.Location = new System.Drawing.Point(745, 905);
-            TXLoadL1.Name = "TXLoadL1";
-            TXLoadL1.Size = new System.Drawing.Size(120, 20);
-            TXLoadL1.TabIndex = 72;
-            TXLoadL1.Text = "Load : 1234.56 N";
-            TXLoadL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            TXPosR1.AutoSize = true;
+            TXPosR1.Dock = System.Windows.Forms.DockStyle.Right;
+            TXPosR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosR1.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosR1.Location = new System.Drawing.Point(52, 0);
+            TXPosR1.Name = "TXPosR1";
+            TXPosR1.Size = new System.Drawing.Size(123, 20);
+            TXPosR1.TabIndex = 76;
+            TXPosR1.Text = "Pos: 1234.56 mm";
+            TXPosR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Plot10Coord
             // 
             Plot10Coord.AutoSize = true;
             Plot10Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot10Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot10Coord.Location = new System.Drawing.Point(1070, 750);
+            Plot10Coord.Location = new System.Drawing.Point(1130, 750);
             Plot10Coord.Name = "Plot10Coord";
             Plot10Coord.Size = new System.Drawing.Size(150, 20);
             Plot10Coord.TabIndex = 71;
@@ -1708,7 +1853,7 @@ namespace KVCOMSERVER
             Plot4Coord.AutoSize = true;
             Plot4Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot4Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot4Coord.Location = new System.Drawing.Point(1070, 376);
+            Plot4Coord.Location = new System.Drawing.Point(1130, 376);
             Plot4Coord.Name = "Plot4Coord";
             Plot4Coord.Size = new System.Drawing.Size(150, 20);
             Plot4Coord.TabIndex = 70;
@@ -1720,7 +1865,7 @@ namespace KVCOMSERVER
             Plot3Coord.AutoSize = true;
             Plot3Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot3Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot3Coord.Location = new System.Drawing.Point(1070, 0);
+            Plot3Coord.Location = new System.Drawing.Point(1130, 0);
             Plot3Coord.Name = "Plot3Coord";
             Plot3Coord.Size = new System.Drawing.Size(150, 20);
             Plot3Coord.TabIndex = 69;
@@ -1732,7 +1877,7 @@ namespace KVCOMSERVER
             Plot9Coord.AutoSize = true;
             Plot9Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot9Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot9Coord.Location = new System.Drawing.Point(650, 750);
+            Plot9Coord.Location = new System.Drawing.Point(591, 750);
             Plot9Coord.Name = "Plot9Coord";
             Plot9Coord.Size = new System.Drawing.Size(150, 20);
             Plot9Coord.TabIndex = 68;
@@ -1744,7 +1889,7 @@ namespace KVCOMSERVER
             Plot2Coord.AutoSize = true;
             Plot2Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot2Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot2Coord.Location = new System.Drawing.Point(650, 376);
+            Plot2Coord.Location = new System.Drawing.Point(591, 376);
             Plot2Coord.Name = "Plot2Coord";
             Plot2Coord.Size = new System.Drawing.Size(150, 20);
             Plot2Coord.TabIndex = 67;
@@ -1756,7 +1901,7 @@ namespace KVCOMSERVER
             Plot1Coord.AutoSize = true;
             Plot1Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot1Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot1Coord.Location = new System.Drawing.Point(650, 0);
+            Plot1Coord.Location = new System.Drawing.Point(591, 0);
             Plot1Coord.Name = "Plot1Coord";
             Plot1Coord.Size = new System.Drawing.Size(150, 20);
             Plot1Coord.TabIndex = 66;
@@ -1767,7 +1912,7 @@ namespace KVCOMSERVER
             // 
             button95.BackColor = System.Drawing.Color.LightSteelBlue;
             button95.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button95.Location = new System.Drawing.Point(1065, 833);
+            button95.Location = new System.Drawing.Point(1065, 880);
             button95.Margin = new System.Windows.Forms.Padding(0);
             button95.Name = "button95";
             button95.Size = new System.Drawing.Size(60, 60);
@@ -1780,7 +1925,7 @@ namespace KVCOMSERVER
             // 
             button96.BackColor = System.Drawing.Color.LightSteelBlue;
             button96.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button96.Location = new System.Drawing.Point(1065, 773);
+            button96.Location = new System.Drawing.Point(1065, 820);
             button96.Margin = new System.Windows.Forms.Padding(0);
             button96.Name = "button96";
             button96.Size = new System.Drawing.Size(60, 60);
@@ -1793,7 +1938,7 @@ namespace KVCOMSERVER
             // 
             button93.BackColor = System.Drawing.Color.LightSteelBlue;
             button93.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button93.Location = new System.Drawing.Point(1065, 459);
+            button93.Location = new System.Drawing.Point(1065, 690);
             button93.Margin = new System.Windows.Forms.Padding(0);
             button93.Name = "button93";
             button93.Size = new System.Drawing.Size(60, 60);
@@ -1806,7 +1951,7 @@ namespace KVCOMSERVER
             // 
             button94.BackColor = System.Drawing.Color.LightSteelBlue;
             button94.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button94.Location = new System.Drawing.Point(1065, 399);
+            button94.Location = new System.Drawing.Point(1065, 630);
             button94.Margin = new System.Windows.Forms.Padding(0);
             button94.Name = "button94";
             button94.Size = new System.Drawing.Size(60, 60);
@@ -1819,7 +1964,7 @@ namespace KVCOMSERVER
             // 
             button91.BackColor = System.Drawing.Color.LightSteelBlue;
             button91.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button91.Location = new System.Drawing.Point(1065, 83);
+            button91.Location = new System.Drawing.Point(1065, 313);
             button91.Margin = new System.Windows.Forms.Padding(0);
             button91.Name = "button91";
             button91.Size = new System.Drawing.Size(60, 60);
@@ -1832,7 +1977,7 @@ namespace KVCOMSERVER
             // 
             button92.BackColor = System.Drawing.Color.LightSteelBlue;
             button92.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button92.Location = new System.Drawing.Point(1065, 23);
+            button92.Location = new System.Drawing.Point(1065, 253);
             button92.Margin = new System.Windows.Forms.Padding(0);
             button92.Name = "button92";
             button92.Size = new System.Drawing.Size(60, 60);
@@ -1845,7 +1990,7 @@ namespace KVCOMSERVER
             // 
             button89.BackColor = System.Drawing.Color.LightSteelBlue;
             button89.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button89.Location = new System.Drawing.Point(746, 833);
+            button89.Location = new System.Drawing.Point(746, 880);
             button89.Margin = new System.Windows.Forms.Padding(0);
             button89.Name = "button89";
             button89.Size = new System.Drawing.Size(60, 60);
@@ -1858,7 +2003,7 @@ namespace KVCOMSERVER
             // 
             button90.BackColor = System.Drawing.Color.LightSteelBlue;
             button90.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button90.Location = new System.Drawing.Point(746, 773);
+            button90.Location = new System.Drawing.Point(746, 820);
             button90.Margin = new System.Windows.Forms.Padding(0);
             button90.Name = "button90";
             button90.Size = new System.Drawing.Size(60, 60);
@@ -1871,7 +2016,7 @@ namespace KVCOMSERVER
             // 
             button87.BackColor = System.Drawing.Color.LightSteelBlue;
             button87.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button87.Location = new System.Drawing.Point(746, 459);
+            button87.Location = new System.Drawing.Point(746, 690);
             button87.Margin = new System.Windows.Forms.Padding(0);
             button87.Name = "button87";
             button87.Size = new System.Drawing.Size(60, 60);
@@ -1884,7 +2029,7 @@ namespace KVCOMSERVER
             // 
             button88.BackColor = System.Drawing.Color.LightSteelBlue;
             button88.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button88.Location = new System.Drawing.Point(746, 399);
+            button88.Location = new System.Drawing.Point(746, 630);
             button88.Margin = new System.Windows.Forms.Padding(0);
             button88.Name = "button88";
             button88.Size = new System.Drawing.Size(60, 60);
@@ -1897,7 +2042,7 @@ namespace KVCOMSERVER
             // 
             button85.BackColor = System.Drawing.Color.LightSteelBlue;
             button85.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button85.Location = new System.Drawing.Point(746, 83);
+            button85.Location = new System.Drawing.Point(746, 313);
             button85.Margin = new System.Windows.Forms.Padding(0);
             button85.Name = "button85";
             button85.Size = new System.Drawing.Size(60, 60);
@@ -1910,7 +2055,7 @@ namespace KVCOMSERVER
             // 
             button86.BackColor = System.Drawing.Color.LightSteelBlue;
             button86.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button86.Location = new System.Drawing.Point(746, 23);
+            button86.Location = new System.Drawing.Point(746, 253);
             button86.Margin = new System.Windows.Forms.Padding(0);
             button86.Name = "button86";
             button86.Size = new System.Drawing.Size(60, 60);
@@ -1922,7 +2067,7 @@ namespace KVCOMSERVER
             // button82
             // 
             button82.BackColor = System.Drawing.Color.LightSteelBlue;
-            button82.Location = new System.Drawing.Point(729, 945);
+            button82.Location = new System.Drawing.Point(669, 945);
             button82.Name = "button82";
             button82.Size = new System.Drawing.Size(77, 60);
             button82.TabIndex = 34;
@@ -1996,7 +2141,7 @@ namespace KVCOMSERVER
             // 
             button24.BackColor = System.Drawing.Color.LightSteelBlue;
             button24.Font = new System.Drawing.Font("Sarasa Fixed J", 10F);
-            button24.Location = new System.Drawing.Point(1337, 945);
+            button24.Location = new System.Drawing.Point(1400, 945);
             button24.Name = "button24";
             button24.Size = new System.Drawing.Size(130, 60);
             button24.TabIndex = 16;
@@ -2007,7 +2152,7 @@ namespace KVCOMSERVER
             // button16
             // 
             button16.BackColor = System.Drawing.Color.LightSteelBlue;
-            button16.Location = new System.Drawing.Point(1201, 945);
+            button16.Location = new System.Drawing.Point(1264, 945);
             button16.Name = "button16";
             button16.Size = new System.Drawing.Size(130, 60);
             button16.TabIndex = 15;
@@ -2018,7 +2163,7 @@ namespace KVCOMSERVER
             // button15
             // 
             button15.BackColor = System.Drawing.Color.LightSteelBlue;
-            button15.Location = new System.Drawing.Point(1065, 945);
+            button15.Location = new System.Drawing.Point(1128, 945);
             button15.Name = "button15";
             button15.Size = new System.Drawing.Size(130, 60);
             button15.TabIndex = 14;
@@ -2685,20 +2830,32 @@ namespace KVCOMSERVER
             tabPage8.PerformLayout();
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
-            panel4.ResumeLayout(false);
-            panel4.PerformLayout();
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            panel8.ResumeLayout(false);
+            panel8.PerformLayout();
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             tabPage7.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
+            panel9.ResumeLayout(false);
+            panel9.PerformLayout();
+            panel10.ResumeLayout(false);
+            panel10.PerformLayout();
+            panel11.ResumeLayout(false);
+            panel11.PerformLayout();
+            panel12.ResumeLayout(false);
+            panel12.PerformLayout();
+            panel13.ResumeLayout(false);
+            panel13.PerformLayout();
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -2901,17 +3058,29 @@ namespace KVCOMSERVER
         private System.Windows.Forms.Label Plot9Coord;
         private System.Windows.Forms.Label Plot2Coord;
         private System.Windows.Forms.Label TXLoadL1;
-        private System.Windows.Forms.Label TXPosR1;
-        private System.Windows.Forms.Label TXLoadR1;
         private System.Windows.Forms.Label TXPosL1;
         private System.Windows.Forms.Label TXPosL2;
         private System.Windows.Forms.Label TXLoadL2;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label TXPosR2;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label TXLoadR2;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.Panel panel11;
+        private System.Windows.Forms.Panel panel12;
+        private System.Windows.Forms.Label TXLoadR1;
+        private System.Windows.Forms.Panel panel13;
+        private System.Windows.Forms.Label TXPosR1;
     }
 }
 

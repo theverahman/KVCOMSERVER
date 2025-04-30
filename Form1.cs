@@ -1907,7 +1907,7 @@ namespace KVCOMSERVER
                 #endregion
             }
         }
-        public void tabdataMasterDiffStep2LW()  
+        public void tabdataMasterDiffStep2LW()
         {
             int tabIndex = tabIdxMasterSideL * 40;
             for (int i = 0; i < 40; i++)
@@ -4219,7 +4219,7 @@ namespace KVCOMSERVER
             //UPDATE MASTER DATA
             if (MasterTeachSetConfirm)
             {
-                
+
                 //MasterTeachSetConfirm = false;
             }
 
@@ -4584,6 +4584,11 @@ namespace KVCOMSERVER
         }
 
         #endregion
+
+        private void tabPage5_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     #region supporting classes

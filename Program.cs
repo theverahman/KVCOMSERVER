@@ -4128,33 +4128,39 @@ namespace WORKFLOW
                 int idxx = 0;
                 for (int i = 0; i < fXD5.Length; i++)
                 {
-                    if (fXD5[i] > 0 && i != 0)
+                    if ((fXD5[i] >= Convert.ToSingle(_data.DiffParam[0])) && (fXD5[i] <= Convert.ToSingle(_data.DiffParam[1])))
                     {
-                        Array.Resize(ref dXD5, idxx + 1);
-                        if ((double)fXD5[i] == dXD5[idxx - 1])
+                        if (fXD5[i] > 0 && i != 0 && idxx != 0)
                         {
-                            dXD5[idxx] = (double)fXD5[i] + 1;
+                            Array.Resize(ref dXD5, idxx + 1);
+                            if ((double)fXD5[i] == dXD5[idxx - 1])
+                            {
+                                dXD5[idxx] = (double)fXD5[i] + 1;
+                            }
+                            else
+                            {
+                                dXD5[idxx] = (double)fXD5[i];
+                            }
+                            idxx++;
                         }
-                        else
+                        else if (i == 0 | idxx == 0)
                         {
+                            Array.Resize(ref dXD5, idxx + 1);
                             dXD5[idxx] = (double)fXD5[i];
+                            idxx++;
                         }
-                        idxx++;
-                    }
-                    else if (i == 0)
-                    {
-                        Array.Resize(ref dXD5, idxx + 1);
-                        dXD5[idxx] = (double)fXD5[i];
-                        idxx++;
                     }
                 }
 
                 int idxy = 0;
-                for (int i = 0; i < dXD5.Length; i++)
+                for (int i = 0; i < fXD5.Length; i++)
                 {
-                    Array.Resize(ref dYD5, idxy + 1);
-                    dYD5[idxy] = (double)fYD5[i];
-                    idxy++;
+                    if ((fXD5[i] >= Convert.ToSingle(_data.DiffParam[0])) && (fXD5[i] <= Convert.ToSingle(_data.DiffParam[1])))
+                    {
+                        Array.Resize(ref dYD5, idxy + 1);
+                        dYD5[idxy] = (double)fYD5[i];
+                        idxy++;
+                    }
                 }
 
                 //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
@@ -4180,33 +4186,39 @@ namespace WORKFLOW
                 int idxx = 0;
                 for (int i = 0; i < fXD6.Length; i++)
                 {
-                    if (fXD6[i] > 0 && i != 0)
+                    if ((fXD6[i] >= Convert.ToSingle(_data.DiffParam[0])) && (fXD6[i] <= Convert.ToSingle(_data.DiffParam[1])))
                     {
-                        Array.Resize(ref dXD6, idxx + 1);
-                        if ((double)fXD6[i] == dXD6[idxx - 1])
+                        if (fXD6[i] > 0 && i != 0 && idxx != 0)
                         {
-                            dXD6[idxx] = (double)fXD6[i] + 1;
+                            Array.Resize(ref dXD6, idxx + 1);
+                            if ((double)fXD6[i] == dXD6[idxx - 1])
+                            {
+                                dXD6[idxx] = (double)fXD6[i] + 1;
+                            }
+                            else
+                            {
+                                dXD6[idxx] = (double)fXD6[i];
+                            }
+                            idxx++;
                         }
-                        else
+                        else if (i == 0 | idxx == 0)
                         {
+                            Array.Resize(ref dXD6, idxx + 1);
                             dXD6[idxx] = (double)fXD6[i];
+                            idxx++;
                         }
-                        idxx++;
-                    }
-                    else if (i == 0)
-                    {
-                        Array.Resize(ref dXD6, idxx + 1);
-                        dXD6[idxx] = (double)fXD6[i];
-                        idxx++;
                     }
                 }
 
                 int idxy = 0;
-                for (int i = 0; i < dXD6.Length; i++)
+                for (int i = 0; i < fXD6.Length; i++)
                 {
-                    Array.Resize(ref dYD6, idxy + 1);
-                    dYD6[idxy] = (double)fYD6[i];
-                    idxy++;
+                    if ((fXD6[i] >= Convert.ToSingle(_data.DiffParam[0])) && (fXD6[i] <= Convert.ToSingle(_data.DiffParam[1])))
+                    {
+                        Array.Resize(ref dYD6, idxy + 1);
+                        dYD6[idxy] = (double)fYD6[i];
+                        idxy++;
+                    }
                 }
 
                 //dXD1 = Array.ConvertAll(fXD1, x => (x != 0) ? (double)x);
@@ -4367,33 +4379,39 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD5.Length; i++)
             {
-                if (fXD5[i] > 0 && i != 0)
+                if ((fXD5[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD5[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
                 {
-                    Array.Resize(ref MTeach_dXD5, idxx + 1);
-                    if ((double)fXD5[i] == MTeach_dXD5[idxx - 1])
+                    if (fXD5[i] > 0 && i != 0 && idxx != 0)
                     {
-                        MTeach_dXD5[idxx] = (double)fXD5[i] + 1;
+                        Array.Resize(ref MTeach_dXD5, idxx + 1);
+                        if ((double)fXD5[i] == MTeach_dXD5[idxx - 1])
+                        {
+                            MTeach_dXD5[idxx] = (double)fXD5[i] + 1;
+                        }
+                        else
+                        {
+                            MTeach_dXD5[idxx] = (double)fXD5[i];
+                        }
+                        idxx++;
                     }
-                    else
+                    else if (i == 0 | idxx == 0)
                     {
+                        Array.Resize(ref MTeach_dXD5, idxx + 1);
                         MTeach_dXD5[idxx] = (double)fXD5[i];
+                        idxx++;
                     }
-                    idxx++;
-                }
-                else if (i == 0)
-                {
-                    Array.Resize(ref MTeach_dXD5, idxx + 1);
-                    MTeach_dXD5[idxx] = (double)fXD5[i];
-                    idxx++;
                 }
             }
 
             int idxy = 0;
-            for (int i = 0; i < MTeach_dXD5.Length; i++)
+            for (int i = 0; i < fXD5.Length; i++)
             {
-                Array.Resize(ref MTeach_dYD5, idxy + 1);
-                MTeach_dYD5[idxy] = (double)fYD5[i];
-                idxy++;
+                if ((fXD5[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD5[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
+                {
+                    Array.Resize(ref MTeach_dYD5, idxy + 1);
+                    MTeach_dYD5[idxy] = (double)fYD5[i];
+                    idxy++;
+                }
             }
 
             //MTeach_dXD1 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
@@ -4416,33 +4434,39 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD6.Length; i++)
             {
-                if (fXD6[i] > 0 && i != 0)
+                if ((fXD6[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD6[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
                 {
-                    Array.Resize(ref MTeach_dXD6, idxx + 1);
-                    if ((double)fXD6[i] == MTeach_dXD6[idxx - 1])
+                    if (fXD6[i] > 0 && i != 0 && idxx != 0)
                     {
-                        MTeach_dXD6[idxx] = (double)fXD6[i] + 1;
+                        Array.Resize(ref MTeach_dXD6, idxx + 1);
+                        if ((double)fXD6[i] == MTeach_dXD6[idxx - 1])
+                        {
+                            MTeach_dXD6[idxx] = (double)fXD6[i] + 1;
+                        }
+                        else
+                        {
+                            MTeach_dXD6[idxx] = (double)fXD6[i];
+                        }
+                        idxx++;
                     }
-                    else
+                    else if (i == 0 | idxx == 0)
                     {
+                        Array.Resize(ref MTeach_dXD6, idxx + 1);
                         MTeach_dXD6[idxx] = (double)fXD6[i];
+                        idxx++;
                     }
-                    idxx++;
-                }
-                else if (i == 0)
-                {
-                    Array.Resize(ref MTeach_dXD6, idxx + 1);
-                    MTeach_dXD6[idxx] = (double)fXD6[i];
-                    idxx++;
                 }
             }
 
             int idxy = 0;
-            for (int i = 0; i < MTeach_dXD6.Length; i++)
+            for (int i = 0; i < fXD6.Length; i++)
             {
-                Array.Resize(ref MTeach_dYD6, idxy + 1);
-                MTeach_dYD6[idxy] = (double)fYD6[i];
-                idxy++;
+                if ((fXD6[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD6[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
+                {
+                    Array.Resize(ref MTeach_dYD6, idxy + 1);
+                    MTeach_dYD6[idxy] = (double)fYD6[i];
+                    idxy++;
+                }
             }
 
             //MTeach_dXD1 = Array.ConvertAll(fXD, x => (x != 0) ? (double)x);
@@ -4630,47 +4654,53 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] > 0 && i != 0)
+                if ((fXD[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
                 {
-                    Array.Resize(ref Master_dXD5, idxx + 1);
-                    Array.Resize(ref Upper_dXD5, idxx + 1);
-                    Array.Resize(ref Lower_dXD5, idxx + 1);
-                    if (((double)fXD[i] == Master_dXD5[idxx - 1]) && ((double)fXD[i] == Upper_dXD5[idxx - 1]) && ((double)fXD[i] == Lower_dXD5[idxx - 1]))
+                    if (fXD[i] > 0 && i != 0 && idxx != 0)
                     {
-                        Master_dXD5[idxx] = (double)fXD[i] + 1;
-                        Upper_dXD5[idxx] = (double)fXD[i] + 1;
-                        Lower_dXD5[idxx] = (double)fXD[i] + 1;
+                        Array.Resize(ref Master_dXD5, idxx + 1);
+                        Array.Resize(ref Upper_dXD5, idxx + 1);
+                        Array.Resize(ref Lower_dXD5, idxx + 1);
+                        if (((double)fXD[i] == Master_dXD5[idxx - 1]) && ((double)fXD[i] == Upper_dXD5[idxx - 1]) && ((double)fXD[i] == Lower_dXD5[idxx - 1]))
+                        {
+                            Master_dXD5[idxx] = (double)fXD[i] + 1;
+                            Upper_dXD5[idxx] = (double)fXD[i] + 1;
+                            Lower_dXD5[idxx] = (double)fXD[i] + 1;
+                        }
+                        else
+                        {
+                            Master_dXD5[idxx] = (double)fXD[i];
+                            Upper_dXD5[idxx] = (double)fXD[i];
+                            Lower_dXD5[idxx] = (double)fXD[i];
+                        }
+                        idxx++;
                     }
-                    else
+                    else if (i == 0 | idxx == 0)
                     {
+                        Array.Resize(ref Master_dXD5, idxx + 1);
+                        Array.Resize(ref Upper_dXD5, idxx + 1);
+                        Array.Resize(ref Lower_dXD5, idxx + 1);
                         Master_dXD5[idxx] = (double)fXD[i];
                         Upper_dXD5[idxx] = (double)fXD[i];
                         Lower_dXD5[idxx] = (double)fXD[i];
+                        idxx++;
                     }
-                    idxx++;
-                }
-                else if (i == 0)
-                {
-                    Array.Resize(ref Master_dXD5, idxx + 1);
-                    Array.Resize(ref Upper_dXD5, idxx + 1);
-                    Array.Resize(ref Lower_dXD5, idxx + 1);
-                    Master_dXD5[idxx] = (double)fXD[i];
-                    Upper_dXD5[idxx] = (double)fXD[i];
-                    Lower_dXD5[idxx] = (double)fXD[i];
-                    idxx++;
                 }
             }
 
             int idxy = 0;
-            for (int i = 0; i < Master_dXD5.Length; i++)
+            for (int i = 0; i < fXD.Length; i++)
             {
-                Array.Resize(ref Master_dYD5, idxy + 1);
-                Array.Resize(ref Upper_dYD5, idxy + 1);
-                Array.Resize(ref Lower_dYD5, idxy + 1);
-                Master_dYD5[idxy] = (double)fYD1[i];
-                Upper_dYD5[idxy] = (double)fYD2[i];
-                Lower_dYD5[idxy] = (double)fYD3[i];
-                idxy++;
+                if ((fXD[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
+                {
+                    Array.Resize(ref Master_dYD5, idxy + 1);
+                    Array.Resize(ref Upper_dYD5, idxy + 1);
+                    Array.Resize(ref Lower_dYD5, idxy + 1);
+                    Master_dYD5[idxy] = (double)fYD1[i];
+                    Upper_dYD5[idxy] = (double)fYD2[i];
+                    Lower_dYD5[idxy] = (double)fYD3[i];
+                    idxy++;
+                }
             }
         }
         void MasterDataAssignPlot10()
@@ -4683,47 +4713,53 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] > 0 && i != 0)
+                if ((fXD[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
                 {
-                    Array.Resize(ref Master_dXD6, idxx + 1);
-                    Array.Resize(ref Upper_dXD6, idxx + 1);
-                    Array.Resize(ref Lower_dXD6, idxx + 1);
-                    if (((double)fXD[i] == Master_dXD6[idxx - 1]) && ((double)fXD[i] == Upper_dXD6[idxx - 1]) && ((double)fXD[i] == Lower_dXD6[idxx - 1]))
+                    if (fXD[i] > 0 && i != 0 && idxx != 0)
                     {
-                        Master_dXD6[idxx] = (double)fXD[i] + 1;
-                        Upper_dXD6[idxx] = (double)fXD[i] + 1;
-                        Lower_dXD6[idxx] = (double)fXD[i] + 1;
+                        Array.Resize(ref Master_dXD6, idxx + 1);
+                        Array.Resize(ref Upper_dXD6, idxx + 1);
+                        Array.Resize(ref Lower_dXD6, idxx + 1);
+                        if (((double)fXD[i] == Master_dXD6[idxx - 1]) && ((double)fXD[i] == Upper_dXD6[idxx - 1]) && ((double)fXD[i] == Lower_dXD6[idxx - 1]))
+                        {
+                            Master_dXD6[idxx] = (double)fXD[i] + 1;
+                            Upper_dXD6[idxx] = (double)fXD[i] + 1;
+                            Lower_dXD6[idxx] = (double)fXD[i] + 1;
+                        }
+                        else
+                        {
+                            Master_dXD6[idxx] = (double)fXD[i];
+                            Upper_dXD6[idxx] = (double)fXD[i];
+                            Lower_dXD6[idxx] = (double)fXD[i];
+                        }
+                        idxx++;
                     }
-                    else
+                    else if (i == 0 | idxx == 0)
                     {
+                        Array.Resize(ref Master_dXD6, idxx + 1);
+                        Array.Resize(ref Upper_dXD6, idxx + 1);
+                        Array.Resize(ref Lower_dXD6, idxx + 1);
                         Master_dXD6[idxx] = (double)fXD[i];
                         Upper_dXD6[idxx] = (double)fXD[i];
                         Lower_dXD6[idxx] = (double)fXD[i];
+                        idxx++;
                     }
-                    idxx++;
-                }
-                else if (i == 0)
-                {
-                    Array.Resize(ref Master_dXD6, idxx + 1);
-                    Array.Resize(ref Upper_dXD6, idxx + 1);
-                    Array.Resize(ref Lower_dXD6, idxx + 1);
-                    Master_dXD6[idxx] = (double)fXD[i];
-                    Upper_dXD6[idxx] = (double)fXD[i];
-                    Lower_dXD6[idxx] = (double)fXD[i];
-                    idxx++;
                 }
             }
 
             int idxy = 0;
-            for (int i = 0; i < Master_dXD6.Length; i++)
+            for (int i = 0; i < fXD.Length; i++)
             {
-                Array.Resize(ref Master_dYD6, idxy + 1);
-                Array.Resize(ref Upper_dYD6, idxy + 1);
-                Array.Resize(ref Lower_dYD6, idxy + 1);
-                Master_dYD6[idxy] = (double)fYD1[i];
-                Upper_dYD6[idxy] = (double)fYD2[i];
-                Lower_dYD6[idxy] = (double)fYD3[i];
-                idxy++;
+                if ((fXD[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
+                {
+                    Array.Resize(ref Master_dYD6, idxy + 1);
+                    Array.Resize(ref Upper_dYD6, idxy + 1);
+                    Array.Resize(ref Lower_dYD6, idxy + 1);
+                    Master_dYD6[idxy] = (double)fYD1[i];
+                    Upper_dYD6[idxy] = (double)fYD2[i];
+                    Lower_dYD6[idxy] = (double)fYD3[i];
+                    idxy++;
+                }
             }
         }
         void MasterDataAssignPlot5()
@@ -4916,47 +4952,53 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] > 0 && i != 0)
+                if ((fXD[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
                 {
-                    Array.Resize(ref MMaster_dXD5, idxx + 1);
-                    Array.Resize(ref MUpper_dXD5, idxx + 1);
-                    Array.Resize(ref MLower_dXD5, idxx + 1);
-                    if (((double)fXD[i] == MMaster_dXD5[idxx - 1]) && ((double)fXD[i] == MUpper_dXD5[idxx - 1]) && ((double)fXD[i] == MLower_dXD5[idxx - 1]))
+                    if (fXD[i] > 0 && i != 0 && idxx != 0)
                     {
-                        MMaster_dXD5[idxx] = (double)fXD[i] + 1;
-                        MUpper_dXD5[idxx] = (double)fXD[i] + 1;
-                        MLower_dXD5[idxx] = (double)fXD[i] + 1;
+                        Array.Resize(ref MMaster_dXD5, idxx + 1);
+                        Array.Resize(ref MUpper_dXD5, idxx + 1);
+                        Array.Resize(ref MLower_dXD5, idxx + 1);
+                        if (((double)fXD[i] == MMaster_dXD5[idxx - 1]) && ((double)fXD[i] == MUpper_dXD5[idxx - 1]) && ((double)fXD[i] == MLower_dXD5[idxx - 1]))
+                        {
+                            MMaster_dXD5[idxx] = (double)fXD[i] + 1;
+                            MUpper_dXD5[idxx] = (double)fXD[i] + 1;
+                            MLower_dXD5[idxx] = (double)fXD[i] + 1;
+                        }
+                        else
+                        {
+                            MMaster_dXD5[idxx] = (double)fXD[i];
+                            MUpper_dXD5[idxx] = (double)fXD[i];
+                            MLower_dXD5[idxx] = (double)fXD[i];
+                        }
+                        idxx++;
                     }
-                    else
+                    else if (i == 0 | idxx == 0)
                     {
+                        Array.Resize(ref MMaster_dXD5, idxx + 1);
+                        Array.Resize(ref MUpper_dXD5, idxx + 1);
+                        Array.Resize(ref MLower_dXD5, idxx + 1);
                         MMaster_dXD5[idxx] = (double)fXD[i];
                         MUpper_dXD5[idxx] = (double)fXD[i];
                         MLower_dXD5[idxx] = (double)fXD[i];
+                        idxx++;
                     }
-                    idxx++;
-                }
-                else if (i == 0)
-                {
-                    Array.Resize(ref MMaster_dXD5, idxx + 1);
-                    Array.Resize(ref MUpper_dXD5, idxx + 1);
-                    Array.Resize(ref MLower_dXD5, idxx + 1);
-                    MMaster_dXD5[idxx] = (double)fXD[i];
-                    MUpper_dXD5[idxx] = (double)fXD[i];
-                    MLower_dXD5[idxx] = (double)fXD[i];
-                    idxx++;
                 }
             }
 
             int idxy = 0;
-            for (int i = 0; i < MMaster_dXD5.Length; i++)
+            for (int i = 0; i < fXD.Length; i++)
             {
-                Array.Resize(ref MMaster_dYD5, idxy + 1);
-                Array.Resize(ref MUpper_dYD5, idxy + 1);
-                Array.Resize(ref MLower_dYD5, idxy + 1);
-                MMaster_dYD5[idxy] = (double)fYD1[i];
-                MUpper_dYD5[idxy] = (double)fYD2[i];
-                MLower_dYD5[idxy] = (double)fYD3[i];
-                idxy++;
+                if ((fXD[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
+                {
+                    Array.Resize(ref MMaster_dYD5, idxy + 1);
+                    Array.Resize(ref MUpper_dYD5, idxy + 1);
+                    Array.Resize(ref MLower_dYD5, idxy + 1);
+                    MMaster_dYD5[idxy] = (double)fYD1[i];
+                    MUpper_dYD5[idxy] = (double)fYD2[i];
+                    MLower_dYD5[idxy] = (double)fYD3[i];
+                    idxy++;
+                }
             }
 
             if ((MMaster_dXD5.Length != MMaster_dYD5.Length) || (MLower_dXD5.Length != MLower_dYD5.Length) || (MUpper_dXD5.Length != MUpper_dYD5.Length))
@@ -4978,47 +5020,53 @@ namespace WORKFLOW
             int idxx = 0;
             for (int i = 0; i < fXD.Length; i++)
             {
-                if (fXD[i] > 0 && i != 0)
+                if ((fXD[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
                 {
-                    Array.Resize(ref MMaster_dXD6, idxx + 1);
-                    Array.Resize(ref MUpper_dXD6, idxx + 1);
-                    Array.Resize(ref MLower_dXD6, idxx + 1);
-                    if (((double)fXD[i] == MMaster_dXD6[idxx - 1]) && ((double)fXD[i] == MUpper_dXD6[idxx - 1]) && ((double)fXD[i] == MLower_dXD6[idxx - 1]))
+                    if (fXD[i] > 0 && i != 0 && idxx != 0)
                     {
-                        MMaster_dXD6[idxx] = (double)fXD[i] + 1;
-                        MUpper_dXD6[idxx] = (double)fXD[i] + 1;
-                        MLower_dXD6[idxx] = (double)fXD[i] + 1;
+                        Array.Resize(ref MMaster_dXD6, idxx + 1);
+                        Array.Resize(ref MUpper_dXD6, idxx + 1);
+                        Array.Resize(ref MLower_dXD6, idxx + 1);
+                        if (((double)fXD[i] == MMaster_dXD6[idxx - 1]) && ((double)fXD[i] == MUpper_dXD6[idxx - 1]) && ((double)fXD[i] == MLower_dXD6[idxx - 1]))
+                        {
+                            MMaster_dXD6[idxx] = (double)fXD[i] + 1;
+                            MUpper_dXD6[idxx] = (double)fXD[i] + 1;
+                            MLower_dXD6[idxx] = (double)fXD[i] + 1;
+                        }
+                        else
+                        {
+                            MMaster_dXD6[idxx] = (double)fXD[i];
+                            MUpper_dXD6[idxx] = (double)fXD[i];
+                            MLower_dXD6[idxx] = (double)fXD[i];
+                        }
+                        idxx++;
                     }
-                    else
+                    else if (i == 0 | idxx == 0)
                     {
+                        Array.Resize(ref MMaster_dXD6, idxx + 1);
+                        Array.Resize(ref MUpper_dXD6, idxx + 1);
+                        Array.Resize(ref MLower_dXD6, idxx + 1);
                         MMaster_dXD6[idxx] = (double)fXD[i];
                         MUpper_dXD6[idxx] = (double)fXD[i];
                         MLower_dXD6[idxx] = (double)fXD[i];
+                        idxx++;
                     }
-                    idxx++;
-                }
-                else if (i == 0)
-                {
-                    Array.Resize(ref MMaster_dXD6, idxx + 1);
-                    Array.Resize(ref MUpper_dXD6, idxx + 1);
-                    Array.Resize(ref MLower_dXD6, idxx + 1);
-                    MMaster_dXD6[idxx] = (double)fXD[i];
-                    MUpper_dXD6[idxx] = (double)fXD[i];
-                    MLower_dXD6[idxx] = (double)fXD[i];
-                    idxx++;
                 }
             }
 
             int idxy = 0;
-            for (int i = 0; i < MMaster_dXD6.Length; i++)
+            for (int i = 0; i < fXD.Length; i++)
             {
-                Array.Resize(ref MMaster_dYD6, idxy + 1);
-                Array.Resize(ref MUpper_dYD6, idxy + 1);
-                Array.Resize(ref MLower_dYD6, idxy + 1);
-                MMaster_dYD6[idxy] = (double)fYD1[i];
-                MUpper_dYD6[idxy] = (double)fYD2[i];
-                MLower_dYD6[idxy] = (double)fYD3[i];
-                idxy++;
+                if ((fXD[i] >= Convert.ToSingle(_masterData.DiffParam[0])) && (fXD[i] <= Convert.ToSingle(_masterData.DiffParam[1])))
+                {
+                    Array.Resize(ref MMaster_dYD6, idxy + 1);
+                    Array.Resize(ref MUpper_dYD6, idxy + 1);
+                    Array.Resize(ref MLower_dYD6, idxy + 1);
+                    MMaster_dYD6[idxy] = (double)fYD1[i];
+                    MUpper_dYD6[idxy] = (double)fYD2[i];
+                    MLower_dYD6[idxy] = (double)fYD3[i];
+                    idxy++;
+                }
             }
 
             if ((MMaster_dXD6.Length != MMaster_dYD6.Length) || (MLower_dXD6.Length != MLower_dYD6.Length) || (MUpper_dXD6.Length != MUpper_dYD6.Length))
