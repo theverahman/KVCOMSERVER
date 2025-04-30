@@ -477,6 +477,7 @@ namespace WORKFLOW
                         uiPlotLTeachMasterUpdate();
                         uiPlotRTeachMasterUpdate();
                     }
+                    uiUpdateMasterFetchTeachTable();
                     uiUPdateRealMasterActiveTable(_masterData);
                     uiSetModelName(_masterData._activeModelName);
                     MasterSetupConfirmSet();
@@ -5243,6 +5244,44 @@ namespace WORKFLOW
                 _uiObject.DataRealSideLDiffUpper    = dataM.LMasteringStep2[11].ToArray();
             }
         }
+
+        public void uiUpdateMasterFetchTeachTable() //invoked when teaching mode
+        {
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLStroke = _masterData.LMasteringStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLMaster = _masterData.LMasteringStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLLower = _masterData.LMasteringStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLUpper = _masterData.LMasteringStep2[3].ToArray()));
+
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLStroke = _masterData.LMasteringStep2[4].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLMaster = _masterData.LMasteringStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLLower = _masterData.LMasteringStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLUpper = _masterData.LMasteringStep2[7].ToArray()));
+
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffStroke = _masterData.LMasteringStep2[8].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffMaster = _masterData.LMasteringStep2[9].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffLower = _masterData.LMasteringStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffUpper = _masterData.LMasteringStep2[11].ToArray()));
+
+
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRStroke = _masterData.RMasteringStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRMaster = _masterData.RMasteringStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRLower = _masterData.RMasteringStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRUpper = _masterData.RMasteringStep2[3].ToArray()));
+
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRStroke = _masterData.RMasteringStep2[4].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRMaster = _masterData.RMasteringStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRLower = _masterData.RMasteringStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRUpper = _masterData.RMasteringStep2[7].ToArray()));
+
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffStroke = _masterData.RMasteringStep2[8].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffMaster = _masterData.RMasteringStep2[9].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffLower = _masterData.RMasteringStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffUpper = _masterData.RMasteringStep2[11].ToArray()));
+            }
+        }
+
         public void uiUpdateMasterLTeachTable() //invoked when teaching mode
         {
             if (_uiObject.InvokeRequired)
@@ -5406,8 +5445,8 @@ namespace WORKFLOW
             uiPlotLTeachMasterUpdate();
             uiPlotRTeachMasterUpdate();
 
-            uiUpdateMasterLTeachTable();
-            uiUpdateMasterRTeachTable();
+            //uiUpdateMasterLTeachTable();
+            //uiUpdateMasterRTeachTable();
         }
     }
 
