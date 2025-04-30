@@ -4284,14 +4284,10 @@ namespace KVCOMSERVER
 
             updateMasterProcess = false;
 
-            Thread.Sleep(1000);
-
             if (!updateMasterProcess)
             {
 
             }
-
-            button30.BackColor = Color.LightSteelBlue;
 
             Thread.Sleep(1000);
 

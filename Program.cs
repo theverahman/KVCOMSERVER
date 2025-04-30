@@ -420,6 +420,16 @@ namespace WORKFLOW
                     _kvconnObject.writeDataCommand("W0FE0", "", "0");
                 }
                 //Thread.Sleep(100);
+
+                if ((byte)(STAT_INPUT[30] & 0x01) == 0x01)
+                {
+
+                    if (_uiObject.InvokeRequired)
+                    {
+                        _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.TabPageSelect(3)));
+                    }
+                    _kvconnObject.writeDataCommand("W0CF", "", "0");
+                }
             }
         }
         void _eeipEventHandler_2() //Parameter Data Retrieve
