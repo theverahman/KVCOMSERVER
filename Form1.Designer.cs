@@ -1100,6 +1100,8 @@ namespace KVCOMSERVER
             // button30
             // 
             button30.BackColor = System.Drawing.Color.LightSteelBlue;
+            button30.FlatAppearance.BorderColor = System.Drawing.Color.DarkBlue;
+            button30.FlatAppearance.BorderSize = 3;
             button30.Location = new System.Drawing.Point(870, 650);
             button30.Name = "button30";
             button30.Size = new System.Drawing.Size(130, 60);
@@ -1713,7 +1715,7 @@ namespace KVCOMSERVER
             panel9.Controls.Add(panel11);
             panel9.Controls.Add(panel12);
             panel9.Controls.Add(panel13);
-            panel9.Location = new System.Drawing.Point(747, 23);
+            panel9.Location = new System.Drawing.Point(749, 26);
             panel9.Name = "panel9";
             panel9.Size = new System.Drawing.Size(373, 116);
             panel9.TabIndex = 81;
@@ -2823,7 +2825,7 @@ namespace KVCOMSERVER
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "Form1";
             StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
-            Text = "DAMPING FORCE FUNCTION TESTER FRONT FORK ASSY LINE 5 PT. KAYABA INDONESIA - [BY TOKOTON MEIWA INDONESIA - MEIWACORP.JP]";
+            Text = "FUNCTION TESTER FRONT FORK ASSY LINE 5 PT. KAYABA INDONESIA - [BY TOKOTON MEIWA INDONESIA - MEIWACORP.JP]";
             WindowState = System.Windows.Forms.FormWindowState.Maximized;
             Load += Form1_Load;
             tabPage8.ResumeLayout(false);

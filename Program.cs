@@ -593,6 +593,7 @@ namespace WORKFLOW
                     {
                         _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.TabPageSelect(6)));
                     }
+                    
                     _kvconnObject.writeDataCommand("W0DA", "", "0");
                     //Thread.Sleep(10);
                 }
@@ -608,6 +609,8 @@ namespace WORKFLOW
                     uiPlotRTeachUpdate();
                     uiUpdateMasterRTeachTable();
 
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.updateMasterReset()));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.updateTeachingReset()));
                     _kvconnObject.writeDataCommand("W0DB", "", "0");
 
                 }
@@ -622,6 +625,8 @@ namespace WORKFLOW
                     uiPlotLTeachUpdate();
                     uiUpdateMasterLTeachTable();
 
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.updateMasterReset()));
+                    _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.updateTeachingReset()));
                     _kvconnObject.writeDataCommand("W0DC", "", "0");
 
                 }
@@ -706,6 +711,8 @@ namespace WORKFLOW
             }
 
         }
+
+        
         void _eeipTrigMasterFetch(string MODNAME, ref EXCELSTREAM filemaster, ref DATAMODEL_MASTER datamaster)
         {
             string[] files = Directory.GetFiles(MasterDir);

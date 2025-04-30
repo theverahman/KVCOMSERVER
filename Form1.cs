@@ -49,6 +49,7 @@ using ScottPlot.Plottables;
 using SixLabors.Fonts;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using ScottPlot.Interactivity.UserActionResponses;
+using DocumentFormat.OpenXml.Vml.Spreadsheet;
 
 
 namespace KVCOMSERVER
@@ -68,6 +69,8 @@ namespace KVCOMSERVER
         private PrivateFontCollection privateFontCollection;
 
         private CancellationTokenSource _cts;
+
+        bool masterConfirmEdit;
 
         public string settingIpv4;
         public int settingPortIp;
@@ -1197,7 +1200,7 @@ namespace KVCOMSERVER
 
                 };
                 tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
-                tbx.Click += new EventHandler(InputTextBox_Click);
+                tbx.Click += new EventHandler(InputTextBoxMasterTable_Click);
                 tabMasterSideRMaster.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 1, row);
             }
@@ -1213,7 +1216,7 @@ namespace KVCOMSERVER
 
                 };
                 tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
-                tbx.Click += new EventHandler(InputTextBox_Click);
+                tbx.Click += new EventHandler(InputTextBoxMasterTable_Click);
                 tabMasterSideRAccMaster.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 2, row);
             }
@@ -1229,7 +1232,7 @@ namespace KVCOMSERVER
 
                 };
                 tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
-                tbx.Click += new EventHandler(InputTextBox_Click);
+                tbx.Click += new EventHandler(InputTextBoxMasterTable_Click);
                 tabMasterSideRLower.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 3, row);
             }
@@ -1245,7 +1248,7 @@ namespace KVCOMSERVER
 
                 };
                 tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
-                tbx.Click += new EventHandler(InputTextBox_Click);
+                tbx.Click += new EventHandler(InputTextBoxMasterTable_Click);
                 tabMasterSideRUpper.Add(tbx);
                 tabMasterSideR.Controls.Add(tbx, 4, row);
             }
@@ -1377,7 +1380,7 @@ namespace KVCOMSERVER
 
                 };
                 tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
-                tbx.Click += new EventHandler(InputTextBox_Click);
+                tbx.Click += new EventHandler(InputTextBoxMasterTable_Click);
                 tabMasterSideLMaster.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 1, row);
             }
@@ -1394,7 +1397,7 @@ namespace KVCOMSERVER
 
                 };
                 tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
-                tbx.Click += new EventHandler(InputTextBox_Click);
+                tbx.Click += new EventHandler(InputTextBoxMasterTable_Click);
                 tabMasterSideLAccMaster.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 2, row);
             }
@@ -1411,7 +1414,7 @@ namespace KVCOMSERVER
 
                 };
                 tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
-                tbx.Click += new EventHandler(InputTextBox_Click);
+                tbx.Click += new EventHandler(InputTextBoxMasterTable_Click);
                 tabMasterSideLLower.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 3, row);
             }
@@ -1428,7 +1431,7 @@ namespace KVCOMSERVER
 
                 };
                 tbx.TextChanged += new System.EventHandler(this.DecimalTextBox_TextChanged);
-                tbx.Click += new EventHandler(InputTextBox_Click);
+                tbx.Click += new EventHandler(InputTextBoxMasterTable_Click);
                 tabMasterSideLUpper.Add(tbx);
                 tabMasterSideL.Controls.Add(tbx, 4, row);
             }
@@ -2345,7 +2348,7 @@ namespace KVCOMSERVER
             this.SetStyle(ControlStyles.UserPaint, true);
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             // Set form properties
-            this.Text = "Damping Force Function Tester";
+            this.Text = " Front Fork Damper Function Tester";
             //this.BackColor = Color.White;
             //this.Font = new Font("Arial", 10);
 
@@ -2469,6 +2472,19 @@ namespace KVCOMSERVER
                 textBox.Text = enteredValue;
             }
         }
+
+        private void InputTextBoxMasterTable_Click(object sender, EventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            string initialValue = textBox.Text;
+            string enteredValue = ShowKeypad(initialValue);
+            if (enteredValue != "Cancelled")
+            {
+                confirmEditReset();
+                textBox.Text = enteredValue;
+            }
+        }
+
         private void DecimalTextBox_TextChanged(object sender, EventArgs e)
         {
             TextBox textBox = sender as TextBox;
@@ -3578,6 +3594,7 @@ namespace KVCOMSERVER
             button84.Text = "MASTER VALID";
             button84.ForeColor = System.Drawing.Color.Black;
             button84.BackColor = System.Drawing.Color.DodgerBlue;
+            button80.BackColor = Color.DodgerBlue;
         }
 
 
@@ -3586,6 +3603,40 @@ namespace KVCOMSERVER
             button84.Text = "MASTER INVALID";
             button84.ForeColor = System.Drawing.Color.Ivory;
             button84.BackColor = System.Drawing.Color.Indigo;
+            button80.BackColor = Color.LightSteelBlue;
+        }
+
+        public void updateMasterSet()
+        {
+            Thread.Sleep(1000);
+            button30.BackColor = Color.DodgerBlue;
+        }
+
+        public void updateMasterReset()
+        {
+            button30.BackColor = Color.LightSteelBlue;
+        }
+
+        public void updateTeachingSet()
+        {
+            Thread.Sleep(1000);
+            button39.BackColor = Color.DodgerBlue;
+        }
+
+        public void updateTeachingReset()
+        {
+            button39.BackColor = Color.LightSteelBlue;
+        }
+
+        public void confirmEditSet()
+        {
+            Thread.Sleep(1000);
+            button31.BackColor = Color.DodgerBlue;
+        }
+
+        public void confirmEditReset()
+        {
+            button31.BackColor = Color.LightSteelBlue;
         }
 
         public void uiLoadPosMonitor(float lload, float lpos, float rload, float rpos)
@@ -4169,6 +4220,8 @@ namespace KVCOMSERVER
             }
 
             MasterTeachSetConfirm = true;
+            updateMasterReset();
+            updateTeachingSet();
         }
 
         private void button31_Click(object sender, EventArgs e)
@@ -4204,17 +4257,19 @@ namespace KVCOMSERVER
                 tabdataMasterDiffStep2RW();
                 tabdataMasterDiffStep2R();
             }
+
+            updateMasterReset();
+            confirmEditSet();
         }
 
 
 
         private void button30_Click(object sender, EventArgs e)
         {
-            button30.BackColor = Color.Tomato;
             updateMasterProcess = true;
             if (updateMasterProcess)
             {
-
+                button30.BackColor = Color.Tomato;
             }
             //UPDATE MASTER DATA
             if (MasterTeachSetConfirm)
@@ -4229,7 +4284,7 @@ namespace KVCOMSERVER
 
             updateMasterProcess = false;
 
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
 
             if (!updateMasterProcess)
             {
@@ -4237,6 +4292,11 @@ namespace KVCOMSERVER
             }
 
             button30.BackColor = Color.LightSteelBlue;
+
+            Thread.Sleep(1000);
+
+            button30.BackColor = Color.DodgerBlue;
+
         }
 
 
@@ -4256,7 +4316,7 @@ namespace KVCOMSERVER
             }
             validationMasterProcess = false;
 
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
 
             if (!validationMasterProcess)
             {
