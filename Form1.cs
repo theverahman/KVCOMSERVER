@@ -2102,6 +2102,10 @@ namespace KVCOMSERVER
             drawingBorderRight.BringToFront();
             drawingPanel.BringToFront();
 
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+            this.AutoSize = true;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
             _WorkflowHandler = new WORKFLOWHANDLER(this);
             _WorkflowHandler._kvMasterConfirm();
             textBox1.Text = settingIpv4;
