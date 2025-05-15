@@ -3,7 +3,7 @@
     "KVCOMSERVER": {
       "commandName": "Project",
       "nativeDebugging": false,
-      "remoteDebugEnabled": true,
+      "remoteDebugEnabled": false,
       "remoteDebugMachine": "DESKTOP-NNHHO4J:4030"
     }
   }

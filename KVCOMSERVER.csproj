@@ -168,19 +168,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Alteridem.WinTouch" Version="0.1.1" />
     <PackageReference Include="ClosedXML" Version="0.102.3" />
     <PackageReference Include="IronXL.Excel" Version="2024.9.3" />
     <PackageReference Include="LiteDB" Version="5.0.21" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="ScottPlot" Version="5.0.39" />
-    <PackageReference Include="ScottPlot.WinForms" Version="5.0.39" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EEIP.NET-master\EEIP.NET\EEIP.csproj" />
     <ProjectReference Include="..\EXCEL_MANIPULATOR\EXCEL_MANIPULATOR.csproj" />
     <ProjectReference Include="..\FUNCTION_TESTER.DB\FUNCTION_TESTER.DB.csproj" />
+    <ProjectReference Include="..\ScottPlot-main\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
+    <ProjectReference Include="..\ScottPlot-main\src\ScottPlot5\ScottPlot5\ScottPlot.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">

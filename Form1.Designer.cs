@@ -49,18 +49,12 @@ namespace KVCOMSERVER
             button77 = new System.Windows.Forms.Button();
             button78 = new System.Windows.Forms.Button();
             button79 = new System.Windows.Forms.Button();
-            button66 = new System.Windows.Forms.Button();
-            button67 = new System.Windows.Forms.Button();
             button64 = new System.Windows.Forms.Button();
             button65 = new System.Windows.Forms.Button();
             button56 = new System.Windows.Forms.Button();
             button57 = new System.Windows.Forms.Button();
             button58 = new System.Windows.Forms.Button();
             button59 = new System.Windows.Forms.Button();
-            button60 = new System.Windows.Forms.Button();
-            button61 = new System.Windows.Forms.Button();
-            button62 = new System.Windows.Forms.Button();
-            button63 = new System.Windows.Forms.Button();
             button31 = new System.Windows.Forms.Button();
             button29 = new System.Windows.Forms.Button();
             tabPage5 = new System.Windows.Forms.TabPage();
@@ -104,10 +98,7 @@ namespace KVCOMSERVER
             label24 = new System.Windows.Forms.Label();
             button38 = new System.Windows.Forms.Button();
             button28 = new System.Windows.Forms.Button();
-            button25 = new System.Windows.Forms.Button();
             button26 = new System.Windows.Forms.Button();
-            button17 = new System.Windows.Forms.Button();
-            button18 = new System.Windows.Forms.Button();
             label18 = new System.Windows.Forms.Label();
             label19 = new System.Windows.Forms.Label();
             label20 = new System.Windows.Forms.Label();
@@ -146,6 +137,7 @@ namespace KVCOMSERVER
             button34 = new System.Windows.Forms.Button();
             button32 = new System.Windows.Forms.Button();
             tabPage3 = new System.Windows.Forms.TabPage();
+            pictureBox3 = new System.Windows.Forms.PictureBox();
             panel9 = new System.Windows.Forms.Panel();
             label33 = new System.Windows.Forms.Label();
             label34 = new System.Windows.Forms.Label();
@@ -183,11 +175,8 @@ namespace KVCOMSERVER
             formsPlot9 = new ScottPlot.WinForms.FormsPlot();
             button36 = new System.Windows.Forms.Button();
             button33 = new System.Windows.Forms.Button();
-            button24 = new System.Windows.Forms.Button();
             button16 = new System.Windows.Forms.Button();
             button15 = new System.Windows.Forms.Button();
-            button14 = new System.Windows.Forms.Button();
-            button13 = new System.Windows.Forms.Button();
             label17 = new System.Windows.Forms.Label();
             label16 = new System.Windows.Forms.Label();
             label15 = new System.Windows.Forms.Label();
@@ -250,6 +239,7 @@ namespace KVCOMSERVER
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabPage7.SuspendLayout();
             tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             panel9.SuspendLayout();
             panel10.SuspendLayout();
             panel11.SuspendLayout();
@@ -325,18 +315,12 @@ namespace KVCOMSERVER
             tabPage8.Controls.Add(button77);
             tabPage8.Controls.Add(button78);
             tabPage8.Controls.Add(button79);
-            tabPage8.Controls.Add(button66);
-            tabPage8.Controls.Add(button67);
             tabPage8.Controls.Add(button64);
             tabPage8.Controls.Add(button65);
             tabPage8.Controls.Add(button56);
             tabPage8.Controls.Add(button57);
             tabPage8.Controls.Add(button58);
             tabPage8.Controls.Add(button59);
-            tabPage8.Controls.Add(button60);
-            tabPage8.Controls.Add(button61);
-            tabPage8.Controls.Add(button62);
-            tabPage8.Controls.Add(button63);
             tabPage8.Controls.Add(button31);
             tabPage8.Controls.Add(button29);
             tabPage8.Location = new System.Drawing.Point(4, 4);
@@ -492,28 +476,6 @@ namespace KVCOMSERVER
             button79.UseVisualStyleBackColor = false;
             button79.Click += button79_Click;
             // 
-            // button66
-            // 
-            button66.BackColor = System.Drawing.Color.LightSteelBlue;
-            button66.Location = new System.Drawing.Point(972, 559);
-            button66.Name = "button66";
-            button66.Size = new System.Drawing.Size(137, 51);
-            button66.TabIndex = 43;
-            button66.Text = "Step 3 R-Side\r\n Difference Data";
-            button66.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button66.UseVisualStyleBackColor = false;
-            // 
-            // button67
-            // 
-            button67.BackColor = System.Drawing.Color.LightSteelBlue;
-            button67.Location = new System.Drawing.Point(758, 559);
-            button67.Name = "button67";
-            button67.Size = new System.Drawing.Size(137, 51);
-            button67.TabIndex = 42;
-            button67.Text = "Step 3 L-Side\r\n Difference Data";
-            button67.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button67.UseVisualStyleBackColor = false;
-            // 
             // button64
             // 
             button64.BackColor = System.Drawing.Color.LightSteelBlue;
@@ -586,50 +548,6 @@ namespace KVCOMSERVER
             button59.UseVisualStyleBackColor = false;
             button59.Click += button59_Click;
             // 
-            // button60
-            // 
-            button60.BackColor = System.Drawing.Color.LightSteelBlue;
-            button60.Location = new System.Drawing.Point(972, 502);
-            button60.Name = "button60";
-            button60.Size = new System.Drawing.Size(137, 51);
-            button60.TabIndex = 35;
-            button60.Text = "Step 3 R-Side\r\nExtension Data";
-            button60.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button60.UseVisualStyleBackColor = false;
-            // 
-            // button61
-            // 
-            button61.BackColor = System.Drawing.Color.LightSteelBlue;
-            button61.Location = new System.Drawing.Point(972, 445);
-            button61.Name = "button61";
-            button61.Size = new System.Drawing.Size(137, 51);
-            button61.TabIndex = 34;
-            button61.Text = "Step 3 R-Side\r\nCompression Data";
-            button61.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button61.UseVisualStyleBackColor = false;
-            // 
-            // button62
-            // 
-            button62.BackColor = System.Drawing.Color.LightSteelBlue;
-            button62.Location = new System.Drawing.Point(758, 502);
-            button62.Name = "button62";
-            button62.Size = new System.Drawing.Size(137, 51);
-            button62.TabIndex = 33;
-            button62.Text = "Step 3 L-Side\r\nExtension Data";
-            button62.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button62.UseVisualStyleBackColor = false;
-            // 
-            // button63
-            // 
-            button63.BackColor = System.Drawing.Color.LightSteelBlue;
-            button63.Location = new System.Drawing.Point(758, 445);
-            button63.Name = "button63";
-            button63.Size = new System.Drawing.Size(137, 51);
-            button63.TabIndex = 32;
-            button63.Text = "Step 3 L-Side\r\nCompression Data";
-            button63.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button63.UseVisualStyleBackColor = false;
-            // 
             // button31
             // 
             button31.BackColor = System.Drawing.Color.LightSteelBlue;
@@ -685,10 +603,7 @@ namespace KVCOMSERVER
             tabPage5.Controls.Add(label24);
             tabPage5.Controls.Add(button38);
             tabPage5.Controls.Add(button28);
-            tabPage5.Controls.Add(button25);
             tabPage5.Controls.Add(button26);
-            tabPage5.Controls.Add(button17);
-            tabPage5.Controls.Add(button18);
             tabPage5.Controls.Add(label18);
             tabPage5.Controls.Add(label19);
             tabPage5.Controls.Add(label20);
@@ -1172,18 +1087,6 @@ namespace KVCOMSERVER
             button28.UseVisualStyleBackColor = false;
             button28.Click += button28_Click_1;
             // 
-            // button25
-            // 
-            button25.BackColor = System.Drawing.Color.LightSteelBlue;
-            button25.Font = new System.Drawing.Font("Sarasa Fixed J", 10F);
-            button25.Location = new System.Drawing.Point(1400, 945);
-            button25.Name = "button25";
-            button25.Size = new System.Drawing.Size(130, 60);
-            button25.TabIndex = 20;
-            button25.Text = "SHOW/HIDE\r\nAXIS LINE";
-            button25.UseVisualStyleBackColor = false;
-            button25.Visible = false;
-            // 
             // button26
             // 
             button26.BackColor = System.Drawing.Color.LightSteelBlue;
@@ -1194,26 +1097,6 @@ namespace KVCOMSERVER
             button26.Text = "SHOW/HIDE\r\nMASTER LIMIT";
             button26.UseVisualStyleBackColor = false;
             button26.Click += button26_Click;
-            // 
-            // button17
-            // 
-            button17.BackColor = System.Drawing.Color.LightSteelBlue;
-            button17.Location = new System.Drawing.Point(89, 945);
-            button17.Name = "button17";
-            button17.Size = new System.Drawing.Size(77, 60);
-            button17.TabIndex = 17;
-            button17.Text = "DISPLAY STEP 3";
-            button17.UseVisualStyleBackColor = false;
-            // 
-            // button18
-            // 
-            button18.BackColor = System.Drawing.Color.LightSteelBlue;
-            button18.Location = new System.Drawing.Point(6, 945);
-            button18.Name = "button18";
-            button18.Size = new System.Drawing.Size(77, 60);
-            button18.TabIndex = 16;
-            button18.Text = "DISPLAY STEP 2";
-            button18.UseVisualStyleBackColor = false;
             // 
             // label18
             // 
@@ -1660,6 +1543,7 @@ namespace KVCOMSERVER
             // 
             tabPage3.BackColor = System.Drawing.Color.SlateGray;
             tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            tabPage3.Controls.Add(pictureBox3);
             tabPage3.Controls.Add(panel9);
             tabPage3.Controls.Add(Plot10Coord);
             tabPage3.Controls.Add(Plot4Coord);
@@ -1686,11 +1570,8 @@ namespace KVCOMSERVER
             tabPage3.Controls.Add(formsPlot9);
             tabPage3.Controls.Add(button36);
             tabPage3.Controls.Add(button33);
-            tabPage3.Controls.Add(button24);
             tabPage3.Controls.Add(button16);
             tabPage3.Controls.Add(button15);
-            tabPage3.Controls.Add(button14);
-            tabPage3.Controls.Add(button13);
             tabPage3.Controls.Add(label17);
             tabPage3.Controls.Add(label16);
             tabPage3.Controls.Add(label15);
@@ -1705,6 +1586,14 @@ namespace KVCOMSERVER
             tabPage3.Size = new System.Drawing.Size(1870, 1014);
             tabPage3.TabIndex = 3;
             tabPage3.Text = "REALTIME GRAPH";
+            // 
+            // pictureBox3
+            // 
+            pictureBox3.Location = new System.Drawing.Point(-2, 945);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new System.Drawing.Size(1865, 50);
+            pictureBox3.TabIndex = 82;
+            pictureBox3.TabStop = false;
             // 
             // panel9
             // 
@@ -2069,7 +1958,7 @@ namespace KVCOMSERVER
             // button82
             // 
             button82.BackColor = System.Drawing.Color.LightSteelBlue;
-            button82.Location = new System.Drawing.Point(669, 945);
+            button82.Location = new System.Drawing.Point(856, 879);
             button82.Name = "button82";
             button82.Size = new System.Drawing.Size(77, 60);
             button82.TabIndex = 34;
@@ -2120,7 +2009,7 @@ namespace KVCOMSERVER
             // button36
             // 
             button36.BackColor = System.Drawing.Color.LightSteelBlue;
-            button36.Location = new System.Drawing.Point(1773, 945);
+            button36.Location = new System.Drawing.Point(946, 879);
             button36.Name = "button36";
             button36.Size = new System.Drawing.Size(90, 60);
             button36.TabIndex = 25;
@@ -2139,22 +2028,10 @@ namespace KVCOMSERVER
             button33.UseVisualStyleBackColor = false;
             button33.Click += button33_Click;
             // 
-            // button24
-            // 
-            button24.BackColor = System.Drawing.Color.LightSteelBlue;
-            button24.Font = new System.Drawing.Font("Sarasa Fixed J", 10F);
-            button24.Location = new System.Drawing.Point(1400, 945);
-            button24.Name = "button24";
-            button24.Size = new System.Drawing.Size(130, 60);
-            button24.TabIndex = 16;
-            button24.Text = "SHOW/HIDE AXIS LINE";
-            button24.UseVisualStyleBackColor = false;
-            button24.Visible = false;
-            // 
             // button16
             // 
             button16.BackColor = System.Drawing.Color.LightSteelBlue;
-            button16.Location = new System.Drawing.Point(1264, 945);
+            button16.Location = new System.Drawing.Point(939, 546);
             button16.Name = "button16";
             button16.Size = new System.Drawing.Size(130, 60);
             button16.TabIndex = 15;
@@ -2165,33 +2042,13 @@ namespace KVCOMSERVER
             // button15
             // 
             button15.BackColor = System.Drawing.Color.LightSteelBlue;
-            button15.Location = new System.Drawing.Point(1128, 945);
+            button15.Location = new System.Drawing.Point(803, 546);
             button15.Name = "button15";
             button15.Size = new System.Drawing.Size(130, 60);
             button15.TabIndex = 14;
             button15.Text = "SHOW/HIDE\r\nMASTER LINE";
             button15.UseVisualStyleBackColor = false;
             button15.Click += button15_Click;
-            // 
-            // button14
-            // 
-            button14.BackColor = System.Drawing.Color.LightSteelBlue;
-            button14.Location = new System.Drawing.Point(89, 945);
-            button14.Name = "button14";
-            button14.Size = new System.Drawing.Size(77, 60);
-            button14.TabIndex = 13;
-            button14.Text = "DISPLAY STEP 3";
-            button14.UseVisualStyleBackColor = false;
-            // 
-            // button13
-            // 
-            button13.BackColor = System.Drawing.Color.LightSteelBlue;
-            button13.Location = new System.Drawing.Point(6, 945);
-            button13.Name = "button13";
-            button13.Size = new System.Drawing.Size(77, 60);
-            button13.TabIndex = 12;
-            button13.Text = "DISPLAY STEP 2";
-            button13.UseVisualStyleBackColor = false;
             // 
             // label17
             // 
@@ -2848,6 +2705,7 @@ namespace KVCOMSERVER
             tabPage7.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             panel9.ResumeLayout(false);
             panel9.PerformLayout();
             panel10.ResumeLayout(false);
@@ -2884,11 +2742,8 @@ namespace KVCOMSERVER
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Button button38;
         private System.Windows.Forms.Button button28;
-        private System.Windows.Forms.Button button25;
         private System.Windows.Forms.Button button26;
         private System.Windows.Forms.Button button27;
-        private System.Windows.Forms.Button button17;
-        private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
@@ -2913,11 +2768,8 @@ namespace KVCOMSERVER
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button button36;
         private System.Windows.Forms.Button button33;
-        private System.Windows.Forms.Button button24;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button15;
-        private System.Windows.Forms.Button button14;
-        private System.Windows.Forms.Button button13;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
@@ -2979,10 +2831,6 @@ namespace KVCOMSERVER
         private System.Windows.Forms.Button button57;
         private System.Windows.Forms.Button button58;
         private System.Windows.Forms.Button button59;
-        private System.Windows.Forms.Button button60;
-        private System.Windows.Forms.Button button61;
-        private System.Windows.Forms.Button button62;
-        private System.Windows.Forms.Button button63;
         private ScottPlot.WinForms.FormsPlot formsPlot10;
         private ScottPlot.WinForms.FormsPlot formsPlot9;
         private System.Windows.Forms.Label label22;
@@ -2991,8 +2839,6 @@ namespace KVCOMSERVER
         private System.Windows.Forms.Label label25;
         private ScottPlot.WinForms.FormsPlot formsPlot11;
         private ScottPlot.WinForms.FormsPlot formsPlot12;
-        private System.Windows.Forms.Button button66;
-        private System.Windows.Forms.Button button67;
         private System.Windows.Forms.Button button64;
         private System.Windows.Forms.Button button65;
         private System.Windows.Forms.Button button68;
@@ -3083,6 +2929,7 @@ namespace KVCOMSERVER
         private System.Windows.Forms.Label TXLoadR1;
         private System.Windows.Forms.Panel panel13;
         private System.Windows.Forms.Label TXPosR1;
+        private System.Windows.Forms.PictureBox pictureBox3;
     }
 }
 
