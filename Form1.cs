@@ -48,8 +48,10 @@ using System.Runtime.CompilerServices;
 using ScottPlot.Plottables;
 using SixLabors.Fonts;
 using DocumentFormat.OpenXml.Drawing.Charts;
-using ScottPlot.Interactivity.UserActionResponses;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
+using ScottPlot.Interactivity;
+using ScottPlot.Interactivity.UserActions;
+using ScottPlot.Interactivity.UserActionResponses;
 
 
 namespace KVCOMSERVER
@@ -69,6 +71,13 @@ namespace KVCOMSERVER
         private PrivateFontCollection privateFontCollection;
 
         private CancellationTokenSource _cts;
+
+        Text JudgePlot1;
+        Text JudgePlot2;
+        Text JudgePlot3;
+        Text JudgePlot4;
+        Text JudgePlot9;
+        Text JudgePlot10;
 
         bool masterConfirmEdit;
 
@@ -600,7 +609,7 @@ namespace KVCOMSERVER
         #endregion
 
         #region UIComponents
-        private void InitializeCustomComponents()
+        private void InitializeCustomComponents() //tab cover blank space
         {
             // Create a new Panel to contain the drawing
             drawingPanel = new Panel
@@ -614,7 +623,7 @@ namespace KVCOMSERVER
             // Add the drawing panel to the form
             this.Controls.Add(drawingPanel);
         }
-        private void InitializeBorderComponent()
+        private void InitializeBorderComponent()//border
         {
             drawingBorderUpper = new Panel
             {
@@ -2129,7 +2138,15 @@ namespace KVCOMSERVER
         {
             formsPlot1.Plot.XLabel("Stroke");
             formsPlot1.Plot.YLabel("Load");
-            formsPlot1.Plot.ShowLegend();
+            formsPlot1.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot1.Plot.Axes.Left.Label.FontSize = 12;
+            PixelPadding pad1 = new(60, 1, 60, 10);
+            formsPlot1.Plot.Layout.Fixed(pad1);
+
+
+
+
+            formsPlot1.Plot.HideLegend();
             formsPlot1.Plot.Axes.AntiAlias(true);
             formsPlot1.Plot.Axes.Hairline(true);
             formsPlot1.Plot.Axes.AutoScale(true);
@@ -2140,6 +2157,25 @@ namespace KVCOMSERVER
             formsPlot1.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot1.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot1.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot1.Plot.Legend.FontSize = 8;
+            formsPlot1.Plot.Legend.SymbolWidth = 3;
+            formsPlot1.Plot.Legend.OutlineWidth = 3;
+            formsPlot1.Plot.Legend.Padding = new PixelPadding(1, 1);
+            JudgePlot1 = formsPlot1.Plot.Add.Text("", 0, 0);
+            JudgePlot1.LabelFontSize = 12;
+            JudgePlot1.LabelBold = true;
+            JudgePlot1.LabelBackgroundColor = Colors.LimeGreen;
+            JudgePlot1.LabelFontColor = Colors.Black;
+            JudgePlot1.LabelBorderColor = Colors.White;
+            JudgePlot1.LabelBorderWidth = 1;
+            JudgePlot1.LabelPadding = 2;
+            //JudgePlot1.IsVisible = false;
+            //JudgePlot1.OffsetY = -10f * 5f;
+            //JudgePlot1.LabelText = "NG";
+            //JudgePlot1.LabelFontColor = Colors.White;
+            //JudgePlot1.LabelBackgroundColor = Colors.Crimson;
+
+
             //formsPlot1.MouseDown += OnTouchDown;
             //formsPlot1.MouseMove += OnTouchMove;
             //formsPlot1.MouseUp += OnTouchUp;
@@ -2147,7 +2183,15 @@ namespace KVCOMSERVER
 
             formsPlot2.Plot.XLabel("Stroke");
             formsPlot2.Plot.YLabel("Load");
-            formsPlot2.Plot.ShowLegend();
+            formsPlot2.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot2.Plot.Axes.Left.Label.FontSize = 12;
+            PixelPadding pad2 = new(60, 1, 60, 10);
+            formsPlot2.Plot.Layout.Fixed(pad2);
+            //formsPlot2.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot2.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot2.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            //formsPlot2.Plot.ShowLegend(Edge.Right);
+            formsPlot2.Plot.HideLegend();
             formsPlot2.Plot.Axes.AntiAlias(true);
             formsPlot2.Plot.Axes.Hairline(true);
             formsPlot2.Plot.Axes.AutoScale(true);
@@ -2158,13 +2202,44 @@ namespace KVCOMSERVER
             formsPlot2.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot2.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot2.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot2.Plot.Legend.FontSize = 8;
+            formsPlot2.Plot.Legend.SymbolWidth = 3;
+            formsPlot2.Plot.Legend.OutlineWidth = 3;
+            formsPlot2.Plot.Legend.Padding = new PixelPadding(1, 1);
+            JudgePlot2 = formsPlot2.Plot.Add.Text("", 0, 0);
+            JudgePlot2.LabelFontSize = 12;
+            JudgePlot2.LabelBold = true;
+            JudgePlot2.LabelBackgroundColor = Colors.LimeGreen;
+            JudgePlot2.LabelFontColor = Colors.Black;
+            JudgePlot2.LabelBorderColor = Colors.White;
+            JudgePlot2.LabelBorderWidth = 1;
+            JudgePlot2.LabelPadding = 2;
             //formsPlot2.MouseDown += OnTouchDown;
             //formsPlot2.MouseMove += OnTouchMove;
             //formsPlot2.MouseUp += OnTouchUp;
 
+            var sig3 = formsPlot3.Plot.Add.SignalXY(new float[] { 0.0f }, new float[] { 0.0f });
+            sig3.Axes.YAxis = formsPlot3.Plot.Axes.Right;
             formsPlot3.Plot.XLabel("Stroke");
             formsPlot3.Plot.YLabel("Load");
-            formsPlot3.Plot.ShowLegend();
+            formsPlot3.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot3.Plot.Axes.Left.Label.FontSize = 12;
+            // Hide axis label and tick
+            formsPlot3.Plot.Axes.Left.TickLabelStyle.IsVisible = false;
+            formsPlot3.Plot.Axes.Left.Label.IsVisible = false;
+            formsPlot3.Plot.Axes.Left.FrameLineStyle.Width = 0;
+            formsPlot3.Plot.Axes.Left.MajorTickStyle.Length = 0;
+            formsPlot3.Plot.Axes.Left.MinorTickStyle.Length = 0;
+            //formsPlot3.Plot.Axes.AddRightAxis();
+            formsPlot3.Plot.Axes.Right.Label.Text = "Load";
+            formsPlot3.Plot.Axes.Right.Label.FontSize = 12;
+            PixelPadding pad3 = new(1, 60, 60, 10);
+            formsPlot3.Plot.Layout.Fixed(pad3);
+            //formsPlot3.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot3.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot3.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            //formsPlot3.Plot.ShowLegend(Edge.Left);
+            formsPlot3.Plot.HideLegend();
             formsPlot3.Plot.Axes.AntiAlias(true);
             formsPlot3.Plot.Axes.Hairline(true);
             formsPlot3.Plot.Axes.AutoScale(true);
@@ -2175,13 +2250,44 @@ namespace KVCOMSERVER
             formsPlot3.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot3.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot3.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot3.Plot.Legend.FontSize = 8;
+            formsPlot3.Plot.Legend.SymbolWidth = 3;
+            formsPlot3.Plot.Legend.OutlineWidth = 3;
+            formsPlot3.Plot.Legend.Padding = new PixelPadding(1, 1);
+            JudgePlot3 = formsPlot3.Plot.Add.Text("", 0, 0);
+            JudgePlot3.LabelFontSize = 12;
+            JudgePlot3.LabelBold = true;
+            JudgePlot3.LabelBackgroundColor = Colors.LimeGreen;
+            JudgePlot3.LabelFontColor = Colors.Black;
+            JudgePlot3.LabelBorderColor = Colors.White;
+            JudgePlot3.LabelBorderWidth = 1;
+            JudgePlot3.LabelPadding = 2;
             //formsPlot3.MouseDown += OnTouchDown;
             //formsPlot3.MouseMove += OnTouchMove;
             //formsPlot3.MouseUp += OnTouchUp;
 
+            var sig4 = formsPlot4.Plot.Add.SignalXY(new float[] { 0.0f }, new float[] { 0.0f });
+            sig4.Axes.YAxis = formsPlot4.Plot.Axes.Right;
             formsPlot4.Plot.XLabel("Stroke");
             formsPlot4.Plot.YLabel("Load");
-            formsPlot4.Plot.ShowLegend();
+            formsPlot4.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot4.Plot.Axes.Left.Label.FontSize = 12;
+            // Hide axis label and tick
+            formsPlot4.Plot.Axes.Left.TickLabelStyle.IsVisible = false;
+            formsPlot4.Plot.Axes.Left.Label.IsVisible = false;
+            formsPlot4.Plot.Axes.Left.FrameLineStyle.Width = 0;
+            formsPlot4.Plot.Axes.Left.MajorTickStyle.Length = 0;
+            formsPlot4.Plot.Axes.Left.MinorTickStyle.Length = 0;
+            //formsPlot4.Plot.Axes.AddRightAxis();
+            formsPlot4.Plot.Axes.Right.Label.Text = "Load";
+            formsPlot4.Plot.Axes.Right.Label.FontSize = 12;
+            PixelPadding pad4 = new(1, 60, 60, 10);
+            formsPlot4.Plot.Layout.Fixed(pad4);
+            //formsPlot4.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot4.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot4.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            //formsPlot4.Plot.ShowLegend(Edge.Left);
+            formsPlot4.Plot.HideLegend();
             formsPlot4.Plot.Axes.AntiAlias(true);
             formsPlot4.Plot.Axes.Hairline(true);
             formsPlot4.Plot.Axes.AutoScale(true);
@@ -2192,13 +2298,33 @@ namespace KVCOMSERVER
             formsPlot4.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot4.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot4.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot4.Plot.Legend.FontSize = 8;
+            formsPlot4.Plot.Legend.SymbolWidth = 3;
+            formsPlot4.Plot.Legend.OutlineWidth = 3;
+            formsPlot4.Plot.Legend.Padding = new PixelPadding(1, 1);
+            JudgePlot4 = formsPlot4.Plot.Add.Text("", 0, 0);
+            JudgePlot4.LabelFontSize = 12;
+            JudgePlot4.LabelBold = true;
+            JudgePlot4.LabelBackgroundColor = Colors.LimeGreen;
+            JudgePlot4.LabelFontColor = Colors.Black;
+            JudgePlot4.LabelBorderColor = Colors.White;
+            JudgePlot4.LabelBorderWidth = 1;
+            JudgePlot4.LabelPadding = 2;
             //formsPlot4.MouseDown += OnTouchDown;
             //formsPlot4.MouseMove += OnTouchMove;
             //formsPlot4.MouseUp += OnTouchUp;
 
             formsPlot5.Plot.XLabel("Stroke");
             formsPlot5.Plot.YLabel("Load");
-            formsPlot5.Plot.ShowLegend();
+            formsPlot5.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot5.Plot.Axes.Left.Label.FontSize = 12;
+            PixelPadding pad5 = new(60, 1, 60, 10);
+            formsPlot5.Plot.Layout.Fixed(pad5);
+            //formsPlot5.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot5.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot5.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            //formsPlot5.Plot.ShowLegend(Edge.Right);
+            formsPlot5.Plot.HideLegend();
             formsPlot5.Plot.Axes.AntiAlias(true);
             formsPlot5.Plot.Axes.Hairline(true);
             formsPlot5.Plot.Axes.AutoScale(true);
@@ -2209,13 +2335,25 @@ namespace KVCOMSERVER
             formsPlot5.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot5.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot5.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot5.Plot.Legend.FontSize = 8;
+            formsPlot5.Plot.Legend.SymbolWidth = 3;
+            formsPlot5.Plot.Legend.OutlineWidth = 3;
+            formsPlot5.Plot.Legend.Padding = new PixelPadding(1, 1);
             //formsPlot5.MouseDown += OnTouchDown;
             //formsPlot5.MouseMove += OnTouchMove;
             //formsPlot5.MouseUp += OnTouchUp;
 
             formsPlot6.Plot.XLabel("Stroke");
             formsPlot6.Plot.YLabel("Load");
-            formsPlot6.Plot.ShowLegend();
+            formsPlot6.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot6.Plot.Axes.Left.Label.FontSize = 12;
+            PixelPadding pad6 = new(60, 1, 60, 10);
+            formsPlot6.Plot.Layout.Fixed(pad6);
+            //formsPlot6.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot6.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot6.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            //formsPlot6.Plot.ShowLegend(Edge.Right);
+            formsPlot6.Plot.HideLegend();
             formsPlot6.Plot.Axes.AntiAlias(true);
             formsPlot6.Plot.Axes.Hairline(true);
             formsPlot6.Plot.Axes.AutoScale(true);
@@ -2226,13 +2364,36 @@ namespace KVCOMSERVER
             formsPlot6.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot6.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot6.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot6.Plot.Legend.FontSize = 8;
+            formsPlot6.Plot.Legend.SymbolWidth = 3;
+            formsPlot6.Plot.Legend.OutlineWidth = 3;
+            formsPlot6.Plot.Legend.Padding = new PixelPadding(1, 1);
             //formsPlot6.MouseDown += OnTouchDown;
             //formsPlot6.MouseMove += OnTouchMove;
             //formsPlot6.MouseUp += OnTouchUp;
 
+            var sig7 = formsPlot7.Plot.Add.SignalXY(new float[] { 0.0f }, new float[] { 0.0f });
+            sig7.Axes.YAxis = formsPlot7.Plot.Axes.Right;
             formsPlot7.Plot.XLabel("Stroke");
             formsPlot7.Plot.YLabel("Load");
-            formsPlot7.Plot.ShowLegend();
+            formsPlot7.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot7.Plot.Axes.Left.Label.FontSize = 12;
+            // Hide axis label and tick
+            formsPlot7.Plot.Axes.Left.TickLabelStyle.IsVisible = false;
+            formsPlot7.Plot.Axes.Left.Label.IsVisible = false;
+            formsPlot7.Plot.Axes.Left.FrameLineStyle.Width = 0;
+            formsPlot7.Plot.Axes.Left.MajorTickStyle.Length = 0;
+            formsPlot7.Plot.Axes.Left.MinorTickStyle.Length = 0;
+            //formsPlot4.Plot.Axes.AddRightAxis();
+            formsPlot7.Plot.Axes.Right.Label.Text = "Load";
+            formsPlot7.Plot.Axes.Right.Label.FontSize = 12;
+            PixelPadding pad7 = new(1, 60, 60, 10);
+            formsPlot7.Plot.Layout.Fixed(pad7);
+            //formsPlot7.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot7.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot7.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            //formsPlot7.Plot.ShowLegend(Edge.Left);
+            formsPlot7.Plot.HideLegend();
             formsPlot7.Plot.Axes.AntiAlias(true);
             formsPlot7.Plot.Axes.Hairline(true);
             formsPlot7.Plot.Axes.AutoScale(true);
@@ -2243,13 +2404,36 @@ namespace KVCOMSERVER
             formsPlot7.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot7.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot7.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot7.Plot.Legend.FontSize = 8;
+            formsPlot7.Plot.Legend.SymbolWidth = 3;
+            formsPlot7.Plot.Legend.OutlineWidth = 3;
+            formsPlot7.Plot.Legend.Padding = new PixelPadding(1, 1);
             //formsPlot7.MouseDown += OnTouchDown;
             //formsPlot7.MouseMove += OnTouchMove;
             //formsPlot7.MouseUp += OnTouchUp;
 
+            var sig8 = formsPlot8.Plot.Add.SignalXY(new float[] { 0.0f }, new float[] { 0.0f });
+            sig8.Axes.YAxis = formsPlot8.Plot.Axes.Right;
             formsPlot8.Plot.XLabel("Stroke");
             formsPlot8.Plot.YLabel("Load");
-            formsPlot8.Plot.ShowLegend();
+            formsPlot8.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot8.Plot.Axes.Left.Label.FontSize = 12;
+            // Hide axis label and tick
+            formsPlot8.Plot.Axes.Left.TickLabelStyle.IsVisible = false;
+            formsPlot8.Plot.Axes.Left.Label.IsVisible = false;
+            formsPlot8.Plot.Axes.Left.FrameLineStyle.Width = 0;
+            formsPlot8.Plot.Axes.Left.MajorTickStyle.Length = 0;
+            formsPlot8.Plot.Axes.Left.MinorTickStyle.Length = 0;
+            //formsPlot4.Plot.Axes.AddRightAxis();
+            formsPlot8.Plot.Axes.Right.Label.Text = "Load";
+            formsPlot8.Plot.Axes.Right.Label.FontSize = 12;
+            PixelPadding pad8 = new(1, 60, 60, 10);
+            formsPlot8.Plot.Layout.Fixed(pad8);
+            //formsPlot8.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot8.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot8.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            //formsPlot8.Plot.ShowLegend(Edge.Left);
+            formsPlot8.Plot.HideLegend();
             formsPlot8.Plot.Axes.AntiAlias(true);
             formsPlot8.Plot.Axes.Hairline(true);
             formsPlot8.Plot.Axes.AutoScale(true);
@@ -2260,13 +2444,18 @@ namespace KVCOMSERVER
             formsPlot8.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot8.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot8.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot8.Plot.Legend.FontSize = 8;
+            formsPlot8.Plot.Legend.SymbolWidth = 3;
+            formsPlot8.Plot.Legend.OutlineWidth = 3;
+            formsPlot8.Plot.Legend.Padding = new PixelPadding(1, 1);
             //formsPlot8.MouseDown += OnTouchDown;
             //formsPlot8.MouseMove += OnTouchMove;
             //formsPlot8.MouseUp += OnTouchUp;
 
             formsPlot9.Plot.XLabel("Stroke");
             formsPlot9.Plot.YLabel("Load");
-            formsPlot9.Plot.ShowLegend();
+            formsPlot9.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot9.Plot.Axes.Left.Label.FontSize = 12;
             formsPlot9.Plot.Axes.AntiAlias(true);
             formsPlot9.Plot.Axes.Hairline(true);
             formsPlot9.Plot.Axes.AutoScale(true);
@@ -2274,16 +2463,54 @@ namespace KVCOMSERVER
             formsPlot9.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot9.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
             formsPlot9.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            PixelPadding pad9 = new(60, 1, 60, 10);
+            formsPlot9.Plot.Layout.Fixed(pad9);
+            //formsPlot9.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot9.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot9.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            formsPlot9.Plot.Legend.Orientation = ScottPlot.Orientation.Horizontal;
             formsPlot9.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot9.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot9.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot9.Plot.Legend.FontSize = 9;
+            formsPlot9.Plot.Legend.SymbolWidth = 5;
+            formsPlot9.Plot.Legend.OutlineWidth = 5;
+            formsPlot9.Plot.Legend.Padding = new PixelPadding(1, 1);
+            ScottPlot.Panels.LegendPanel legendPanel9 = new(formsPlot9.Plot.Legend)
+            {
+                Edge = Edge.Bottom,
+                Alignment = Alignment.UpperCenter,
+            };
+            formsPlot9.Plot.Axes.AddPanel(legendPanel9);
+            formsPlot9.Plot.Legend.IsVisible = false;
+            //formsPlot9.Plot.ShowLegend(Edge.Bottom);
+            JudgePlot9 = formsPlot9.Plot.Add.Text("", 0, 0);
+            JudgePlot9.LabelFontSize = 12;
+            JudgePlot9.LabelBold = true;
+            JudgePlot9.LabelBackgroundColor = Colors.LimeGreen;
+            JudgePlot9.LabelFontColor = Colors.Black;
+            JudgePlot9.LabelBorderColor = Colors.White;
+            JudgePlot9.LabelBorderWidth = 1;
+            JudgePlot9.LabelPadding = 2;
             //formsPlot9.MouseDown += OnTouchDown;
             //formsPlot9.MouseMove += OnTouchMove;
             //formsPlot9.MouseUp += OnTouchUp;
 
+            var sig10 = formsPlot10.Plot.Add.SignalXY(new float[] { 0.0f }, new float[] { 0.0f });
+            sig10.Axes.YAxis = formsPlot10.Plot.Axes.Right;
             formsPlot10.Plot.XLabel("Stroke");
             formsPlot10.Plot.YLabel("Load");
-            formsPlot10.Plot.ShowLegend();
+            formsPlot10.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot10.Plot.Axes.Left.Label.FontSize = 12;
+            // Hide axis label and tick
+            formsPlot10.Plot.Axes.Left.TickLabelStyle.IsVisible = false;
+            formsPlot10.Plot.Axes.Left.Label.IsVisible = false;
+            formsPlot10.Plot.Axes.Left.FrameLineStyle.Width = 0;
+            formsPlot10.Plot.Axes.Left.MajorTickStyle.Length = 0;
+            formsPlot10.Plot.Axes.Left.MinorTickStyle.Length = 0;
+            //formsPlot10.Plot.Axes.AddRightAxis();
+            formsPlot10.Plot.Axes.Right.Label.Text = "Load";
+            formsPlot10.Plot.Axes.Right.Label.FontSize = 12;
             formsPlot10.Plot.Axes.AntiAlias(true);
             formsPlot10.Plot.Axes.Hairline(true);
             formsPlot10.Plot.Axes.AutoScale(true);
@@ -2291,16 +2518,43 @@ namespace KVCOMSERVER
             formsPlot10.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot10.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
             formsPlot10.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            PixelPadding pad10 = new(1, 60, 60, 10);
+            formsPlot10.Plot.Layout.Fixed(pad10);
+            //formsPlot10.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot10.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot10.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            formsPlot10.Plot.Legend.Orientation = ScottPlot.Orientation.Horizontal;
             formsPlot10.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot10.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot10.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot10.Plot.Legend.FontSize = 9;
+            formsPlot10.Plot.Legend.SymbolWidth = 5;
+            formsPlot10.Plot.Legend.OutlineWidth = 5;
+            formsPlot10.Plot.Legend.Padding = new PixelPadding(1, 1);
+            ScottPlot.Panels.LegendPanel legendPanel10 = new(formsPlot10.Plot.Legend)
+            {
+                Edge = Edge.Bottom,
+                Alignment = Alignment.UpperCenter,
+            };
+            formsPlot10.Plot.Axes.AddPanel(legendPanel10);
+            formsPlot10.Plot.Legend.IsVisible = false;
+            //formsPlot10.Plot.ShowLegend(Edge.Bottom);
+            JudgePlot10 = formsPlot10.Plot.Add.Text("", 0, 0);
+            JudgePlot10.LabelFontSize = 12;
+            JudgePlot10.LabelBold = true;
+            JudgePlot10.LabelBackgroundColor = Colors.LimeGreen;
+            JudgePlot10.LabelFontColor = Colors.Black;
+            JudgePlot10.LabelBorderColor = Colors.White;
+            JudgePlot10.LabelBorderWidth = 1;
+            JudgePlot10.LabelPadding = 2;
             //formsPlot10.MouseDown += OnTouchDown;
             //formsPlot10.MouseMove += OnTouchMove;
             //formsPlot10.MouseUp += OnTouchUp;
 
             formsPlot11.Plot.XLabel("Stroke");
             formsPlot11.Plot.YLabel("Load");
-            formsPlot11.Plot.ShowLegend();
+            formsPlot11.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot11.Plot.Axes.Left.Label.FontSize = 12;
             formsPlot11.Plot.Axes.AntiAlias(true);
             formsPlot11.Plot.Axes.Hairline(true);
             formsPlot11.Plot.Axes.AutoScale(true);
@@ -2308,16 +2562,46 @@ namespace KVCOMSERVER
             formsPlot11.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot11.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
             formsPlot11.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            PixelPadding pad11 = new(60, 1, 60, 10);
+            formsPlot11.Plot.Layout.Fixed(pad11);
+            //formsPlot11.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot11.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot11.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            formsPlot11.Plot.Legend.Orientation = ScottPlot.Orientation.Horizontal;
             formsPlot11.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot11.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot11.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot11.Plot.Legend.FontSize = 9;
+            formsPlot11.Plot.Legend.SymbolWidth = 5;
+            formsPlot11.Plot.Legend.OutlineWidth = 5;
+            formsPlot11.Plot.Legend.Padding = new PixelPadding(1, 1);
+            ScottPlot.Panels.LegendPanel legendPanel11 = new(formsPlot11.Plot.Legend)
+            {
+                Edge = Edge.Bottom,
+                Alignment = Alignment.UpperCenter,
+            };
+            formsPlot11.Plot.Axes.AddPanel(legendPanel11);
+            formsPlot11.Plot.Legend.IsVisible = false;
+            //formsPlot10.Plot.ShowLegend(Edge.Bottom);
             //formsPlot11.MouseDown += OnTouchDown;
             //formsPlot11.MouseMove += OnTouchMove;
             //formsPlot11.MouseUp += OnTouchUp;
 
+            var sig12 = formsPlot12.Plot.Add.SignalXY(new float[] { 0.0f }, new float[] { 0.0f });
+            sig12.Axes.YAxis = formsPlot12.Plot.Axes.Right;
             formsPlot12.Plot.XLabel("Stroke");
             formsPlot12.Plot.YLabel("Load");
-            formsPlot12.Plot.ShowLegend();
+            formsPlot12.Plot.Axes.Bottom.Label.FontSize = 12;
+            formsPlot12.Plot.Axes.Left.Label.FontSize = 12;
+            // Hide axis label and tick
+            formsPlot12.Plot.Axes.Left.TickLabelStyle.IsVisible = false;
+            formsPlot12.Plot.Axes.Left.Label.IsVisible = false;
+            formsPlot12.Plot.Axes.Left.FrameLineStyle.Width = 0;
+            formsPlot12.Plot.Axes.Left.MajorTickStyle.Length = 0;
+            formsPlot12.Plot.Axes.Left.MinorTickStyle.Length = 0;
+            //formsPlot10.Plot.Axes.AddRightAxis();
+            formsPlot12.Plot.Axes.Right.Label.Text = "Load";
+            formsPlot12.Plot.Axes.Right.Label.FontSize = 12;
             formsPlot12.Plot.Axes.AntiAlias(true);
             formsPlot12.Plot.Axes.Hairline(true);
             formsPlot12.Plot.Axes.AutoScale(true);
@@ -2325,9 +2609,27 @@ namespace KVCOMSERVER
             formsPlot12.Plot.DataBackground.Color = ScottPlot.Color.FromHex("#343c43");
             formsPlot12.Plot.Axes.Color(ScottPlot.Color.FromColor(System.Drawing.Color.Ivory));
             formsPlot12.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#5a6773");
+            PixelPadding pad12 = new(1, 60, 60, 10);
+            formsPlot12.Plot.Layout.Fixed(pad12);
+            //formsPlot12.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseWheelZoom>();
+            //formsPlot12.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoom>();
+            //formsPlot12.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
+            formsPlot12.Plot.Legend.Orientation = ScottPlot.Orientation.Horizontal;
             formsPlot12.Plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#708090");
             formsPlot12.Plot.Legend.FontColor = ScottPlot.Color.FromColor(System.Drawing.Color.Ivory);
             formsPlot12.Plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#5a6773");
+            formsPlot12.Plot.Legend.FontSize = 9;
+            formsPlot12.Plot.Legend.SymbolWidth = 5;
+            formsPlot12.Plot.Legend.OutlineWidth = 5;
+            formsPlot12.Plot.Legend.Padding = new PixelPadding(1, 1);
+            ScottPlot.Panels.LegendPanel legendPanel12 = new(formsPlot12.Plot.Legend)
+            {
+                Edge = Edge.Bottom,
+                Alignment = Alignment.UpperCenter,
+            };
+            formsPlot12.Plot.Axes.AddPanel(legendPanel12);
+            formsPlot12.Plot.Legend.IsVisible = false;
+            //formsPlot10.Plot.ShowLegend(Edge.Bottom);
             //formsPlot12.MouseDown += OnTouchDown;
             //formsPlot12.MouseMove += OnTouchMove;
             //formsPlot12.MouseUp += OnTouchUp;
@@ -2852,6 +3154,10 @@ namespace KVCOMSERVER
                 plotsig.LegendText = "UPPER";
             }
 
+            if (varname.Contains("Plot3") || varname.Contains("Plot4") || varname.Contains("Plot7") || varname.Contains("Plot8") || varname.Contains("Plot10") || varname.Contains("Plot12"))
+            {
+                plotsig.Axes.YAxis = plotbase.Plot.Axes.Right;
+            }
         }
         public void PlotChangeColor(ref ScottPlot.Plottables.SignalXY plotsig, System.Drawing.Color linecolor)
         {
@@ -2903,7 +3209,7 @@ namespace KVCOMSERVER
             {
                 plotbase.Plot.Axes.RectifyX();
             }
-            plotbase.Plot.ShowLegend();
+            //plotbase.Plot.ShowLegend();
             plotbase.Refresh();
         }
 
@@ -4478,170 +4784,289 @@ namespace KVCOMSERVER
 
         private void button86_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot1().Plot, 1.10, 1.10, point, false);
-            FormPlot1().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot1().Plot, 1.10, 1.10, point, false);
+                FormPlot1().Refresh();
+            }
+            catch { }
         }
 
         private void button85_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot1().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot1().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot1().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot1().Refresh();
+            }
+            catch { }
+
         }
 
         private void button88_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot2().Plot, 1.10, 1.10, point, false);
-            FormPlot2().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot2().Plot, 1.10, 1.10, point, false);
+                FormPlot2().Refresh();
+            }
+            catch { }
+
         }
 
         private void button87_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot2().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot2().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot2().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot2().Refresh();
+            }
+            catch { }
+
         }
 
         private void button90_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot9().Plot, 1.10, 1.10, point, false);
-            FormPlot9().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot9().Plot, 1.10, 1.10, point, false);
+                FormPlot9().Refresh();
+            }
+            catch { }
+
         }
 
         private void button89_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot9().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot9().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot9().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot9().Refresh();
+            }
+            catch { }
+
         }
 
         private void button92_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot3().Plot, 1.10, 1.10, point, false);
-            FormPlot3().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot3().Plot, 1.10, 1.10, point, false);
+                FormPlot3().Refresh();
+            }
+            catch { }
+
         }
 
         private void button91_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot3().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot3().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot3().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot3().Refresh();
+            }
+            catch { }
+
         }
 
         private void button94_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot4().Plot, 1.10, 1.10, point, false);
-            FormPlot4().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot4().Plot, 1.10, 1.10, point, false);
+                FormPlot4().Refresh();
+            }
+            catch { }
+
         }
 
         private void button93_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot4().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot4().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot4().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot4().Refresh();
+            }
+            catch { }
+
         }
 
         private void button96_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot10().Plot, 1.10, 1.10, point, false);
-            FormPlot10().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot10().Plot, 1.10, 1.10, point, false);
+                FormPlot10().Refresh();
+            }
+            catch { }
+
         }
 
         private void button95_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot10().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot10().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot10().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot10().Refresh();
+            }
+            catch { }
+
         }
 
         private void button98_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot5().Plot, 1.10, 1.10, point, false);
-            FormPlot5().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot5().Plot, 1.10, 1.10, point, false);
+                FormPlot5().Refresh();
+            }
+            catch { }
+
         }
 
         private void button97_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot5().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot5().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot5().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot5().Refresh();
+            }
+            catch { }
+
         }
 
         private void button100_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot6().Plot, 1.10, 1.10, point, false);
-            FormPlot6().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot6().Plot, 1.10, 1.10, point, false);
+                FormPlot6().Refresh();
+            }
+            catch { }
+
         }
 
         private void button99_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot6().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot6().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot6().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot6().Refresh();
+            }
+            catch { }
+
         }
 
         private void button102_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot11().Plot, 1.10, 1.10, point, false);
-            FormPlot11().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot11().Plot, 1.10, 1.10, point, false);
+                FormPlot11().Refresh();
+            }
+            catch { }
+
         }
 
         private void button101_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot11().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot11().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot11().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot11().Refresh();
+            }
+            catch { }
+
         }
 
         private void button104_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot7().Plot, 1.10, 1.10, point, false);
-            FormPlot7().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot7().Plot, 1.10, 1.10, point, false);
+                FormPlot7().Refresh();
+            }
+            catch { }
+
         }
 
         private void button103_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot7().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot7().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot7().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot7().Refresh();
+            }
+            catch { }
+
         }
 
         private void button106_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot8().Plot, 1.10, 1.10, point, false);
-            FormPlot8().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot8().Plot, 1.10, 1.10, point, false);
+                FormPlot8().Refresh();
+            }
+            catch { }
+
         }
 
         private void button105_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot8().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot8().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot8().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot8().Refresh();
+            }
+            catch { }
+
         }
 
         private void button108_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot12().Plot, 1.10, 1.10, point, false);
-            FormPlot12().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot12().Plot, 1.10, 1.10, point, false);
+                FormPlot12().Refresh();
+            }
+            catch { }
+
         }
 
         private void button107_Click(object sender, EventArgs e)
         {
-            Pixel point = new Pixel(600, 120);
-            MouseAxisManipulation.MouseWheelZoom(FormPlot12().Plot, (1 / 1.10), (1 / 1.10), point, false);
-            FormPlot12().Refresh();
+            try
+            {
+                Pixel point = new Pixel(600, 120);
+                MouseAxisManipulation.MouseWheelZoom(FormPlot12().Plot, (1 / 1.10), (1 / 1.10), point, false);
+                FormPlot12().Refresh();
+            }
+            catch { }
+
         }
 
         #endregion
@@ -4650,6 +5075,284 @@ namespace KVCOMSERVER
         {
 
         }
+
+        #region UI JUDGEMENT STATUS
+
+        public void Judge_Left_Lamp(int value)
+        {
+            P_NG_L.Visible = true;
+            if (value < 1)
+            {
+                P_NG_L.Text = "OK";
+                P_NG_L.BackColor = Color.LimeGreen;
+                P_NG_L.ForeColor = Color.Black;
+            }
+            else
+            {
+                P_NG_L.Text = "NG";
+                P_NG_L.BackColor = Color.Red;
+                P_NG_L.ForeColor = Color.Black;
+            }
+
+        }
+
+        public void PreStroke_Left_Value(float value, int judge)
+        {
+            PRE_LLOAD.Visible = true;
+            PRE_LLOAD.Text = $"Load: {value:0.##} N";
+            if (judge < 1)
+            {
+                PRE_LLOAD.BackColor = Color.ForestGreen;
+            }
+            else
+            {
+                PRE_LLOAD.BackColor = Color.Crimson;
+            }
+        }
+
+        public void Step2_Left_CompressValue(float value, int judge)
+        {
+            STEP2_CMPLLOAD.Visible = true;
+            STEP2_CMPLLOAD.Text = $"Load: {value:0.##} N";
+            if (judge < 1)
+            {
+                STEP2_CMPLLOAD.BackColor = Color.ForestGreen;
+            }
+            else
+            {
+                STEP2_CMPLLOAD.BackColor = Color.Crimson;
+            }
+        }
+
+        public void Step2_Left_CompressLowLimit(float value)
+        {
+            STEP2_CMPLLOAD_LO.Visible = true;
+            STEP2_CMPLLOAD_LO.Text = $"> {value:0.##} N";
+        }
+
+        public void Step2_Left_CompressHiLimit(float value)
+        {
+            STEP2_CMPLLOAD_HI.Visible = true;
+            STEP2_CMPLLOAD_HI.Text = $"< {value:0.##} N";
+        }
+
+        public void Step2_Left_ExtensValue(float value, int judge)
+        {
+            STEP2_EXTLLOAD.Visible = true;
+            STEP2_EXTLLOAD.Text = $"Load: {value:0.##} N";
+            if (judge < 1)
+            {
+                STEP2_EXTLLOAD.BackColor = Color.ForestGreen;
+            }
+            else
+            {
+                STEP2_EXTLLOAD.BackColor = Color.Crimson;
+            }
+        }
+
+        public void Step2_Left_ExtensLowLimit(float value)
+        {
+            STEP2_EXTLLOAD_LO.Visible = true;
+            STEP2_EXTLLOAD_LO.Text = $"> {value:0.##} N";
+        }
+
+        public void Step2_Left_ExtensHiLimit(float value)
+        {
+            STEP2_EXTLLOAD_HI.Visible = true;
+            STEP2_EXTLLOAD_HI.Text = $"< {value:0.##} N";
+        }
+
+        public void Plot_LeftComp_GraphJudge(int judge, float yoffset)
+        {
+            JudgePlot1.OffsetY = -10f * yoffset;
+            JudgePlot1.IsVisible = true;
+            if (judge < 1)
+            {
+                JudgePlot1.LabelText = "OK";
+                JudgePlot1.LabelFontColor = Colors.Black;
+                JudgePlot1.LabelBackgroundColor = Colors.LimeGreen;
+            }
+            else
+            {
+                JudgePlot1.LabelText = "NG";
+                JudgePlot1.LabelFontColor = Colors.White;
+                JudgePlot1.LabelBackgroundColor = Colors.Crimson;
+            }
+        }
+        public void Plot_LeftExt_GraphJudge(int judge, float yoffset)
+        {
+            JudgePlot2.OffsetY = -10f * yoffset;
+            JudgePlot2.IsVisible = true;
+            if (judge < 1)
+            {
+                JudgePlot2.LabelText = "OK";
+                JudgePlot2.LabelFontColor = Colors.Black;
+                JudgePlot2.LabelBackgroundColor = Colors.LimeGreen;
+            }
+            else
+            {
+                JudgePlot2.LabelText = "NG";
+                JudgePlot2.LabelFontColor = Colors.White;
+                JudgePlot2.LabelBackgroundColor = Colors.Crimson;
+            }
+        }
+        public void Plot_LeftDiff_GraphJudge(int judge, float yoffset)
+        {
+            JudgePlot9.OffsetY = -10f * yoffset;
+            JudgePlot9.IsVisible = true;
+            if (judge < 1)
+            {
+                JudgePlot9.LabelText = "OK";
+                JudgePlot9.LabelFontColor = Colors.Black;
+                JudgePlot9.LabelBackgroundColor = Colors.LimeGreen;
+            }
+            else
+            {
+                JudgePlot9.LabelText = "NG";
+                JudgePlot9.LabelFontColor = Colors.White;
+                JudgePlot9.LabelBackgroundColor = Colors.Crimson;
+            }
+        }
+
+        //-------------------------------------------------------------
+
+        public void Judge_Right_Lamp(int value)
+        {
+            P_NG_R.Visible = true;
+            if (value < 1)
+            {
+                P_NG_R.Text = "OK";
+                P_NG_R.BackColor = Color.LimeGreen;
+                P_NG_R.ForeColor = Color.Black;
+            }
+            else
+            {
+                P_NG_R.Text = "NG";
+                P_NG_R.BackColor = Color.Red;
+                P_NG_R.ForeColor = Color.Black;
+            }
+
+        }
+
+        public void PreStroke_Right_Value(float value, int judge)
+        {
+            PRE_RLOAD.Visible = true;
+            PRE_RLOAD.Text = $"Load: {value:0.##} N";
+            if (judge < 1)
+            {
+                PRE_RLOAD.BackColor = Color.ForestGreen;
+            }
+            else
+            {
+                PRE_RLOAD.BackColor = Color.Crimson;
+            }
+        }
+
+        public void Step2_Right_CompressValue(float value, int judge)
+        {
+            STEP2_CMPRLOAD.Visible = true;
+            STEP2_CMPRLOAD.Text = $"Load: {value:0.##} N";
+            if (judge < 1)
+            {
+                STEP2_CMPRLOAD.BackColor = Color.ForestGreen;
+            }
+            else
+            {
+                STEP2_CMPRLOAD.BackColor = Color.Crimson;
+            }
+        }
+
+        public void Step2_Right_CompressLowLimit(float value)
+        {
+            STEP2_CMPRLOAD_LO.Visible = true;
+            STEP2_CMPRLOAD_LO.Text = $"> {value:0.##} N";
+        }
+
+        public void Step2_Right_CompressHiLimit(float value)
+        {
+            STEP2_CMPRLOAD_HI.Visible = true;
+            STEP2_CMPRLOAD_HI.Text = $"< {value:0.##} N";
+        }
+
+        public void Step2_Right_ExtensValue(float value, int judge)
+        {
+            STEP2_EXTRLOAD.Visible = true;
+            STEP2_EXTRLOAD.Text = $"Load: {value:0.##} N";
+            if (judge < 1)
+            {
+                STEP2_EXTRLOAD.BackColor = Color.ForestGreen;
+            }
+            else
+            {
+                STEP2_EXTRLOAD.BackColor = Color.Crimson;
+            }
+        }
+
+        public void Step2_Right_ExtensLowLimit(float value)
+        {
+            STEP2_EXTRLOAD_LO.Visible = true;
+            STEP2_EXTRLOAD_LO.Text = $"> {value:0.##} N";
+        }
+
+        public void Step2_Right_ExtensHiLimit(float value)
+        {
+            STEP2_EXTRLOAD_HI.Visible = true;
+            STEP2_EXTRLOAD_HI.Text = $"< {value:0.##} N";
+        }
+
+        public void Plot_RightComp_GraphJudge(int judge, float yoffset)
+        {
+            JudgePlot3.OffsetY = -10f * yoffset;
+            JudgePlot3.IsVisible = true;
+            if (judge < 1)
+            {
+                JudgePlot3.LabelText = "OK";
+                JudgePlot3.LabelFontColor = Colors.Black;
+                JudgePlot3.LabelBackgroundColor = Colors.LimeGreen;
+            }
+            else
+            {
+                JudgePlot3.LabelText = "NG";
+                JudgePlot3.LabelFontColor = Colors.White;
+                JudgePlot3.LabelBackgroundColor = Colors.Crimson;
+            }
+        }
+        public void Plot_RightExt_GraphJudge(int judge, float yoffset)
+        {
+            JudgePlot4.OffsetY = -10f * yoffset;
+            JudgePlot4.IsVisible = true;
+            if (judge < 1)
+            {
+                JudgePlot4.LabelText = "OK";
+                JudgePlot4.LabelFontColor = Colors.Black;
+                JudgePlot4.LabelBackgroundColor = Colors.LimeGreen;
+            }
+            else
+            {
+                JudgePlot4.LabelText = "NG";
+                JudgePlot4.LabelFontColor = Colors.White;
+                JudgePlot4.LabelBackgroundColor = Colors.Crimson;
+            }
+        }
+        public void Plot_RightDiff_GraphJudge(int judge, float yoffset)
+        {
+            JudgePlot10.OffsetY = -10f * yoffset;
+            JudgePlot10.IsVisible = true;
+            if (judge < 1)
+            {
+                JudgePlot10.LabelText = "OK";
+                JudgePlot10.LabelFontColor = Colors.Black;
+                JudgePlot10.LabelBackgroundColor = Colors.LimeGreen;
+            }
+            else
+            {
+                JudgePlot10.LabelText = "NG";
+                JudgePlot10.LabelFontColor = Colors.White;
+                JudgePlot10.LabelBackgroundColor = Colors.Crimson;
+            }
+        }
+
+        #endregion
     }
 
     #region supporting classes
@@ -4702,7 +5405,7 @@ namespace KVCOMSERVER
             return result;
         }
 
-        
+
     }
     public static class ArrayExtensions
     {
@@ -4819,7 +5522,7 @@ namespace KVCOMSERVER
 
 namespace ScottPlot.WinForms
 {
-    
-    
+
+
 }
 

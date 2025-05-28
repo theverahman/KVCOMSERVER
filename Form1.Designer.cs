@@ -58,10 +58,6 @@ namespace KVCOMSERVER
             button31 = new System.Windows.Forms.Button();
             button29 = new System.Windows.Forms.Button();
             tabPage5 = new System.Windows.Forms.TabPage();
-            panel6 = new System.Windows.Forms.Panel();
-            label32 = new System.Windows.Forms.Label();
-            label31 = new System.Windows.Forms.Label();
-            label30 = new System.Windows.Forms.Label();
             panel8 = new System.Windows.Forms.Panel();
             TXPosL2 = new System.Windows.Forms.Label();
             panel7 = new System.Windows.Forms.Panel();
@@ -137,25 +133,65 @@ namespace KVCOMSERVER
             button34 = new System.Windows.Forms.Button();
             button32 = new System.Windows.Forms.Button();
             tabPage3 = new System.Windows.Forms.TabPage();
-            pictureBox3 = new System.Windows.Forms.PictureBox();
-            panel9 = new System.Windows.Forms.Panel();
-            label33 = new System.Windows.Forms.Label();
-            label34 = new System.Windows.Forms.Label();
-            label35 = new System.Windows.Forms.Label();
-            panel10 = new System.Windows.Forms.Panel();
-            TXPosL1 = new System.Windows.Forms.Label();
-            panel11 = new System.Windows.Forms.Panel();
-            TXLoadL1 = new System.Windows.Forms.Label();
-            panel12 = new System.Windows.Forms.Panel();
-            TXLoadR1 = new System.Windows.Forms.Label();
+            panel24 = new System.Windows.Forms.Panel();
+            STEP2_EXTRLOAD_HI = new System.Windows.Forms.Label();
+            panel25 = new System.Windows.Forms.Panel();
+            STEP2_EXTRLOAD_LO = new System.Windows.Forms.Label();
+            panel26 = new System.Windows.Forms.Panel();
+            STEP2_EXTRLOAD = new System.Windows.Forms.Label();
+            panel17 = new System.Windows.Forms.Panel();
+            Plot10Coord = new System.Windows.Forms.Label();
+            panel16 = new System.Windows.Forms.Panel();
+            Plot4Coord = new System.Windows.Forms.Label();
+            panel15 = new System.Windows.Forms.Panel();
+            Plot3Coord = new System.Windows.Forms.Label();
             panel13 = new System.Windows.Forms.Panel();
             TXPosR1 = new System.Windows.Forms.Label();
-            Plot10Coord = new System.Windows.Forms.Label();
-            Plot4Coord = new System.Windows.Forms.Label();
-            Plot3Coord = new System.Windows.Forms.Label();
+            panel12 = new System.Windows.Forms.Panel();
+            TXLoadR1 = new System.Windows.Forms.Label();
+            panel10 = new System.Windows.Forms.Panel();
+            TXPosL1 = new System.Windows.Forms.Label();
+            panel14 = new System.Windows.Forms.Panel();
             Plot9Coord = new System.Windows.Forms.Label();
+            panel11 = new System.Windows.Forms.Panel();
+            TXLoadL1 = new System.Windows.Forms.Label();
+            panel3 = new System.Windows.Forms.Panel();
             Plot2Coord = new System.Windows.Forms.Label();
+            panel2 = new System.Windows.Forms.Panel();
             Plot1Coord = new System.Windows.Forms.Label();
+            panel9 = new System.Windows.Forms.Panel();
+            panel19 = new System.Windows.Forms.Panel();
+            STEP2_CMPLLOAD_HI = new System.Windows.Forms.Label();
+            panel21 = new System.Windows.Forms.Panel();
+            STEP2_EXTLLOAD_HI = new System.Windows.Forms.Label();
+            P_NG_L = new System.Windows.Forms.Button();
+            P_NG_R = new System.Windows.Forms.Button();
+            label50 = new System.Windows.Forms.Label();
+            panel23 = new System.Windows.Forms.Panel();
+            STEP2_EXTLLOAD_LO = new System.Windows.Forms.Label();
+            panel20 = new System.Windows.Forms.Panel();
+            STEP2_CMPLLOAD_LO = new System.Windows.Forms.Label();
+            panel27 = new System.Windows.Forms.Panel();
+            STEP2_EXTLLOAD = new System.Windows.Forms.Label();
+            label35 = new System.Windows.Forms.Label();
+            label36 = new System.Windows.Forms.Label();
+            label49 = new System.Windows.Forms.Label();
+            panel22 = new System.Windows.Forms.Panel();
+            STEP2_CMPLLOAD = new System.Windows.Forms.Label();
+            panel32 = new System.Windows.Forms.Panel();
+            PRE_LLOAD = new System.Windows.Forms.Label();
+            panel31 = new System.Windows.Forms.Panel();
+            PRE_RLOAD = new System.Windows.Forms.Label();
+            label39 = new System.Windows.Forms.Label();
+            label42 = new System.Windows.Forms.Label();
+            label40 = new System.Windows.Forms.Label();
+            label41 = new System.Windows.Forms.Label();
+            panel28 = new System.Windows.Forms.Panel();
+            STEP2_CMPRLOAD_HI = new System.Windows.Forms.Label();
+            panel30 = new System.Windows.Forms.Panel();
+            STEP2_CMPRLOAD = new System.Windows.Forms.Label();
+            panel29 = new System.Windows.Forms.Panel();
+            STEP2_CMPRLOAD_LO = new System.Windows.Forms.Label();
             button95 = new System.Windows.Forms.Button();
             button96 = new System.Windows.Forms.Button();
             button93 = new System.Windows.Forms.Button();
@@ -190,7 +226,6 @@ namespace KVCOMSERVER
             button21 = new System.Windows.Forms.Button();
             button19 = new System.Windows.Forms.Button();
             button8 = new System.Windows.Forms.Button();
-            button3 = new System.Windows.Forms.Button();
             label3 = new System.Windows.Forms.Label();
             dataGridView1 = new System.Windows.Forms.DataGridView();
             dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -228,9 +263,14 @@ namespace KVCOMSERVER
             label8 = new System.Windows.Forms.Label();
             button83 = new System.Windows.Forms.Button();
             button84 = new System.Windows.Forms.Button();
+            panel18 = new System.Windows.Forms.Panel();
+            panel33 = new System.Windows.Forms.Panel();
+            panel34 = new System.Windows.Forms.Panel();
+            panel35 = new System.Windows.Forms.Panel();
+            panel36 = new System.Windows.Forms.Panel();
+            panel37 = new System.Windows.Forms.Panel();
             tabPage8.SuspendLayout();
             tabPage5.SuspendLayout();
-            panel6.SuspendLayout();
             panel8.SuspendLayout();
             panel7.SuspendLayout();
             panel5.SuspendLayout();
@@ -239,12 +279,31 @@ namespace KVCOMSERVER
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabPage7.SuspendLayout();
             tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            panel9.SuspendLayout();
-            panel10.SuspendLayout();
-            panel11.SuspendLayout();
-            panel12.SuspendLayout();
+            panel24.SuspendLayout();
+            panel25.SuspendLayout();
+            panel26.SuspendLayout();
+            panel17.SuspendLayout();
+            panel16.SuspendLayout();
+            panel15.SuspendLayout();
             panel13.SuspendLayout();
+            panel12.SuspendLayout();
+            panel10.SuspendLayout();
+            panel14.SuspendLayout();
+            panel11.SuspendLayout();
+            panel3.SuspendLayout();
+            panel2.SuspendLayout();
+            panel9.SuspendLayout();
+            panel19.SuspendLayout();
+            panel21.SuspendLayout();
+            panel23.SuspendLayout();
+            panel20.SuspendLayout();
+            panel27.SuspendLayout();
+            panel22.SuspendLayout();
+            panel32.SuspendLayout();
+            panel31.SuspendLayout();
+            panel28.SuspendLayout();
+            panel30.SuspendLayout();
+            panel29.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tabPage2.SuspendLayout();
@@ -253,6 +312,12 @@ namespace KVCOMSERVER
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabControl1.SuspendLayout();
+            panel18.SuspendLayout();
+            panel33.SuspendLayout();
+            panel34.SuspendLayout();
+            panel35.SuspendLayout();
+            panel36.SuspendLayout();
+            panel37.SuspendLayout();
             SuspendLayout();
             // 
             // label4
@@ -574,14 +639,17 @@ namespace KVCOMSERVER
             // 
             tabPage5.BackColor = System.Drawing.Color.SlateGray;
             tabPage5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            tabPage5.Controls.Add(panel6);
+            tabPage5.Controls.Add(panel35);
+            tabPage5.Controls.Add(panel36);
+            tabPage5.Controls.Add(panel4);
+            tabPage5.Controls.Add(panel5);
+            tabPage5.Controls.Add(panel8);
+            tabPage5.Controls.Add(panel37);
+            tabPage5.Controls.Add(panel7);
+            tabPage5.Controls.Add(panel34);
+            tabPage5.Controls.Add(panel18);
+            tabPage5.Controls.Add(panel33);
             tabPage5.Controls.Add(button27);
-            tabPage5.Controls.Add(Plot12Coord);
-            tabPage5.Controls.Add(Plot8Coord);
-            tabPage5.Controls.Add(Plot7Coord);
-            tabPage5.Controls.Add(Plot11Coord);
-            tabPage5.Controls.Add(Plot6Coord);
-            tabPage5.Controls.Add(Plot5Coord);
             tabPage5.Controls.Add(button107);
             tabPage5.Controls.Add(button108);
             tabPage5.Controls.Add(button105);
@@ -619,70 +687,21 @@ namespace KVCOMSERVER
             tabPage5.Text = "MASTERING GRAPH";
             tabPage5.Click += tabPage5_Click;
             // 
-            // panel6
-            // 
-            panel6.Controls.Add(label32);
-            panel6.Controls.Add(label31);
-            panel6.Controls.Add(label30);
-            panel6.Controls.Add(panel8);
-            panel6.Controls.Add(panel7);
-            panel6.Controls.Add(panel5);
-            panel6.Controls.Add(panel4);
-            panel6.Location = new System.Drawing.Point(749, 26);
-            panel6.Name = "panel6";
-            panel6.Size = new System.Drawing.Size(373, 116);
-            panel6.TabIndex = 80;
-            // 
-            // label32
-            // 
-            label32.AutoSize = true;
-            label32.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label32.ForeColor = System.Drawing.Color.LightCyan;
-            label32.Location = new System.Drawing.Point(306, 38);
-            label32.Name = "label32";
-            label32.Size = new System.Drawing.Size(64, 18);
-            label32.TabIndex = 82;
-            label32.Text = "RH SIDE";
-            label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label31
-            // 
-            label31.AutoSize = true;
-            label31.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label31.ForeColor = System.Drawing.Color.LightCyan;
-            label31.Location = new System.Drawing.Point(8, 38);
-            label31.Name = "label31";
-            label31.Size = new System.Drawing.Size(64, 18);
-            label31.TabIndex = 81;
-            label31.Text = "LH SIDE";
-            label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label30
-            // 
-            label30.AutoSize = true;
-            label30.Font = new System.Drawing.Font("Sarasa Fixed J", 16F, System.Drawing.FontStyle.Bold);
-            label30.ForeColor = System.Drawing.Color.LightCyan;
-            label30.Location = new System.Drawing.Point(66, 5);
-            label30.Name = "label30";
-            label30.Size = new System.Drawing.Size(240, 27);
-            label30.TabIndex = 81;
-            label30.Text = "REAL-TIME TELEMETRY";
-            label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // panel8
             // 
             panel8.Controls.Add(TXPosL2);
-            panel8.Location = new System.Drawing.Point(9, 76);
+            panel8.Location = new System.Drawing.Point(565, 3);
             panel8.Name = "panel8";
-            panel8.Size = new System.Drawing.Size(175, 18);
+            panel8.Size = new System.Drawing.Size(175, 20);
             panel8.TabIndex = 81;
             // 
             // TXPosL2
             // 
             TXPosL2.AutoSize = true;
+            TXPosL2.Dock = System.Windows.Forms.DockStyle.Right;
             TXPosL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             TXPosL2.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosL2.Location = new System.Drawing.Point(-1, 0);
+            TXPosL2.Location = new System.Drawing.Point(52, 0);
             TXPosL2.Name = "TXPosL2";
             TXPosL2.Size = new System.Drawing.Size(123, 20);
             TXPosL2.TabIndex = 77;
@@ -692,9 +711,9 @@ namespace KVCOMSERVER
             // panel7
             // 
             panel7.Controls.Add(TXLoadL2);
-            panel7.Location = new System.Drawing.Point(9, 56);
+            panel7.Location = new System.Drawing.Point(1, 3);
             panel7.Name = "panel7";
-            panel7.Size = new System.Drawing.Size(175, 18);
+            panel7.Size = new System.Drawing.Size(175, 20);
             panel7.TabIndex = 80;
             // 
             // TXLoadL2
@@ -712,9 +731,9 @@ namespace KVCOMSERVER
             // panel5
             // 
             panel5.Controls.Add(TXLoadR2);
-            panel5.Location = new System.Drawing.Point(197, 56);
+            panel5.Location = new System.Drawing.Point(1688, 3);
             panel5.Name = "panel5";
-            panel5.Size = new System.Drawing.Size(175, 18);
+            panel5.Size = new System.Drawing.Size(175, 20);
             panel5.TabIndex = 78;
             // 
             // TXLoadR2
@@ -733,18 +752,18 @@ namespace KVCOMSERVER
             // panel4
             // 
             panel4.Controls.Add(TXPosR2);
-            panel4.Location = new System.Drawing.Point(197, 76);
+            panel4.Location = new System.Drawing.Point(1124, 3);
             panel4.Name = "panel4";
-            panel4.Size = new System.Drawing.Size(175, 18);
+            panel4.Size = new System.Drawing.Size(175, 20);
             panel4.TabIndex = 79;
             // 
             // TXPosR2
             // 
             TXPosR2.AutoSize = true;
-            TXPosR2.Dock = System.Windows.Forms.DockStyle.Right;
+            TXPosR2.Dock = System.Windows.Forms.DockStyle.Left;
             TXPosR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             TXPosR2.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosR2.Location = new System.Drawing.Point(52, 0);
+            TXPosR2.Location = new System.Drawing.Point(0, 0);
             TXPosR2.Name = "TXPosR2";
             TXPosR2.Size = new System.Drawing.Size(123, 20);
             TXPosR2.TabIndex = 75;
@@ -754,9 +773,9 @@ namespace KVCOMSERVER
             // button27
             // 
             button27.BackColor = System.Drawing.Color.LightSteelBlue;
-            button27.Location = new System.Drawing.Point(1128, 945);
+            button27.Location = new System.Drawing.Point(837, 780);
             button27.Name = "button27";
-            button27.Size = new System.Drawing.Size(130, 60);
+            button27.Size = new System.Drawing.Size(90, 70);
             button27.TabIndex = 18;
             button27.Text = "SHOW/HIDE\r\nMASTER LINE";
             button27.UseVisualStyleBackColor = false;
@@ -765,9 +784,10 @@ namespace KVCOMSERVER
             // Plot12Coord
             // 
             Plot12Coord.AutoSize = true;
+            Plot12Coord.Dock = System.Windows.Forms.DockStyle.Left;
             Plot12Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot12Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot12Coord.Location = new System.Drawing.Point(1130, 750);
+            Plot12Coord.Location = new System.Drawing.Point(0, 0);
             Plot12Coord.Name = "Plot12Coord";
             Plot12Coord.Size = new System.Drawing.Size(150, 20);
             Plot12Coord.TabIndex = 73;
@@ -777,9 +797,10 @@ namespace KVCOMSERVER
             // Plot8Coord
             // 
             Plot8Coord.AutoSize = true;
+            Plot8Coord.Dock = System.Windows.Forms.DockStyle.Left;
             Plot8Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot8Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot8Coord.Location = new System.Drawing.Point(1130, 376);
+            Plot8Coord.Location = new System.Drawing.Point(0, 0);
             Plot8Coord.Name = "Plot8Coord";
             Plot8Coord.Size = new System.Drawing.Size(150, 20);
             Plot8Coord.TabIndex = 72;
@@ -789,9 +810,10 @@ namespace KVCOMSERVER
             // Plot7Coord
             // 
             Plot7Coord.AutoSize = true;
+            Plot7Coord.Dock = System.Windows.Forms.DockStyle.Left;
             Plot7Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot7Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot7Coord.Location = new System.Drawing.Point(1130, 0);
+            Plot7Coord.Location = new System.Drawing.Point(0, 0);
             Plot7Coord.Name = "Plot7Coord";
             Plot7Coord.Size = new System.Drawing.Size(150, 20);
             Plot7Coord.TabIndex = 71;
@@ -801,9 +823,10 @@ namespace KVCOMSERVER
             // Plot11Coord
             // 
             Plot11Coord.AutoSize = true;
+            Plot11Coord.Dock = System.Windows.Forms.DockStyle.Right;
             Plot11Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot11Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot11Coord.Location = new System.Drawing.Point(591, 750);
+            Plot11Coord.Location = new System.Drawing.Point(150, 0);
             Plot11Coord.Name = "Plot11Coord";
             Plot11Coord.Size = new System.Drawing.Size(150, 20);
             Plot11Coord.TabIndex = 70;
@@ -813,9 +836,10 @@ namespace KVCOMSERVER
             // Plot6Coord
             // 
             Plot6Coord.AutoSize = true;
+            Plot6Coord.Dock = System.Windows.Forms.DockStyle.Right;
             Plot6Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot6Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot6Coord.Location = new System.Drawing.Point(591, 376);
+            Plot6Coord.Location = new System.Drawing.Point(150, 0);
             Plot6Coord.Name = "Plot6Coord";
             Plot6Coord.Size = new System.Drawing.Size(150, 20);
             Plot6Coord.TabIndex = 69;
@@ -825,9 +849,10 @@ namespace KVCOMSERVER
             // Plot5Coord
             // 
             Plot5Coord.AutoSize = true;
+            Plot5Coord.Dock = System.Windows.Forms.DockStyle.Right;
             Plot5Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot5Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot5Coord.Location = new System.Drawing.Point(591, 0);
+            Plot5Coord.Location = new System.Drawing.Point(150, 0);
             Plot5Coord.Name = "Plot5Coord";
             Plot5Coord.Size = new System.Drawing.Size(150, 20);
             Plot5Coord.TabIndex = 68;
@@ -837,11 +862,11 @@ namespace KVCOMSERVER
             // button107
             // 
             button107.BackColor = System.Drawing.Color.LightSteelBlue;
-            button107.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button107.Location = new System.Drawing.Point(1065, 880);
+            button107.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button107.Location = new System.Drawing.Point(1748, 951);
             button107.Margin = new System.Windows.Forms.Padding(0);
             button107.Name = "button107";
-            button107.Size = new System.Drawing.Size(60, 60);
+            button107.Size = new System.Drawing.Size(48, 48);
             button107.TabIndex = 67;
             button107.Text = "🔎";
             button107.UseVisualStyleBackColor = false;
@@ -850,11 +875,11 @@ namespace KVCOMSERVER
             // button108
             // 
             button108.BackColor = System.Drawing.Color.LightSteelBlue;
-            button108.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button108.Location = new System.Drawing.Point(1065, 820);
+            button108.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button108.Location = new System.Drawing.Point(1815, 951);
             button108.Margin = new System.Windows.Forms.Padding(0);
             button108.Name = "button108";
-            button108.Size = new System.Drawing.Size(60, 60);
+            button108.Size = new System.Drawing.Size(48, 48);
             button108.TabIndex = 66;
             button108.Text = "🔍";
             button108.UseVisualStyleBackColor = false;
@@ -863,11 +888,11 @@ namespace KVCOMSERVER
             // button105
             // 
             button105.BackColor = System.Drawing.Color.LightSteelBlue;
-            button105.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button105.Location = new System.Drawing.Point(1065, 690);
+            button105.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button105.Location = new System.Drawing.Point(1748, 728);
             button105.Margin = new System.Windows.Forms.Padding(0);
             button105.Name = "button105";
-            button105.Size = new System.Drawing.Size(60, 60);
+            button105.Size = new System.Drawing.Size(48, 48);
             button105.TabIndex = 65;
             button105.Text = "🔎";
             button105.UseVisualStyleBackColor = false;
@@ -876,11 +901,11 @@ namespace KVCOMSERVER
             // button106
             // 
             button106.BackColor = System.Drawing.Color.LightSteelBlue;
-            button106.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button106.Location = new System.Drawing.Point(1065, 630);
+            button106.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button106.Location = new System.Drawing.Point(1815, 728);
             button106.Margin = new System.Windows.Forms.Padding(0);
             button106.Name = "button106";
-            button106.Size = new System.Drawing.Size(60, 60);
+            button106.Size = new System.Drawing.Size(48, 48);
             button106.TabIndex = 64;
             button106.Text = "🔍";
             button106.UseVisualStyleBackColor = false;
@@ -889,11 +914,11 @@ namespace KVCOMSERVER
             // button103
             // 
             button103.BackColor = System.Drawing.Color.LightSteelBlue;
-            button103.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button103.Location = new System.Drawing.Point(1065, 313);
+            button103.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button103.Location = new System.Drawing.Point(1748, 351);
             button103.Margin = new System.Windows.Forms.Padding(0);
             button103.Name = "button103";
-            button103.Size = new System.Drawing.Size(60, 60);
+            button103.Size = new System.Drawing.Size(48, 48);
             button103.TabIndex = 63;
             button103.Text = "🔎";
             button103.UseVisualStyleBackColor = false;
@@ -902,11 +927,11 @@ namespace KVCOMSERVER
             // button104
             // 
             button104.BackColor = System.Drawing.Color.LightSteelBlue;
-            button104.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button104.Location = new System.Drawing.Point(1065, 253);
+            button104.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button104.Location = new System.Drawing.Point(1815, 351);
             button104.Margin = new System.Windows.Forms.Padding(0);
             button104.Name = "button104";
-            button104.Size = new System.Drawing.Size(60, 60);
+            button104.Size = new System.Drawing.Size(48, 48);
             button104.TabIndex = 62;
             button104.Text = "🔍";
             button104.UseVisualStyleBackColor = false;
@@ -915,11 +940,11 @@ namespace KVCOMSERVER
             // button101
             // 
             button101.BackColor = System.Drawing.Color.LightSteelBlue;
-            button101.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button101.Location = new System.Drawing.Point(746, 880);
+            button101.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button101.Location = new System.Drawing.Point(2, 951);
             button101.Margin = new System.Windows.Forms.Padding(0);
             button101.Name = "button101";
-            button101.Size = new System.Drawing.Size(60, 60);
+            button101.Size = new System.Drawing.Size(48, 48);
             button101.TabIndex = 61;
             button101.Text = "🔎";
             button101.UseVisualStyleBackColor = false;
@@ -928,11 +953,11 @@ namespace KVCOMSERVER
             // button102
             // 
             button102.BackColor = System.Drawing.Color.LightSteelBlue;
-            button102.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button102.Location = new System.Drawing.Point(746, 820);
+            button102.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button102.Location = new System.Drawing.Point(69, 951);
             button102.Margin = new System.Windows.Forms.Padding(0);
             button102.Name = "button102";
-            button102.Size = new System.Drawing.Size(60, 60);
+            button102.Size = new System.Drawing.Size(48, 48);
             button102.TabIndex = 60;
             button102.Text = "🔍";
             button102.UseVisualStyleBackColor = false;
@@ -941,11 +966,11 @@ namespace KVCOMSERVER
             // button99
             // 
             button99.BackColor = System.Drawing.Color.LightSteelBlue;
-            button99.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button99.Location = new System.Drawing.Point(746, 690);
+            button99.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button99.Location = new System.Drawing.Point(2, 728);
             button99.Margin = new System.Windows.Forms.Padding(0);
             button99.Name = "button99";
-            button99.Size = new System.Drawing.Size(60, 60);
+            button99.Size = new System.Drawing.Size(48, 48);
             button99.TabIndex = 59;
             button99.Text = "🔎";
             button99.UseVisualStyleBackColor = false;
@@ -954,11 +979,11 @@ namespace KVCOMSERVER
             // button100
             // 
             button100.BackColor = System.Drawing.Color.LightSteelBlue;
-            button100.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button100.Location = new System.Drawing.Point(746, 630);
+            button100.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button100.Location = new System.Drawing.Point(69, 728);
             button100.Margin = new System.Windows.Forms.Padding(0);
             button100.Name = "button100";
-            button100.Size = new System.Drawing.Size(60, 60);
+            button100.Size = new System.Drawing.Size(48, 48);
             button100.TabIndex = 58;
             button100.Text = "🔍";
             button100.UseVisualStyleBackColor = false;
@@ -967,11 +992,11 @@ namespace KVCOMSERVER
             // button97
             // 
             button97.BackColor = System.Drawing.Color.LightSteelBlue;
-            button97.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button97.Location = new System.Drawing.Point(746, 313);
+            button97.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button97.Location = new System.Drawing.Point(2, 351);
             button97.Margin = new System.Windows.Forms.Padding(0);
             button97.Name = "button97";
-            button97.Size = new System.Drawing.Size(60, 60);
+            button97.Size = new System.Drawing.Size(48, 48);
             button97.TabIndex = 57;
             button97.Text = "🔎";
             button97.UseVisualStyleBackColor = false;
@@ -980,11 +1005,11 @@ namespace KVCOMSERVER
             // button98
             // 
             button98.BackColor = System.Drawing.Color.LightSteelBlue;
-            button98.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button98.Location = new System.Drawing.Point(746, 253);
+            button98.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button98.Location = new System.Drawing.Point(69, 351);
             button98.Margin = new System.Windows.Forms.Padding(0);
             button98.Name = "button98";
-            button98.Size = new System.Drawing.Size(60, 60);
+            button98.Size = new System.Drawing.Size(48, 48);
             button98.TabIndex = 56;
             button98.Text = "🔍";
             button98.UseVisualStyleBackColor = false;
@@ -993,9 +1018,9 @@ namespace KVCOMSERVER
             // button81
             // 
             button81.BackColor = System.Drawing.Color.LightSteelBlue;
-            button81.Location = new System.Drawing.Point(669, 945);
+            button81.Location = new System.Drawing.Point(847, 930);
             button81.Name = "button81";
-            button81.Size = new System.Drawing.Size(77, 60);
+            button81.Size = new System.Drawing.Size(80, 60);
             button81.TabIndex = 33;
             button81.Text = "RELOAD\r\nGRAPH";
             button81.UseVisualStyleBackColor = false;
@@ -1004,9 +1029,9 @@ namespace KVCOMSERVER
             // button80
             // 
             button80.BackColor = System.Drawing.Color.LightSteelBlue;
-            button80.Location = new System.Drawing.Point(870, 716);
+            button80.Location = new System.Drawing.Point(937, 588);
             button80.Name = "button80";
-            button80.Size = new System.Drawing.Size(130, 60);
+            button80.Size = new System.Drawing.Size(120, 80);
             button80.TabIndex = 32;
             button80.Text = "VALIDATE MASTER DATA";
             button80.UseVisualStyleBackColor = false;
@@ -1017,9 +1042,9 @@ namespace KVCOMSERVER
             button30.BackColor = System.Drawing.Color.LightSteelBlue;
             button30.FlatAppearance.BorderColor = System.Drawing.Color.DarkBlue;
             button30.FlatAppearance.BorderSize = 3;
-            button30.Location = new System.Drawing.Point(870, 650);
+            button30.Location = new System.Drawing.Point(807, 588);
             button30.Name = "button30";
-            button30.Size = new System.Drawing.Size(130, 60);
+            button30.Size = new System.Drawing.Size(120, 80);
             button30.TabIndex = 31;
             button30.Text = "UPDATE MASTER DATA";
             button30.UseVisualStyleBackColor = false;
@@ -1028,17 +1053,17 @@ namespace KVCOMSERVER
             // formsPlot12
             // 
             formsPlot12.DisplayScale = 1F;
-            formsPlot12.Location = new System.Drawing.Point(1128, 773);
+            formsPlot12.Location = new System.Drawing.Point(1124, 799);
             formsPlot12.Name = "formsPlot12";
-            formsPlot12.Size = new System.Drawing.Size(737, 166);
+            formsPlot12.Size = new System.Drawing.Size(740, 200);
             formsPlot12.TabIndex = 30;
             // 
             // formsPlot11
             // 
             formsPlot11.DisplayScale = 1F;
-            formsPlot11.Location = new System.Drawing.Point(6, 773);
+            formsPlot11.Location = new System.Drawing.Point(0, 799);
             formsPlot11.Name = "formsPlot11";
-            formsPlot11.Size = new System.Drawing.Size(737, 166);
+            formsPlot11.Size = new System.Drawing.Size(740, 200);
             formsPlot11.TabIndex = 29;
             // 
             // label25
@@ -1046,7 +1071,7 @@ namespace KVCOMSERVER
             label25.AutoSize = true;
             label25.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label25.ForeColor = System.Drawing.Color.LightCyan;
-            label25.Location = new System.Drawing.Point(1663, 752);
+            label25.Location = new System.Drawing.Point(1663, 778);
             label25.Name = "label25";
             label25.Size = new System.Drawing.Size(200, 18);
             label25.TabIndex = 28;
@@ -1058,7 +1083,7 @@ namespace KVCOMSERVER
             label24.AutoSize = true;
             label24.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label24.ForeColor = System.Drawing.Color.LightCyan;
-            label24.Location = new System.Drawing.Point(6, 752);
+            label24.Location = new System.Drawing.Point(6, 778);
             label24.Name = "label24";
             label24.Size = new System.Drawing.Size(200, 18);
             label24.TabIndex = 27;
@@ -1068,9 +1093,9 @@ namespace KVCOMSERVER
             // button38
             // 
             button38.BackColor = System.Drawing.Color.LightSteelBlue;
-            button38.Location = new System.Drawing.Point(1773, 945);
+            button38.Location = new System.Drawing.Point(937, 930);
             button38.Name = "button38";
-            button38.Size = new System.Drawing.Size(90, 60);
+            button38.Size = new System.Drawing.Size(80, 60);
             button38.TabIndex = 26;
             button38.Text = "MAIN\r\nMENU";
             button38.UseVisualStyleBackColor = false;
@@ -1079,9 +1104,10 @@ namespace KVCOMSERVER
             // button28
             // 
             button28.BackColor = System.Drawing.Color.LightSteelBlue;
-            button28.Location = new System.Drawing.Point(870, 794);
+            button28.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            button28.Location = new System.Drawing.Point(882, 860);
             button28.Name = "button28";
-            button28.Size = new System.Drawing.Size(130, 60);
+            button28.Size = new System.Drawing.Size(100, 60);
             button28.TabIndex = 21;
             button28.Text = "SHOW TABLE";
             button28.UseVisualStyleBackColor = false;
@@ -1090,9 +1116,9 @@ namespace KVCOMSERVER
             // button26
             // 
             button26.BackColor = System.Drawing.Color.LightSteelBlue;
-            button26.Location = new System.Drawing.Point(1264, 945);
+            button26.Location = new System.Drawing.Point(937, 780);
             button26.Name = "button26";
-            button26.Size = new System.Drawing.Size(130, 60);
+            button26.Size = new System.Drawing.Size(90, 70);
             button26.TabIndex = 19;
             button26.Text = "SHOW/HIDE\r\nMASTER LIMIT";
             button26.UseVisualStyleBackColor = false;
@@ -1103,7 +1129,7 @@ namespace KVCOMSERVER
             label18.AutoSize = true;
             label18.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label18.ForeColor = System.Drawing.Color.LightCyan;
-            label18.Location = new System.Drawing.Point(1671, 377);
+            label18.Location = new System.Drawing.Point(1671, 403);
             label18.Name = "label18";
             label18.Size = new System.Drawing.Size(192, 18);
             label18.TabIndex = 15;
@@ -1115,7 +1141,7 @@ namespace KVCOMSERVER
             label19.AutoSize = true;
             label19.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label19.ForeColor = System.Drawing.Color.LightCyan;
-            label19.Location = new System.Drawing.Point(1659, 3);
+            label19.Location = new System.Drawing.Point(1655, 27);
             label19.Name = "label19";
             label19.Size = new System.Drawing.Size(208, 18);
             label19.TabIndex = 14;
@@ -1127,7 +1153,7 @@ namespace KVCOMSERVER
             label20.AutoSize = true;
             label20.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label20.ForeColor = System.Drawing.Color.LightCyan;
-            label20.Location = new System.Drawing.Point(6, 377);
+            label20.Location = new System.Drawing.Point(6, 403);
             label20.Name = "label20";
             label20.Size = new System.Drawing.Size(192, 18);
             label20.TabIndex = 13;
@@ -1139,7 +1165,7 @@ namespace KVCOMSERVER
             label21.AutoSize = true;
             label21.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label21.ForeColor = System.Drawing.Color.LightCyan;
-            label21.Location = new System.Drawing.Point(6, 3);
+            label21.Location = new System.Drawing.Point(6, 27);
             label21.Name = "label21";
             label21.Size = new System.Drawing.Size(208, 18);
             label21.TabIndex = 12;
@@ -1149,33 +1175,33 @@ namespace KVCOMSERVER
             // formsPlot5
             // 
             formsPlot5.DisplayScale = 1F;
-            formsPlot5.Location = new System.Drawing.Point(6, 23);
+            formsPlot5.Location = new System.Drawing.Point(0, 49);
             formsPlot5.Name = "formsPlot5";
-            formsPlot5.Size = new System.Drawing.Size(737, 350);
+            formsPlot5.Size = new System.Drawing.Size(740, 350);
             formsPlot5.TabIndex = 11;
             // 
             // formsPlot6
             // 
             formsPlot6.DisplayScale = 1F;
-            formsPlot6.Location = new System.Drawing.Point(6, 399);
+            formsPlot6.Location = new System.Drawing.Point(0, 425);
             formsPlot6.Name = "formsPlot6";
-            formsPlot6.Size = new System.Drawing.Size(737, 350);
+            formsPlot6.Size = new System.Drawing.Size(740, 350);
             formsPlot6.TabIndex = 10;
             // 
             // formsPlot7
             // 
             formsPlot7.DisplayScale = 1F;
-            formsPlot7.Location = new System.Drawing.Point(1128, 23);
+            formsPlot7.Location = new System.Drawing.Point(1124, 49);
             formsPlot7.Name = "formsPlot7";
-            formsPlot7.Size = new System.Drawing.Size(737, 350);
+            formsPlot7.Size = new System.Drawing.Size(740, 350);
             formsPlot7.TabIndex = 9;
             // 
             // formsPlot8
             // 
             formsPlot8.DisplayScale = 1F;
-            formsPlot8.Location = new System.Drawing.Point(1128, 399);
+            formsPlot8.Location = new System.Drawing.Point(1124, 425);
             formsPlot8.Name = "formsPlot8";
-            formsPlot8.Size = new System.Drawing.Size(737, 350);
+            formsPlot8.Size = new System.Drawing.Size(740, 350);
             formsPlot8.TabIndex = 8;
             // 
             // tabPage6
@@ -1543,14 +1569,17 @@ namespace KVCOMSERVER
             // 
             tabPage3.BackColor = System.Drawing.Color.SlateGray;
             tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            tabPage3.Controls.Add(pictureBox3);
+            tabPage3.Controls.Add(panel17);
+            tabPage3.Controls.Add(panel16);
+            tabPage3.Controls.Add(panel15);
+            tabPage3.Controls.Add(panel13);
+            tabPage3.Controls.Add(panel12);
+            tabPage3.Controls.Add(panel10);
+            tabPage3.Controls.Add(panel14);
+            tabPage3.Controls.Add(panel11);
+            tabPage3.Controls.Add(panel3);
+            tabPage3.Controls.Add(panel2);
             tabPage3.Controls.Add(panel9);
-            tabPage3.Controls.Add(Plot10Coord);
-            tabPage3.Controls.Add(Plot4Coord);
-            tabPage3.Controls.Add(Plot3Coord);
-            tabPage3.Controls.Add(Plot9Coord);
-            tabPage3.Controls.Add(Plot2Coord);
-            tabPage3.Controls.Add(Plot1Coord);
             tabPage3.Controls.Add(button95);
             tabPage3.Controls.Add(button96);
             tabPage3.Controls.Add(button93);
@@ -1587,110 +1616,156 @@ namespace KVCOMSERVER
             tabPage3.TabIndex = 3;
             tabPage3.Text = "REALTIME GRAPH";
             // 
-            // pictureBox3
+            // panel24
             // 
-            pictureBox3.Location = new System.Drawing.Point(-2, 945);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new System.Drawing.Size(1865, 50);
-            pictureBox3.TabIndex = 82;
-            pictureBox3.TabStop = false;
+            panel24.Controls.Add(STEP2_EXTRLOAD_HI);
+            panel24.Location = new System.Drawing.Point(199, 329);
+            panel24.Name = "panel24";
+            panel24.Size = new System.Drawing.Size(180, 22);
+            panel24.TabIndex = 93;
             // 
-            // panel9
+            // STEP2_EXTRLOAD_HI
             // 
-            panel9.Controls.Add(label33);
-            panel9.Controls.Add(label34);
-            panel9.Controls.Add(label35);
-            panel9.Controls.Add(panel10);
-            panel9.Controls.Add(panel11);
-            panel9.Controls.Add(panel12);
-            panel9.Controls.Add(panel13);
-            panel9.Location = new System.Drawing.Point(749, 26);
-            panel9.Name = "panel9";
-            panel9.Size = new System.Drawing.Size(373, 116);
-            panel9.TabIndex = 81;
+            STEP2_EXTRLOAD_HI.AutoSize = true;
+            STEP2_EXTRLOAD_HI.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_EXTRLOAD_HI.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTRLOAD_HI.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTRLOAD_HI.Location = new System.Drawing.Point(87, 0);
+            STEP2_EXTRLOAD_HI.Name = "STEP2_EXTRLOAD_HI";
+            STEP2_EXTRLOAD_HI.Size = new System.Drawing.Size(93, 20);
+            STEP2_EXTRLOAD_HI.TabIndex = 75;
+            STEP2_EXTRLOAD_HI.Text = "< 0000.00 N";
+            STEP2_EXTRLOAD_HI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label33
+            // panel25
             // 
-            label33.AutoSize = true;
-            label33.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label33.ForeColor = System.Drawing.Color.LightCyan;
-            label33.Location = new System.Drawing.Point(306, 38);
-            label33.Name = "label33";
-            label33.Size = new System.Drawing.Size(64, 18);
-            label33.TabIndex = 82;
-            label33.Text = "RH SIDE";
-            label33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panel25.Controls.Add(STEP2_EXTRLOAD_LO);
+            panel25.Location = new System.Drawing.Point(199, 306);
+            panel25.Name = "panel25";
+            panel25.Size = new System.Drawing.Size(180, 22);
+            panel25.TabIndex = 91;
             // 
-            // label34
+            // STEP2_EXTRLOAD_LO
             // 
-            label34.AutoSize = true;
-            label34.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
-            label34.ForeColor = System.Drawing.Color.LightCyan;
-            label34.Location = new System.Drawing.Point(8, 38);
-            label34.Name = "label34";
-            label34.Size = new System.Drawing.Size(64, 18);
-            label34.TabIndex = 81;
-            label34.Text = "LH SIDE";
-            label34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            STEP2_EXTRLOAD_LO.AutoSize = true;
+            STEP2_EXTRLOAD_LO.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_EXTRLOAD_LO.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTRLOAD_LO.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTRLOAD_LO.Location = new System.Drawing.Point(87, 0);
+            STEP2_EXTRLOAD_LO.Name = "STEP2_EXTRLOAD_LO";
+            STEP2_EXTRLOAD_LO.Size = new System.Drawing.Size(93, 20);
+            STEP2_EXTRLOAD_LO.TabIndex = 75;
+            STEP2_EXTRLOAD_LO.Text = "> 0000.00 N";
+            STEP2_EXTRLOAD_LO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label35
+            // panel26
             // 
-            label35.AutoSize = true;
-            label35.Font = new System.Drawing.Font("Sarasa Fixed J", 16F, System.Drawing.FontStyle.Bold);
-            label35.ForeColor = System.Drawing.Color.LightCyan;
-            label35.Location = new System.Drawing.Point(66, 5);
-            label35.Name = "label35";
-            label35.Size = new System.Drawing.Size(240, 27);
-            label35.TabIndex = 81;
-            label35.Text = "REAL-TIME TELEMETRY";
-            label35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panel26.Controls.Add(STEP2_EXTRLOAD);
+            panel26.Location = new System.Drawing.Point(199, 283);
+            panel26.Name = "panel26";
+            panel26.Size = new System.Drawing.Size(180, 22);
+            panel26.TabIndex = 92;
             // 
-            // panel10
+            // STEP2_EXTRLOAD
             // 
-            panel10.Controls.Add(TXPosL1);
-            panel10.Location = new System.Drawing.Point(9, 76);
-            panel10.Name = "panel10";
-            panel10.Size = new System.Drawing.Size(175, 18);
-            panel10.TabIndex = 81;
+            STEP2_EXTRLOAD.AutoSize = true;
+            STEP2_EXTRLOAD.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_EXTRLOAD.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTRLOAD.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTRLOAD.Location = new System.Drawing.Point(54, 0);
+            STEP2_EXTRLOAD.Name = "STEP2_EXTRLOAD";
+            STEP2_EXTRLOAD.Size = new System.Drawing.Size(126, 20);
+            STEP2_EXTRLOAD.TabIndex = 75;
+            STEP2_EXTRLOAD.Text = "Load : 0000.00 N";
+            STEP2_EXTRLOAD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // TXPosL1
+            // panel17
             // 
-            TXPosL1.AutoSize = true;
-            TXPosL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXPosL1.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosL1.Location = new System.Drawing.Point(0, 0);
-            TXPosL1.Name = "TXPosL1";
-            TXPosL1.Size = new System.Drawing.Size(123, 20);
-            TXPosL1.TabIndex = 73;
-            TXPosL1.Text = "Pos: 1234.56 mm";
-            TXPosL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panel17.Controls.Add(Plot10Coord);
+            panel17.Location = new System.Drawing.Point(1124, 778);
+            panel17.Name = "panel17";
+            panel17.Size = new System.Drawing.Size(300, 20);
+            panel17.TabIndex = 82;
             // 
-            // panel11
+            // Plot10Coord
             // 
-            panel11.Controls.Add(TXLoadL1);
-            panel11.Location = new System.Drawing.Point(9, 56);
-            panel11.Name = "panel11";
-            panel11.Size = new System.Drawing.Size(175, 18);
-            panel11.TabIndex = 80;
+            Plot10Coord.AutoSize = true;
+            Plot10Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            Plot10Coord.ForeColor = System.Drawing.Color.LightCyan;
+            Plot10Coord.Location = new System.Drawing.Point(0, 0);
+            Plot10Coord.Name = "Plot10Coord";
+            Plot10Coord.Size = new System.Drawing.Size(150, 20);
+            Plot10Coord.TabIndex = 71;
+            Plot10Coord.Text = "X = 000, Y = 0000.00";
+            Plot10Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // TXLoadL1
+            // panel16
             // 
-            TXLoadL1.AutoSize = true;
-            TXLoadL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXLoadL1.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadL1.Location = new System.Drawing.Point(0, 0);
-            TXLoadL1.Name = "TXLoadL1";
-            TXLoadL1.Size = new System.Drawing.Size(120, 20);
-            TXLoadL1.TabIndex = 72;
-            TXLoadL1.Text = "Load : 1234.56 N";
-            TXLoadL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panel16.Controls.Add(Plot4Coord);
+            panel16.Location = new System.Drawing.Point(1124, 403);
+            panel16.Name = "panel16";
+            panel16.Size = new System.Drawing.Size(300, 20);
+            panel16.TabIndex = 82;
+            // 
+            // Plot4Coord
+            // 
+            Plot4Coord.AutoSize = true;
+            Plot4Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            Plot4Coord.ForeColor = System.Drawing.Color.LightCyan;
+            Plot4Coord.Location = new System.Drawing.Point(0, 0);
+            Plot4Coord.Name = "Plot4Coord";
+            Plot4Coord.Size = new System.Drawing.Size(150, 20);
+            Plot4Coord.TabIndex = 70;
+            Plot4Coord.Text = "X = 000, Y = 0000.00";
+            Plot4Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel15
+            // 
+            panel15.Controls.Add(Plot3Coord);
+            panel15.Location = new System.Drawing.Point(1124, 27);
+            panel15.Name = "panel15";
+            panel15.Size = new System.Drawing.Size(300, 20);
+            panel15.TabIndex = 82;
+            // 
+            // Plot3Coord
+            // 
+            Plot3Coord.AutoSize = true;
+            Plot3Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            Plot3Coord.ForeColor = System.Drawing.Color.LightCyan;
+            Plot3Coord.Location = new System.Drawing.Point(0, 0);
+            Plot3Coord.Name = "Plot3Coord";
+            Plot3Coord.Size = new System.Drawing.Size(150, 20);
+            Plot3Coord.TabIndex = 69;
+            Plot3Coord.Text = "X = 000, Y = 0000.00";
+            Plot3Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel13
+            // 
+            panel13.Controls.Add(TXPosR1);
+            panel13.Location = new System.Drawing.Point(1124, 3);
+            panel13.Name = "panel13";
+            panel13.Size = new System.Drawing.Size(175, 20);
+            panel13.TabIndex = 79;
+            // 
+            // TXPosR1
+            // 
+            TXPosR1.AutoSize = true;
+            TXPosR1.Dock = System.Windows.Forms.DockStyle.Left;
+            TXPosR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosR1.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosR1.Location = new System.Drawing.Point(0, 0);
+            TXPosR1.Name = "TXPosR1";
+            TXPosR1.Size = new System.Drawing.Size(123, 20);
+            TXPosR1.TabIndex = 76;
+            TXPosR1.Text = "Pos: 1234.56 mm";
+            TXPosR1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel12
             // 
             panel12.Controls.Add(TXLoadR1);
-            panel12.Location = new System.Drawing.Point(197, 56);
+            panel12.Location = new System.Drawing.Point(1688, 3);
             panel12.Name = "panel12";
-            panel12.Size = new System.Drawing.Size(175, 18);
+            panel12.Size = new System.Drawing.Size(175, 20);
             panel12.TabIndex = 78;
             // 
             // TXLoadR1
@@ -1706,107 +1781,492 @@ namespace KVCOMSERVER
             TXLoadR1.Text = "Load : 1234.56 N";
             TXLoadR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel13
+            // panel10
             // 
-            panel13.Controls.Add(TXPosR1);
-            panel13.Location = new System.Drawing.Point(197, 76);
-            panel13.Name = "panel13";
-            panel13.Size = new System.Drawing.Size(175, 18);
-            panel13.TabIndex = 79;
+            panel10.Controls.Add(TXPosL1);
+            panel10.Location = new System.Drawing.Point(565, 3);
+            panel10.Name = "panel10";
+            panel10.Size = new System.Drawing.Size(175, 20);
+            panel10.TabIndex = 81;
             // 
-            // TXPosR1
+            // TXPosL1
             // 
-            TXPosR1.AutoSize = true;
-            TXPosR1.Dock = System.Windows.Forms.DockStyle.Right;
-            TXPosR1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXPosR1.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosR1.Location = new System.Drawing.Point(52, 0);
-            TXPosR1.Name = "TXPosR1";
-            TXPosR1.Size = new System.Drawing.Size(123, 20);
-            TXPosR1.TabIndex = 76;
-            TXPosR1.Text = "Pos: 1234.56 mm";
-            TXPosR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            TXPosL1.AutoSize = true;
+            TXPosL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosL1.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosL1.Location = new System.Drawing.Point(53, 0);
+            TXPosL1.Name = "TXPosL1";
+            TXPosL1.Size = new System.Drawing.Size(123, 20);
+            TXPosL1.TabIndex = 73;
+            TXPosL1.Text = "Pos: 1234.56 mm";
+            TXPosL1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // Plot10Coord
+            // panel14
             // 
-            Plot10Coord.AutoSize = true;
-            Plot10Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            Plot10Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot10Coord.Location = new System.Drawing.Point(1130, 750);
-            Plot10Coord.Name = "Plot10Coord";
-            Plot10Coord.Size = new System.Drawing.Size(150, 20);
-            Plot10Coord.TabIndex = 71;
-            Plot10Coord.Text = "X = 000, Y = 0000.00";
-            Plot10Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // Plot4Coord
-            // 
-            Plot4Coord.AutoSize = true;
-            Plot4Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            Plot4Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot4Coord.Location = new System.Drawing.Point(1130, 376);
-            Plot4Coord.Name = "Plot4Coord";
-            Plot4Coord.Size = new System.Drawing.Size(150, 20);
-            Plot4Coord.TabIndex = 70;
-            Plot4Coord.Text = "X = 000, Y = 0000.00";
-            Plot4Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // Plot3Coord
-            // 
-            Plot3Coord.AutoSize = true;
-            Plot3Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            Plot3Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot3Coord.Location = new System.Drawing.Point(1130, 0);
-            Plot3Coord.Name = "Plot3Coord";
-            Plot3Coord.Size = new System.Drawing.Size(150, 20);
-            Plot3Coord.TabIndex = 69;
-            Plot3Coord.Text = "X = 000, Y = 0000.00";
-            Plot3Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panel14.Controls.Add(Plot9Coord);
+            panel14.Location = new System.Drawing.Point(441, 778);
+            panel14.Name = "panel14";
+            panel14.Size = new System.Drawing.Size(300, 20);
+            panel14.TabIndex = 82;
             // 
             // Plot9Coord
             // 
             Plot9Coord.AutoSize = true;
+            Plot9Coord.Dock = System.Windows.Forms.DockStyle.Right;
             Plot9Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot9Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot9Coord.Location = new System.Drawing.Point(591, 750);
+            Plot9Coord.Location = new System.Drawing.Point(150, 0);
             Plot9Coord.Name = "Plot9Coord";
             Plot9Coord.Size = new System.Drawing.Size(150, 20);
             Plot9Coord.TabIndex = 68;
             Plot9Coord.Text = "X = 000, Y = 0000.00";
             Plot9Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel11
+            // 
+            panel11.Controls.Add(TXLoadL1);
+            panel11.Location = new System.Drawing.Point(1, 3);
+            panel11.Name = "panel11";
+            panel11.Size = new System.Drawing.Size(175, 20);
+            panel11.TabIndex = 80;
+            // 
+            // TXLoadL1
+            // 
+            TXLoadL1.AutoSize = true;
+            TXLoadL1.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadL1.ForeColor = System.Drawing.Color.LightCyan;
+            TXLoadL1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            TXLoadL1.Location = new System.Drawing.Point(0, 0);
+            TXLoadL1.Name = "TXLoadL1";
+            TXLoadL1.Size = new System.Drawing.Size(120, 20);
+            TXLoadL1.TabIndex = 72;
+            TXLoadL1.Text = "Load : 1234.56 N";
+            TXLoadL1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(Plot2Coord);
+            panel3.Location = new System.Drawing.Point(441, 403);
+            panel3.Name = "panel3";
+            panel3.Size = new System.Drawing.Size(300, 20);
+            panel3.TabIndex = 82;
+            // 
             // Plot2Coord
             // 
             Plot2Coord.AutoSize = true;
+            Plot2Coord.Dock = System.Windows.Forms.DockStyle.Right;
             Plot2Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot2Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot2Coord.Location = new System.Drawing.Point(591, 376);
+            Plot2Coord.Location = new System.Drawing.Point(150, 0);
             Plot2Coord.Name = "Plot2Coord";
             Plot2Coord.Size = new System.Drawing.Size(150, 20);
             Plot2Coord.TabIndex = 67;
             Plot2Coord.Text = "X = 000, Y = 0000.00";
             Plot2Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel2
+            // 
+            panel2.Controls.Add(Plot1Coord);
+            panel2.Location = new System.Drawing.Point(440, 27);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(300, 20);
+            panel2.TabIndex = 81;
+            // 
             // Plot1Coord
             // 
             Plot1Coord.AutoSize = true;
+            Plot1Coord.Dock = System.Windows.Forms.DockStyle.Right;
             Plot1Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
             Plot1Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot1Coord.Location = new System.Drawing.Point(591, 0);
+            Plot1Coord.Location = new System.Drawing.Point(150, 0);
             Plot1Coord.Name = "Plot1Coord";
             Plot1Coord.Size = new System.Drawing.Size(150, 20);
             Plot1Coord.TabIndex = 66;
             Plot1Coord.Text = "X = 000, Y = 0000.00";
             Plot1Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel9
+            // 
+            panel9.Controls.Add(panel24);
+            panel9.Controls.Add(panel19);
+            panel9.Controls.Add(panel25);
+            panel9.Controls.Add(panel21);
+            panel9.Controls.Add(panel26);
+            panel9.Controls.Add(P_NG_L);
+            panel9.Controls.Add(P_NG_R);
+            panel9.Controls.Add(label50);
+            panel9.Controls.Add(panel23);
+            panel9.Controls.Add(panel20);
+            panel9.Controls.Add(panel27);
+            panel9.Controls.Add(label35);
+            panel9.Controls.Add(label36);
+            panel9.Controls.Add(label49);
+            panel9.Controls.Add(panel22);
+            panel9.Controls.Add(panel32);
+            panel9.Controls.Add(panel31);
+            panel9.Controls.Add(label39);
+            panel9.Controls.Add(label42);
+            panel9.Controls.Add(label40);
+            panel9.Controls.Add(label41);
+            panel9.Controls.Add(panel28);
+            panel9.Controls.Add(panel30);
+            panel9.Controls.Add(panel29);
+            panel9.Location = new System.Drawing.Point(741, 3);
+            panel9.Name = "panel9";
+            panel9.Size = new System.Drawing.Size(382, 368);
+            panel9.TabIndex = 81;
+            // 
+            // panel19
+            // 
+            panel19.Controls.Add(STEP2_CMPLLOAD_HI);
+            panel19.Location = new System.Drawing.Point(3, 228);
+            panel19.Name = "panel19";
+            panel19.Size = new System.Drawing.Size(180, 22);
+            panel19.TabIndex = 90;
+            // 
+            // STEP2_CMPLLOAD_HI
+            // 
+            STEP2_CMPLLOAD_HI.AutoSize = true;
+            STEP2_CMPLLOAD_HI.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_CMPLLOAD_HI.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_CMPLLOAD_HI.Location = new System.Drawing.Point(0, 0);
+            STEP2_CMPLLOAD_HI.Name = "STEP2_CMPLLOAD_HI";
+            STEP2_CMPLLOAD_HI.Size = new System.Drawing.Size(93, 20);
+            STEP2_CMPLLOAD_HI.TabIndex = 72;
+            STEP2_CMPLLOAD_HI.Text = "< 0000.00 N";
+            STEP2_CMPLLOAD_HI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel21
+            // 
+            panel21.Controls.Add(STEP2_EXTLLOAD_HI);
+            panel21.Location = new System.Drawing.Point(3, 329);
+            panel21.Name = "panel21";
+            panel21.Size = new System.Drawing.Size(180, 22);
+            panel21.TabIndex = 93;
+            // 
+            // STEP2_EXTLLOAD_HI
+            // 
+            STEP2_EXTLLOAD_HI.AutoSize = true;
+            STEP2_EXTLLOAD_HI.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTLLOAD_HI.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTLLOAD_HI.Location = new System.Drawing.Point(0, 0);
+            STEP2_EXTLLOAD_HI.Name = "STEP2_EXTLLOAD_HI";
+            STEP2_EXTLLOAD_HI.Size = new System.Drawing.Size(93, 20);
+            STEP2_EXTLLOAD_HI.TabIndex = 72;
+            STEP2_EXTLLOAD_HI.Text = "< 0000.00 N";
+            STEP2_EXTLLOAD_HI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // P_NG_L
+            // 
+            P_NG_L.Font = new System.Drawing.Font("Sarasa Fixed J", 12F);
+            P_NG_L.Location = new System.Drawing.Point(3, 3);
+            P_NG_L.Name = "P_NG_L";
+            P_NG_L.Size = new System.Drawing.Size(120, 48);
+            P_NG_L.TabIndex = 85;
+            P_NG_L.Text = "---";
+            P_NG_L.UseVisualStyleBackColor = true;
+            // 
+            // P_NG_R
+            // 
+            P_NG_R.Font = new System.Drawing.Font("Sarasa Fixed J", 12F);
+            P_NG_R.Location = new System.Drawing.Point(259, 3);
+            P_NG_R.Name = "P_NG_R";
+            P_NG_R.Size = new System.Drawing.Size(120, 48);
+            P_NG_R.TabIndex = 86;
+            P_NG_R.Text = "---";
+            P_NG_R.UseVisualStyleBackColor = true;
+            // 
+            // label50
+            // 
+            label50.AutoSize = true;
+            label50.Font = new System.Drawing.Font("Sarasa Fixed J", 12F, System.Drawing.FontStyle.Bold);
+            label50.ForeColor = System.Drawing.Color.LightCyan;
+            label50.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            label50.Location = new System.Drawing.Point(262, 260);
+            label50.Name = "label50";
+            label50.Size = new System.Drawing.Size(117, 20);
+            label50.TabIndex = 92;
+            label50.Text = "EXTENS. REF.";
+            label50.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // panel23
+            // 
+            panel23.Controls.Add(STEP2_EXTLLOAD_LO);
+            panel23.Location = new System.Drawing.Point(3, 306);
+            panel23.Name = "panel23";
+            panel23.Size = new System.Drawing.Size(180, 22);
+            panel23.TabIndex = 92;
+            // 
+            // STEP2_EXTLLOAD_LO
+            // 
+            STEP2_EXTLLOAD_LO.AutoSize = true;
+            STEP2_EXTLLOAD_LO.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTLLOAD_LO.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTLLOAD_LO.Location = new System.Drawing.Point(0, 0);
+            STEP2_EXTLLOAD_LO.Name = "STEP2_EXTLLOAD_LO";
+            STEP2_EXTLLOAD_LO.Size = new System.Drawing.Size(93, 20);
+            STEP2_EXTLLOAD_LO.TabIndex = 72;
+            STEP2_EXTLLOAD_LO.Text = "> 0000.00 N";
+            STEP2_EXTLLOAD_LO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel20
+            // 
+            panel20.Controls.Add(STEP2_CMPLLOAD_LO);
+            panel20.Location = new System.Drawing.Point(3, 205);
+            panel20.Name = "panel20";
+            panel20.Size = new System.Drawing.Size(180, 22);
+            panel20.TabIndex = 83;
+            // 
+            // STEP2_CMPLLOAD_LO
+            // 
+            STEP2_CMPLLOAD_LO.AutoSize = true;
+            STEP2_CMPLLOAD_LO.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_CMPLLOAD_LO.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_CMPLLOAD_LO.Location = new System.Drawing.Point(0, 0);
+            STEP2_CMPLLOAD_LO.Name = "STEP2_CMPLLOAD_LO";
+            STEP2_CMPLLOAD_LO.Size = new System.Drawing.Size(93, 20);
+            STEP2_CMPLLOAD_LO.TabIndex = 72;
+            STEP2_CMPLLOAD_LO.Text = "> 0000.00 N";
+            STEP2_CMPLLOAD_LO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel27
+            // 
+            panel27.Controls.Add(STEP2_EXTLLOAD);
+            panel27.Location = new System.Drawing.Point(3, 283);
+            panel27.Name = "panel27";
+            panel27.Size = new System.Drawing.Size(180, 22);
+            panel27.TabIndex = 91;
+            // 
+            // STEP2_EXTLLOAD
+            // 
+            STEP2_EXTLLOAD.AutoSize = true;
+            STEP2_EXTLLOAD.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTLLOAD.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTLLOAD.Location = new System.Drawing.Point(0, 0);
+            STEP2_EXTLLOAD.Name = "STEP2_EXTLLOAD";
+            STEP2_EXTLLOAD.Size = new System.Drawing.Size(126, 20);
+            STEP2_EXTLLOAD.TabIndex = 72;
+            STEP2_EXTLLOAD.Text = "Load : 0000.00 N";
+            STEP2_EXTLLOAD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label35
+            // 
+            label35.AutoSize = true;
+            label35.Font = new System.Drawing.Font("Sarasa Fixed J", 12F, System.Drawing.FontStyle.Bold);
+            label35.ForeColor = System.Drawing.Color.LightCyan;
+            label35.Location = new System.Drawing.Point(3, 54);
+            label35.Name = "label35";
+            label35.Size = new System.Drawing.Size(99, 40);
+            label35.TabIndex = 83;
+            label35.Text = "PRE-STROKE\r\nMAX LOAD";
+            // 
+            // label36
+            // 
+            label36.AutoSize = true;
+            label36.Font = new System.Drawing.Font("Sarasa Fixed J", 12F, System.Drawing.FontStyle.Bold);
+            label36.ForeColor = System.Drawing.Color.LightCyan;
+            label36.Location = new System.Drawing.Point(280, 54);
+            label36.Name = "label36";
+            label36.Size = new System.Drawing.Size(99, 40);
+            label36.TabIndex = 84;
+            label36.Text = "PRE-STROKE\r\nMAX LOAD";
+            label36.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label49
+            // 
+            label49.AutoSize = true;
+            label49.Font = new System.Drawing.Font("Sarasa Fixed J", 12F, System.Drawing.FontStyle.Bold);
+            label49.ForeColor = System.Drawing.Color.LightCyan;
+            label49.Location = new System.Drawing.Point(3, 260);
+            label49.Name = "label49";
+            label49.Size = new System.Drawing.Size(117, 20);
+            label49.TabIndex = 91;
+            label49.Text = "EXTENS. REF.";
+            label49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel22
+            // 
+            panel22.Controls.Add(STEP2_CMPLLOAD);
+            panel22.Location = new System.Drawing.Point(3, 182);
+            panel22.Name = "panel22";
+            panel22.Size = new System.Drawing.Size(180, 22);
+            panel22.TabIndex = 82;
+            // 
+            // STEP2_CMPLLOAD
+            // 
+            STEP2_CMPLLOAD.AutoSize = true;
+            STEP2_CMPLLOAD.BackColor = System.Drawing.Color.SlateGray;
+            STEP2_CMPLLOAD.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_CMPLLOAD.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_CMPLLOAD.Location = new System.Drawing.Point(0, 0);
+            STEP2_CMPLLOAD.Name = "STEP2_CMPLLOAD";
+            STEP2_CMPLLOAD.Size = new System.Drawing.Size(126, 20);
+            STEP2_CMPLLOAD.TabIndex = 72;
+            STEP2_CMPLLOAD.Text = "Load : 0000.00 N";
+            STEP2_CMPLLOAD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel32
+            // 
+            panel32.Controls.Add(PRE_LLOAD);
+            panel32.Location = new System.Drawing.Point(3, 100);
+            panel32.Name = "panel32";
+            panel32.Size = new System.Drawing.Size(180, 22);
+            panel32.TabIndex = 81;
+            // 
+            // PRE_LLOAD
+            // 
+            PRE_LLOAD.AutoSize = true;
+            PRE_LLOAD.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            PRE_LLOAD.ForeColor = System.Drawing.Color.LightCyan;
+            PRE_LLOAD.Location = new System.Drawing.Point(0, 0);
+            PRE_LLOAD.Name = "PRE_LLOAD";
+            PRE_LLOAD.Size = new System.Drawing.Size(126, 20);
+            PRE_LLOAD.TabIndex = 72;
+            PRE_LLOAD.Text = "Load : 0000.00 N";
+            PRE_LLOAD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel31
+            // 
+            panel31.Controls.Add(PRE_RLOAD);
+            panel31.Location = new System.Drawing.Point(199, 100);
+            panel31.Name = "panel31";
+            panel31.Size = new System.Drawing.Size(180, 22);
+            panel31.TabIndex = 79;
+            // 
+            // PRE_RLOAD
+            // 
+            PRE_RLOAD.AutoSize = true;
+            PRE_RLOAD.Dock = System.Windows.Forms.DockStyle.Right;
+            PRE_RLOAD.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            PRE_RLOAD.ForeColor = System.Drawing.Color.LightCyan;
+            PRE_RLOAD.Location = new System.Drawing.Point(54, 0);
+            PRE_RLOAD.Name = "PRE_RLOAD";
+            PRE_RLOAD.Size = new System.Drawing.Size(126, 20);
+            PRE_RLOAD.TabIndex = 75;
+            PRE_RLOAD.Text = "Load : 0000.00 N";
+            PRE_RLOAD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label39
+            // 
+            label39.AutoSize = true;
+            label39.Font = new System.Drawing.Font("Sarasa Fixed J", 12F, System.Drawing.FontStyle.Bold);
+            label39.ForeColor = System.Drawing.Color.LightCyan;
+            label39.Location = new System.Drawing.Point(3, 140);
+            label39.Name = "label39";
+            label39.Size = new System.Drawing.Size(63, 20);
+            label39.TabIndex = 83;
+            label39.Text = "STEP 2";
+            label39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.Font = new System.Drawing.Font("Sarasa Fixed J", 12F, System.Drawing.FontStyle.Bold);
+            label42.ForeColor = System.Drawing.Color.LightCyan;
+            label42.Location = new System.Drawing.Point(3, 160);
+            label42.Name = "label42";
+            label42.Size = new System.Drawing.Size(135, 20);
+            label42.TabIndex = 88;
+            label42.Text = "COMPRESS. REF.";
+            label42.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label40
+            // 
+            label40.AutoSize = true;
+            label40.Font = new System.Drawing.Font("Sarasa Fixed J", 12F, System.Drawing.FontStyle.Bold);
+            label40.ForeColor = System.Drawing.Color.LightCyan;
+            label40.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            label40.Location = new System.Drawing.Point(316, 140);
+            label40.Name = "label40";
+            label40.Size = new System.Drawing.Size(63, 20);
+            label40.TabIndex = 87;
+            label40.Text = "STEP 2";
+            label40.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label41
+            // 
+            label41.AutoSize = true;
+            label41.Font = new System.Drawing.Font("Sarasa Fixed J", 12F, System.Drawing.FontStyle.Bold);
+            label41.ForeColor = System.Drawing.Color.LightCyan;
+            label41.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            label41.Location = new System.Drawing.Point(244, 160);
+            label41.Name = "label41";
+            label41.Size = new System.Drawing.Size(135, 20);
+            label41.TabIndex = 89;
+            label41.Text = "COMPRESS. REF.";
+            label41.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // panel28
+            // 
+            panel28.Controls.Add(STEP2_CMPRLOAD_HI);
+            panel28.Location = new System.Drawing.Point(199, 228);
+            panel28.Name = "panel28";
+            panel28.Size = new System.Drawing.Size(180, 22);
+            panel28.TabIndex = 90;
+            // 
+            // STEP2_CMPRLOAD_HI
+            // 
+            STEP2_CMPRLOAD_HI.AutoSize = true;
+            STEP2_CMPRLOAD_HI.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_CMPRLOAD_HI.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_CMPRLOAD_HI.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_CMPRLOAD_HI.Location = new System.Drawing.Point(87, 0);
+            STEP2_CMPRLOAD_HI.Name = "STEP2_CMPRLOAD_HI";
+            STEP2_CMPRLOAD_HI.Size = new System.Drawing.Size(93, 20);
+            STEP2_CMPRLOAD_HI.TabIndex = 75;
+            STEP2_CMPRLOAD_HI.Text = "< 0000.00 N";
+            STEP2_CMPRLOAD_HI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel30
+            // 
+            panel30.Controls.Add(STEP2_CMPRLOAD);
+            panel30.Location = new System.Drawing.Point(199, 182);
+            panel30.Name = "panel30";
+            panel30.Size = new System.Drawing.Size(180, 22);
+            panel30.TabIndex = 80;
+            // 
+            // STEP2_CMPRLOAD
+            // 
+            STEP2_CMPRLOAD.AutoSize = true;
+            STEP2_CMPRLOAD.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_CMPRLOAD.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_CMPRLOAD.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_CMPRLOAD.Location = new System.Drawing.Point(54, 0);
+            STEP2_CMPRLOAD.Name = "STEP2_CMPRLOAD";
+            STEP2_CMPRLOAD.Size = new System.Drawing.Size(126, 20);
+            STEP2_CMPRLOAD.TabIndex = 75;
+            STEP2_CMPRLOAD.Text = "Load : 0000.00 N";
+            STEP2_CMPRLOAD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel29
+            // 
+            panel29.Controls.Add(STEP2_CMPRLOAD_LO);
+            panel29.Location = new System.Drawing.Point(199, 205);
+            panel29.Name = "panel29";
+            panel29.Size = new System.Drawing.Size(180, 22);
+            panel29.TabIndex = 80;
+            // 
+            // STEP2_CMPRLOAD_LO
+            // 
+            STEP2_CMPRLOAD_LO.AutoSize = true;
+            STEP2_CMPRLOAD_LO.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_CMPRLOAD_LO.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_CMPRLOAD_LO.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_CMPRLOAD_LO.Location = new System.Drawing.Point(87, 0);
+            STEP2_CMPRLOAD_LO.Name = "STEP2_CMPRLOAD_LO";
+            STEP2_CMPRLOAD_LO.Size = new System.Drawing.Size(93, 20);
+            STEP2_CMPRLOAD_LO.TabIndex = 75;
+            STEP2_CMPRLOAD_LO.Text = "> 0000.00 N";
+            STEP2_CMPRLOAD_LO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // button95
             // 
             button95.BackColor = System.Drawing.Color.LightSteelBlue;
-            button95.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button95.Location = new System.Drawing.Point(1065, 880);
+            button95.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button95.Location = new System.Drawing.Point(1748, 951);
             button95.Margin = new System.Windows.Forms.Padding(0);
             button95.Name = "button95";
-            button95.Size = new System.Drawing.Size(60, 60);
+            button95.Size = new System.Drawing.Size(48, 48);
             button95.TabIndex = 65;
             button95.Text = "🔎";
             button95.UseVisualStyleBackColor = false;
@@ -1815,11 +2275,11 @@ namespace KVCOMSERVER
             // button96
             // 
             button96.BackColor = System.Drawing.Color.LightSteelBlue;
-            button96.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button96.Location = new System.Drawing.Point(1065, 820);
+            button96.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button96.Location = new System.Drawing.Point(1815, 951);
             button96.Margin = new System.Windows.Forms.Padding(0);
             button96.Name = "button96";
-            button96.Size = new System.Drawing.Size(60, 60);
+            button96.Size = new System.Drawing.Size(48, 48);
             button96.TabIndex = 64;
             button96.Text = "🔍";
             button96.UseVisualStyleBackColor = false;
@@ -1828,11 +2288,11 @@ namespace KVCOMSERVER
             // button93
             // 
             button93.BackColor = System.Drawing.Color.LightSteelBlue;
-            button93.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button93.Location = new System.Drawing.Point(1065, 690);
+            button93.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button93.Location = new System.Drawing.Point(1748, 728);
             button93.Margin = new System.Windows.Forms.Padding(0);
             button93.Name = "button93";
-            button93.Size = new System.Drawing.Size(60, 60);
+            button93.Size = new System.Drawing.Size(48, 48);
             button93.TabIndex = 63;
             button93.Text = "🔎";
             button93.UseVisualStyleBackColor = false;
@@ -1841,11 +2301,11 @@ namespace KVCOMSERVER
             // button94
             // 
             button94.BackColor = System.Drawing.Color.LightSteelBlue;
-            button94.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button94.Location = new System.Drawing.Point(1065, 630);
+            button94.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button94.Location = new System.Drawing.Point(1815, 728);
             button94.Margin = new System.Windows.Forms.Padding(0);
             button94.Name = "button94";
-            button94.Size = new System.Drawing.Size(60, 60);
+            button94.Size = new System.Drawing.Size(48, 48);
             button94.TabIndex = 62;
             button94.Text = "🔍";
             button94.UseVisualStyleBackColor = false;
@@ -1854,11 +2314,11 @@ namespace KVCOMSERVER
             // button91
             // 
             button91.BackColor = System.Drawing.Color.LightSteelBlue;
-            button91.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button91.Location = new System.Drawing.Point(1065, 313);
+            button91.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button91.Location = new System.Drawing.Point(1748, 351);
             button91.Margin = new System.Windows.Forms.Padding(0);
             button91.Name = "button91";
-            button91.Size = new System.Drawing.Size(60, 60);
+            button91.Size = new System.Drawing.Size(48, 48);
             button91.TabIndex = 61;
             button91.Text = "🔎";
             button91.UseVisualStyleBackColor = false;
@@ -1867,11 +2327,11 @@ namespace KVCOMSERVER
             // button92
             // 
             button92.BackColor = System.Drawing.Color.LightSteelBlue;
-            button92.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button92.Location = new System.Drawing.Point(1065, 253);
+            button92.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button92.Location = new System.Drawing.Point(1815, 351);
             button92.Margin = new System.Windows.Forms.Padding(0);
             button92.Name = "button92";
-            button92.Size = new System.Drawing.Size(60, 60);
+            button92.Size = new System.Drawing.Size(48, 48);
             button92.TabIndex = 60;
             button92.Text = "🔍";
             button92.UseVisualStyleBackColor = false;
@@ -1880,11 +2340,11 @@ namespace KVCOMSERVER
             // button89
             // 
             button89.BackColor = System.Drawing.Color.LightSteelBlue;
-            button89.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button89.Location = new System.Drawing.Point(746, 880);
+            button89.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button89.Location = new System.Drawing.Point(2, 951);
             button89.Margin = new System.Windows.Forms.Padding(0);
             button89.Name = "button89";
-            button89.Size = new System.Drawing.Size(60, 60);
+            button89.Size = new System.Drawing.Size(48, 48);
             button89.TabIndex = 59;
             button89.Text = "🔎";
             button89.UseVisualStyleBackColor = false;
@@ -1893,11 +2353,11 @@ namespace KVCOMSERVER
             // button90
             // 
             button90.BackColor = System.Drawing.Color.LightSteelBlue;
-            button90.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button90.Location = new System.Drawing.Point(746, 820);
+            button90.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button90.Location = new System.Drawing.Point(69, 951);
             button90.Margin = new System.Windows.Forms.Padding(0);
             button90.Name = "button90";
-            button90.Size = new System.Drawing.Size(60, 60);
+            button90.Size = new System.Drawing.Size(48, 48);
             button90.TabIndex = 58;
             button90.Text = "🔍";
             button90.UseVisualStyleBackColor = false;
@@ -1906,11 +2366,11 @@ namespace KVCOMSERVER
             // button87
             // 
             button87.BackColor = System.Drawing.Color.LightSteelBlue;
-            button87.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button87.Location = new System.Drawing.Point(746, 690);
+            button87.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button87.Location = new System.Drawing.Point(2, 728);
             button87.Margin = new System.Windows.Forms.Padding(0);
             button87.Name = "button87";
-            button87.Size = new System.Drawing.Size(60, 60);
+            button87.Size = new System.Drawing.Size(48, 48);
             button87.TabIndex = 57;
             button87.Text = "🔎";
             button87.UseVisualStyleBackColor = false;
@@ -1919,11 +2379,11 @@ namespace KVCOMSERVER
             // button88
             // 
             button88.BackColor = System.Drawing.Color.LightSteelBlue;
-            button88.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button88.Location = new System.Drawing.Point(746, 630);
+            button88.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button88.Location = new System.Drawing.Point(69, 728);
             button88.Margin = new System.Windows.Forms.Padding(0);
             button88.Name = "button88";
-            button88.Size = new System.Drawing.Size(60, 60);
+            button88.Size = new System.Drawing.Size(48, 48);
             button88.TabIndex = 56;
             button88.Text = "🔍";
             button88.UseVisualStyleBackColor = false;
@@ -1932,11 +2392,11 @@ namespace KVCOMSERVER
             // button85
             // 
             button85.BackColor = System.Drawing.Color.LightSteelBlue;
-            button85.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button85.Location = new System.Drawing.Point(746, 313);
+            button85.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button85.Location = new System.Drawing.Point(2, 351);
             button85.Margin = new System.Windows.Forms.Padding(0);
             button85.Name = "button85";
-            button85.Size = new System.Drawing.Size(60, 60);
+            button85.Size = new System.Drawing.Size(48, 48);
             button85.TabIndex = 55;
             button85.Text = "🔎";
             button85.UseVisualStyleBackColor = false;
@@ -1945,11 +2405,11 @@ namespace KVCOMSERVER
             // button86
             // 
             button86.BackColor = System.Drawing.Color.LightSteelBlue;
-            button86.Font = new System.Drawing.Font("Sarasa Fixed J", 28F);
-            button86.Location = new System.Drawing.Point(746, 253);
+            button86.Font = new System.Drawing.Font("Sarasa Fixed J", 24F);
+            button86.Location = new System.Drawing.Point(69, 351);
             button86.Margin = new System.Windows.Forms.Padding(0);
             button86.Name = "button86";
-            button86.Size = new System.Drawing.Size(60, 60);
+            button86.Size = new System.Drawing.Size(48, 48);
             button86.TabIndex = 54;
             button86.Text = "🔍";
             button86.UseVisualStyleBackColor = false;
@@ -1958,9 +2418,9 @@ namespace KVCOMSERVER
             // button82
             // 
             button82.BackColor = System.Drawing.Color.LightSteelBlue;
-            button82.Location = new System.Drawing.Point(856, 879);
+            button82.Location = new System.Drawing.Point(847, 930);
             button82.Name = "button82";
-            button82.Size = new System.Drawing.Size(77, 60);
+            button82.Size = new System.Drawing.Size(80, 60);
             button82.TabIndex = 34;
             button82.Text = "RELOAD\r\nGRAPH";
             button82.UseVisualStyleBackColor = false;
@@ -1971,7 +2431,7 @@ namespace KVCOMSERVER
             label23.AutoSize = true;
             label23.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label23.ForeColor = System.Drawing.Color.LightCyan;
-            label23.Location = new System.Drawing.Point(1663, 752);
+            label23.Location = new System.Drawing.Point(1663, 778);
             label23.Name = "label23";
             label23.Size = new System.Drawing.Size(200, 18);
             label23.TabIndex = 29;
@@ -1983,7 +2443,7 @@ namespace KVCOMSERVER
             label22.AutoSize = true;
             label22.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label22.ForeColor = System.Drawing.Color.LightCyan;
-            label22.Location = new System.Drawing.Point(6, 752);
+            label22.Location = new System.Drawing.Point(6, 778);
             label22.Name = "label22";
             label22.Size = new System.Drawing.Size(200, 18);
             label22.TabIndex = 28;
@@ -1993,25 +2453,25 @@ namespace KVCOMSERVER
             // formsPlot10
             // 
             formsPlot10.DisplayScale = 1F;
-            formsPlot10.Location = new System.Drawing.Point(1128, 773);
+            formsPlot10.Location = new System.Drawing.Point(1124, 799);
             formsPlot10.Name = "formsPlot10";
-            formsPlot10.Size = new System.Drawing.Size(737, 166);
+            formsPlot10.Size = new System.Drawing.Size(740, 200);
             formsPlot10.TabIndex = 27;
             // 
             // formsPlot9
             // 
             formsPlot9.DisplayScale = 1F;
-            formsPlot9.Location = new System.Drawing.Point(6, 773);
+            formsPlot9.Location = new System.Drawing.Point(0, 799);
             formsPlot9.Name = "formsPlot9";
-            formsPlot9.Size = new System.Drawing.Size(737, 166);
+            formsPlot9.Size = new System.Drawing.Size(740, 200);
             formsPlot9.TabIndex = 26;
             // 
             // button36
             // 
             button36.BackColor = System.Drawing.Color.LightSteelBlue;
-            button36.Location = new System.Drawing.Point(946, 879);
+            button36.Location = new System.Drawing.Point(937, 930);
             button36.Name = "button36";
-            button36.Size = new System.Drawing.Size(90, 60);
+            button36.Size = new System.Drawing.Size(80, 60);
             button36.TabIndex = 25;
             button36.Text = "MAIN\r\nMENU";
             button36.UseVisualStyleBackColor = false;
@@ -2020,9 +2480,10 @@ namespace KVCOMSERVER
             // button33
             // 
             button33.BackColor = System.Drawing.Color.LightSteelBlue;
-            button33.Location = new System.Drawing.Point(870, 794);
+            button33.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
+            button33.Location = new System.Drawing.Point(882, 860);
             button33.Name = "button33";
-            button33.Size = new System.Drawing.Size(130, 60);
+            button33.Size = new System.Drawing.Size(100, 60);
             button33.TabIndex = 22;
             button33.Text = "SHOW TABLE";
             button33.UseVisualStyleBackColor = false;
@@ -2031,9 +2492,9 @@ namespace KVCOMSERVER
             // button16
             // 
             button16.BackColor = System.Drawing.Color.LightSteelBlue;
-            button16.Location = new System.Drawing.Point(939, 546);
+            button16.Location = new System.Drawing.Point(937, 780);
             button16.Name = "button16";
-            button16.Size = new System.Drawing.Size(130, 60);
+            button16.Size = new System.Drawing.Size(90, 70);
             button16.TabIndex = 15;
             button16.Text = "SHOW/HIDE\r\nMASTER LIMIT";
             button16.UseVisualStyleBackColor = false;
@@ -2042,9 +2503,10 @@ namespace KVCOMSERVER
             // button15
             // 
             button15.BackColor = System.Drawing.Color.LightSteelBlue;
-            button15.Location = new System.Drawing.Point(803, 546);
+            button15.Font = new System.Drawing.Font("Sarasa Fixed J", 10F);
+            button15.Location = new System.Drawing.Point(837, 780);
             button15.Name = "button15";
-            button15.Size = new System.Drawing.Size(130, 60);
+            button15.Size = new System.Drawing.Size(90, 70);
             button15.TabIndex = 14;
             button15.Text = "SHOW/HIDE\r\nMASTER LINE";
             button15.UseVisualStyleBackColor = false;
@@ -2055,7 +2517,7 @@ namespace KVCOMSERVER
             label17.AutoSize = true;
             label17.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label17.ForeColor = System.Drawing.Color.LightCyan;
-            label17.Location = new System.Drawing.Point(1671, 377);
+            label17.Location = new System.Drawing.Point(1671, 403);
             label17.Name = "label17";
             label17.Size = new System.Drawing.Size(192, 18);
             label17.TabIndex = 11;
@@ -2067,7 +2529,7 @@ namespace KVCOMSERVER
             label16.AutoSize = true;
             label16.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label16.ForeColor = System.Drawing.Color.LightCyan;
-            label16.Location = new System.Drawing.Point(1655, 3);
+            label16.Location = new System.Drawing.Point(1655, 27);
             label16.Name = "label16";
             label16.Size = new System.Drawing.Size(208, 18);
             label16.TabIndex = 10;
@@ -2079,7 +2541,7 @@ namespace KVCOMSERVER
             label15.AutoSize = true;
             label15.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label15.ForeColor = System.Drawing.Color.LightCyan;
-            label15.Location = new System.Drawing.Point(6, 377);
+            label15.Location = new System.Drawing.Point(6, 403);
             label15.Name = "label15";
             label15.Size = new System.Drawing.Size(192, 18);
             label15.TabIndex = 9;
@@ -2091,7 +2553,7 @@ namespace KVCOMSERVER
             label14.AutoSize = true;
             label14.Font = new System.Drawing.Font("Sarasa Fixed J", 10F, System.Drawing.FontStyle.Bold);
             label14.ForeColor = System.Drawing.Color.LightCyan;
-            label14.Location = new System.Drawing.Point(6, 3);
+            label14.Location = new System.Drawing.Point(6, 27);
             label14.Name = "label14";
             label14.Size = new System.Drawing.Size(208, 18);
             label14.TabIndex = 8;
@@ -2101,34 +2563,34 @@ namespace KVCOMSERVER
             // formsPlot4
             // 
             formsPlot4.DisplayScale = 1F;
-            formsPlot4.Location = new System.Drawing.Point(1128, 399);
+            formsPlot4.Location = new System.Drawing.Point(1124, 425);
             formsPlot4.Name = "formsPlot4";
-            formsPlot4.Size = new System.Drawing.Size(737, 350);
+            formsPlot4.Size = new System.Drawing.Size(740, 350);
             formsPlot4.TabIndex = 7;
             // 
             // formsPlot3
             // 
             formsPlot3.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             formsPlot3.DisplayScale = 1F;
-            formsPlot3.Location = new System.Drawing.Point(1128, 23);
+            formsPlot3.Location = new System.Drawing.Point(1124, 49);
             formsPlot3.Name = "formsPlot3";
-            formsPlot3.Size = new System.Drawing.Size(737, 350);
+            formsPlot3.Size = new System.Drawing.Size(740, 350);
             formsPlot3.TabIndex = 6;
             // 
             // formsPlot2
             // 
             formsPlot2.DisplayScale = 1F;
-            formsPlot2.Location = new System.Drawing.Point(6, 399);
+            formsPlot2.Location = new System.Drawing.Point(0, 425);
             formsPlot2.Name = "formsPlot2";
-            formsPlot2.Size = new System.Drawing.Size(737, 350);
+            formsPlot2.Size = new System.Drawing.Size(740, 350);
             formsPlot2.TabIndex = 5;
             // 
             // formsPlot1
             // 
             formsPlot1.DisplayScale = 1F;
-            formsPlot1.Location = new System.Drawing.Point(6, 23);
+            formsPlot1.Location = new System.Drawing.Point(0, 49);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new System.Drawing.Size(737, 350);
+            formsPlot1.Size = new System.Drawing.Size(740, 350);
             formsPlot1.TabIndex = 4;
             // 
             // tabPage1
@@ -2139,7 +2601,6 @@ namespace KVCOMSERVER
             tabPage1.Controls.Add(button21);
             tabPage1.Controls.Add(button19);
             tabPage1.Controls.Add(button8);
-            tabPage1.Controls.Add(button3);
             tabPage1.Controls.Add(label3);
             tabPage1.Controls.Add(dataGridView1);
             tabPage1.Controls.Add(dateTimePicker1);
@@ -2195,17 +2656,6 @@ namespace KVCOMSERVER
             button8.Text = "OPEN FOLDER";
             button8.UseVisualStyleBackColor = false;
             button8.Click += button8_Click;
-            // 
-            // button3
-            // 
-            button3.BackColor = System.Drawing.Color.LightSteelBlue;
-            button3.Location = new System.Drawing.Point(889, 945);
-            button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(91, 60);
-            button3.TabIndex = 7;
-            button3.Text = "DISPLAY TO GRAPH";
-            button3.UseVisualStyleBackColor = false;
-            button3.Visible = false;
             // 
             // label3
             // 
@@ -2544,9 +2994,9 @@ namespace KVCOMSERVER
             label12.AutoSize = true;
             label12.Location = new System.Drawing.Point(1512, 944);
             label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(274, 18);
+            label12.Size = new System.Drawing.Size(197, 18);
             label12.TabIndex = 24;
-            label12.Text = "PROJECT NUMBER : NSI - 0196/NSI - 0203";
+            label12.Text = "PROJECT NUMBER : NSI - 0203";
             // 
             // label11
             // 
@@ -2664,6 +3114,54 @@ namespace KVCOMSERVER
             button84.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             button84.UseVisualStyleBackColor = true;
             // 
+            // panel18
+            // 
+            panel18.Controls.Add(Plot6Coord);
+            panel18.Location = new System.Drawing.Point(441, 403);
+            panel18.Name = "panel18";
+            panel18.Size = new System.Drawing.Size(300, 20);
+            panel18.TabIndex = 81;
+            // 
+            // panel33
+            // 
+            panel33.Controls.Add(Plot5Coord);
+            panel33.Location = new System.Drawing.Point(440, 27);
+            panel33.Name = "panel33";
+            panel33.Size = new System.Drawing.Size(300, 20);
+            panel33.TabIndex = 82;
+            // 
+            // panel34
+            // 
+            panel34.Controls.Add(Plot11Coord);
+            panel34.Location = new System.Drawing.Point(441, 778);
+            panel34.Name = "panel34";
+            panel34.Size = new System.Drawing.Size(300, 20);
+            panel34.TabIndex = 82;
+            // 
+            // panel35
+            // 
+            panel35.Controls.Add(Plot12Coord);
+            panel35.Location = new System.Drawing.Point(1124, 778);
+            panel35.Name = "panel35";
+            panel35.Size = new System.Drawing.Size(300, 20);
+            panel35.TabIndex = 84;
+            // 
+            // panel36
+            // 
+            panel36.Controls.Add(Plot8Coord);
+            panel36.Location = new System.Drawing.Point(1124, 403);
+            panel36.Name = "panel36";
+            panel36.Size = new System.Drawing.Size(300, 20);
+            panel36.TabIndex = 83;
+            // 
+            // panel37
+            // 
+            panel37.Controls.Add(Plot7Coord);
+            panel37.Location = new System.Drawing.Point(1124, 27);
+            panel37.Name = "panel37";
+            panel37.Size = new System.Drawing.Size(300, 20);
+            panel37.TabIndex = 85;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -2689,8 +3187,6 @@ namespace KVCOMSERVER
             tabPage8.PerformLayout();
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
-            panel6.ResumeLayout(false);
-            panel6.PerformLayout();
             panel8.ResumeLayout(false);
             panel8.PerformLayout();
             panel7.ResumeLayout(false);
@@ -2705,17 +3201,56 @@ namespace KVCOMSERVER
             tabPage7.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            panel9.ResumeLayout(false);
-            panel9.PerformLayout();
-            panel10.ResumeLayout(false);
-            panel10.PerformLayout();
-            panel11.ResumeLayout(false);
-            panel11.PerformLayout();
-            panel12.ResumeLayout(false);
-            panel12.PerformLayout();
+            panel24.ResumeLayout(false);
+            panel24.PerformLayout();
+            panel25.ResumeLayout(false);
+            panel25.PerformLayout();
+            panel26.ResumeLayout(false);
+            panel26.PerformLayout();
+            panel17.ResumeLayout(false);
+            panel17.PerformLayout();
+            panel16.ResumeLayout(false);
+            panel16.PerformLayout();
+            panel15.ResumeLayout(false);
+            panel15.PerformLayout();
             panel13.ResumeLayout(false);
             panel13.PerformLayout();
+            panel12.ResumeLayout(false);
+            panel12.PerformLayout();
+            panel10.ResumeLayout(false);
+            panel10.PerformLayout();
+            panel14.ResumeLayout(false);
+            panel14.PerformLayout();
+            panel11.ResumeLayout(false);
+            panel11.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel9.ResumeLayout(false);
+            panel9.PerformLayout();
+            panel19.ResumeLayout(false);
+            panel19.PerformLayout();
+            panel21.ResumeLayout(false);
+            panel21.PerformLayout();
+            panel23.ResumeLayout(false);
+            panel23.PerformLayout();
+            panel20.ResumeLayout(false);
+            panel20.PerformLayout();
+            panel27.ResumeLayout(false);
+            panel27.PerformLayout();
+            panel22.ResumeLayout(false);
+            panel22.PerformLayout();
+            panel32.ResumeLayout(false);
+            panel32.PerformLayout();
+            panel31.ResumeLayout(false);
+            panel31.PerformLayout();
+            panel28.ResumeLayout(false);
+            panel28.PerformLayout();
+            panel30.ResumeLayout(false);
+            panel30.PerformLayout();
+            panel29.ResumeLayout(false);
+            panel29.PerformLayout();
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -2728,6 +3263,18 @@ namespace KVCOMSERVER
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabControl1.ResumeLayout(false);
+            panel18.ResumeLayout(false);
+            panel18.PerformLayout();
+            panel33.ResumeLayout(false);
+            panel33.PerformLayout();
+            panel34.ResumeLayout(false);
+            panel34.PerformLayout();
+            panel35.ResumeLayout(false);
+            panel35.PerformLayout();
+            panel36.ResumeLayout(false);
+            panel36.PerformLayout();
+            panel37.ResumeLayout(false);
+            panel37.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -2783,7 +3330,6 @@ namespace KVCOMSERVER
         private System.Windows.Forms.Button button21;
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
@@ -2913,23 +3459,65 @@ namespace KVCOMSERVER
         private System.Windows.Forms.Label TXPosR2;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label TXLoadR2;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.Panel panel11;
         private System.Windows.Forms.Panel panel12;
         private System.Windows.Forms.Label TXLoadR1;
         private System.Windows.Forms.Panel panel13;
         private System.Windows.Forms.Label TXPosR1;
-        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Panel panel17;
+        private System.Windows.Forms.Panel panel16;
+        private System.Windows.Forms.Panel panel15;
+        private System.Windows.Forms.Panel panel14;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel19;
+        private System.Windows.Forms.Label STEP2_CMPLLOAD_HI;
+        private System.Windows.Forms.Panel panel24;
+        private System.Windows.Forms.Label STEP2_EXTRLOAD_HI;
+        private System.Windows.Forms.Panel panel20;
+        private System.Windows.Forms.Label STEP2_CMPLLOAD_LO;
+        private System.Windows.Forms.Panel panel21;
+        private System.Windows.Forms.Label STEP2_EXTLLOAD_HI;
+        private System.Windows.Forms.Panel panel22;
+        private System.Windows.Forms.Label STEP2_CMPLLOAD;
+        private System.Windows.Forms.Panel panel25;
+        private System.Windows.Forms.Label STEP2_EXTRLOAD_LO;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Panel panel26;
+        private System.Windows.Forms.Label STEP2_EXTRLOAD;
+        private System.Windows.Forms.Panel panel23;
+        private System.Windows.Forms.Label STEP2_EXTLLOAD_LO;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Panel panel27;
+        private System.Windows.Forms.Label STEP2_EXTLLOAD;
+        private System.Windows.Forms.Panel panel28;
+        private System.Windows.Forms.Label STEP2_CMPRLOAD_HI;
+        private System.Windows.Forms.Panel panel29;
+        private System.Windows.Forms.Label STEP2_CMPRLOAD_LO;
+        private System.Windows.Forms.Panel panel30;
+        private System.Windows.Forms.Label STEP2_CMPRLOAD;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Panel panel31;
+        private System.Windows.Forms.Label PRE_RLOAD;
+        private System.Windows.Forms.Panel panel32;
+        private System.Windows.Forms.Label PRE_LLOAD;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Button P_NG_L;
+        private System.Windows.Forms.Button P_NG_R;
+        private System.Windows.Forms.Panel panel35;
+        private System.Windows.Forms.Panel panel36;
+        private System.Windows.Forms.Panel panel37;
+        private System.Windows.Forms.Panel panel34;
+        private System.Windows.Forms.Panel panel18;
+        private System.Windows.Forms.Panel panel33;
     }
 }
 
