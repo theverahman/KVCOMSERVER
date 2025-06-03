@@ -1,4 +1,4 @@
-﻿#pragma warning disable CA1416 // Validate platform compatibility
+﻿//#pragma warning disable CA1416 // Validate platform compatibility
 
 
 using System;
@@ -1297,7 +1297,6 @@ namespace WORKFLOW
                 }
             }
             return confirm;
-        }
         }
         void _excelInitMasterData(ref DATAMODEL_MASTER feeddata)
         {
@@ -5477,241 +5476,225 @@ namespace WORKFLOW
         }
 
         delegate void PlotSignalLineShowDelegate(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot);
-    static void InvokePlotSignalLineShow(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot)
-    {
-        ui.PlotSignalLineShow(ref plot);
-    }
-
-    delegate void PlotSignalLineHideDelegate(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot);
-    static void InvokePlotSignalLineHide(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot)
-    {
-        ui.PlotSignalLineHide(ref plot);
-    }
-
-    public void uiSetModelName(string mod)
-    {
-        if (_uiObject.InvokeRequired)
+        static void InvokePlotSignalLineShow(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot)
         {
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.SetModelName(mod)));
+            ui.PlotSignalLineShow(ref plot);
         }
-    }
-    public void uiUPdateRealDataTable(DATAMODEL_RL dataR, DATAMODEL_RL dataL) //invoked when realtime update
-    {
-        if (_uiObject.InvokeRequired)
-        {
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRStroke = dataR.RealtimeStep2[0].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRLoad = dataR.RealtimeStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRStroke = dataR.RealtimeStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRLoad = dataR.RealtimeStep2[3].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffStroke = dataR.RealtimeStep2[4].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffLoad = dataR.RealtimeStep2[5].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLStroke = dataL.RealtimeStep2[0].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLLoad = dataL.RealtimeStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLStroke = dataL.RealtimeStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLLoad = dataL.RealtimeStep2[3].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffStroke = dataL.RealtimeStep2[4].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffLoad = dataL.RealtimeStep2[5].ToArray()));
+        delegate void PlotSignalLineHideDelegate(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot);
+        static void InvokePlotSignalLineHide(ref KVCOMSERVER.Form1 ui, ref ScottPlot.Plottables.SignalXY plot)
+        {
+            ui.PlotSignalLineHide(ref plot);
         }
-        else
+
+
+
+        public void uiSetModelName(string mod)
         {
-            _uiObject.DataRealCompSideRStroke = dataR.RealtimeStep2[0].ToArray();
-            _uiObject.DataRealCompSideRLoad = dataR.RealtimeStep2[1].ToArray();
-            _uiObject.DataRealExtnSideRStroke = dataR.RealtimeStep2[2].ToArray();
-            _uiObject.DataRealExtnSideRLoad = dataR.RealtimeStep2[3].ToArray();
-            _uiObject.DataRealSideRDiffStroke = dataR.RealtimeStep2[4].ToArray();
-            _uiObject.DataRealSideRDiffLoad = dataR.RealtimeStep2[5].ToArray();
-
-            _uiObject.DataRealCompSideLStroke = dataL.RealtimeStep2[0].ToArray();
-            _uiObject.DataRealCompSideLLoad = dataL.RealtimeStep2[1].ToArray();
-            _uiObject.DataRealExtnSideLStroke = dataL.RealtimeStep2[2].ToArray();
-            _uiObject.DataRealExtnSideLLoad = dataL.RealtimeStep2[3].ToArray();
-            _uiObject.DataRealSideLDiffStroke = dataL.RealtimeStep2[4].ToArray();
-            _uiObject.DataRealSideLDiffLoad = dataL.RealtimeStep2[5].ToArray();
-
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.SetModelName(mod)));
+            }
         }
-    }
-    public void uiUPdateRealMasterActiveTable(DATAMODEL_MASTER dataM) //invoked when select model
-    {
-        if (_uiObject.InvokeRequired)
+        public void uiUPdateRealDataTable(DATAMODEL_RL dataR, DATAMODEL_RL dataL) //invoked when realtime update
         {
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRMaster = dataM.RMasteringStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRLower = dataM.RMasteringStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRUpper = dataM.RMasteringStep2[3].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRMaster = dataM.RMasteringStep2[5].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRLower = dataM.RMasteringStep2[6].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRUpper = dataM.RMasteringStep2[7].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffMaster = dataM.RMasteringStep2[9].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffLower = dataM.RMasteringStep2[10].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffUpper = dataM.RMasteringStep2[11].ToArray()));
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRStroke = dataR.RealtimeStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRLoad = dataR.RealtimeStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRStroke = dataR.RealtimeStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRLoad = dataR.RealtimeStep2[3].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffStroke = dataR.RealtimeStep2[4].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffLoad = dataR.RealtimeStep2[5].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLMaster = dataM.LMasteringStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLLower = dataM.LMasteringStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLUpper = dataM.LMasteringStep2[3].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLMaster = dataM.LMasteringStep2[5].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLLower = dataM.LMasteringStep2[6].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLUpper = dataM.LMasteringStep2[7].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffMaster = dataM.LMasteringStep2[9].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffLower = dataM.LMasteringStep2[10].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffUpper = dataM.LMasteringStep2[11].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLStroke = dataL.RealtimeStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLLoad = dataL.RealtimeStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLStroke = dataL.RealtimeStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLLoad = dataL.RealtimeStep2[3].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffStroke = dataL.RealtimeStep2[4].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffLoad = dataL.RealtimeStep2[5].ToArray()));
+            }
+            else
+            {
+                _uiObject.DataRealCompSideRStroke = dataR.RealtimeStep2[0].ToArray();
+                _uiObject.DataRealCompSideRLoad = dataR.RealtimeStep2[1].ToArray();
+                _uiObject.DataRealExtnSideRStroke = dataR.RealtimeStep2[2].ToArray();
+                _uiObject.DataRealExtnSideRLoad = dataR.RealtimeStep2[3].ToArray();
+                _uiObject.DataRealSideRDiffStroke = dataR.RealtimeStep2[4].ToArray();
+                _uiObject.DataRealSideRDiffLoad = dataR.RealtimeStep2[5].ToArray();
+
+                _uiObject.DataRealCompSideLStroke = dataL.RealtimeStep2[0].ToArray();
+                _uiObject.DataRealCompSideLLoad = dataL.RealtimeStep2[1].ToArray();
+                _uiObject.DataRealExtnSideLStroke = dataL.RealtimeStep2[2].ToArray();
+                _uiObject.DataRealExtnSideLLoad = dataL.RealtimeStep2[3].ToArray();
+                _uiObject.DataRealSideLDiffStroke = dataL.RealtimeStep2[4].ToArray();
+                _uiObject.DataRealSideLDiffLoad = dataL.RealtimeStep2[5].ToArray();
+
+            }
         }
-        else
+        public void uiUPdateRealMasterActiveTable(DATAMODEL_MASTER dataM) //invoked when select model
         {
-            _uiObject.DataRealCompSideRMaster = dataM.RMasteringStep2[1].ToArray();
-            _uiObject.DataRealCompSideRLower = dataM.RMasteringStep2[2].ToArray();
-            _uiObject.DataRealCompSideRUpper = dataM.RMasteringStep2[3].ToArray();
-            _uiObject.DataRealExtnSideRMaster = dataM.RMasteringStep2[5].ToArray();
-            _uiObject.DataRealExtnSideRLower = dataM.RMasteringStep2[6].ToArray();
-            _uiObject.DataRealExtnSideRUpper = dataM.RMasteringStep2[7].ToArray();
-            _uiObject.DataRealSideRDiffMaster = dataM.RMasteringStep2[9].ToArray();
-            _uiObject.DataRealSideRDiffLower = dataM.RMasteringStep2[10].ToArray();
-            _uiObject.DataRealSideRDiffUpper = dataM.RMasteringStep2[11].ToArray();
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRMaster = dataM.RMasteringStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRLower = dataM.RMasteringStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideRUpper = dataM.RMasteringStep2[3].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRMaster = dataM.RMasteringStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRLower = dataM.RMasteringStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideRUpper = dataM.RMasteringStep2[7].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffMaster = dataM.RMasteringStep2[9].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffLower = dataM.RMasteringStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideRDiffUpper = dataM.RMasteringStep2[11].ToArray()));
 
-            _uiObject.DataRealCompSideLMaster = dataM.LMasteringStep2[1].ToArray();
-            _uiObject.DataRealCompSideLLower = dataM.LMasteringStep2[2].ToArray();
-            _uiObject.DataRealCompSideLUpper = dataM.LMasteringStep2[3].ToArray();
-            _uiObject.DataRealExtnSideLMaster = dataM.LMasteringStep2[5].ToArray();
-            _uiObject.DataRealExtnSideLLower = dataM.LMasteringStep2[6].ToArray();
-            _uiObject.DataRealExtnSideLUpper = dataM.LMasteringStep2[7].ToArray();
-            _uiObject.DataRealSideLDiffMaster = dataM.LMasteringStep2[9].ToArray();
-            _uiObject.DataRealSideLDiffLower = dataM.LMasteringStep2[10].ToArray();
-            _uiObject.DataRealSideLDiffUpper = dataM.LMasteringStep2[11].ToArray();
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLMaster = dataM.LMasteringStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLLower = dataM.LMasteringStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealCompSideLUpper = dataM.LMasteringStep2[3].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLMaster = dataM.LMasteringStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLLower = dataM.LMasteringStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealExtnSideLUpper = dataM.LMasteringStep2[7].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffMaster = dataM.LMasteringStep2[9].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffLower = dataM.LMasteringStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataRealSideLDiffUpper = dataM.LMasteringStep2[11].ToArray()));
+            }
+            else
+            {
+                _uiObject.DataRealCompSideRMaster = dataM.RMasteringStep2[1].ToArray();
+                _uiObject.DataRealCompSideRLower = dataM.RMasteringStep2[2].ToArray();
+                _uiObject.DataRealCompSideRUpper = dataM.RMasteringStep2[3].ToArray();
+                _uiObject.DataRealExtnSideRMaster = dataM.RMasteringStep2[5].ToArray();
+                _uiObject.DataRealExtnSideRLower = dataM.RMasteringStep2[6].ToArray();
+                _uiObject.DataRealExtnSideRUpper = dataM.RMasteringStep2[7].ToArray();
+                _uiObject.DataRealSideRDiffMaster = dataM.RMasteringStep2[9].ToArray();
+                _uiObject.DataRealSideRDiffLower = dataM.RMasteringStep2[10].ToArray();
+                _uiObject.DataRealSideRDiffUpper = dataM.RMasteringStep2[11].ToArray();
+
+                _uiObject.DataRealCompSideLMaster = dataM.LMasteringStep2[1].ToArray();
+                _uiObject.DataRealCompSideLLower = dataM.LMasteringStep2[2].ToArray();
+                _uiObject.DataRealCompSideLUpper = dataM.LMasteringStep2[3].ToArray();
+                _uiObject.DataRealExtnSideLMaster = dataM.LMasteringStep2[5].ToArray();
+                _uiObject.DataRealExtnSideLLower = dataM.LMasteringStep2[6].ToArray();
+                _uiObject.DataRealExtnSideLUpper = dataM.LMasteringStep2[7].ToArray();
+                _uiObject.DataRealSideLDiffMaster = dataM.LMasteringStep2[9].ToArray();
+                _uiObject.DataRealSideLDiffLower = dataM.LMasteringStep2[10].ToArray();
+                _uiObject.DataRealSideLDiffUpper = dataM.LMasteringStep2[11].ToArray();
+            }
         }
-    }
 
-    public void uiUpdateMasterFetchTeachTable() //invoked when teaching mode
-    {
-        if (_uiObject.InvokeRequired)
+        public void uiUpdateMasterFetchTeachTable() //invoked when teaching mode
         {
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLStroke = _masterData.LMasteringStep2[0].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLMaster = _masterData.LMasteringStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLLower = _masterData.LMasteringStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLUpper = _masterData.LMasteringStep2[3].ToArray()));
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLStroke = _masterData.LMasteringStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLMaster = _masterData.LMasteringStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLLower = _masterData.LMasteringStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLUpper = _masterData.LMasteringStep2[3].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLStroke = _masterData.LMasteringStep2[4].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLMaster = _masterData.LMasteringStep2[5].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLLower = _masterData.LMasteringStep2[6].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLUpper = _masterData.LMasteringStep2[7].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLStroke = _masterData.LMasteringStep2[4].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLMaster = _masterData.LMasteringStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLLower = _masterData.LMasteringStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLUpper = _masterData.LMasteringStep2[7].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffStroke = _masterData.LMasteringStep2[8].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffMaster = _masterData.LMasteringStep2[9].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffLower = _masterData.LMasteringStep2[10].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffUpper = _masterData.LMasteringStep2[11].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffStroke = _masterData.LMasteringStep2[8].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffMaster = _masterData.LMasteringStep2[9].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffLower = _masterData.LMasteringStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffUpper = _masterData.LMasteringStep2[11].ToArray()));
 
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRStroke = _masterData.RMasteringStep2[0].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRMaster = _masterData.RMasteringStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRLower = _masterData.RMasteringStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRUpper = _masterData.RMasteringStep2[3].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRStroke = _masterData.RMasteringStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRMaster = _masterData.RMasteringStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRLower = _masterData.RMasteringStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRUpper = _masterData.RMasteringStep2[3].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRStroke = _masterData.RMasteringStep2[4].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRMaster = _masterData.RMasteringStep2[5].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRLower = _masterData.RMasteringStep2[6].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRUpper = _masterData.RMasteringStep2[7].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRStroke = _masterData.RMasteringStep2[4].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRMaster = _masterData.RMasteringStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRLower = _masterData.RMasteringStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRUpper = _masterData.RMasteringStep2[7].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffStroke = _masterData.RMasteringStep2[8].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffMaster = _masterData.RMasteringStep2[9].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffLower = _masterData.RMasteringStep2[10].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffUpper = _masterData.RMasteringStep2[11].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffStroke = _masterData.RMasteringStep2[8].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffMaster = _masterData.RMasteringStep2[9].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffLower = _masterData.RMasteringStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffUpper = _masterData.RMasteringStep2[11].ToArray()));
+            }
         }
-    }
 
-    public void uiUpdateMasterLTeachTable() //invoked when teaching mode
-    {
-        if (_uiObject.InvokeRequired)
+        public void uiUpdateMasterLTeachTable() //invoked when teaching mode
         {
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLStroke = _TMaster.LMasteringTeachStep2[0].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLAccMaster = _TMaster.LMasteringTeachStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLMaster = _masterData.LMasteringStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLLower = _masterData.LMasteringStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLUpper = _masterData.LMasteringStep2[3].ToArray()));
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLStroke = _TMaster.LMasteringTeachStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLAccMaster = _TMaster.LMasteringTeachStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLMaster = _masterData.LMasteringStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLLower = _masterData.LMasteringStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideLUpper = _masterData.LMasteringStep2[3].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLStroke = _TMaster.LMasteringTeachStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLAccMaster = _TMaster.LMasteringTeachStep2[3].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLMaster = _masterData.LMasteringStep2[5].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLLower = _masterData.LMasteringStep2[6].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLUpper = _masterData.LMasteringStep2[7].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLStroke = _TMaster.LMasteringTeachStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLAccMaster = _TMaster.LMasteringTeachStep2[3].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLMaster = _masterData.LMasteringStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLLower = _masterData.LMasteringStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideLUpper = _masterData.LMasteringStep2[7].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffStroke = _TMaster.LMasteringTeachStep2[4].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffAccMaster = _TMaster.LMasteringTeachStep2[5].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffMaster = _masterData.LMasteringStep2[9].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffLower = _masterData.LMasteringStep2[10].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffUpper = _masterData.LMasteringStep2[11].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffStroke = _TMaster.LMasteringTeachStep2[4].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffAccMaster = _TMaster.LMasteringTeachStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffMaster = _masterData.LMasteringStep2[9].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffLower = _masterData.LMasteringStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideLDiffUpper = _masterData.LMasteringStep2[11].ToArray()));
+            }
         }
-    }
-    public void uiUpdateMasterRTeachTable() //invoked when teaching mode
-    {
-        if (_uiObject.InvokeRequired)
+        public void uiUpdateMasterRTeachTable() //invoked when teaching mode
         {
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRStroke = _TMaster.RMasteringTeachStep2[0].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRAccMaster = _TMaster.RMasteringTeachStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRMaster = _masterData.RMasteringStep2[1].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRLower = _masterData.RMasteringStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRUpper = _masterData.RMasteringStep2[3].ToArray()));
+            if (_uiObject.InvokeRequired)
+            {
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRStroke = _TMaster.RMasteringTeachStep2[0].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRAccMaster = _TMaster.RMasteringTeachStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRMaster = _masterData.RMasteringStep2[1].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRLower = _masterData.RMasteringStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterCompSideRUpper = _masterData.RMasteringStep2[3].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRStroke = _TMaster.RMasteringTeachStep2[2].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRAccMaster = _TMaster.RMasteringTeachStep2[3].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRMaster = _masterData.RMasteringStep2[5].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRLower = _masterData.RMasteringStep2[6].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRUpper = _masterData.RMasteringStep2[7].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRStroke = _TMaster.RMasteringTeachStep2[2].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRAccMaster = _TMaster.RMasteringTeachStep2[3].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRMaster = _masterData.RMasteringStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRLower = _masterData.RMasteringStep2[6].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterExtnSideRUpper = _masterData.RMasteringStep2[7].ToArray()));
 
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffStroke = _TMaster.RMasteringTeachStep2[4].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffAccMaster = _TMaster.RMasteringTeachStep2[5].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffMaster = _masterData.RMasteringStep2[9].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffLower = _masterData.RMasteringStep2[10].ToArray()));
-            _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffUpper = _masterData.RMasteringStep2[11].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffStroke = _TMaster.RMasteringTeachStep2[4].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffAccMaster = _TMaster.RMasteringTeachStep2[5].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffMaster = _masterData.RMasteringStep2[9].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffLower = _masterData.RMasteringStep2[10].ToArray()));
+                _uiObject.BeginInvoke(new MethodInvoker(() => _uiObject.DataMasterSideRDiffUpper = _masterData.RMasteringStep2[11].ToArray()));
+            }
         }
-    }
-    public void workUpdateMasterData()
-    {
-        _masterData.LMasteringStep2[0] = _uiObject.DataMasterCompSideLStroke.ToList(item => item);
-        _masterData.LMasteringStep2[1] = _uiObject.DataMasterCompSideLMaster.ToList(item => item);
-        _masterData.LMasteringStep2[2] = _uiObject.DataMasterCompSideLLower.ToList(item => item);
-        _masterData.LMasteringStep2[3] = _uiObject.DataMasterCompSideLUpper.ToList(item => item);
-        _masterData.LMasteringStep2[4] = _uiObject.DataMasterExtnSideLStroke.ToList(item => item);
-        _masterData.LMasteringStep2[5] = _uiObject.DataMasterExtnSideLMaster.ToList(item => item);
-        _masterData.LMasteringStep2[6] = _uiObject.DataMasterExtnSideLLower.ToList(item => item);
-        _masterData.LMasteringStep2[7] = _uiObject.DataMasterExtnSideLUpper.ToList(item => item);
-        _masterData.LMasteringStep2[8] = _uiObject.DataMasterSideLDiffStroke.ToList(item => item);
-        _masterData.LMasteringStep2[9] = _uiObject.DataMasterSideLDiffMaster.ToList(item => item);
-        _masterData.LMasteringStep2[10] = _uiObject.DataMasterSideLDiffLower.ToList(item => item);
-        _masterData.LMasteringStep2[11] = _uiObject.DataMasterSideLDiffUpper.ToList(item => item);
+        public void workUpdateMasterData()
+        {
+            _masterData.LMasteringStep2[0] = _uiObject.DataMasterCompSideLStroke.ToList(item => item);
+            _masterData.LMasteringStep2[1] = _uiObject.DataMasterCompSideLMaster.ToList(item => item);
+            _masterData.LMasteringStep2[2] = _uiObject.DataMasterCompSideLLower.ToList(item => item);
+            _masterData.LMasteringStep2[3] = _uiObject.DataMasterCompSideLUpper.ToList(item => item);
+            _masterData.LMasteringStep2[4] = _uiObject.DataMasterExtnSideLStroke.ToList(item => item);
+            _masterData.LMasteringStep2[5] = _uiObject.DataMasterExtnSideLMaster.ToList(item => item);
+            _masterData.LMasteringStep2[6] = _uiObject.DataMasterExtnSideLLower.ToList(item => item);
+            _masterData.LMasteringStep2[7] = _uiObject.DataMasterExtnSideLUpper.ToList(item => item);
+            _masterData.LMasteringStep2[8] = _uiObject.DataMasterSideLDiffStroke.ToList(item => item);
+            _masterData.LMasteringStep2[9] = _uiObject.DataMasterSideLDiffMaster.ToList(item => item);
+            _masterData.LMasteringStep2[10] = _uiObject.DataMasterSideLDiffLower.ToList(item => item);
+            _masterData.LMasteringStep2[11] = _uiObject.DataMasterSideLDiffUpper.ToList(item => item);
 
-        _masterData.RMasteringStep2[0] = _uiObject.DataMasterCompSideRStroke.ToList(item => item);
-        _masterData.RMasteringStep2[1] = _uiObject.DataMasterCompSideRMaster.ToList(item => item);
-        _masterData.RMasteringStep2[2] = _uiObject.DataMasterCompSideRLower.ToList(item => item);
-        _masterData.RMasteringStep2[3] = _uiObject.DataMasterCompSideRUpper.ToList(item => item);
-        _masterData.RMasteringStep2[4] = _uiObject.DataMasterExtnSideRStroke.ToList(item => item);
-        _masterData.RMasteringStep2[5] = _uiObject.DataMasterExtnSideRMaster.ToList(item => item);
-        _masterData.RMasteringStep2[6] = _uiObject.DataMasterExtnSideRLower.ToList(item => item);
-        _masterData.RMasteringStep2[7] = _uiObject.DataMasterExtnSideRUpper.ToList(item => item);
-        _masterData.RMasteringStep2[8] = _uiObject.DataMasterSideRDiffStroke.ToList(item => item);
-        _masterData.RMasteringStep2[9] = _uiObject.DataMasterSideRDiffMaster.ToList(item => item);
-        _masterData.RMasteringStep2[10] = _uiObject.DataMasterSideRDiffLower.ToList(item => item);
-        _masterData.RMasteringStep2[11] = _uiObject.DataMasterSideRDiffUpper.ToList(item => item);
-    }
-    public void workUpdateMasterDatabase()
-    {
-        _excelStoreMasterGraphData(ref _masterData, ref MasterFileActive);
-        _excelPrintMasterData(ref _masterData, ref MasterFileActive);
-        MasterDataAssignRealPlot();
-        MasterDataAssignLMasterPlot();
-        MasterDataAssignRMasterPlot();
-        if (isnotNull(_masterData.RMasteringStep2) & isnotNull(_masterData.LMasteringStep2))
-        {
-            uiPlotRealMasterUpdate();
-            uiPlotLTeachMasterUpdate();
-            uiPlotRTeachMasterUpdate();
+            _masterData.RMasteringStep2[0] = _uiObject.DataMasterCompSideRStroke.ToList(item => item);
+            _masterData.RMasteringStep2[1] = _uiObject.DataMasterCompSideRMaster.ToList(item => item);
+            _masterData.RMasteringStep2[2] = _uiObject.DataMasterCompSideRLower.ToList(item => item);
+            _masterData.RMasteringStep2[3] = _uiObject.DataMasterCompSideRUpper.ToList(item => item);
+            _masterData.RMasteringStep2[4] = _uiObject.DataMasterExtnSideRStroke.ToList(item => item);
+            _masterData.RMasteringStep2[5] = _uiObject.DataMasterExtnSideRMaster.ToList(item => item);
+            _masterData.RMasteringStep2[6] = _uiObject.DataMasterExtnSideRLower.ToList(item => item);
+            _masterData.RMasteringStep2[7] = _uiObject.DataMasterExtnSideRUpper.ToList(item => item);
+            _masterData.RMasteringStep2[8] = _uiObject.DataMasterSideRDiffStroke.ToList(item => item);
+            _masterData.RMasteringStep2[9] = _uiObject.DataMasterSideRDiffMaster.ToList(item => item);
+            _masterData.RMasteringStep2[10] = _uiObject.DataMasterSideRDiffLower.ToList(item => item);
+            _masterData.RMasteringStep2[11] = _uiObject.DataMasterSideRDiffUpper.ToList(item => item);
         }
-        MasterUpdatingDatabaseReset();
-    }
-    public void workMasterValidation()
-    {
-        if (!MasterDataValidation())
+        public void workUpdateMasterDatabase()
         {
-            _eeipTrigMasterFetch(_masterData._activeModelName, ref MasterFileActive, ref _masterData);
-            _eeipTrigMasterFetchModel(ref _masterData);
-            _eeipTrigMasterFetchGraph(ref _masterData);
+            _excelStoreMasterGraphData(ref _masterData, ref MasterFileActive);
+            _excelPrintMasterData(ref _masterData, ref MasterFileActive);
             MasterDataAssignRealPlot();
             MasterDataAssignLMasterPlot();
             MasterDataAssignRMasterPlot();
@@ -5721,146 +5704,400 @@ namespace WORKFLOW
                 uiPlotLTeachMasterUpdate();
                 uiPlotRTeachMasterUpdate();
             }
-            uiUPdateRealMasterActiveTable(_masterData);
-            MasterDataValidationSet();
+            MasterUpdatingDatabaseReset();
         }
-    }
-
-    public void uiReloadRealtimeData()
-    {
-        if (MasterDataValidation())
+        public void workMasterValidation()
         {
-            MasterDataAssignRealPlot();
-            uiPlotRealMasterUpdate();
-            uiUPdateRealMasterActiveTable(_masterData);
-            if (RealPresentConfirm())
+            if (!MasterDataValidation())
             {
-                _backgroundDataPlot1Read();
-                _uiPlot1Update();
-                _backgroundDataPlot2Read();
-                _uiPlot2Update();
-                _backgroundDataPlot3Read();
-                _uiPlot3Update();
-                _backgroundDataPlot4Read();
-                _uiPlot4Update();
-                _backgroundDataPlot9Read();
-                _uiPlot9Update();
-                _backgroundDataPlot10Read();
-                _uiPlot10Update();
-                uiUPdateRealDataTable(_Rdata, _Ldata);
+                _eeipTrigMasterFetch(_masterData._activeModelName, ref MasterFileActive, ref _masterData);
+                _eeipTrigMasterFetchModel(ref _masterData);
+                _eeipTrigMasterFetchGraph(ref _masterData);
+                MasterDataAssignRealPlot();
+                MasterDataAssignLMasterPlot();
+                MasterDataAssignRMasterPlot();
+                if (isnotNull(_masterData.RMasteringStep2) & isnotNull(_masterData.LMasteringStep2))
+                {
+                    uiPlotRealMasterUpdate();
+                    uiPlotLTeachMasterUpdate();
+                    uiPlotRTeachMasterUpdate();
+                }
+                uiUPdateRealMasterActiveTable(_masterData);
+                MasterDataValidationSet();
             }
         }
-    }
 
-    public void uiReloadTeachingData()
-    {
-        if (DataLMasterTeachIsExist())
+        public void uiReloadRealtimeData()
         {
-            _DataPlot5Read();
-            _uiPlot5MasterUpdate();
-            _DataPlot6Read();
-            _uiPlot6MasterUpdate();
-            _DataPlot11Read();
-            _uiPlot11MasterUpdate();
+            if (MasterDataValidation())
+            {
+                MasterDataAssignRealPlot();
+                uiPlotRealMasterUpdate();
+                uiUPdateRealMasterActiveTable(_masterData);
+                if (RealPresentConfirm())
+                {
+                    _backgroundDataPlot1Read();
+                    _uiPlot1Update();
+                    _backgroundDataPlot2Read();
+                    _uiPlot2Update();
+                    _backgroundDataPlot3Read();
+                    _uiPlot3Update();
+                    _backgroundDataPlot4Read();
+                    _uiPlot4Update();
+                    _backgroundDataPlot9Read();
+                    _uiPlot9Update();
+                    _backgroundDataPlot10Read();
+                    _uiPlot10Update();
+                    uiUPdateRealDataTable(_Rdata, _Ldata);
+                }
+            }
         }
-        if (DataRMasterTeachIsExist())
+
+        public void uiReloadTeachingData()
         {
-            _DataPlot7Read();
-            _uiPlot7MasterUpdate();
-            _DataPlot8Read();
-            _uiPlot8MasterUpdate();
-            _DataPlot12Read();
-            _uiPlot12MasterUpdate();
+            if (DataLMasterTeachIsExist())
+            {
+                _DataPlot5Read();
+                _uiPlot5MasterUpdate();
+                _DataPlot6Read();
+                _uiPlot6MasterUpdate();
+                _DataPlot11Read();
+                _uiPlot11MasterUpdate();
+            }
+            if (DataRMasterTeachIsExist())
+            {
+                _DataPlot7Read();
+                _uiPlot7MasterUpdate();
+                _DataPlot8Read();
+                _uiPlot8MasterUpdate();
+                _DataPlot12Read();
+                _uiPlot12MasterUpdate();
+            }
+
+            MasterDataAssignLMasterPlot();
+            MasterDataAssignRMasterPlot();
+
+            uiPlotLTeachMasterUpdate();
+            uiPlotRTeachMasterUpdate();
+
+            //uiUpdateMasterLTeachTable();
+            //uiUpdateMasterRTeachTable();
         }
-
-        MasterDataAssignLMasterPlot();
-        MasterDataAssignRMasterPlot();
-
-        uiPlotLTeachMasterUpdate();
-        uiPlotRTeachMasterUpdate();
-
-        //uiUpdateMasterLTeachTable();
-        //uiUpdateMasterRTeachTable();
     }
-}
-
-
-public static class ArrayExtensions
-{
-    // Extension method to support lambda with index
-    public static void ForEach<T>(this T[] array, Action<T, int> action)
+    public static class ArrayExtensions
     {
-        for (int i = 0; i < array.Length; i++)
+        // Extension method to support lambda with index
+        public static void ForEach<T>(this T[] array, Action<T, int> action)
         {
-            action(array[i], i);
+            for (int i = 0; i < array.Length; i++)
+            {
+                action(array[i], i);
+            }
+        }
+
+        // Extension method to convert array to list using a lambda expression
+        public static List<T> ToList<T>(this T[] array, Func<T, T> converter)
+        {
+            List<T> list = new List<T>(array.Length);
+            array.ForEach((item, index) => list.Add(converter(item)));
+            return list;
         }
     }
-
-    // Extension method to convert array to list using a lambda expression
-    public static List<T> ToList<T>(this T[] array, Func<T, T> converter)
+    public class DATAMODEL_COMMON
     {
-        List<T> list = new List<T>(array.Length);
-        array.ForEach((item, index) => list.Add(converter(item)));
-        return list;
+        public string _activeModelName;
+        public string _activeKayabaNumber;
+        public string _activeDay;
+        public string _activeMonth;
+        public string _activeYear;
+        public string _activeHour;
+        public string _activeMinute;
+        public string _activeSecond;
+
+        public float _MaxLoadLimit;
+        public float _ProdLen;
+
+        public int _step1Enable;
+        public float _step1Stroke;
+        public float _step1CompresSpeed;
+        public float _step1ExtendSpeed;
+        public int _step1CycleCount;
+        public float _step1MaxLoad;
+
+        public int _step2Enable;
+        public float _step2CompresSpeed;
+        public float _step2CompressJudgeMin;
+        public float _step2CompressJudgeMax;
+        public float _step2CompressLoadRef;
+        public float _step2ExtendSpeed;
+        public float _step2ExtendJudgeMin;
+        public float _step2ExtendJudgeMax;
+        public float _step2ExtendLoadRef;
+        public int _step2LoadRefTolerance;
+
+        public float _step2DiffPosMin;
+        public float _step2DiffPosMax;
+
+        public int _step3Enable;
+        public float _step3CompresSpeed;
+        public float _step3CompressJudgeMin;
+        public float _step3CompressJudgeMax;
+        public float _step3CompressLoadRef;
+        public float _step3ExtendSpeed;
+        public float _step3ExtendJudgeMin;
+        public float _step3ExtendJudgeMax;
+        public float _step3ExtendLoadRef;
+        public int _step3LoadRefTolerance;
+
+        public float _step3DiffPosMin;
+        public float _step3DiffPosMax;
+
+        public List<string> DTM;
+        public List<object> Step1Param;
+        public List<object> Step2345Param;
+        public List<object> DiffParam;
+
+        public DATAMODEL_COMMON()
+        {
+            DTM = new List<String>()
+                    {
+                        _activeDay,
+                        _activeMonth,
+                        _activeYear,
+                        _activeHour,
+                        _activeMinute,
+                        _activeSecond
+                    };
+
+            Step1Param = new List<object>()
+                    {
+                        _step1Enable,
+                        _step1Stroke,
+                        _step1CompresSpeed,
+                        _step1ExtendSpeed,
+                        _step1CycleCount,
+                        _step1MaxLoad
+                    };
+
+            Step2345Param = new List<object>()
+                    {
+                        _step2Enable,
+                        _step2CompresSpeed,
+                        _step2CompressJudgeMin,
+                        _step2CompressJudgeMax,
+                        _step2CompressLoadRef,
+                        _step2ExtendSpeed,
+                        _step2ExtendJudgeMin,
+                        _step2ExtendJudgeMax,
+                        _step2ExtendLoadRef,
+                        _step2LoadRefTolerance,
+                        _step3Enable,
+                        _step3CompresSpeed,
+                        _step3CompressJudgeMin,
+                        _step3CompressJudgeMax,
+                        _step3CompressLoadRef,
+                        _step3ExtendSpeed,
+                        _step3ExtendJudgeMin,
+                        _step3ExtendJudgeMax,
+                        _step3ExtendLoadRef,
+                        _step3LoadRefTolerance
+                    };
+
+            DiffParam = new List<object>()
+                {
+                    _step2DiffPosMin,
+                    _step2DiffPosMax,
+                    _step3DiffPosMin,
+                    _step3DiffPosMax
+                };
+
+        }
     }
-}
-public class DATAMODEL_COMMON
-{
-    public string _activeModelName;
-    public string _activeKayabaNumber;
-    public string _activeDay;
-    public string _activeMonth;
-    public string _activeYear;
-    public string _activeHour;
-    public string _activeMinute;
-    public string _activeSecond;
-
-    public float _MaxLoadLimit;
-    public float _ProdLen;
-
-    public int _step1Enable;
-    public float _step1Stroke;
-    public float _step1CompresSpeed;
-    public float _step1ExtendSpeed;
-    public int _step1CycleCount;
-    public float _step1MaxLoad;
-
-    public int _step2Enable;
-    public float _step2CompresSpeed;
-    public float _step2CompressJudgeMin;
-    public float _step2CompressJudgeMax;
-    public float _step2CompressLoadRef;
-    public float _step2ExtendSpeed;
-    public float _step2ExtendJudgeMin;
-    public float _step2ExtendJudgeMax;
-    public float _step2ExtendLoadRef;
-    public int _step2LoadRefTolerance;
-
-    public float _step2DiffPosMin;
-    public float _step2DiffPosMax;
-
-    public int _step3Enable;
-    public float _step3CompresSpeed;
-    public float _step3CompressJudgeMin;
-    public float _step3CompressJudgeMax;
-    public float _step3CompressLoadRef;
-    public float _step3ExtendSpeed;
-    public float _step3ExtendJudgeMin;
-    public float _step3ExtendJudgeMax;
-    public float _step3ExtendLoadRef;
-    public int _step3LoadRefTolerance;
-
-    public float _step3DiffPosMin;
-    public float _step3DiffPosMax;
-
-    public List<string> DTM;
-    public List<object> Step1Param;
-    public List<object> Step2345Param;
-    public List<object> DiffParam;
-
-    public DATAMODEL_COMMON()
+    public class DATAMODEL_RL
     {
-        DTM = new List<String>()
+        public int _Step1MaxLoad_NG;
+        public int _Step2CompRef_NG;
+        public int _Step2ExtnRef_NG;
+        public int _Step2CompGraph_NG;
+        public int _Step2ExtnGraph_NG;
+        public int _Step2DiffGraph_NG;
+
+        public List<float> Judgement;
+        public List<List<float>> RealtimeStep2;
+        public List<List<float>> RealtimeStep3;
+        public List<List<float>> MasteringStep2;
+        public List<List<float>> MasteringStep3;
+
+        public float _MaxLoad;
+        public float _Step2CompLoadRef;
+        public float _Step2ExtnLoadRef;
+        public float _Step3CompLoadRef;
+        public float _Step3ExtnLoadRef;
+
+        List<float> _RealtimeStep2CompStroke;
+        List<float> _RealtimeStep2CompLoad;
+        List<float> _RealtimeStep2ExtnStroke;
+        List<float> _RealtimeStep2ExtnLoad;
+        List<float> _RealtimeStep2DiffStroke;
+        List<float> _RealtimeStep2DiffLoad;
+
+        List<float> _RealtimeStep3CompStroke;
+        List<float> _RealtimeStep3CompLoad;
+        List<float> _RealtimeStep3ExtnStroke;
+        List<float> _RealtimeStep3ExtnLoad;
+        List<float> _RealtimeStep3DiffStroke;
+        List<float> _RealtimeStep3DiffLoad;
+
+        public DATAMODEL_RL()
+        {
+            Judgement = new List<float>()
+                {
+                    _MaxLoad,
+                    _Step2CompLoadRef,
+                    _Step2ExtnLoadRef,
+                    _Step3CompLoadRef,
+                    _Step3ExtnLoadRef
+                };
+
+            RealtimeStep2 = new List<List<float>>()
+                {
+                    _RealtimeStep2CompStroke,
+                    _RealtimeStep2CompLoad,
+                    _RealtimeStep2ExtnStroke,
+                    _RealtimeStep2ExtnLoad,
+                    _RealtimeStep2DiffStroke,
+                    _RealtimeStep2DiffLoad
+                };
+
+            RealtimeStep3 = new List<List<float>>()
+                {
+                    _RealtimeStep3CompStroke,
+                    _RealtimeStep3CompLoad,
+                    _RealtimeStep3ExtnStroke,
+                    _RealtimeStep3ExtnLoad,
+                    _RealtimeStep3DiffStroke,
+                    _RealtimeStep3DiffLoad
+                };
+        }
+    }
+    public class DATAMODEL_MASTER
+    {
+        public int _Validation;
+
+        public string _activeModelName;
+        public string _activeKayabaNumber;
+        public string _activeDay;
+        public string _activeMonth;
+        public string _activeYear;
+        public string _activeHour;
+        public string _activeMinute;
+        public string _activeSecond;
+
+        public float _MaxLoadLimit;
+        public float _ProdLen;
+
+        public int _step1Enable;
+        public float _step1Stroke;
+        public float _step1CompresSpeed;
+        public float _step1ExtendSpeed;
+        public int _step1CycleCount;
+        public float _step1MaxLoad;
+
+        public int _step2Enable;
+        public float _step2CompresSpeed;
+        public float _step2CompressJudgeMin;
+        public float _step2CompressJudgeMax;
+        public float _step2CompressLoadRef;
+        public float _step2ExtendSpeed;
+        public float _step2ExtendJudgeMin;
+        public float _step2ExtendJudgeMax;
+        public float _step2ExtendLoadRef;
+        public int _step2LoadRefTolerance;
+
+        public float _step2DiffPosMin;
+        public float _step2DiffPosMax;
+
+        public int _step3Enable;
+        public float _step3CompresSpeed;
+        public float _step3CompressJudgeMin;
+        public float _step3CompressJudgeMax;
+        public float _step3CompressLoadRef;
+        public float _step3ExtendSpeed;
+        public float _step3ExtendJudgeMin;
+        public float _step3ExtendJudgeMax;
+        public float _step3ExtendLoadRef;
+        public int _step3LoadRefTolerance;
+
+        public float _step3DiffPosMin;
+        public float _step3DiffPosMax;
+
+        public List<string> DTM;
+        public List<object> Step1Param;
+        public List<object> Step2345Param;
+        public List<object> DiffParam;
+
+        public List<List<float>> RMasteringStep2;
+        public List<List<float>> RMasteringStep3;
+
+        public List<List<float>> LMasteringStep2;
+        public List<List<float>> LMasteringStep3;
+
+        List<float> _RsideMasterStep2CompStroke;
+        List<float> _RsideMasterStep2CompLoad;
+        List<float> _RsideMasterStep2CompLoadLower;
+        List<float> _RsideMasterStep2CompLoadUpper;
+        List<float> _RsideMasterStep2ExtnStroke;
+        List<float> _RsideMasterStep2ExtnLoad;
+        List<float> _RsideMasterStep2ExtnLoadLower;
+        List<float> _RsideMasterStep2ExtnLoadUpper;
+        List<float> _RsideMasterStep2DiffStroke;
+        List<float> _RsideMasterStep2DiffLoad;
+        List<float> _RsideMasterStep2DiffLoadLower;
+        List<float> _RsideMasterStep2DiffLoadUpper;
+
+        List<float> _RsideMasterStep3CompStroke;
+        List<float> _RsideMasterStep3CompLoad;
+        List<float> _RsideMasterStep3CompLoadLower;
+        List<float> _RsideMasterStep3CompLoadUpper;
+        List<float> _RsideMasterStep3ExtnStroke;
+        List<float> _RsideMasterStep3ExtnLoad;
+        List<float> _RsideMasterStep3ExtnLoadLower;
+        List<float> _RsideMasterStep3ExtnLoadUpper;
+        List<float> _RsideMasterStep3DiffStroke;
+        List<float> _RsideMasterStep3DiffLoad;
+        List<float> _RsideMasterStep3DiffLoadLower;
+        List<float> _RsideMasterStep3DiffLoadUpper;
+
+        List<float> _LsideMasterStep2CompStroke;
+        List<float> _LsideMasterStep2CompLoad;
+        List<float> _LsideMasterStep2CompLoadLower;
+        List<float> _LsideMasterStep2CompLoadUpper;
+        List<float> _LsideMasterStep2ExtnStroke;
+        List<float> _LsideMasterStep2ExtnLoad;
+        List<float> _LsideMasterStep2ExtnLoadLower;
+        List<float> _LsideMasterStep2ExtnLoadUpper;
+        List<float> _LsideMasterStep2DiffStroke;
+        List<float> _LsideMasterStep2DiffLoad;
+        List<float> _LsideMasterStep2DiffLoadLower;
+        List<float> _LsideMasterStep2DiffLoadUpper;
+
+        List<float> _LsideMasterStep3CompStroke;
+        List<float> _LsideMasterStep3CompLoad;
+        List<float> _LsideMasterStep3CompLoadLower;
+        List<float> _LsideMasterStep3CompLoadUpper;
+        List<float> _LsideMasterStep3ExtnStroke;
+        List<float> _LsideMasterStep3ExtnLoad;
+        List<float> _LsideMasterStep3ExtnLoadLower;
+        List<float> _LsideMasterStep3ExtnLoadUpper;
+        List<float> _LsideMasterStep3DiffStroke;
+        List<float> _LsideMasterStep3DiffLoad;
+        List<float> _LsideMasterStep3DiffLoadLower;
+        List<float> _LsideMasterStep3DiffLoadUpper;
+
+        public DATAMODEL_MASTER()
+        {
+
+            DTM = new List<String>()
                 {
                     _activeDay,
                     _activeMonth,
@@ -5870,7 +6107,7 @@ public class DATAMODEL_COMMON
                     _activeSecond
                 };
 
-        Step1Param = new List<object>()
+            Step1Param = new List<object>()
                 {
                     _step1Enable,
                     _step1Stroke,
@@ -5880,7 +6117,7 @@ public class DATAMODEL_COMMON
                     _step1MaxLoad
                 };
 
-        Step2345Param = new List<object>()
+            Step2345Param = new List<object>()
                 {
                     _step2Enable,
                     _step2CompresSpeed,
@@ -5904,395 +6141,204 @@ public class DATAMODEL_COMMON
                     _step3LoadRefTolerance
                 };
 
-        DiffParam = new List<object>()
-            {
-                _step2DiffPosMin,
-                _step2DiffPosMax,
-                _step3DiffPosMin,
-                _step3DiffPosMax
-            };
+            DiffParam = new List<object>()
+                {
+                    _step2DiffPosMin,
+                    _step2DiffPosMax,
+                    _step3DiffPosMin,
+                    _step3DiffPosMax
+                };
 
+            RMasteringStep2 = new List<List<float>>()
+                {
+                    _RsideMasterStep2CompStroke,
+                    _RsideMasterStep2CompLoad,
+                    _RsideMasterStep2CompLoadLower,
+                    _RsideMasterStep2CompLoadUpper,
+                    _RsideMasterStep2ExtnStroke,
+                    _RsideMasterStep2ExtnLoad,
+                    _RsideMasterStep2ExtnLoadLower,
+                    _RsideMasterStep2ExtnLoadUpper,
+                    _RsideMasterStep2DiffStroke,
+                    _RsideMasterStep2DiffLoad,
+                    _RsideMasterStep2DiffLoadLower,
+                    _RsideMasterStep2DiffLoadUpper
+                };
+
+            RMasteringStep3 = new List<List<float>>()
+                {
+                    _RsideMasterStep3CompStroke,
+                    _RsideMasterStep3CompLoad,
+                    _RsideMasterStep3CompLoadLower,
+                    _RsideMasterStep3CompLoadUpper,
+                    _RsideMasterStep3ExtnStroke,
+                    _RsideMasterStep3ExtnLoad,
+                    _RsideMasterStep3ExtnLoadLower,
+                    _RsideMasterStep3ExtnLoadUpper,
+                    _RsideMasterStep3DiffStroke,
+                    _RsideMasterStep3DiffLoad,
+                    _RsideMasterStep3DiffLoadLower,
+                    _RsideMasterStep3DiffLoadUpper
+                };
+
+            LMasteringStep2 = new List<List<float>>()
+                {
+                    _LsideMasterStep2CompStroke,
+                    _LsideMasterStep2CompLoad,
+                    _LsideMasterStep2CompLoadLower,
+                    _LsideMasterStep2CompLoadUpper,
+                    _LsideMasterStep2ExtnStroke,
+                    _LsideMasterStep2ExtnLoad,
+                    _LsideMasterStep2ExtnLoadLower,
+                    _LsideMasterStep2ExtnLoadUpper,
+                    _LsideMasterStep2DiffStroke,
+                    _LsideMasterStep2DiffLoad,
+                    _LsideMasterStep2DiffLoadLower,
+                    _LsideMasterStep2DiffLoadUpper
+                };
+
+            LMasteringStep3 = new List<List<float>>()
+                {
+                    _LsideMasterStep3CompStroke,
+                    _LsideMasterStep3CompLoad,
+                    _LsideMasterStep3CompLoadLower,
+                    _LsideMasterStep3CompLoadUpper,
+                    _LsideMasterStep3ExtnStroke,
+                    _LsideMasterStep3ExtnLoad,
+                    _LsideMasterStep3ExtnLoadLower,
+                    _LsideMasterStep3ExtnLoadUpper,
+                    _LsideMasterStep3DiffStroke,
+                    _LsideMasterStep3DiffLoad,
+                    _LsideMasterStep3DiffLoadLower,
+                    _LsideMasterStep3DiffLoadUpper
+                };
+        }
     }
-}
-public class DATAMODEL_RL
-{
-    public int _Step1MaxLoad_NG;
-    public int _Step2CompRef_NG;
-    public int _Step2ExtnRef_NG;
-    public int _Step2CompGraph_NG;
-    public int _Step2ExtnGraph_NG;
-    public int _Step2DiffGraph_NG;
-
-    public List<float> Judgement;
-    public List<List<float>> RealtimeStep2;
-    public List<List<float>> RealtimeStep3;
-    public List<List<float>> MasteringStep2;
-    public List<List<float>> MasteringStep3;
-
-    public float _MaxLoad;
-    public float _Step2CompLoadRef;
-    public float _Step2ExtnLoadRef;
-    public float _Step3CompLoadRef;
-    public float _Step3ExtnLoadRef;
-
-    List<float> _RealtimeStep2CompStroke;
-    List<float> _RealtimeStep2CompLoad;
-    List<float> _RealtimeStep2ExtnStroke;
-    List<float> _RealtimeStep2ExtnLoad;
-    List<float> _RealtimeStep2DiffStroke;
-    List<float> _RealtimeStep2DiffLoad;
-
-    List<float> _RealtimeStep3CompStroke;
-    List<float> _RealtimeStep3CompLoad;
-    List<float> _RealtimeStep3ExtnStroke;
-    List<float> _RealtimeStep3ExtnLoad;
-    List<float> _RealtimeStep3DiffStroke;
-    List<float> _RealtimeStep3DiffLoad;
-
-    public DATAMODEL_RL()
+    public class DATAMODEL_TEACHING_MASTER
     {
-        Judgement = new List<float>()
-            {
-                _MaxLoad,
-                _Step2CompLoadRef,
-                _Step2ExtnLoadRef,
-                _Step3CompLoadRef,
-                _Step3ExtnLoadRef
-            };
+        public List<List<float>> RMasteringTeachStep2;
+        public List<List<float>> RMasteringTeachStep3;
 
-        RealtimeStep2 = new List<List<float>>()
-            {
-                _RealtimeStep2CompStroke,
-                _RealtimeStep2CompLoad,
-                _RealtimeStep2ExtnStroke,
-                _RealtimeStep2ExtnLoad,
-                _RealtimeStep2DiffStroke,
-                _RealtimeStep2DiffLoad
-            };
+        public List<List<float>> LMasteringTeachStep2;
+        public List<List<float>> LMasteringTeachStep3;
 
-        RealtimeStep3 = new List<List<float>>()
-            {
-                _RealtimeStep3CompStroke,
-                _RealtimeStep3CompLoad,
-                _RealtimeStep3ExtnStroke,
-                _RealtimeStep3ExtnLoad,
-                _RealtimeStep3DiffStroke,
-                _RealtimeStep3DiffLoad
-            };
+        List<float> _RsideMasterStep2CompStroke;
+        List<float> _RsideMasterStep2CompLoad;
+        List<float> _RsideMasterStep2ExtnStroke;
+        List<float> _RsideMasterStep2ExtnLoad;
+        List<float> _RsideMasterStep2DiffStroke;
+        List<float> _RsideMasterStep2DiffLoad;
+
+        List<float> _RsideMasterStep3CompStroke;
+        List<float> _RsideMasterStep3CompLoad;
+        List<float> _RsideMasterStep3ExtnStroke;
+        List<float> _RsideMasterStep3ExtnLoad;
+        List<float> _RsideMasterStep3DiffStroke;
+        List<float> _RsideMasterStep3DiffLoad;
+
+        List<float> _LsideMasterStep2CompStroke;
+        List<float> _LsideMasterStep2CompLoad;
+        List<float> _LsideMasterStep2ExtnStroke;
+        List<float> _LsideMasterStep2ExtnLoad;
+        List<float> _LsideMasterStep2DiffStroke;
+        List<float> _LsideMasterStep2DiffLoad;
+
+        List<float> _LsideMasterStep3CompStroke;
+        List<float> _LsideMasterStep3CompLoad;
+        List<float> _LsideMasterStep3ExtnStroke;
+        List<float> _LsideMasterStep3ExtnLoad;
+        List<float> _LsideMasterStep3DiffStroke;
+        List<float> _LsideMasterStep3DiffLoad;
+
+        public DATAMODEL_TEACHING_MASTER()
+        {
+
+            RMasteringTeachStep2 = new List<List<float>>()
+                {
+                    _RsideMasterStep2CompStroke,
+                    _RsideMasterStep2CompLoad,
+                    _RsideMasterStep2ExtnStroke,
+                    _RsideMasterStep2ExtnLoad,
+                    _RsideMasterStep2DiffStroke,
+                    _RsideMasterStep2DiffLoad
+                };
+
+            RMasteringTeachStep3 = new List<List<float>>()
+                {
+                    _RsideMasterStep3CompStroke,
+                    _RsideMasterStep3CompLoad,
+                    _RsideMasterStep3ExtnStroke,
+                    _RsideMasterStep3ExtnLoad,
+                    _RsideMasterStep3DiffStroke,
+                    _RsideMasterStep3DiffLoad
+                };
+
+            LMasteringTeachStep2 = new List<List<float>>()
+                {
+                    _LsideMasterStep2CompStroke,
+                    _LsideMasterStep2CompLoad,
+                    _LsideMasterStep2ExtnStroke,
+                    _LsideMasterStep2ExtnLoad,
+                    _LsideMasterStep2DiffStroke,
+                    _LsideMasterStep2DiffLoad
+                };
+
+            LMasteringTeachStep3 = new List<List<float>>()
+                {
+                    _LsideMasterStep3CompStroke,
+                    _LsideMasterStep3CompLoad,
+                    _LsideMasterStep3ExtnStroke,
+                    _LsideMasterStep3ExtnLoad,
+                    _LsideMasterStep3DiffStroke,
+                    _LsideMasterStep3DiffLoad
+                };
+        }
     }
-}
-public class DATAMODEL_MASTER
-{
-    public int _Validation;
-
-    public string _activeModelName;
-    public string _activeKayabaNumber;
-    public string _activeDay;
-    public string _activeMonth;
-    public string _activeYear;
-    public string _activeHour;
-    public string _activeMinute;
-    public string _activeSecond;
-
-    public float _MaxLoadLimit;
-    public float _ProdLen;
-
-    public int _step1Enable;
-    public float _step1Stroke;
-    public float _step1CompresSpeed;
-    public float _step1ExtendSpeed;
-    public int _step1CycleCount;
-    public float _step1MaxLoad;
-
-    public int _step2Enable;
-    public float _step2CompresSpeed;
-    public float _step2CompressJudgeMin;
-    public float _step2CompressJudgeMax;
-    public float _step2CompressLoadRef;
-    public float _step2ExtendSpeed;
-    public float _step2ExtendJudgeMin;
-    public float _step2ExtendJudgeMax;
-    public float _step2ExtendLoadRef;
-    public int _step2LoadRefTolerance;
-
-    public float _step2DiffPosMin;
-    public float _step2DiffPosMax;
-
-    public int _step3Enable;
-    public float _step3CompresSpeed;
-    public float _step3CompressJudgeMin;
-    public float _step3CompressJudgeMax;
-    public float _step3CompressLoadRef;
-    public float _step3ExtendSpeed;
-    public float _step3ExtendJudgeMin;
-    public float _step3ExtendJudgeMax;
-    public float _step3ExtendLoadRef;
-    public int _step3LoadRefTolerance;
-
-    public float _step3DiffPosMin;
-    public float _step3DiffPosMax;
-
-    public List<string> DTM;
-    public List<object> Step1Param;
-    public List<object> Step2345Param;
-    public List<object> DiffParam;
-
-    public List<List<float>> RMasteringStep2;
-    public List<List<float>> RMasteringStep3;
-
-    public List<List<float>> LMasteringStep2;
-    public List<List<float>> LMasteringStep3;
-
-    List<float> _RsideMasterStep2CompStroke;
-    List<float> _RsideMasterStep2CompLoad;
-    List<float> _RsideMasterStep2CompLoadLower;
-    List<float> _RsideMasterStep2CompLoadUpper;
-    List<float> _RsideMasterStep2ExtnStroke;
-    List<float> _RsideMasterStep2ExtnLoad;
-    List<float> _RsideMasterStep2ExtnLoadLower;
-    List<float> _RsideMasterStep2ExtnLoadUpper;
-    List<float> _RsideMasterStep2DiffStroke;
-    List<float> _RsideMasterStep2DiffLoad;
-    List<float> _RsideMasterStep2DiffLoadLower;
-    List<float> _RsideMasterStep2DiffLoadUpper;
-
-    List<float> _RsideMasterStep3CompStroke;
-    List<float> _RsideMasterStep3CompLoad;
-    List<float> _RsideMasterStep3CompLoadLower;
-    List<float> _RsideMasterStep3CompLoadUpper;
-    List<float> _RsideMasterStep3ExtnStroke;
-    List<float> _RsideMasterStep3ExtnLoad;
-    List<float> _RsideMasterStep3ExtnLoadLower;
-    List<float> _RsideMasterStep3ExtnLoadUpper;
-    List<float> _RsideMasterStep3DiffStroke;
-    List<float> _RsideMasterStep3DiffLoad;
-    List<float> _RsideMasterStep3DiffLoadLower;
-    List<float> _RsideMasterStep3DiffLoadUpper;
-
-    List<float> _LsideMasterStep2CompStroke;
-    List<float> _LsideMasterStep2CompLoad;
-    List<float> _LsideMasterStep2CompLoadLower;
-    List<float> _LsideMasterStep2CompLoadUpper;
-    List<float> _LsideMasterStep2ExtnStroke;
-    List<float> _LsideMasterStep2ExtnLoad;
-    List<float> _LsideMasterStep2ExtnLoadLower;
-    List<float> _LsideMasterStep2ExtnLoadUpper;
-    List<float> _LsideMasterStep2DiffStroke;
-    List<float> _LsideMasterStep2DiffLoad;
-    List<float> _LsideMasterStep2DiffLoadLower;
-    List<float> _LsideMasterStep2DiffLoadUpper;
-
-    List<float> _LsideMasterStep3CompStroke;
-    List<float> _LsideMasterStep3CompLoad;
-    List<float> _LsideMasterStep3CompLoadLower;
-    List<float> _LsideMasterStep3CompLoadUpper;
-    List<float> _LsideMasterStep3ExtnStroke;
-    List<float> _LsideMasterStep3ExtnLoad;
-    List<float> _LsideMasterStep3ExtnLoadLower;
-    List<float> _LsideMasterStep3ExtnLoadUpper;
-    List<float> _LsideMasterStep3DiffStroke;
-    List<float> _LsideMasterStep3DiffLoad;
-    List<float> _LsideMasterStep3DiffLoadLower;
-    List<float> _LsideMasterStep3DiffLoadUpper;
-
-    public DATAMODEL_MASTER()
+    public class DATAMODEL_RESULT
     {
+        public List<float> Values;
+        public float _MaxLoad;
+        public float _Step2CompRef;
+        public float _Step2CompRefMin;
+        public float _Step2CompRefMax;
+        public float _Step2ExtnRef;
+        public float _Step2ExtnRefMin;
+        public float _Step2ExtnRefMax;
+        public float _Step3CompRef;
+        public float _Step3CompRefMin;
+        public float _Step3CompRefMax;
+        public float _Step3ExtnRef;
+        public float _Step3ExtnRefMin;
+        public float _Step3ExtnRefMax;
 
-        DTM = new List<String>()
-            {
-                _activeDay,
-                _activeMonth,
-                _activeYear,
-                _activeHour,
-                _activeMinute,
-                _activeSecond
-            };
+        public DATAMODEL_RESULT()
+        {
+            Values = new List<float>()
+                {
+                    _MaxLoad,
+                    _Step2CompRef,
+                    _Step2CompRefMin,
+                    _Step2CompRefMax,
+                    _Step2ExtnRef,
+                    _Step2ExtnRefMin,
+                    _Step2ExtnRefMax,
+                    _Step3CompRef,
+                    _Step3CompRefMin,
+                    _Step3CompRefMax,
+                    _Step3ExtnRef,
+                    _Step3ExtnRefMin,
+                    _Step3ExtnRefMax
 
-        Step1Param = new List<object>()
-            {
-                _step1Enable,
-                _step1Stroke,
-                _step1CompresSpeed,
-                _step1ExtendSpeed,
-                _step1CycleCount,
-                _step1MaxLoad
-            };
+                };
+        }
 
-        Step2345Param = new List<object>()
-            {
-                _step2Enable,
-                _step2CompresSpeed,
-                _step2CompressJudgeMin,
-                _step2CompressJudgeMax,
-                _step2CompressLoadRef,
-                _step2ExtendSpeed,
-                _step2ExtendJudgeMin,
-                _step2ExtendJudgeMax,
-                _step2ExtendLoadRef,
-                _step2LoadRefTolerance,
-                _step3Enable,
-                _step3CompresSpeed,
-                _step3CompressJudgeMin,
-                _step3CompressJudgeMax,
-                _step3CompressLoadRef,
-                _step3ExtendSpeed,
-                _step3ExtendJudgeMin,
-                _step3ExtendJudgeMax,
-                _step3ExtendLoadRef,
-                _step3LoadRefTolerance
-            };
-
-        DiffParam = new List<object>()
-            {
-                _step2DiffPosMin,
-                _step2DiffPosMax,
-                _step3DiffPosMin,
-                _step3DiffPosMax
-            };
-
-        RMasteringStep2 = new List<List<float>>()
-            {
-                _RsideMasterStep2CompStroke,
-                _RsideMasterStep2CompLoad,
-                _RsideMasterStep2CompLoadLower,
-                _RsideMasterStep2CompLoadUpper,
-                _RsideMasterStep2ExtnStroke,
-                _RsideMasterStep2ExtnLoad,
-                _RsideMasterStep2ExtnLoadLower,
-                _RsideMasterStep2ExtnLoadUpper,
-                _RsideMasterStep2DiffStroke,
-                _RsideMasterStep2DiffLoad,
-                _RsideMasterStep2DiffLoadLower,
-                _RsideMasterStep2DiffLoadUpper
-            };
-
-        RMasteringStep3 = new List<List<float>>()
-            {
-                _RsideMasterStep3CompStroke,
-                _RsideMasterStep3CompLoad,
-                _RsideMasterStep3CompLoadLower,
-                _RsideMasterStep3CompLoadUpper,
-                _RsideMasterStep3ExtnStroke,
-                _RsideMasterStep3ExtnLoad,
-                _RsideMasterStep3ExtnLoadLower,
-                _RsideMasterStep3ExtnLoadUpper,
-                _RsideMasterStep3DiffStroke,
-                _RsideMasterStep3DiffLoad,
-                _RsideMasterStep3DiffLoadLower,
-                _RsideMasterStep3DiffLoadUpper
-            };
-
-        LMasteringStep2 = new List<List<float>>()
-            {
-                _LsideMasterStep2CompStroke,
-                _LsideMasterStep2CompLoad,
-                _LsideMasterStep2CompLoadLower,
-                _LsideMasterStep2CompLoadUpper,
-                _LsideMasterStep2ExtnStroke,
-                _LsideMasterStep2ExtnLoad,
-                _LsideMasterStep2ExtnLoadLower,
-                _LsideMasterStep2ExtnLoadUpper,
-                _LsideMasterStep2DiffStroke,
-                _LsideMasterStep2DiffLoad,
-                _LsideMasterStep2DiffLoadLower,
-                _LsideMasterStep2DiffLoadUpper
-            };
-
-        LMasteringStep3 = new List<List<float>>()
-            {
-                _LsideMasterStep3CompStroke,
-                _LsideMasterStep3CompLoad,
-                _LsideMasterStep3CompLoadLower,
-                _LsideMasterStep3CompLoadUpper,
-                _LsideMasterStep3ExtnStroke,
-                _LsideMasterStep3ExtnLoad,
-                _LsideMasterStep3ExtnLoadLower,
-                _LsideMasterStep3ExtnLoadUpper,
-                _LsideMasterStep3DiffStroke,
-                _LsideMasterStep3DiffLoad,
-                _LsideMasterStep3DiffLoadLower,
-                _LsideMasterStep3DiffLoadUpper
-            };
     }
 }
-public class DATAMODEL_TEACHING_MASTER
-{
-    public List<List<float>> RMasteringTeachStep2;
-    public List<List<float>> RMasteringTeachStep3;
 
-    public List<List<float>> LMasteringTeachStep2;
-    public List<List<float>> LMasteringTeachStep3;
 
-    List<float> _RsideMasterStep2CompStroke;
-    List<float> _RsideMasterStep2CompLoad;
-    List<float> _RsideMasterStep2ExtnStroke;
-    List<float> _RsideMasterStep2ExtnLoad;
-    List<float> _RsideMasterStep2DiffStroke;
-    List<float> _RsideMasterStep2DiffLoad;
 
-    List<float> _RsideMasterStep3CompStroke;
-    List<float> _RsideMasterStep3CompLoad;
-    List<float> _RsideMasterStep3ExtnStroke;
-    List<float> _RsideMasterStep3ExtnLoad;
-    List<float> _RsideMasterStep3DiffStroke;
-    List<float> _RsideMasterStep3DiffLoad;
 
-    List<float> _LsideMasterStep2CompStroke;
-    List<float> _LsideMasterStep2CompLoad;
-    List<float> _LsideMasterStep2ExtnStroke;
-    List<float> _LsideMasterStep2ExtnLoad;
-    List<float> _LsideMasterStep2DiffStroke;
-    List<float> _LsideMasterStep2DiffLoad;
 
-    List<float> _LsideMasterStep3CompStroke;
-    List<float> _LsideMasterStep3CompLoad;
-    List<float> _LsideMasterStep3ExtnStroke;
-    List<float> _LsideMasterStep3ExtnLoad;
-    List<float> _LsideMasterStep3DiffStroke;
-    List<float> _LsideMasterStep3DiffLoad;
 
-    public DATAMODEL_TEACHING_MASTER()
-    {
 
-        RMasteringTeachStep2 = new List<List<float>>()
-            {
-                _RsideMasterStep2CompStroke,
-                _RsideMasterStep2CompLoad,
-                _RsideMasterStep2ExtnStroke,
-                _RsideMasterStep2ExtnLoad,
-                _RsideMasterStep2DiffStroke,
-                _RsideMasterStep2DiffLoad
-            };
 
-        RMasteringTeachStep3 = new List<List<float>>()
-            {
-                _RsideMasterStep3CompStroke,
-                _RsideMasterStep3CompLoad,
-                _RsideMasterStep3ExtnStroke,
-                _RsideMasterStep3ExtnLoad,
-                _RsideMasterStep3DiffStroke,
-                _RsideMasterStep3DiffLoad
-            };
-
-        LMasteringTeachStep2 = new List<List<float>>()
-            {
-                _LsideMasterStep2CompStroke,
-                _LsideMasterStep2CompLoad,
-                _LsideMasterStep2ExtnStroke,
-                _LsideMasterStep2ExtnLoad,
-                _LsideMasterStep2DiffStroke,
-                _LsideMasterStep2DiffLoad
-            };
-
-        LMasteringTeachStep3 = new List<List<float>>()
-            {
-                _LsideMasterStep3CompStroke,
-                _LsideMasterStep3CompLoad,
-                _LsideMasterStep3ExtnStroke,
-                _LsideMasterStep3ExtnLoad,
-                _LsideMasterStep3DiffStroke,
-                _LsideMasterStep3DiffLoad
-            };
-    }
-}
-}

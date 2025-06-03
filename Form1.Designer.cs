@@ -58,21 +58,27 @@ namespace KVCOMSERVER
             button31 = new System.Windows.Forms.Button();
             button29 = new System.Windows.Forms.Button();
             tabPage5 = new System.Windows.Forms.TabPage();
-            panel8 = new System.Windows.Forms.Panel();
-            TXPosL2 = new System.Windows.Forms.Label();
-            panel7 = new System.Windows.Forms.Panel();
-            TXLoadL2 = new System.Windows.Forms.Label();
-            panel5 = new System.Windows.Forms.Panel();
-            TXLoadR2 = new System.Windows.Forms.Label();
+            panel35 = new System.Windows.Forms.Panel();
+            Plot12Coord = new System.Windows.Forms.Label();
+            panel36 = new System.Windows.Forms.Panel();
+            Plot8Coord = new System.Windows.Forms.Label();
             panel4 = new System.Windows.Forms.Panel();
             TXPosR2 = new System.Windows.Forms.Label();
-            button27 = new System.Windows.Forms.Button();
-            Plot12Coord = new System.Windows.Forms.Label();
-            Plot8Coord = new System.Windows.Forms.Label();
+            panel5 = new System.Windows.Forms.Panel();
+            TXLoadR2 = new System.Windows.Forms.Label();
+            panel8 = new System.Windows.Forms.Panel();
+            TXPosL2 = new System.Windows.Forms.Label();
+            panel37 = new System.Windows.Forms.Panel();
             Plot7Coord = new System.Windows.Forms.Label();
+            panel7 = new System.Windows.Forms.Panel();
+            TXLoadL2 = new System.Windows.Forms.Label();
+            panel34 = new System.Windows.Forms.Panel();
             Plot11Coord = new System.Windows.Forms.Label();
+            panel18 = new System.Windows.Forms.Panel();
             Plot6Coord = new System.Windows.Forms.Label();
+            panel33 = new System.Windows.Forms.Panel();
             Plot5Coord = new System.Windows.Forms.Label();
+            button27 = new System.Windows.Forms.Button();
             button107 = new System.Windows.Forms.Button();
             button108 = new System.Windows.Forms.Button();
             button105 = new System.Windows.Forms.Button();
@@ -133,12 +139,6 @@ namespace KVCOMSERVER
             button34 = new System.Windows.Forms.Button();
             button32 = new System.Windows.Forms.Button();
             tabPage3 = new System.Windows.Forms.TabPage();
-            panel24 = new System.Windows.Forms.Panel();
-            STEP2_EXTRLOAD_HI = new System.Windows.Forms.Label();
-            panel25 = new System.Windows.Forms.Panel();
-            STEP2_EXTRLOAD_LO = new System.Windows.Forms.Label();
-            panel26 = new System.Windows.Forms.Panel();
-            STEP2_EXTRLOAD = new System.Windows.Forms.Label();
             panel17 = new System.Windows.Forms.Panel();
             Plot10Coord = new System.Windows.Forms.Label();
             panel16 = new System.Windows.Forms.Panel();
@@ -160,10 +160,16 @@ namespace KVCOMSERVER
             panel2 = new System.Windows.Forms.Panel();
             Plot1Coord = new System.Windows.Forms.Label();
             panel9 = new System.Windows.Forms.Panel();
+            panel24 = new System.Windows.Forms.Panel();
+            STEP2_EXTRLOAD_HI = new System.Windows.Forms.Label();
             panel19 = new System.Windows.Forms.Panel();
             STEP2_CMPLLOAD_HI = new System.Windows.Forms.Label();
+            panel25 = new System.Windows.Forms.Panel();
+            STEP2_EXTRLOAD_LO = new System.Windows.Forms.Label();
             panel21 = new System.Windows.Forms.Panel();
             STEP2_EXTLLOAD_HI = new System.Windows.Forms.Label();
+            panel26 = new System.Windows.Forms.Panel();
+            STEP2_EXTRLOAD = new System.Windows.Forms.Label();
             P_NG_L = new System.Windows.Forms.Button();
             P_NG_R = new System.Windows.Forms.Button();
             label50 = new System.Windows.Forms.Label();
@@ -263,25 +269,22 @@ namespace KVCOMSERVER
             label8 = new System.Windows.Forms.Label();
             button83 = new System.Windows.Forms.Button();
             button84 = new System.Windows.Forms.Button();
-            panel18 = new System.Windows.Forms.Panel();
-            panel33 = new System.Windows.Forms.Panel();
-            panel34 = new System.Windows.Forms.Panel();
-            panel35 = new System.Windows.Forms.Panel();
-            panel36 = new System.Windows.Forms.Panel();
-            panel37 = new System.Windows.Forms.Panel();
             tabPage8.SuspendLayout();
             tabPage5.SuspendLayout();
-            panel8.SuspendLayout();
-            panel7.SuspendLayout();
-            panel5.SuspendLayout();
+            panel35.SuspendLayout();
+            panel36.SuspendLayout();
             panel4.SuspendLayout();
+            panel5.SuspendLayout();
+            panel8.SuspendLayout();
+            panel37.SuspendLayout();
+            panel7.SuspendLayout();
+            panel34.SuspendLayout();
+            panel18.SuspendLayout();
+            panel33.SuspendLayout();
             tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabPage7.SuspendLayout();
             tabPage3.SuspendLayout();
-            panel24.SuspendLayout();
-            panel25.SuspendLayout();
-            panel26.SuspendLayout();
             panel17.SuspendLayout();
             panel16.SuspendLayout();
             panel15.SuspendLayout();
@@ -293,8 +296,11 @@ namespace KVCOMSERVER
             panel3.SuspendLayout();
             panel2.SuspendLayout();
             panel9.SuspendLayout();
+            panel24.SuspendLayout();
             panel19.SuspendLayout();
+            panel25.SuspendLayout();
             panel21.SuspendLayout();
+            panel26.SuspendLayout();
             panel23.SuspendLayout();
             panel20.SuspendLayout();
             panel27.SuspendLayout();
@@ -312,12 +318,6 @@ namespace KVCOMSERVER
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabControl1.SuspendLayout();
-            panel18.SuspendLayout();
-            panel33.SuspendLayout();
-            panel34.SuspendLayout();
-            panel35.SuspendLayout();
-            panel36.SuspendLayout();
-            panel37.SuspendLayout();
             SuspendLayout();
             // 
             // label4
@@ -687,67 +687,47 @@ namespace KVCOMSERVER
             tabPage5.Text = "MASTERING GRAPH";
             tabPage5.Click += tabPage5_Click;
             // 
-            // panel8
+            // panel35
             // 
-            panel8.Controls.Add(TXPosL2);
-            panel8.Location = new System.Drawing.Point(565, 3);
-            panel8.Name = "panel8";
-            panel8.Size = new System.Drawing.Size(175, 20);
-            panel8.TabIndex = 81;
+            panel35.Controls.Add(Plot12Coord);
+            panel35.Location = new System.Drawing.Point(1124, 778);
+            panel35.Name = "panel35";
+            panel35.Size = new System.Drawing.Size(300, 20);
+            panel35.TabIndex = 84;
             // 
-            // TXPosL2
+            // Plot12Coord
             // 
-            TXPosL2.AutoSize = true;
-            TXPosL2.Dock = System.Windows.Forms.DockStyle.Right;
-            TXPosL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXPosL2.ForeColor = System.Drawing.Color.LightCyan;
-            TXPosL2.Location = new System.Drawing.Point(52, 0);
-            TXPosL2.Name = "TXPosL2";
-            TXPosL2.Size = new System.Drawing.Size(123, 20);
-            TXPosL2.TabIndex = 77;
-            TXPosL2.Text = "Pos: 1234.56 mm";
-            TXPosL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            Plot12Coord.AutoSize = true;
+            Plot12Coord.Dock = System.Windows.Forms.DockStyle.Left;
+            Plot12Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            Plot12Coord.ForeColor = System.Drawing.Color.LightCyan;
+            Plot12Coord.Location = new System.Drawing.Point(0, 0);
+            Plot12Coord.Name = "Plot12Coord";
+            Plot12Coord.Size = new System.Drawing.Size(150, 20);
+            Plot12Coord.TabIndex = 73;
+            Plot12Coord.Text = "X = 000, Y = 0000.00";
+            Plot12Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel7
+            // panel36
             // 
-            panel7.Controls.Add(TXLoadL2);
-            panel7.Location = new System.Drawing.Point(1, 3);
-            panel7.Name = "panel7";
-            panel7.Size = new System.Drawing.Size(175, 20);
-            panel7.TabIndex = 80;
+            panel36.Controls.Add(Plot8Coord);
+            panel36.Location = new System.Drawing.Point(1124, 403);
+            panel36.Name = "panel36";
+            panel36.Size = new System.Drawing.Size(300, 20);
+            panel36.TabIndex = 83;
             // 
-            // TXLoadL2
+            // Plot8Coord
             // 
-            TXLoadL2.AutoSize = true;
-            TXLoadL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXLoadL2.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadL2.Location = new System.Drawing.Point(-1, 0);
-            TXLoadL2.Name = "TXLoadL2";
-            TXLoadL2.Size = new System.Drawing.Size(120, 20);
-            TXLoadL2.TabIndex = 76;
-            TXLoadL2.Text = "Load : 1234.56 N";
-            TXLoadL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel5
-            // 
-            panel5.Controls.Add(TXLoadR2);
-            panel5.Location = new System.Drawing.Point(1688, 3);
-            panel5.Name = "panel5";
-            panel5.Size = new System.Drawing.Size(175, 20);
-            panel5.TabIndex = 78;
-            // 
-            // TXLoadR2
-            // 
-            TXLoadR2.AutoSize = true;
-            TXLoadR2.Dock = System.Windows.Forms.DockStyle.Right;
-            TXLoadR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            TXLoadR2.ForeColor = System.Drawing.Color.LightCyan;
-            TXLoadR2.Location = new System.Drawing.Point(55, 0);
-            TXLoadR2.Name = "TXLoadR2";
-            TXLoadR2.Size = new System.Drawing.Size(120, 20);
-            TXLoadR2.TabIndex = 74;
-            TXLoadR2.Text = "Load : 1234.56 N";
-            TXLoadR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            Plot8Coord.AutoSize = true;
+            Plot8Coord.Dock = System.Windows.Forms.DockStyle.Left;
+            Plot8Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            Plot8Coord.ForeColor = System.Drawing.Color.LightCyan;
+            Plot8Coord.Location = new System.Drawing.Point(0, 0);
+            Plot8Coord.Name = "Plot8Coord";
+            Plot8Coord.Size = new System.Drawing.Size(150, 20);
+            Plot8Coord.TabIndex = 72;
+            Plot8Coord.Text = "X = 000, Y = 0000.00";
+            Plot8Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel4
             // 
@@ -770,42 +750,55 @@ namespace KVCOMSERVER
             TXPosR2.Text = "Pos: 1234.56 mm";
             TXPosR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button27
+            // panel5
             // 
-            button27.BackColor = System.Drawing.Color.LightSteelBlue;
-            button27.Location = new System.Drawing.Point(837, 780);
-            button27.Name = "button27";
-            button27.Size = new System.Drawing.Size(90, 70);
-            button27.TabIndex = 18;
-            button27.Text = "SHOW/HIDE\r\nMASTER LINE";
-            button27.UseVisualStyleBackColor = false;
-            button27.Click += button27_Click;
+            panel5.Controls.Add(TXLoadR2);
+            panel5.Location = new System.Drawing.Point(1688, 3);
+            panel5.Name = "panel5";
+            panel5.Size = new System.Drawing.Size(175, 20);
+            panel5.TabIndex = 78;
             // 
-            // Plot12Coord
+            // TXLoadR2
             // 
-            Plot12Coord.AutoSize = true;
-            Plot12Coord.Dock = System.Windows.Forms.DockStyle.Left;
-            Plot12Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            Plot12Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot12Coord.Location = new System.Drawing.Point(0, 0);
-            Plot12Coord.Name = "Plot12Coord";
-            Plot12Coord.Size = new System.Drawing.Size(150, 20);
-            Plot12Coord.TabIndex = 73;
-            Plot12Coord.Text = "X = 000, Y = 0000.00";
-            Plot12Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            TXLoadR2.AutoSize = true;
+            TXLoadR2.Dock = System.Windows.Forms.DockStyle.Right;
+            TXLoadR2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadR2.ForeColor = System.Drawing.Color.LightCyan;
+            TXLoadR2.Location = new System.Drawing.Point(55, 0);
+            TXLoadR2.Name = "TXLoadR2";
+            TXLoadR2.Size = new System.Drawing.Size(120, 20);
+            TXLoadR2.TabIndex = 74;
+            TXLoadR2.Text = "Load : 1234.56 N";
+            TXLoadR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Plot8Coord
+            // panel8
             // 
-            Plot8Coord.AutoSize = true;
-            Plot8Coord.Dock = System.Windows.Forms.DockStyle.Left;
-            Plot8Coord.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            Plot8Coord.ForeColor = System.Drawing.Color.LightCyan;
-            Plot8Coord.Location = new System.Drawing.Point(0, 0);
-            Plot8Coord.Name = "Plot8Coord";
-            Plot8Coord.Size = new System.Drawing.Size(150, 20);
-            Plot8Coord.TabIndex = 72;
-            Plot8Coord.Text = "X = 000, Y = 0000.00";
-            Plot8Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panel8.Controls.Add(TXPosL2);
+            panel8.Location = new System.Drawing.Point(565, 3);
+            panel8.Name = "panel8";
+            panel8.Size = new System.Drawing.Size(175, 20);
+            panel8.TabIndex = 81;
+            // 
+            // TXPosL2
+            // 
+            TXPosL2.AutoSize = true;
+            TXPosL2.Dock = System.Windows.Forms.DockStyle.Right;
+            TXPosL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXPosL2.ForeColor = System.Drawing.Color.LightCyan;
+            TXPosL2.Location = new System.Drawing.Point(52, 0);
+            TXPosL2.Name = "TXPosL2";
+            TXPosL2.Size = new System.Drawing.Size(123, 20);
+            TXPosL2.TabIndex = 77;
+            TXPosL2.Text = "Pos: 1234.56 mm";
+            TXPosL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel37
+            // 
+            panel37.Controls.Add(Plot7Coord);
+            panel37.Location = new System.Drawing.Point(1124, 27);
+            panel37.Name = "panel37";
+            panel37.Size = new System.Drawing.Size(300, 20);
+            panel37.TabIndex = 85;
             // 
             // Plot7Coord
             // 
@@ -820,6 +813,34 @@ namespace KVCOMSERVER
             Plot7Coord.Text = "X = 000, Y = 0000.00";
             Plot7Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel7
+            // 
+            panel7.Controls.Add(TXLoadL2);
+            panel7.Location = new System.Drawing.Point(1, 3);
+            panel7.Name = "panel7";
+            panel7.Size = new System.Drawing.Size(175, 20);
+            panel7.TabIndex = 80;
+            // 
+            // TXLoadL2
+            // 
+            TXLoadL2.AutoSize = true;
+            TXLoadL2.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            TXLoadL2.ForeColor = System.Drawing.Color.LightCyan;
+            TXLoadL2.Location = new System.Drawing.Point(-1, 0);
+            TXLoadL2.Name = "TXLoadL2";
+            TXLoadL2.Size = new System.Drawing.Size(120, 20);
+            TXLoadL2.TabIndex = 76;
+            TXLoadL2.Text = "Load : 1234.56 N";
+            TXLoadL2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel34
+            // 
+            panel34.Controls.Add(Plot11Coord);
+            panel34.Location = new System.Drawing.Point(441, 778);
+            panel34.Name = "panel34";
+            panel34.Size = new System.Drawing.Size(300, 20);
+            panel34.TabIndex = 82;
+            // 
             // Plot11Coord
             // 
             Plot11Coord.AutoSize = true;
@@ -832,6 +853,14 @@ namespace KVCOMSERVER
             Plot11Coord.TabIndex = 70;
             Plot11Coord.Text = "X = 000, Y = 0000.00";
             Plot11Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel18
+            // 
+            panel18.Controls.Add(Plot6Coord);
+            panel18.Location = new System.Drawing.Point(441, 403);
+            panel18.Name = "panel18";
+            panel18.Size = new System.Drawing.Size(300, 20);
+            panel18.TabIndex = 81;
             // 
             // Plot6Coord
             // 
@@ -846,6 +875,14 @@ namespace KVCOMSERVER
             Plot6Coord.Text = "X = 000, Y = 0000.00";
             Plot6Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel33
+            // 
+            panel33.Controls.Add(Plot5Coord);
+            panel33.Location = new System.Drawing.Point(440, 27);
+            panel33.Name = "panel33";
+            panel33.Size = new System.Drawing.Size(300, 20);
+            panel33.TabIndex = 82;
+            // 
             // Plot5Coord
             // 
             Plot5Coord.AutoSize = true;
@@ -858,6 +895,17 @@ namespace KVCOMSERVER
             Plot5Coord.TabIndex = 68;
             Plot5Coord.Text = "X = 000, Y = 0000.00";
             Plot5Coord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // button27
+            // 
+            button27.BackColor = System.Drawing.Color.LightSteelBlue;
+            button27.Location = new System.Drawing.Point(837, 780);
+            button27.Name = "button27";
+            button27.Size = new System.Drawing.Size(90, 70);
+            button27.TabIndex = 18;
+            button27.Text = "SHOW/HIDE\r\nMASTER LINE";
+            button27.UseVisualStyleBackColor = false;
+            button27.Click += button27_Click;
             // 
             // button107
             // 
@@ -1616,69 +1664,6 @@ namespace KVCOMSERVER
             tabPage3.TabIndex = 3;
             tabPage3.Text = "REALTIME GRAPH";
             // 
-            // panel24
-            // 
-            panel24.Controls.Add(STEP2_EXTRLOAD_HI);
-            panel24.Location = new System.Drawing.Point(199, 329);
-            panel24.Name = "panel24";
-            panel24.Size = new System.Drawing.Size(180, 22);
-            panel24.TabIndex = 93;
-            // 
-            // STEP2_EXTRLOAD_HI
-            // 
-            STEP2_EXTRLOAD_HI.AutoSize = true;
-            STEP2_EXTRLOAD_HI.Dock = System.Windows.Forms.DockStyle.Right;
-            STEP2_EXTRLOAD_HI.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            STEP2_EXTRLOAD_HI.ForeColor = System.Drawing.Color.LightCyan;
-            STEP2_EXTRLOAD_HI.Location = new System.Drawing.Point(87, 0);
-            STEP2_EXTRLOAD_HI.Name = "STEP2_EXTRLOAD_HI";
-            STEP2_EXTRLOAD_HI.Size = new System.Drawing.Size(93, 20);
-            STEP2_EXTRLOAD_HI.TabIndex = 75;
-            STEP2_EXTRLOAD_HI.Text = "< 0000.00 N";
-            STEP2_EXTRLOAD_HI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel25
-            // 
-            panel25.Controls.Add(STEP2_EXTRLOAD_LO);
-            panel25.Location = new System.Drawing.Point(199, 306);
-            panel25.Name = "panel25";
-            panel25.Size = new System.Drawing.Size(180, 22);
-            panel25.TabIndex = 91;
-            // 
-            // STEP2_EXTRLOAD_LO
-            // 
-            STEP2_EXTRLOAD_LO.AutoSize = true;
-            STEP2_EXTRLOAD_LO.Dock = System.Windows.Forms.DockStyle.Right;
-            STEP2_EXTRLOAD_LO.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            STEP2_EXTRLOAD_LO.ForeColor = System.Drawing.Color.LightCyan;
-            STEP2_EXTRLOAD_LO.Location = new System.Drawing.Point(87, 0);
-            STEP2_EXTRLOAD_LO.Name = "STEP2_EXTRLOAD_LO";
-            STEP2_EXTRLOAD_LO.Size = new System.Drawing.Size(93, 20);
-            STEP2_EXTRLOAD_LO.TabIndex = 75;
-            STEP2_EXTRLOAD_LO.Text = "> 0000.00 N";
-            STEP2_EXTRLOAD_LO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel26
-            // 
-            panel26.Controls.Add(STEP2_EXTRLOAD);
-            panel26.Location = new System.Drawing.Point(199, 283);
-            panel26.Name = "panel26";
-            panel26.Size = new System.Drawing.Size(180, 22);
-            panel26.TabIndex = 92;
-            // 
-            // STEP2_EXTRLOAD
-            // 
-            STEP2_EXTRLOAD.AutoSize = true;
-            STEP2_EXTRLOAD.Dock = System.Windows.Forms.DockStyle.Right;
-            STEP2_EXTRLOAD.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
-            STEP2_EXTRLOAD.ForeColor = System.Drawing.Color.LightCyan;
-            STEP2_EXTRLOAD.Location = new System.Drawing.Point(54, 0);
-            STEP2_EXTRLOAD.Name = "STEP2_EXTRLOAD";
-            STEP2_EXTRLOAD.Size = new System.Drawing.Size(126, 20);
-            STEP2_EXTRLOAD.TabIndex = 75;
-            STEP2_EXTRLOAD.Text = "Load : 0000.00 N";
-            STEP2_EXTRLOAD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // panel17
             // 
             panel17.Controls.Add(Plot10Coord);
@@ -1916,6 +1901,27 @@ namespace KVCOMSERVER
             panel9.Size = new System.Drawing.Size(382, 368);
             panel9.TabIndex = 81;
             // 
+            // panel24
+            // 
+            panel24.Controls.Add(STEP2_EXTRLOAD_HI);
+            panel24.Location = new System.Drawing.Point(199, 329);
+            panel24.Name = "panel24";
+            panel24.Size = new System.Drawing.Size(180, 22);
+            panel24.TabIndex = 93;
+            // 
+            // STEP2_EXTRLOAD_HI
+            // 
+            STEP2_EXTRLOAD_HI.AutoSize = true;
+            STEP2_EXTRLOAD_HI.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_EXTRLOAD_HI.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTRLOAD_HI.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTRLOAD_HI.Location = new System.Drawing.Point(87, 0);
+            STEP2_EXTRLOAD_HI.Name = "STEP2_EXTRLOAD_HI";
+            STEP2_EXTRLOAD_HI.Size = new System.Drawing.Size(93, 20);
+            STEP2_EXTRLOAD_HI.TabIndex = 75;
+            STEP2_EXTRLOAD_HI.Text = "< 0000.00 N";
+            STEP2_EXTRLOAD_HI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // panel19
             // 
             panel19.Controls.Add(STEP2_CMPLLOAD_HI);
@@ -1936,6 +1942,27 @@ namespace KVCOMSERVER
             STEP2_CMPLLOAD_HI.Text = "< 0000.00 N";
             STEP2_CMPLLOAD_HI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel25
+            // 
+            panel25.Controls.Add(STEP2_EXTRLOAD_LO);
+            panel25.Location = new System.Drawing.Point(199, 306);
+            panel25.Name = "panel25";
+            panel25.Size = new System.Drawing.Size(180, 22);
+            panel25.TabIndex = 91;
+            // 
+            // STEP2_EXTRLOAD_LO
+            // 
+            STEP2_EXTRLOAD_LO.AutoSize = true;
+            STEP2_EXTRLOAD_LO.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_EXTRLOAD_LO.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTRLOAD_LO.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTRLOAD_LO.Location = new System.Drawing.Point(87, 0);
+            STEP2_EXTRLOAD_LO.Name = "STEP2_EXTRLOAD_LO";
+            STEP2_EXTRLOAD_LO.Size = new System.Drawing.Size(93, 20);
+            STEP2_EXTRLOAD_LO.TabIndex = 75;
+            STEP2_EXTRLOAD_LO.Text = "> 0000.00 N";
+            STEP2_EXTRLOAD_LO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // panel21
             // 
             panel21.Controls.Add(STEP2_EXTLLOAD_HI);
@@ -1955,6 +1982,27 @@ namespace KVCOMSERVER
             STEP2_EXTLLOAD_HI.TabIndex = 72;
             STEP2_EXTLLOAD_HI.Text = "< 0000.00 N";
             STEP2_EXTLLOAD_HI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel26
+            // 
+            panel26.Controls.Add(STEP2_EXTRLOAD);
+            panel26.Location = new System.Drawing.Point(199, 283);
+            panel26.Name = "panel26";
+            panel26.Size = new System.Drawing.Size(180, 22);
+            panel26.TabIndex = 92;
+            // 
+            // STEP2_EXTRLOAD
+            // 
+            STEP2_EXTRLOAD.AutoSize = true;
+            STEP2_EXTRLOAD.Dock = System.Windows.Forms.DockStyle.Right;
+            STEP2_EXTRLOAD.Font = new System.Drawing.Font("Work Sans", 10F, System.Drawing.FontStyle.Bold);
+            STEP2_EXTRLOAD.ForeColor = System.Drawing.Color.LightCyan;
+            STEP2_EXTRLOAD.Location = new System.Drawing.Point(54, 0);
+            STEP2_EXTRLOAD.Name = "STEP2_EXTRLOAD";
+            STEP2_EXTRLOAD.Size = new System.Drawing.Size(126, 20);
+            STEP2_EXTRLOAD.TabIndex = 75;
+            STEP2_EXTRLOAD.Text = "Load : 0000.00 N";
+            STEP2_EXTRLOAD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // P_NG_L
             // 
@@ -3114,54 +3162,6 @@ namespace KVCOMSERVER
             button84.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             button84.UseVisualStyleBackColor = true;
             // 
-            // panel18
-            // 
-            panel18.Controls.Add(Plot6Coord);
-            panel18.Location = new System.Drawing.Point(441, 403);
-            panel18.Name = "panel18";
-            panel18.Size = new System.Drawing.Size(300, 20);
-            panel18.TabIndex = 81;
-            // 
-            // panel33
-            // 
-            panel33.Controls.Add(Plot5Coord);
-            panel33.Location = new System.Drawing.Point(440, 27);
-            panel33.Name = "panel33";
-            panel33.Size = new System.Drawing.Size(300, 20);
-            panel33.TabIndex = 82;
-            // 
-            // panel34
-            // 
-            panel34.Controls.Add(Plot11Coord);
-            panel34.Location = new System.Drawing.Point(441, 778);
-            panel34.Name = "panel34";
-            panel34.Size = new System.Drawing.Size(300, 20);
-            panel34.TabIndex = 82;
-            // 
-            // panel35
-            // 
-            panel35.Controls.Add(Plot12Coord);
-            panel35.Location = new System.Drawing.Point(1124, 778);
-            panel35.Name = "panel35";
-            panel35.Size = new System.Drawing.Size(300, 20);
-            panel35.TabIndex = 84;
-            // 
-            // panel36
-            // 
-            panel36.Controls.Add(Plot8Coord);
-            panel36.Location = new System.Drawing.Point(1124, 403);
-            panel36.Name = "panel36";
-            panel36.Size = new System.Drawing.Size(300, 20);
-            panel36.TabIndex = 83;
-            // 
-            // panel37
-            // 
-            panel37.Controls.Add(Plot7Coord);
-            panel37.Location = new System.Drawing.Point(1124, 27);
-            panel37.Name = "panel37";
-            panel37.Size = new System.Drawing.Size(300, 20);
-            panel37.TabIndex = 85;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3187,26 +3187,32 @@ namespace KVCOMSERVER
             tabPage8.PerformLayout();
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
-            panel8.ResumeLayout(false);
-            panel8.PerformLayout();
-            panel7.ResumeLayout(false);
-            panel7.PerformLayout();
-            panel5.ResumeLayout(false);
-            panel5.PerformLayout();
+            panel35.ResumeLayout(false);
+            panel35.PerformLayout();
+            panel36.ResumeLayout(false);
+            panel36.PerformLayout();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            panel8.ResumeLayout(false);
+            panel8.PerformLayout();
+            panel37.ResumeLayout(false);
+            panel37.PerformLayout();
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
+            panel34.ResumeLayout(false);
+            panel34.PerformLayout();
+            panel18.ResumeLayout(false);
+            panel18.PerformLayout();
+            panel33.ResumeLayout(false);
+            panel33.PerformLayout();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             tabPage7.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
-            panel24.ResumeLayout(false);
-            panel24.PerformLayout();
-            panel25.ResumeLayout(false);
-            panel25.PerformLayout();
-            panel26.ResumeLayout(false);
-            panel26.PerformLayout();
             panel17.ResumeLayout(false);
             panel17.PerformLayout();
             panel16.ResumeLayout(false);
@@ -3229,10 +3235,16 @@ namespace KVCOMSERVER
             panel2.PerformLayout();
             panel9.ResumeLayout(false);
             panel9.PerformLayout();
+            panel24.ResumeLayout(false);
+            panel24.PerformLayout();
             panel19.ResumeLayout(false);
             panel19.PerformLayout();
+            panel25.ResumeLayout(false);
+            panel25.PerformLayout();
             panel21.ResumeLayout(false);
             panel21.PerformLayout();
+            panel26.ResumeLayout(false);
+            panel26.PerformLayout();
             panel23.ResumeLayout(false);
             panel23.PerformLayout();
             panel20.ResumeLayout(false);
@@ -3263,18 +3275,6 @@ namespace KVCOMSERVER
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabControl1.ResumeLayout(false);
-            panel18.ResumeLayout(false);
-            panel18.PerformLayout();
-            panel33.ResumeLayout(false);
-            panel33.PerformLayout();
-            panel34.ResumeLayout(false);
-            panel34.PerformLayout();
-            panel35.ResumeLayout(false);
-            panel35.PerformLayout();
-            panel36.ResumeLayout(false);
-            panel36.PerformLayout();
-            panel37.ResumeLayout(false);
-            panel37.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
