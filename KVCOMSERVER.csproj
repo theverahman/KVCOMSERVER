@@ -14,6 +14,11 @@
     <StartupObject>KVCOMSERVER.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="ChangesInScottPlot\**" />
+    <EmbeddedResource Remove="ChangesInScottPlot\**" />
+    <None Remove="ChangesInScottPlot\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="SarasaFixedJ-Regular.ttf" />
     <None Remove="SarasaGothicJ-Regular.ttf" />
     <None Remove="SarasaMonoJ-Regular.ttf" />

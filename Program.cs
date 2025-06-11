@@ -3134,10 +3134,10 @@ namespace WORKFLOW
             byte[] _buffLPos = new byte[4];
             byte[] _buffRLoad = new byte[4];
             byte[] _buffRPos = new byte[4];
-            int _buffRLoadIndex = 0;
-            int _buffRPosIndex = 4;
-            int _buffLLoadIndex = 8;
-            int _buffLPosIndex = 12;
+            int _buffLLoadIndex = 0;
+            int _buffLPosIndex = 4;
+            int _buffRLoadIndex = 8;
+            int _buffRPosIndex = 12;
             float _LLoad;
             float _LPos;
             float _RLoad;
